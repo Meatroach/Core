@@ -9,4 +9,5 @@ public function findByName($name);
 public function findByUser(User $user);
 public function findByLocation($x,$y);
 public function add(City $city);
+public function create();
 }

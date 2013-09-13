@@ -4,8 +4,9 @@ namespace OpenTribes\Core\Map\Mock;
 use OpenTribes\Core\Map\Repository as MapRepositoryInterface;
 use OpenTribes\Core\Map;
 class Repository implements MapRepositoryInterface{
+    private $data = array();
     public function add(Map $map) {
-        ;
+        $this->data[$map->getId()] = $map;
     }
     public function findById($id) {
         ;
@@ -13,4 +14,5 @@ class Repository implements MapRepositoryInterface{
     public function findByName($name) {
         ;
     }
+    
 }

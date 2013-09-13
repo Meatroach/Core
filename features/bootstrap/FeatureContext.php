@@ -12,7 +12,7 @@ class FeatureContext implements ContextInterface
 {
    protected $userHelper;
    protected $cityHelper;
-   protected $exceptionMapper;
+   protected $exceptionHelper;
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -22,9 +22,10 @@ class FeatureContext implements ContextInterface
     public function __construct(array $parameters) {
         // Initialize your context here
         $this->parameters = $parameters;
-        $this->userHelper = new UserHelper();
-        $this->cityHelper = new CityHelper();
-        $this->exceptionMapper = new ExceptionMapper();
+       $this->exceptionHelper = new ExceptionHelper();
+        $this->userHelper = new UserHelper($this->exceptionHelper);
+        $this->cityHelper = new CityHelper($this->exceptionHelper);
+       
     }
 
 //
@@ -100,7 +101,7 @@ class FeatureContext implements ContextInterface
      */
     public function iShouldSee($arg1)
     {
-         $this->userHelper->assertException($this->exceptionMapper->map($arg1));
+         $this->exceptionHelper->assertException($arg1);
     }
 
     /**
@@ -212,7 +213,7 @@ class FeatureContext implements ContextInterface
      */
     public function iShouldHaveACity()
     {
-        throw new PendingException();
+       $this->cityHelper->assertHasCity();
     }
 
 }

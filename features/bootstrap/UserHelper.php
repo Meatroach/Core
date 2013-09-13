@@ -36,7 +36,7 @@ class UserHelper {
     protected $mailer = null;
     protected $userRolesRepository;
  
-    public function __construct() {
+    public function __construct(ExceptionHelper $exception) {
         $this->roleRepository = new RoleRepository();
         $this->userRepository = new UserRepository();
         $this->userRolesRepository = new UserRolesRepository();
@@ -44,6 +44,7 @@ class UserHelper {
         $this->hasher = new MockHasher();
         $this->codeGenerator = new MockCodeGenerator();
         $this->mailer = new MockMailer();
+        $this->exception = $exception;
         $this->initRoles();
     }
 
@@ -126,7 +127,7 @@ class UserHelper {
         try {
             $this->response = $interactor($request);
         } catch (\Exception $e) {
-            $this->exception = $e;
+            $this->exception->setException($e);
         }
     }
 
@@ -149,7 +150,7 @@ class UserHelper {
             $this->response = $authInteractor($authRequest);
         
         } catch (\Exception $e) {
-            $this->exception = $e;
+            $this->exception->setException($e);
         }
     }
 
@@ -178,7 +179,7 @@ class UserHelper {
         try {
             $this->response = $interactor($request);
         } catch (\Exception $e) {
-            $this->exception = $e;
+            $this->exception->setException($e);
         }
     }
 
@@ -211,14 +212,7 @@ class UserHelper {
         assertNotNull($this->response->getMailView()->getUser()->getActivationCode());
     }
 
-    /**
-     * Assert a specific exception
-     * @param String $exception Exception name
-     */
-    public function assertException($exception) {
-        assertNotNull($this->exception);
-        assertInstanceOf($exception, $this->exception);
-    }
+  
 
     /**
      * Assert account is activated
@@ -238,7 +232,7 @@ class UserHelper {
      
         assertTrue($user->getRoles()->hasRole($role));
     }
-
+   
 }
 
 ?>

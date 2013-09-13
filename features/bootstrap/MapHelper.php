@@ -18,12 +18,27 @@ class MapHelper {
         $this->mapTileRepository = new MapTileRepository();
         $this->mapRepository = new MapRepository();
     }
+    public function getMapRepository(){
+        return $this->mapRepository;
+    }
+    public function getMapTileRepository(){
+        return $this->mapTileRepository;
+    }
 
     public function createTiles(array $tiles) {
-        $factory = new EntityFactory(new Tile());
+     
+        $statsMapper = array(
+            'yes'=>true,
+            'no'=>false
+        );
         foreach ($tiles as $tile) {
-            $this->tileRepository->add($factory->createFromArray($tile));
+            $tileEntity = new Tile();
+            $tileEntity->setId($tile['id']);
+            $tileEntity->setName($tile['name']);
+            $tileEntity->setAccessable($statsMapper[$tile['accessable']]);
+            $this->tileRepository->add($tileEntity);
         }
+    
     }
 
     public function createMapWithTiles($mapname, array $tiles) {
@@ -33,17 +48,15 @@ class MapHelper {
         $map->setName($mapname);
         $id = 0;
         foreach ($tiles as $y => $tiles) {
-            foreach ($tiles as $x => $tile) {
+            foreach ($tiles as $x => $tileName) {
                 $id++;
-                $tileEntity = new Tile();
-
-                $tileEntity->setName($tile)
-                        ->setId($id);
+                $tile = $this->tileRepository->findByName($tileName);
                 
                 $mapTile = new MapTile();
-                $mapTile->setX($x)
+                $mapTile->setId($id)
+                        ->setX($x)
                         ->setY($y)
-                        ->setTile($tileEntity)
+                        ->setTile($tile)
                         ->setMap($map);
 
                 $this->mapTileRepository->add($mapTile);

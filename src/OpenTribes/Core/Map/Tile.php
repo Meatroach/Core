@@ -21,11 +21,11 @@ class Tile extends Entity{
         return $this;
     }
     public function setX($x){
-        $this->x = $x;
+        $this->x = (int)$x;
         return $this;
     }
     public function setY($y){
-        $this->y = $y;
+        $this->y = (int)$y;
         return $this;
     }
     public function getMap(){

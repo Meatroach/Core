@@ -2258,6 +2258,7 @@ In order to to login as registered user, I have to input valid informations<br /
 <div class="feature">
 <ul class="tags">
 <li>@City</li>
+<li>@Create</li>
 </ul>
 <h2>
 <span class="keyword">Feature: </span>
@@ -2293,22 +2294,22 @@ In order to to login as registered user, I have to input valid informations<br /
 <tr class="row">
 <td>1</td>
 <td>Grass</td>
-<td>true</td>
+<td>yes</td>
 </tr>
 <tr class="row">
 <td>2</td>
 <td>Forrest</td>
-<td>false</td>
+<td>no</td>
 </tr>
 <tr class="row">
 <td>3</td>
 <td>Sea</td>
-<td>false</td>
+<td>no</td>
 </tr>
 <tr class="row">
 <td>4</td>
 <td>Hill</td>
-<td>false</td>
+<td>no</td>
 </tr>
 </tbody>
 </table>
@@ -2475,13 +2476,72 @@ In order to to login as registered user, I have to input valid informations<br /
 <span class="path">FeatureContext::iCreateACityAtLocationXAndY()</span>
 </div>
 </li>
-<li class="pending">
+<li class="passed">
 <div class="step">
 <span class="keyword">Then </span>
 <span class="text">I should have a city</span>
 <span class="path">FeatureContext::iShouldHaveACity()</span>
 </div>
-<pre class="backtrace">TODO: write pending definition</pre>
+</li>
+</ol>
+</div>
+<div class="scenario">
+<h3>
+<span class="keyword">Scenario: </span>
+<span class="title">tile is not accessable</span>
+<span class="path">features/City/create.feature:38</span>
+</h3>
+<ol>
+<li class="passed">
+<div class="step">
+<span class="keyword">Given </span>
+<span class="text">I'm logged in as user "<strong class="passed_param">BlackScorp</strong>"</span>
+<span class="path">FeatureContext::iMLoggedInAsUser()</span>
+</div>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">When </span>
+<span class="text">I create a city at location x=<strong class="passed_param">1</strong> and y=<strong class="passed_param">1</strong></span>
+<span class="path">FeatureContext::iCreateACityAtLocationXAndY()</span>
+</div>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">Then </span>
+<span class="text">I should see "<strong class="passed_param">tile not accessable</strong>"</span>
+<span class="path">FeatureContext::iShouldSee()</span>
+</div>
+</li>
+</ol>
+</div>
+<div class="scenario">
+<h3>
+<span class="keyword">Scenario: </span>
+<span class="title">tile is not accessable</span>
+<span class="path">features/City/create.feature:43</span>
+</h3>
+<ol>
+<li class="passed">
+<div class="step">
+<span class="keyword">Given </span>
+<span class="text">I'm logged in as user "<strong class="passed_param">BlackScorp</strong>"</span>
+<span class="path">FeatureContext::iMLoggedInAsUser()</span>
+</div>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">When </span>
+<span class="text">I create a city at location x=<strong class="passed_param">0</strong> and y=<strong class="passed_param">0</strong></span>
+<span class="path">FeatureContext::iCreateACityAtLocationXAndY()</span>
+</div>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">Then </span>
+<span class="text">I should see "<strong class="passed_param">city found at location</strong>"</span>
+<span class="path">FeatureContext::iShouldSee()</span>
+</div>
 </li>
 </ol>
 </div>
@@ -2489,13 +2549,13 @@ In order to to login as registered user, I have to input valid informations<br /
 <div class="summary passed">
 <div class="counters">
 <p class="scenarios">
-28 scenarios (<strong class="passed">27 passed</strong>, <strong class="pending">1 pending</strong>)
+30 scenarios (<strong class="passed">30 passed</strong>)
 </p>
 <p class="steps">
-135 steps (<strong class="passed">134 passed</strong>, <strong class="pending">1 pending</strong>)
+149 steps (<strong class="passed">149 passed</strong>)
 </p>
 <p class="time">
-0m3.211s
+0m2.096s
 </p>
 </div>
 <div class="switchers">
