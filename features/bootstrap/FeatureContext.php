@@ -11,7 +11,8 @@ use Behat\Gherkin\Node\TableNode;
 class FeatureContext implements ContextInterface
 {
    protected $userHelper;
-
+   protected $cityHelper;
+   protected $exceptionMapper;
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -22,6 +23,8 @@ class FeatureContext implements ContextInterface
         // Initialize your context here
         $this->parameters = $parameters;
         $this->userHelper = new UserHelper();
+        $this->cityHelper = new CityHelper();
+        $this->exceptionMapper = new ExceptionMapper();
     }
 
 //
@@ -91,11 +94,13 @@ class FeatureContext implements ContextInterface
         $this->userHelper->sendActivationCode();
     }
 
+ 
     /**
-     * @Then /^I should see an "([^"]*)" exception$/
+     * @Then /^I should see "([^"]*)"$/
      */
-    public function iShouldSeeAnException($arg1) {
-        $this->userHelper->assertException($arg1);
+    public function iShouldSee($arg1)
+    {
+         $this->userHelper->assertException($this->exceptionMapper->map($arg1));
     }
 
     /**
@@ -160,12 +165,21 @@ class FeatureContext implements ContextInterface
     public function iShouldHaveARecoveryCode() {
         throw new PendingException();
     }
-        /**
-     * @Given /^a map with following tiles:$/
+   
+   /**
+     * @Given /^following tiles:$/
      */
-    public function aMapWithFollowingTiles(TableNode $table)
+    public function followingTiles(TableNode $table)
     {
-        throw new PendingException();
+         $this->cityHelper->getMapHelper()->createTiles($table->getHash());
+    }
+
+    /**
+     * @Given /^a map "([^"]*)" with following tiles:$/
+     */
+    public function aMapWithFollowingTiles2($arg1, TableNode $table)
+    {
+        $this->cityHelper->getMapHelper()->createMapWithTiles($arg1,$table->getRowsHash());
     }
 
     /**
@@ -173,7 +187,8 @@ class FeatureContext implements ContextInterface
      */
     public function followingCities(TableNode $table)
     {
-        throw new PendingException();
+        $this->cityHelper->setUserRepository($this->userHelper->getUserRepository());
+        $this->cityHelper->createCities($table->getHash());
     }
 
     /**
@@ -181,7 +196,7 @@ class FeatureContext implements ContextInterface
      */
     public function iMLoggedInAsUser($arg1)
     {
-        throw new PendingException();
+       $this->cityHelper->iamUser($arg1);
     }
 
     /**
@@ -189,7 +204,7 @@ class FeatureContext implements ContextInterface
      */
     public function iCreateACityAtLocationXAndY($arg1, $arg2)
     {
-        throw new PendingException();
+       $this->cityHelper->create($arg1, $arg2);
     }
 
     /**
