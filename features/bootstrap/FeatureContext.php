@@ -8,11 +8,12 @@ use Behat\Gherkin\Node\TableNode;
 /**
  * Behat context class.
  */
-class FeatureContext implements ContextInterface
-{
-   protected $userHelper;
-   protected $cityHelper;
-   protected $exceptionHelper;
+class FeatureContext implements ContextInterface {
+
+    protected $userHelper;
+    protected $cityHelper;
+    protected $exceptionHelper;
+    protected $buildingHelper;
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -22,10 +23,10 @@ class FeatureContext implements ContextInterface
     public function __construct(array $parameters) {
         // Initialize your context here
         $this->parameters = $parameters;
-       $this->exceptionHelper = new ExceptionHelper();
+        $this->exceptionHelper = new ExceptionHelper();
         $this->userHelper = new UserHelper($this->exceptionHelper);
         $this->cityHelper = new CityHelper($this->exceptionHelper);
-       
+        $this->buildingHelper = new BuildingHelper($this->exceptionHelper);
     }
 
 //
@@ -95,13 +96,11 @@ class FeatureContext implements ContextInterface
         $this->userHelper->sendActivationCode();
     }
 
- 
     /**
      * @Then /^I should see "([^"]*)"$/
      */
-    public function iShouldSee($arg1)
-    {
-         $this->exceptionHelper->assertException($arg1);
+    public function iShouldSee($arg1) {
+        $this->exceptionHelper->assertException($arg1);
     }
 
     /**
@@ -140,54 +139,23 @@ class FeatureContext implements ContextInterface
     }
 
     /**
-     * @When /^I request the code with following informations$/
-     */
-    public function iRequestTheCodeWithFollowingInformations(TableNode $table) {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^a recovery mail should be created$/
-     */
-    public function aRecoveryMailShouldBeCreated() {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^the mail should be send$/
-     */
-    public function theMailShouldBeSend() {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^I should have a recovery code$/
-     */
-    public function iShouldHaveARecoveryCode() {
-        throw new PendingException();
-    }
-   
-   /**
      * @Given /^following tiles:$/
      */
-    public function followingTiles(TableNode $table)
-    {
-         $this->cityHelper->getMapHelper()->createTiles($table->getHash());
+    public function followingTiles(TableNode $table) {
+        $this->cityHelper->getMapHelper()->createTiles($table->getHash());
     }
 
     /**
      * @Given /^a map "([^"]*)" with following tiles:$/
      */
-    public function aMapWithFollowingTiles2($arg1, TableNode $table)
-    {
-        $this->cityHelper->getMapHelper()->createMapWithTiles($arg1,$table->getRowsHash());
+    public function aMapWithFollowingTiles2($arg1, TableNode $table) {
+        $this->cityHelper->getMapHelper()->createMapWithTiles($arg1, $table->getRowsHash());
     }
 
     /**
      * @Given /^following cities:$/
      */
-    public function followingCities(TableNode $table)
-    {
+    public function followingCities(TableNode $table) {
         $this->cityHelper->setUserRepository($this->userHelper->getUserRepository());
         $this->cityHelper->createCities($table->getHash());
     }
@@ -195,25 +163,94 @@ class FeatureContext implements ContextInterface
     /**
      * @Given /^I\'m logged in as user "([^"]*)"$/
      */
-    public function iMLoggedInAsUser($arg1)
-    {
-       $this->cityHelper->iamUser($arg1);
+    public function iMLoggedInAsUser($arg1) {
+        $this->cityHelper->iamUser($arg1);
     }
 
     /**
      * @When /^I create a city at location x=(\d+) and y=(\d+)$/
      */
-    public function iCreateACityAtLocationXAndY($arg1, $arg2)
-    {
-       $this->cityHelper->create($arg1, $arg2);
+    public function iCreateACityAtLocationXAndY($arg1, $arg2) {
+        $this->cityHelper->create($arg1, $arg2);
     }
 
     /**
      * @Then /^I should have a city$/
      */
-    public function iShouldHaveACity()
+    public function iShouldHaveACity() {
+        $this->cityHelper->assertHasCity();
+    }
+
+    /**
+     * @Given /^following Buildings:$/
+     */
+    public function followingBuildings(TableNode $table) {
+        $this->buildingHelper->createDumbBuildings($table->getHash());
+    }
+
+    /**
+     * @Given /^I have a city$/
+     */
+    public function iHaveACity() {
+       $this->cityHelper->assignDumpCity();
+    }
+     /**
+     * @Given /^following techtree:$/
+     */
+    public function followingTechtree(TableNode $table)
     {
-       $this->cityHelper->assertHasCity();
+       
+       $this->buildingHelper->createTechtree($table->getHash());
+    }
+    
+    
+    /**
+     * @Given /^following resources:$/
+     */
+    public function followingResources(TableNode $table)
+    {
+        $this->buildingHelper->createResources($table->getRowsHash());
+    }
+
+    /**
+     * @Given /^the city have following buildings:$/
+     */
+    public function theCityHaveFollowingBuildings(TableNode $table)
+    {
+        $this->cityHelper->setBuildingRepo($this->buildingHelper->getBuildingRepository());
+       $this->cityHelper->assignBuildingsToCity($table->getHash());
+    }
+
+    /**
+     * @Given /^the city have following resources:$/
+     */
+    public function theCityHaveFollowingResources(TableNode $table)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^I build "([^"]*)"$/
+     */
+    public function iBuild($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should have "([^"]*)" in building Queue$/
+     */
+    public function iShouldHaveInBuildingQueue($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^city should have less resources$/
+     */
+    public function cityShouldHaveLessResources()
+    {
+        throw new PendingException();
     }
 
 }

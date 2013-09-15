@@ -2257,6 +2257,476 @@ In order to to login as registered user, I have to input valid informations<br /
 </div>
 <div class="feature">
 <ul class="tags">
+<li>@Building</li>
+</ul>
+<h2>
+<span class="keyword">Feature: </span>
+<span class="title">add building to the queue</span>
+</h2>
+<p>
+  In order to build a building<br />
+  As registered user<br />
+  I must fullfill the requirements<br />
+</p>
+
+<div class="scenario background">
+<h3>
+<span class="keyword">Background: </span>
+<span class="path">features/Building/add_building_queue.feature:7</span>
+</h3>
+<ol>
+<li class="passed">
+<div class="step">
+<span class="keyword">Given </span>
+<span class="text">following Buildings:</span>
+<span class="path">FeatureContext::followingBuildings()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>id</td>
+<td>name</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>1</td>
+<td>Headquarters</td>
+</tr>
+<tr class="row">
+<td>2</td>
+<td>Barracks</td>
+</tr>
+<tr class="row">
+<td>3</td>
+<td>Stable</td>
+</tr>
+<tr class="row">
+<td>4</td>
+<td>Workshop</td>
+</tr>
+<tr class="row">
+<td>5</td>
+<td>Academy</td>
+</tr>
+<tr class="row">
+<td>6</td>
+<td>Smithy</td>
+</tr>
+<tr class="row">
+<td>7</td>
+<td>Market</td>
+</tr>
+<tr class="row">
+<td>8</td>
+<td>Timber camp</td>
+</tr>
+<tr class="row">
+<td>9</td>
+<td>Clay pit</td>
+</tr>
+<tr class="row">
+<td>10</td>
+<td>Iron mine</td>
+</tr>
+<tr class="row">
+<td>11</td>
+<td>Farm</td>
+</tr>
+<tr class="row">
+<td>12</td>
+<td>Warehouse</td>
+</tr>
+<tr class="row">
+<td>13</td>
+<td>Hiding place</td>
+</tr>
+<tr class="row">
+<td>14</td>
+<td>Wall</td>
+</tr>
+<tr class="row">
+<td>15</td>
+<td>Rally point</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">user with follwoing informations:</span>
+<span class="path">FeatureContext::userWithFollwoingInformations()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>id</td>
+<td>username</td>
+<td>password</td>
+<td>email</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>1</td>
+<td>BlackScorp</td>
+<td>123456</td>
+<td>test@test.de</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">following cities:</span>
+<span class="path">FeatureContext::followingCities()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>id</td>
+<td>name</td>
+<td>owner</td>
+<td>x</td>
+<td>y</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>1</td>
+<td>BlackScorp's Village</td>
+<td>BlackScorp</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="passed">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">following resources:</span>
+<span class="path">FeatureContext::followingResources()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>id</td>
+<td>name</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>1</td>
+<td>Clay</td>
+</tr>
+<tr class="row">
+<td>2</td>
+<td>Iron</td>
+</tr>
+<tr class="row">
+<td>3</td>
+<td>Wood</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="pending">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">following techtree:</span>
+<span class="path">FeatureContext::followingTechtree()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>id</td>
+<td>building</td>
+<td>require</td>
+<td>level</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>1</td>
+<td>Headquarters</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>2</td>
+<td>Hiding place</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>3</td>
+<td>Farm</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>4</td>
+<td>Warehouse</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>5</td>
+<td>Rally point</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>6</td>
+<td>Iron mine</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>7</td>
+<td>Clay pit</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>8</td>
+<td>Timber camp</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row">
+<td>9</td>
+<td>Market</td>
+<td>Headquarters</td>
+<td>3</td>
+</tr>
+<tr class="row">
+<td>10</td>
+<td>Market</td>
+<td>Warehouse</td>
+<td>2</td>
+</tr>
+<tr class="row">
+<td>11</td>
+<td>Barracks</td>
+<td>Headquarters</td>
+<td>3</td>
+</tr>
+<tr class="row">
+<td>12</td>
+<td>Wall</td>
+<td>Barracks</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>13</td>
+<td>Smithy</td>
+<td>Headquarters</td>
+<td>5</td>
+</tr>
+<tr class="row">
+<td>14</td>
+<td>Smithy</td>
+<td>Barracks</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>15</td>
+<td>Stable</td>
+<td>Barracks</td>
+<td>5</td>
+</tr>
+<tr class="row">
+<td>16</td>
+<td>Stable</td>
+<td>Smithy</td>
+<td>5</td>
+</tr>
+<tr class="row">
+<td>17</td>
+<td>Stable</td>
+<td>Headquarters</td>
+<td>10</td>
+</tr>
+<tr class="row">
+<td>18</td>
+<td>Workshop</td>
+<td>Smithy</td>
+<td>10</td>
+</tr>
+<tr class="row">
+<td>19</td>
+<td>Workshop</td>
+<td>Headquarters</td>
+<td>10</td>
+</tr>
+<tr class="row">
+<td>20</td>
+<td>Workshop</td>
+<td>Stable</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>21</td>
+<td>Academy</td>
+<td>Headquarters</td>
+<td>20</td>
+</tr>
+<tr class="row">
+<td>22</td>
+<td>Academy</td>
+<td>Market</td>
+<td>10</td>
+</tr>
+<tr class="row">
+<td>23</td>
+<td>Academy</td>
+<td>Smithy</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+<pre class="backtrace">TODO: write pending definition</pre>
+</li>
+</ol>
+</div>
+<div class="scenario">
+<h3>
+<span class="keyword">Scenario: </span>
+<span class="title">build a building</span>
+<span class="path">features/Building/add_building_queue.feature:62</span>
+</h3>
+<ol>
+<li class="skipped">
+<div class="step">
+<span class="keyword">Given </span>
+<span class="text">I'm logged in as user "<strong class="skipped_param">BlackScorp</strong>"</span>
+<span class="path">FeatureContext::iMLoggedInAsUser()</span>
+</div>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">I have a city</span>
+<span class="path">FeatureContext::iHaveACity()</span>
+</div>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">the city have following buildings:</span>
+<span class="path">FeatureContext::theCityHaveFollowingBuildings()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>id</td>
+<td>name</td>
+<td>level</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>1</td>
+<td>Headquarters</td>
+<td>3</td>
+</tr>
+<tr class="row">
+<td>2</td>
+<td>Hiding place</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>3</td>
+<td>Warehouse</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>4</td>
+<td>Rally point</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>5</td>
+<td>Iron mine</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>6</td>
+<td>Clay pit</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>7</td>
+<td>Timber camp</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>8</td>
+<td>Farm</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">the city have following resources:</span>
+<span class="path">FeatureContext::theCityHaveFollowingResources()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>resource</td>
+<td>amount</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>Wood</td>
+<td>300</td>
+</tr>
+<tr class="row">
+<td>Iron</td>
+<td>300</td>
+</tr>
+<tr class="row">
+<td>Clay</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">When </span>
+<span class="text">I build "<strong class="skipped_param">Barracks</strong>"</span>
+<span class="path">FeatureContext::iBuild()</span>
+</div>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">Then </span>
+<span class="text">I should have "<strong class="skipped_param">Barracks</strong>" in building Queue</span>
+<span class="path">FeatureContext::iShouldHaveInBuildingQueue()</span>
+</div>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">city should have less resources</span>
+<span class="path">FeatureContext::cityShouldHaveLessResources()</span>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="feature">
+<ul class="tags">
 <li>@City</li>
 <li>@Create</li>
 </ul>
@@ -2549,13 +3019,13 @@ In order to to login as registered user, I have to input valid informations<br /
 <div class="summary passed">
 <div class="counters">
 <p class="scenarios">
-30 scenarios (<strong class="passed">30 passed</strong>)
+31 scenarios (<strong class="passed">30 passed</strong>, <strong class="pending">1 pending</strong>)
 </p>
 <p class="steps">
-149 steps (<strong class="passed">149 passed</strong>)
+161 steps (<strong class="passed">153 passed</strong>, <strong class="skipped">7 skipped</strong>, <strong class="pending">1 pending</strong>)
 </p>
 <p class="time">
-0m2.096s
+0m1.927s
 </p>
 </div>
 <div class="switchers">

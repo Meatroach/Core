@@ -24,7 +24,10 @@ class Repository implements CityRepositoryInterface{
         ;
     }
     public function findByUser(User $user) {
-        ;
+        foreach($this->data as $city){
+            if($city->getOwner() === $user) return $city;
+        }
+        return null;
     }
     public function create() {
         return new City;

@@ -159,6 +159,9 @@ class UserHelper {
      * it use the response of UserCreateInteractor
      */
     public function sendActivationCode() {
+        /**
+         * @todo: have to refactor the activation mail part
+        */
         $user = $this->response->getMailView()->getUser();
 
         $request = new SendActivationMailRequest($this->response->getMailView(), $user->getEmail(), $user->getUsername(), 'Activate Account');

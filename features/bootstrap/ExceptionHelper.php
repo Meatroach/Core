@@ -3,6 +3,9 @@
 class ExceptionHelper {
 
     private $exceptions = array(
+        /**
+         * @todo: username not exists and account not exists same error different exception, must be merged into one
+         */
         'username not exists' => 'OpenTribes\Core\User\Login\Exception\NotExists',
         'account is not active' => 'OpenTribes\Core\User\Login\exception\NotActive',
         'invalid login informations' => 'OpenTribes\Core\User\Login\exception\Invalid',
