@@ -25,7 +25,9 @@ class ExceptionHelper {
         'account already active'=>'OpenTribes\Core\User\Activate\exception\Active',
         'account not exists'=>'OpenTribes\Core\User\Activate\exception\NotExists',
         'tile not accessable'=>'OpenTribes\Core\City\Create\Exception\NotAccessable',
-        'city found at location'=>'OpenTribes\Core\City\Create\Exception\Exists'
+        'city found at location'=>'OpenTribes\Core\City\Create\Exception\Exists',
+        'cannot build building'=>'OpenTribes\Core\City\Building\Create\Exception\CannotBuild',
+        'building not exists'=>'OpenTribes\Core\City\Building\Create\Exception\NotFound'
     );
     private $exception;
     private function map($key) {

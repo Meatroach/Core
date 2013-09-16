@@ -9,10 +9,12 @@ class BuildingHelper{
     protected $exception;
     protected $buildingRepository;
     protected $resourceRepository;
+    protected $techTree;
     public function __construct(ExceptionHelper $exception) {
         $this->exception = $exception;
         $this->buildingRepository = new BuildingRepository();
         $this->resourceRepository = new ResourceRepository();
+        $this->techTree = new Techtree();
     }
     public function createDumbBuildings(array $data){
         foreach($data as $row){
@@ -25,16 +27,22 @@ class BuildingHelper{
     public function getBuildingRepository(){
         return $this->buildingRepository;
     }
+    public function getResourceRepository(){
+        return $this->resourceRepository;
+    }
+    public function getTechTree(){
+        return $this->techTree;
+    }
 
     public function createTechtree(array $data){
-        $techtree = new Techtree();
+     
          
         foreach($data as $row){
             $building = $this->buildingRepository->findByName($row['building']);
         
             $require = $this->buildingRepository->findByName($row['require']);
             
-            $techtree->addRequirements($building, $require, $row['level']);
+            $this->techTree->addRequirements($building, $require, $row['level']);
               
         }
        

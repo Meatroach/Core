@@ -14,6 +14,7 @@ class FeatureContext implements ContextInterface {
     protected $cityHelper;
     protected $exceptionHelper;
     protected $buildingHelper;
+
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -192,64 +193,59 @@ class FeatureContext implements ContextInterface {
      * @Given /^I have a city$/
      */
     public function iHaveACity() {
-       $this->cityHelper->assignDumpCity();
+        $this->cityHelper->assignDumpCity();
     }
-     /**
+
+    /**
      * @Given /^following techtree:$/
      */
-    public function followingTechtree(TableNode $table)
-    {
-       
-       $this->buildingHelper->createTechtree($table->getHash());
+    public function followingTechtree(TableNode $table) {
+
+        $this->buildingHelper->createTechtree($table->getHash());
     }
-    
-    
+
     /**
      * @Given /^following resources:$/
      */
-    public function followingResources(TableNode $table)
-    {
-        $this->buildingHelper->createResources($table->getRowsHash());
+    public function followingResources(TableNode $table) {
+        $this->buildingHelper->createResources($table->getHash());
     }
 
     /**
      * @Given /^the city have following buildings:$/
      */
-    public function theCityHaveFollowingBuildings(TableNode $table)
-    {
+    public function theCityHaveFollowingBuildings(TableNode $table) {
         $this->cityHelper->setBuildingRepo($this->buildingHelper->getBuildingRepository());
-       $this->cityHelper->assignBuildingsToCity($table->getHash());
+        $this->cityHelper->assignBuildingsToCity($table->getHash());
     }
 
     /**
      * @Given /^the city have following resources:$/
      */
-    public function theCityHaveFollowingResources(TableNode $table)
-    {
-        throw new PendingException();
+    public function theCityHaveFollowingResources(TableNode $table) {
+        $this->cityHelper->setResourceRepo($this->buildingHelper->getResourceRepository());
+        $this->cityHelper->assignResourcesToCity($table->getHash());
     }
 
     /**
      * @When /^I build "([^"]*)"$/
      */
-    public function iBuild($arg1)
-    {
-        throw new PendingException();
+    public function iBuild($arg1) {
+        $this->cityHelper->setTechTree($this->buildingHelper->getTechTree());
+     $this->cityHelper->build($arg1);
     }
 
     /**
      * @Then /^I should have "([^"]*)" in building Queue$/
      */
-    public function iShouldHaveInBuildingQueue($arg1)
-    {
+    public function iShouldHaveInBuildingQueue($arg1) {
         throw new PendingException();
     }
 
     /**
      * @Given /^city should have less resources$/
      */
-    public function cityShouldHaveLessResources()
-    {
+    public function cityShouldHaveLessResources() {
         throw new PendingException();
     }
 

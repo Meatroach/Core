@@ -1,20 +1,26 @@
 <?php
 namespace OpenTribes\Core;
 use OpenTribes\Core\Building;
-use OpenTribes\Core\City;
+
 class Techtree extends Entity{
     protected $requirements = array();
     public function addRequirements(Building $building, Building $require = null,$level = null){
-        $this->requirements[$building->getName()][]=array($require,$level);
+        $this->requirements[$building->getName()][]=array('building'=>$require,'level'=>$level);
     }
-    public function canBuild(Building $building,City $city){
+    public function canBuild(Building $building,array $cityBuildings){
         if(!isset($this->requirements[$building->getName()])) return true;
         $requirements = $this->requirements[$building->getName()];
-        $buildings = $city->getBuildings();
+        $fullfill = 0;
         foreach($requirements as $row){
-            foreach($row as $building){
-                
+            
+            foreach($cityBuildings as $cityBuilding){
+                if($row['building'] === $cityBuilding->getBuilding()&&
+                        $row['level']<= $cityBuilding->getLevel()){
+                    $fullfill++;
+                }
             }
+           
         }
+        return $fullfill == count($requirements);
     }
 }

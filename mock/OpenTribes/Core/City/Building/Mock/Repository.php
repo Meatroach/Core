@@ -2,6 +2,7 @@
 namespace OpenTribes\Core\City\Building\Mock;
 use OpenTribes\Core\City\Building\Repository as CityBuildingInterface;
 use OpenTribes\Core\City\Building as CityBuilding;
+use OpenTribes\Core\City;
 class Repository implements CityBuildingInterface{
     private $data = array();
     public function add(CityBuilding $building) {
@@ -17,5 +18,12 @@ class Repository implements CityBuildingInterface{
     }
     public function findByCityName($name) {
         ;
+    }
+    public function findBuildingsByCity(City $city) {
+        $found = array();
+        foreach($this->data as $cityBuilding){
+            if($cityBuilding->getCity() === $city) $found[]= $cityBuilding;
+        }
+        return count($found)>0?$found:null;
     }
 }

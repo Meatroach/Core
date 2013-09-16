@@ -2671,7 +2671,44 @@ In order to to login as registered user, I have to input valid informations<br /
 </tbody>
 </table>
 </li>
-<li class="pending">
+OpenTribes\Core\Resource\Mock\Repository Object
+(
+    [data:OpenTribes\Core\Resource\Mock\Repository:private] => Array
+        (
+            [n] => OpenTribes\Core\Resource Object
+                (
+                    [id:protected] => n
+                    [name:protected] => n
+                )
+
+            [C] => OpenTribes\Core\Resource Object
+                (
+                    [id:protected] => C
+                    [name:protected] => C
+                )
+
+            [I] => OpenTribes\Core\Resource Object
+                (
+                    [id:protected] => I
+                    [name:protected] => I
+                )
+
+            [W] => OpenTribes\Core\Resource Object
+                (
+                    [id:protected] => W
+                    [name:protected] => W
+                )
+
+        )
+
+)
+Array
+(
+    [id] => 1
+    [name] => Wood
+    [amount] => 300
+)
+<li class="failed">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following resources:</span>
@@ -2680,26 +2717,30 @@ In order to to login as registered user, I have to input valid informations<br /
 <table class="argument">
 <thead>
 <tr class="row">
-<td>resource</td>
+<td>id</td>
+<td>name</td>
 <td>amount</td>
 </tr>
 </thead>
 <tbody>
 <tr class="row">
+<td>1</td>
 <td>Wood</td>
 <td>300</td>
 </tr>
 <tr class="row">
+<td>2</td>
 <td>Iron</td>
 <td>300</td>
 </tr>
 <tr class="row">
+<td>3</td>
 <td>Clay</td>
 <td>300</td>
 </tr>
 </tbody>
 </table>
-<pre class="backtrace">TODO: write pending definition</pre>
+<pre class="backtrace">Catchable Fatal Error: Argument 1 passed to OpenTribes\Core\City\Resource::setResource() must be an instance of OpenTribes\Core\Resource, null given, called in features/bootstrap/CityHelper.php on line 87 and defined in src/OpenTribes/Core/City/Resource.php line 23</pre>
 </li>
 <li class="skipped">
 <div class="step">
@@ -3016,16 +3057,16 @@ In order to to login as registered user, I have to input valid informations<br /
 </ol>
 </div>
 </div>
-<div class="summary passed">
+<div class="summary failed">
 <div class="counters">
 <p class="scenarios">
-31 scenarios (<strong class="passed">30 passed</strong>, <strong class="pending">1 pending</strong>)
+31 scenarios (<strong class="passed">30 passed</strong>, <strong class="failed">1 failed</strong>)
 </p>
 <p class="steps">
-161 steps (<strong class="passed">157 passed</strong>, <strong class="skipped">3 skipped</strong>, <strong class="pending">1 pending</strong>)
+161 steps (<strong class="passed">157 passed</strong>, <strong class="skipped">3 skipped</strong>, <strong class="failed">1 failed</strong>)
 </p>
 <p class="time">
-0m2.939s
+0m2.316s
 </p>
 </div>
 <div class="switchers">
