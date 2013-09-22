@@ -9,6 +9,7 @@ class Building extends Entity {
 
     protected $level;
     protected $maximumLevel;
+    protected $minimumLevel;
     protected $building;
     protected $city;
     public function setLevel($level){
@@ -19,6 +20,11 @@ class Building extends Entity {
         $this->maximumLevel = (int)$level;
         return $this;
     }
+    public function setMinimumLevel($level){
+        $this->minimumLevel = $level;
+        return $this;
+    }
+
     public function setBuilding(BaseBuilding $building){
         $this->building = $building;
         return $this;
@@ -38,5 +44,8 @@ class Building extends Entity {
     }
     public function getCity(){
         return $this->city;
+    }
+    public function getMinimumLevel(){
+        return $this->minimumLevel;
     }
 }

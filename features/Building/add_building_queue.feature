@@ -22,17 +22,20 @@ Background:
         | 13 | Hiding place |
         | 14 | Wall |
         | 15 | Rally point |
+    And following resources:
+        | id | name |
+        | 1 | Clay |
+        | 2 | Iron |
+        | 3 | Wood |
+    And following building costs
+        | id | building | resource | value | factor |
+        | 1 | Headquarters | 
     And user with follwoing informations:
         | id | username | password | email |
         | 1 | BlackScorp | 123456 | test@test.de |
     And following cities:
         | id | name | owner | x | y |
         | 1 | BlackScorp's Village | BlackScorp | 0 | 0 |
-    And following resources:
-        | id | name |
-        | 1 | Clay |
-        | 2 | Iron |
-        | 3 | Wood |
     And following techtree:
         | id | building | require | level |
         | 1 | Headquarters | | |
@@ -76,10 +79,15 @@ Scenario: build a building
        | id | name | amount |
        | 1 | Wood | 300 |
        | 2 | Iron | 300 |
-       | 3 | Clay | 300 |
+       | 3 | Stone | 300 |
+    And building queue has 0 actions
     When I build "Barracks"
     Then I should have "Barracks" in building Queue
-    And city should have less resources
+    And city should have following resources:
+        | name | amount |
+        | Wood | 100 |
+        | Stone | 130 |
+        | Iron | 210 |
 
 Scenario: not fullfill the requirements
   Given I'm logged in as user "BlackScorp"

@@ -20,7 +20,10 @@ class Interactor{
         if(!$building) throw new BuildingNotFoundException();
         
         $buildings = $this->cityBuildingRepository->findBuildingsByCity($request->getCity());
-        if(!$this->techTree->canBuild($building, $buildings)) throw new CannotBuildException();
+        
+        $this->techTree->setBuildings($buildings);
+        if(!$this->techTree->canBuild($building)) throw new CannotBuildException();
+        
         return new Response($building);
        
     }
