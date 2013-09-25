@@ -97,9 +97,13 @@ class UserHelper {
      * @param array $data Userdata
      */
     public function createDumpUser(array $data) {
-        $factory = new EntityFactory(new User());
+    
         foreach ($data as $row) {
-            $user = $factory->createFromArray($row);
+            $user = new User();
+           
+            foreach($row as $field => $value){
+                $user->{$field} = $value;
+            }
             //hash password
             $user->setPasswordHash($this->hasher->hash($user->getPassword()));
             $roles = new UserRoles();
@@ -138,7 +142,7 @@ class UserHelper {
     public function login(array $data) {
 
         foreach ($data as $row) {
-            $request = new UserLoginRequest($row['username'], $row['password']);
+            $request = new UserLoginRequest($row['Username'], $row['Password']);
         }
         $interactor = new UserLoginInteractor($this->userRepository, $this->hasher);
 

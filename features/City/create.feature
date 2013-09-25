@@ -6,11 +6,11 @@
      
     Background:
         Given following tiles:
-           | id | name | accessable |
-           | 1 | Grass | yes |
-           | 2 | Forrest | no |
-           | 3 | Sea | no |
-           | 4 | Hill | no |
+           | Name | Accessable |
+           | Grass | yes |
+           | Forrest | no |
+           | Sea | no |
+           | Hill | no |
         And a map "default" with following tiles:
          |   y/x   |   0   |   1   |   2   |   3   |   4   |
          |  0   | Grass | Grass | Grass | Grass | Grass |
@@ -19,15 +19,15 @@
          |  3   | Grass | Sea | Grass | Hill | Grass |
          |  4   | Grass | Grass | Grass | Grass | Grass |
         And user with follwoing informations:
-            | id | username | password | email |
-            | 1 | BlackScorp | 123456 | test@test.de |
-            | 2 | Owner1 | 123456 | owner1@test.de |
-            | 3 | Owner2 | 123456 | owner2@test.de |
+            | username | password | email |
+            | BlackScorp | 123456 | test@test.de |
+            | Owner1 | 123456 | owner1@test.de |
+            | Owner2 | 123456 | owner2@test.de |
         And following cities:
-            | id | name | owner | x | y |
-            | 1 | City1 | Owner1 | 0 | 0 |
-            | 2 | City2 | Owner2 | 2 | 0 |
-            | 3 | City3 | Owner1 | 4 | 4 |
+            | name | Owner | x | y |
+            | City1 | Owner1 | 0 | 0 |
+            | City2 | Owner2 | 2 | 0 |
+            | City3 | Owner1 | 4 | 4 |
       
      
     Scenario: create a city

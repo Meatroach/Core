@@ -33,9 +33,10 @@ class MapHelper {
         );
         foreach ($tiles as $tile) {
             $tileEntity = new Tile();
-            $tileEntity->setId($tile['id']);
-            $tileEntity->setName($tile['name']);
-            $tileEntity->setAccessable($statsMapper[$tile['accessable']]);
+            $tile['Accessable'] = $statsMapper[$tile['Accessable']];
+            foreach($tile as $field => $value){
+                $tileEntity->{$field} = $value;
+            }
             $this->tileRepository->add($tileEntity);
         }
     
@@ -46,14 +47,14 @@ class MapHelper {
         $map = new Map();
         
         $map->setName($mapname);
-        $id = 0;
+        
         foreach ($tiles as $y => $tiles) {
             foreach ($tiles as $x => $tileName) {
-                $id++;
+            
                 $tile = $this->tileRepository->findByName($tileName);
                 
                 $mapTile = new MapTile();
-                $mapTile->setId($id)
+                $mapTile
                         ->setX($x)
                         ->setY($y)
                         ->setTile($tile)

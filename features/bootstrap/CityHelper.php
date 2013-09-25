@@ -14,6 +14,7 @@ use OpenTribes\Core\City\Resource as CityResource;
 use OpenTribes\Core\Techtree;
 use OpenTribes\Core\City\Building\Create\Request as CityBuildingCreateRequest;
 use OpenTribes\Core\City\Building\Create\Interactor as CityBuildingCreateInteractor;
+
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
 class CityHelper {
@@ -67,37 +68,43 @@ class CityHelper {
     public function createCities(array $cities) {
         foreach ($cities as $row) {
             $city = new City();
-            $user = $this->userRepository->findByUsername($row['owner']);
-            $city->setId($row['id']);
-            $city->setX($row['x']);
-            $city->setY($row['y']);
-            $city->setOwner($user);
+            $user = $this->userRepository->findByUsername($row['Owner']);
+            $row['Owner'] = $user;
+            foreach ($row as $field => $value) {
+                $city->{$field} = $value;
+            }
+          
+            
             $this->cityRepository->add($city);
         }
     }
 
     public function assignResourcesToCity(array $resources) {
-       
+
         foreach ($resources as $row) {
-         
-            $resource = $this->resourceRepository->findByName($row['name']);
+
+            $resource = $this->resourceRepository->findByName($row['Name']);
             $cityResource = new CityResource();
-            $cityResource->setId($row['id']);
-            $cityResource->setAmount($row['amount']);
-            $cityResource->setCity($this->city);
-            $cityResource->setResource($resource);
+            $row['Resource'] = $resource;
+            $row['City'] = $this->city;
+            foreach ($row as $field => $value) {
+                $cityResource->{$field} = $value;
+            }
+
             $this->cityResourceRepository->add($cityResource);
         }
     }
 
     public function assignBuildingsToCity(array $buildings) {
         foreach ($buildings as $row) {
-            $building = $this->buildingRepository->findByName($row['name']);
+            $building = $this->buildingRepository->findByName($row['Name']);
             $cityBuilding = new CityBuilding();
-            $cityBuilding->setId($row['id']);
-            $cityBuilding->setBuilding($building);
-            $cityBuilding->setCity($this->city);
-            $cityBuilding->setLevel($row['level']);
+            $row['Building'] = $building;
+            $row['City'] = $this->city;
+              foreach ($row as $field => $value) {
+                $cityBuilding->{$field} = $value;
+            }
+          
             $this->cityBuildingRepository->add($cityBuilding);
         }
     }
@@ -120,8 +127,8 @@ class CityHelper {
     }
 
     public function build($buildingName) {
-        $request = new CityBuildingCreateRequest($this->city,$buildingName);
-        $interactor = new CityBuildingCreateInteractor($this->cityBuildingRepository,$this->buildingRepository, $this->techTree);
+        $request = new CityBuildingCreateRequest($this->city, $buildingName);
+        $interactor = new CityBuildingCreateInteractor($this->cityBuildingRepository, $this->buildingRepository, $this->techTree);
         try {
             $this->reposne = $interactor($request);
         } catch (\Exception $e) {
@@ -131,6 +138,13 @@ class CityHelper {
 
     public function assignDumpCity() {
         $this->city = $this->cityRepository->findByUser($this->user);
+          foreach($this->buildingRepository->findAll() as $building){
+                $cityBuilding  = new CityBuilding();
+                $cityBuilding->setBuilding($building);
+                $cityBuilding->setCity($this->city);
+                $cityBuilding->setLevel($building->getMinimumLevel());
+                $this->cityBuildingRepository->add($cityBuilding);
+            }
     }
 
     public function assertHasCity() {

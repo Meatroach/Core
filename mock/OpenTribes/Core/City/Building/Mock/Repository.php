@@ -6,7 +6,7 @@ use OpenTribes\Core\City;
 class Repository implements CityBuildingInterface{
     private $data = array();
     public function add(CityBuilding $building) {
-        $this->data[$building->getId()]=$building;
+        $this->data[$building->getName()]=$building;
     }
     public function findByBuildingName($name) {
       foreach($this->data as $cityBuilding){
@@ -15,6 +15,7 @@ class Repository implements CityBuildingInterface{
               return $cityBuilding;
           }
       }
+      return null;
     }
     public function findByCityName($name) {
         ;
@@ -25,5 +26,8 @@ class Repository implements CityBuildingInterface{
             if($cityBuilding->getCity() === $city) $found[]= $cityBuilding;
         }
         return count($found)>0?$found:null;
+    }
+    public function findAll() {
+        return $this->data;
     }
 }

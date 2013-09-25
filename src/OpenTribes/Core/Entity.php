@@ -16,7 +16,7 @@ use OpenTribes\Core\Entity\Exception\UnknownProperty as UnknownPropertyException
  * 
  * Contains magic __get and __set methods to call getAttribute / setAttribute
  */
-abstract class Entity extends Exportable {
+abstract class Entity {
 
     /** @type int $id */
     protected $id = 0;

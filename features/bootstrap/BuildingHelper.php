@@ -19,8 +19,10 @@ class BuildingHelper{
     public function createDumbBuildings(array $data){
         foreach($data as $row){
             $building = new Building();
-            $building->setId($row['id']);
-            $building->setName($row['name']);
+            foreach($row as $field => $value){
+                $building->{$field} = $value;
+            }
+        
             $this->buildingRepository->add($building);
         }
     }
@@ -50,8 +52,10 @@ class BuildingHelper{
     public function createResources(array $resources){
         foreach($resources as $row){
           $resource = new Resource();
-            $resource->setId($row['id'])
-                    ->setName($row['name']);
+            foreach($row as $field => $value){
+                $resource->{$field} = $value;
+            }
+         
             $this->resourceRepository->add($resource);
         }
     }

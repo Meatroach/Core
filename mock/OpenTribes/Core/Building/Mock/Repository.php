@@ -6,16 +6,15 @@ use OpenTribes\Core\Building;
 class Repository implements BuildingRepositoryInterface{
     private $data;
     public function add(Building $building) {
-        $this->data[$building->getId()] = $building;
+        $this->data[$building->getName()] = $building;
     }
     public function findById($id) {
-      return isset($this->data[$id]) ?$this->data[$id]:null;
+     
     }
     public function findByName($name) {
-        foreach($this->data as $building){
-         
-            if($building->getName() === $name) return $building;
-        }
-        return null;
+         return isset($this->data[$name]) ?$this->data[$name]:null;
+    }
+    public function findAll() {
+        return $this->data;
     }
 }

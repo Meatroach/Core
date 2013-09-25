@@ -1,8 +1,14 @@
 # behat.yml
 default:
-  formatters:
-    html:
+  formatter:
+    name: progress
+    parameters:
+      language:     en
+
+html:
+  formatter:
+    name: html
+    parameters:
       language:     en
       output_path:  index.html
-    progress:
-      language:     en
+

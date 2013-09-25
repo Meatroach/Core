@@ -6,7 +6,7 @@ use OpenTribes\Core\Map;
 class Repository implements MapRepositoryInterface{
     private $data = array();
     public function add(Map $map) {
-        $this->data[$map->getId()] = $map;
+        $this->data[$map->getName()] = $map;
     }
     public function findById($id) {
         ;

@@ -24,4 +24,7 @@ class Resource extends Entity{
         $this->resource = $resource;
         return $this;
     }
+    public function getResource(){
+        return $this->resource;
+    }
 }

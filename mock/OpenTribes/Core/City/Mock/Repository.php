@@ -7,10 +7,10 @@ use OpenTribes\Core\User;
 class Repository implements CityRepositoryInterface{
     private $data;
     public function add(City $city) {
-        $this->data[$city->getId()] = $city;
+        $this->data[$city->getName()] = $city;
     }
     public function findById($id) {
-       return isset($this->data[$id])?$this->data[$id]:null ;
+       
     }
     public function findByLocation($x, $y) {
         foreach($this->data as $city){
@@ -21,7 +21,7 @@ class Repository implements CityRepositoryInterface{
         return null;
     }
     public function findByName($name) {
-        ;
+        return isset($this->data[$name])?$this->data[$name]:null;
     }
     public function findByUser(User $user) {
         foreach($this->data as $city){

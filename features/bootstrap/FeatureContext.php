@@ -1,14 +1,25 @@
 <?php
 
-use Behat\Behat\Context\ContextInterface;
-use Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\ClosuredContextInterface,
+    Behat\Behat\Context\TranslatedContextInterface,
+    Behat\Behat\Context\BehatContext,
+    Behat\Behat\Exception\PendingException;
+use Behat\Gherkin\Node\PyStringNode,
+    Behat\Gherkin\Node\TableNode;
+
+use Symfony\Component\HttpKernel\Client;
+use Behat\Mink\Mink;
+use Behat\Mink\Session;
+use Behat\Mink\Driver\BrowserKitDriver;
+
+
+require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
 /**
  * Behat context class.
  */
-class FeatureContext implements ContextInterface {
+
+class FeatureContext extends BehatContext{
 
     protected $userHelper;
     protected $cityHelper;
@@ -108,6 +119,7 @@ class FeatureContext implements ContextInterface {
      * @Given /^user with follwoing informations:$/
      */
     public function userWithFollwoingInformations(TableNode $table) {
+        
         $this->userHelper->createDumpUser($table->getHash());
     }
 
@@ -149,7 +161,7 @@ class FeatureContext implements ContextInterface {
     /**
      * @Given /^a map "([^"]*)" with following tiles:$/
      */
-    public function aMapWithFollowingTiles2($arg1, TableNode $table) {
+    public function aMapWithFollowingTiles($arg1, TableNode $table) {
         $this->cityHelper->getMapHelper()->createMapWithTiles($arg1, $table->getRowsHash());
     }
 
@@ -158,6 +170,7 @@ class FeatureContext implements ContextInterface {
      */
     public function followingCities(TableNode $table) {
         $this->cityHelper->setUserRepository($this->userHelper->getUserRepository());
+  
         $this->cityHelper->createCities($table->getHash());
     }
 
@@ -246,6 +259,36 @@ class FeatureContext implements ContextInterface {
      * @Given /^city should have less resources$/
      */
     public function cityShouldHaveLessResources() {
+        throw new PendingException();
+    }
+        /**
+     * @Given /^following building costs:$/
+     */
+    public function followingBuildingCosts(TableNode $table)
+    {
+        throw new PendingException();
+    }
+     /**
+     * @Given /^following building times:$/
+     */
+    public function followingBuildingTimes(TableNode $table)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^building queue has (\d+) actions$/
+     */
+    public function buildingQueueHasActions($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^city should have following resources:$/
+     */
+    public function cityShouldHaveFollowingResources(TableNode $table)
+    {
         throw new PendingException();
     }
 

@@ -6,80 +6,150 @@ Feature: add building to the queue
 
 Background:
     Given following Buildings:
-        | id | name | 
-        | 1 | Headquarters |  
-        | 2 | Barracks |
-        | 3 | Stable |
-        | 4 | Workshop |
-        | 5 | Academy |
-        | 6 | Smithy |
-        | 7 | Market |
-        | 8 | Timber camp |
-        | 9 | Clay pit |
-        | 10 | Iron mine |
-        | 11 | Farm |
-        | 12 | Warehouse |
-        | 13 | Hiding place |
-        | 14 | Wall |
-        | 15 | Rally point |
+        | Name | minimumLevel | maximumLevel | 
+        | Headquarters |  1 | 30 |
+        | Barracks | 0 | 25 |
+        | Stable | 0 | 20 |
+        | Workshop | 0 | 15 |
+        | Academy | 0 | 3 |
+        | Smithy | 0 | 20 |
+        | Rally point | 0 | 1 |
+        | Market | 0 | 25 |
+        | Timber camp | 0 | 30 |
+        | Clay pit | 0 | 30 |
+        | Iron mine | 0 | 30 |
+        | Farm | 1 | 30 |
+        | Warehouse | 1 | 30 |
+        | Hiding place | 0 | 10 |
+        | Wall | 0 | 20 |
     And following resources:
-        | id | name |
-        | 1 | Clay |
-        | 2 | Iron |
-        | 3 | Wood |
-    And following building costs
-        | id | building | resource | value | factor |
-        | 1 | Headquarters | 
+        | Name | 
+        | Stone | 
+        | Iron | 
+        | Wood | 
+        | Popuplation | 
+    And following building costs:
+        | building | resource | value | factor |
+        | Headquarters | Wood | 90 | 1.26 |
+        | Headquarters | Stone | 80 | 1.275 |
+        | Headquarters | Iron | 70 | 1.26 |
+        | Headquarters | Population | 5 | 1.17 |
+        | Barracks | Wood | 200 | 1.26 |
+        | Barracks | Stone | 170 | 1.28 |
+        | Barracks | Iron | 90 | 1.26 |
+        | Barracks | Population | 7 | 1.17 |
+        | Stable | Wood | 270 | 1.26 |
+        | Stable | Stone | 240 | 1.28 |
+        | Stable | Iron | 260 | 1.26 |
+        | Stable | Population | 8 | 1.17 |
+        | Workshop | Wood | 300 | 1.26 |
+        | Workshop | Stone | 240 | 1.28 |
+        | Workshop | Iron | 260 | 1.26 |
+        | Workshop | Population | 8 | 1.17 |
+        | Academy | Wood | 15000 | 2 |
+        | Academy | Stone | 25000 | 2 |
+        | Academy | Iron | 10000 | 2 |
+        | Academy | Population | 80 | 1.17 |
+        | Smithy | Wood | 220 | 1.26 |
+        | Smithy | Stone | 180 | 1.275 |
+        | Smithy | Iron | 240 | 1.26 |
+        | Smithy | Population | 20 | 1.17 |
+        | Rally point | Wood | 10 | 1.26 |
+        | Rally point | Stone | 40 | 1.275 |
+        | Rally point | Iron | 30 | 1.26 |
+        | Rally point | Population | 0 | 1.17 |
+        | Market | Wood | 100 | 1.26 |
+        | Market | Stone | 100 | 1.275 |
+        | Market | Iron | 100 | 1.26 |
+        | Market | Population | 20 | 1.17 |
+        | Timber camp | Wood | 50 | 1.25 |
+        | Timber camp | Stone | 60 | 1.275 |
+        | Timber camp | Iron | 40 | 1.245 |
+        | Timber camp | Population | 5 | 1.155 |
+        | Clay pit | Wood | 65 | 1.27 |
+        | Clay pit | Stone | 50 | 1.265 |
+        | Clay pit | Iron | 40 | 1.24 |
+        | Clay pit | Population | 10 | 1.14 |
+        | Iron mine | Wood | 76 | 1.252 |
+        | Iron mine | Stone | 65 | 1.275 |
+        | Iron mine | Iron | 70 | 1.24 |
+        | Iron mine | Population | 10 | 1.17 |
+        | Farm | Wood | 45 | 1.252 |
+        | Farm | Stone | 40 | 1.275 |
+        | Farm | Iron | 30 | 1.24 |
+        | Farm | Population | 0 | 1.17 |
+        | Warehouse | Wood | 60 | 1.265 |
+        | Warehouse | Stone | 50 | 1.27 |
+        | Warehouse | Iron | 40 | 1.245 |
+        | Warehouse | Population | 0 | 1.15 |
+        | Hiding place | Wood | 50 | 1.25 |
+        | Hiding place | Stone | 60 | 1.25 |
+        | Hiding place | Iron | 50 | 1.25 |
+        | Hiding place | Population | 2 | 1.17 |
+        | Wall | Wood | 50 | 1.26 |
+        | Wall | Stone | 100 | 1.275 |
+        | Wall | Iron | 20 | 1.26 |
+        | Wall | Population | 5 | 1.17 |
+    And following building times:    
+        | building | time | factor |
+        | Headquarters | 900 | 1.2 |
+        | Barracks | 1800 | 1.2 |
+        | Stable | 6000 | 1.2 |
+        | Workshop | 6000 | 1.2 |
+        | Academy | 64800 | 1.2 |
+        | Smithy | 6000 | 1.2 |
+        | Rally point | 1200 | 1.2 |
+        | Market | 2700 | 1.2 |
+        | Timber camp | 900 | 1.2 |
+        | Clay pit | 900 | 1.2 |
+        | Iron mine | 1080 | 1.2 |
+        | Farm | 1200 | 1.2 |
+        | Warehouse | 1020 | 1.2 |
+        | Hiding place | 1800 | 1.2 |
+        | Wall | 3600 | 1.2 |
     And user with follwoing informations:
-        | id | username | password | email |
-        | 1 | BlackScorp | 123456 | test@test.de |
+        | username | password | email |
+        | BlackScorp | 123456 | test@test.de |
     And following cities:
-        | id | name | owner | x | y |
-        | 1 | BlackScorp's Village | BlackScorp | 0 | 0 |
+        | name | owner | x | y |
+        | BlackScorp's Village | BlackScorp | 0 | 0 |
     And following techtree:
-        | id | building | require | level |
-        | 1 | Headquarters | | |
-        | 2 | Hiding place | | |
-        | 3 | Farm | | |
-        | 4 | Warehouse | | |
-        | 5 | Rally point | | |
-        | 6 | Iron mine | | |
-        | 7 | Clay pit | | |
-        | 8 | Timber camp | | |
-        | 9 | Market | Headquarters | 3 |
-        | 10 | Market | Warehouse | 2 |
-        | 11 | Barracks | Headquarters | 3 |
-        | 12 | Wall | Barracks | 1 |
-        | 13 | Smithy | Headquarters | 5 | 
-        | 14 | Smithy | Barracks | 1 |
-        | 15 | Stable | Barracks | 5 |
-        | 16 | Stable | Smithy | 5 |
-        | 17 | Stable | Headquarters | 10 |
-        | 18 | Workshop | Smithy | 10 |
-        | 19 | Workshop | Headquarters | 10 |
-        | 20 | Workshop | Stable | 1 |
-        | 21 | Academy | Headquarters | 20 |
-        | 22 | Academy | Market | 10 |
-        | 23 | Academy | Smithy | 20 |
+        | building | require | level |
+        | Headquarters | | |
+        | Hiding place | | |
+        | Farm | | |
+        | Warehouse | | |
+        | Rally point | | |
+        | Iron mine | | |
+        | Clay pit | | |
+        | Timber camp | | |
+        | Market | Headquarters | 3 |
+        | Market | Warehouse | 2 |
+        | Barracks | Headquarters | 3 |
+        | Wall | Barracks | 1 |
+        | Smithy | Headquarters | 5 | 
+        | Smithy | Barracks | 1 |
+        | Stable | Barracks | 5 |
+        | Stable | Smithy | 5 |
+        | Stable | Headquarters | 10 |
+        | Workshop | Smithy | 10 |
+        | Workshop | Headquarters | 10 |
+        | Workshop | Stable | 1 |
+        | Academy | Headquarters | 20 |
+        | Academy | Market | 10 |
+        | Academy | Smithy | 20 |
         
 Scenario: build a building
     Given I'm logged in as user "BlackScorp"
     And I have a city
     And the city have following buildings:
-        | id | name | level |
-        | 1 | Headquarters | 3 |
-        | 2 | Hiding place | 1 |
-        | 3 | Warehouse | 1 |
-        | 4 | Rally point | 1 |
-        | 5 | Iron mine | 1 |
-        | 6 | Clay pit | 1 |
-        | 7 | Timber camp | 1 |
-        | 8 | Farm | 1 |
+        | name | level |
+        | Headquarters | 3 |
     And the city have following resources:
-       | id | name | amount |
-       | 1 | Wood | 300 |
-       | 2 | Iron | 300 |
-       | 3 | Stone | 300 |
+       | name | amount |
+       | Wood | 300 |
+       | Iron | 300 |
+       | Stone | 300 |
     And building queue has 0 actions
     When I build "Barracks"
     Then I should have "Barracks" in building Queue

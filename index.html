@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-            <html xmlns ="http://www.w3.org/1999/xhtml">
-            <head>
-                <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-                <title>Behat Test Suite</title>
-                <style type="text/css">
-                    body {
+<html xmlns ="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Behat Test Suite</title>
+    <style type="text/css">
+        body {
             margin:0px;
             padding:0px;
             position:relative;
@@ -2275,7 +2275,7 @@ In order to to login as registered user, I have to input valid informations<br /
 <span class="path">features/Building/add_building_queue.feature:7</span>
 </h3>
 <ol>
-<li class="passed">
+<li class="failed">
 <div class="step">
 <span class="keyword">Given </span>
 <span class="text">following Buildings:</span>
@@ -2284,127 +2284,83 @@ In order to to login as registered user, I have to input valid informations<br /
 <table class="argument">
 <thead>
 <tr class="row">
-<td>id</td>
 <td>name</td>
+<td>minimum_level</td>
+<td>maximum_level</td>
 </tr>
 </thead>
 <tbody>
 <tr class="row">
-<td>1</td>
 <td>Headquarters</td>
+<td>1</td>
+<td>30</td>
 </tr>
 <tr class="row">
-<td>2</td>
 <td>Barracks</td>
+<td>0</td>
+<td>25</td>
 </tr>
 <tr class="row">
-<td>3</td>
 <td>Stable</td>
+<td>0</td>
+<td>20</td>
 </tr>
 <tr class="row">
-<td>4</td>
 <td>Workshop</td>
-</tr>
-<tr class="row">
-<td>5</td>
-<td>Academy</td>
-</tr>
-<tr class="row">
-<td>6</td>
-<td>Smithy</td>
-</tr>
-<tr class="row">
-<td>7</td>
-<td>Market</td>
-</tr>
-<tr class="row">
-<td>8</td>
-<td>Timber camp</td>
-</tr>
-<tr class="row">
-<td>9</td>
-<td>Clay pit</td>
-</tr>
-<tr class="row">
-<td>10</td>
-<td>Iron mine</td>
-</tr>
-<tr class="row">
-<td>11</td>
-<td>Farm</td>
-</tr>
-<tr class="row">
-<td>12</td>
-<td>Warehouse</td>
-</tr>
-<tr class="row">
-<td>13</td>
-<td>Hiding place</td>
-</tr>
-<tr class="row">
-<td>14</td>
-<td>Wall</td>
-</tr>
-<tr class="row">
+<td>0</td>
 <td>15</td>
+</tr>
+<tr class="row">
+<td>Academy</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr class="row">
+<td>Smithy</td>
+<td>0</td>
+<td>20</td>
+</tr>
+<tr class="row">
 <td>Rally point</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li class="passed">
-<div class="step">
-<span class="keyword">And </span>
-<span class="text">user with follwoing informations:</span>
-<span class="path">FeatureContext::userWithFollwoingInformations()</span>
-</div>
-<table class="argument">
-<thead>
-<tr class="row">
-<td>id</td>
-<td>username</td>
-<td>password</td>
-<td>email</td>
-</tr>
-</thead>
-<tbody>
-<tr class="row">
-<td>1</td>
-<td>BlackScorp</td>
-<td>123456</td>
-<td>test@test.de</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li class="passed">
-<div class="step">
-<span class="keyword">And </span>
-<span class="text">following cities:</span>
-<span class="path">FeatureContext::followingCities()</span>
-</div>
-<table class="argument">
-<thead>
-<tr class="row">
-<td>id</td>
-<td>name</td>
-<td>owner</td>
-<td>x</td>
-<td>y</td>
-</tr>
-</thead>
-<tbody>
-<tr class="row">
-<td>1</td>
-<td>BlackScorp's Village</td>
-<td>BlackScorp</td>
 <td>0</td>
+<td>1</td>
+</tr>
+<tr class="row">
+<td>Market</td>
 <td>0</td>
+<td>25</td>
+</tr>
+<tr class="row">
+<td>Timber camp</td>
+<td>0</td>
+<td>30</td>
+</tr>
+<tr class="row">
+<td>Clay pit</td>
+<td>0</td>
+<td>30</td>
+</tr>
+<tr class="row">
+<td>Iron mine</td>
+<td>0</td>
+<td>30</td>
+</tr>
+<tr class="row">
+<td>Farm</td>
+<td>1</td>
+<td>30</td>
+</tr>
+<tr class="row">
+</tr>
+<tr class="row">
+</tr>
+<tr class="row">
 </tr>
 </tbody>
 </table>
+<pre class="backtrace">Notice: Undefined index: id in features/bootstrap/BuildingHelper.php line 22</pre>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">following resources:</span>
@@ -2413,27 +2369,471 @@ In order to to login as registered user, I have to input valid informations<br /
 <table class="argument">
 <thead>
 <tr class="row">
-<td>id</td>
 <td>name</td>
 </tr>
 </thead>
 <tbody>
 <tr class="row">
-<td>1</td>
-<td>Clay</td>
+<td>Stone</td>
 </tr>
 <tr class="row">
-<td>2</td>
 <td>Iron</td>
 </tr>
 <tr class="row">
-<td>3</td>
 <td>Wood</td>
+</tr>
+<tr class="row">
+<td>Popuplation</td>
 </tr>
 </tbody>
 </table>
 </li>
-<li class="passed">
+<li class="undefined">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">following building costs:</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>building</td>
+<td>resource</td>
+<td>value</td>
+<td>factor</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>Headquarters</td>
+<td>Wood</td>
+<td>90</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Headquarters</td>
+<td>Stone</td>
+<td>80</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Headquarters</td>
+<td>Iron</td>
+<td>70</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Headquarters</td>
+<td>Population</td>
+<td>5</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Barracks</td>
+<td>Wood</td>
+<td>200</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Barracks</td>
+<td>Stone</td>
+<td>170</td>
+<td>1.28</td>
+</tr>
+<tr class="row">
+<td>Barracks</td>
+<td>Iron</td>
+<td>90</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Barracks</td>
+<td>Population</td>
+<td>7</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Stable</td>
+<td>Wood</td>
+<td>270</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Stable</td>
+<td>Stone</td>
+<td>240</td>
+<td>1.28</td>
+</tr>
+<tr class="row">
+<td>Stable</td>
+<td>Iron</td>
+<td>260</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Stable</td>
+<td>Population</td>
+<td>8</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Workshop</td>
+<td>Wood</td>
+<td>300</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Workshop</td>
+<td>Stone</td>
+<td>240</td>
+<td>1.28</td>
+</tr>
+<tr class="row">
+<td>Workshop</td>
+<td>Iron</td>
+<td>260</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Workshop</td>
+<td>Population</td>
+<td>8</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Academy</td>
+<td>Wood</td>
+<td>15000</td>
+<td>2</td>
+</tr>
+<tr class="row">
+<td>Academy</td>
+<td>Stone</td>
+<td>25000</td>
+<td>2</td>
+</tr>
+<tr class="row">
+<td>Academy</td>
+<td>Iron</td>
+<td>10000</td>
+<td>2</td>
+</tr>
+<tr class="row">
+<td>Academy</td>
+<td>Population</td>
+<td>80</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Smithy</td>
+<td>Wood</td>
+<td>220</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Smithy</td>
+<td>Stone</td>
+<td>180</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Smithy</td>
+<td>Iron</td>
+<td>240</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Smithy</td>
+<td>Population</td>
+<td>20</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Rally point</td>
+<td>Wood</td>
+<td>10</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Rally point</td>
+<td>Stone</td>
+<td>40</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Rally point</td>
+<td>Iron</td>
+<td>30</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Rally point</td>
+<td>Population</td>
+<td>0</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Market</td>
+<td>Wood</td>
+<td>100</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Market</td>
+<td>Stone</td>
+<td>100</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Market</td>
+<td>Iron</td>
+<td>100</td>
+<td>1.26</td>
+</tr>
+<tr class="row">
+<td>Market</td>
+<td>Population</td>
+<td>20</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Timber camp</td>
+<td>Wood</td>
+<td>50</td>
+<td>1.25</td>
+</tr>
+<tr class="row">
+<td>Timber camp</td>
+<td>Stone</td>
+<td>60</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Timber camp</td>
+<td>Iron</td>
+<td>40</td>
+<td>1.245</td>
+</tr>
+<tr class="row">
+<td>Timber camp</td>
+<td>Population</td>
+<td>5</td>
+<td>1.155</td>
+</tr>
+<tr class="row">
+<td>Clay pit</td>
+<td>Wood</td>
+<td>65</td>
+<td>1.27</td>
+</tr>
+<tr class="row">
+<td>Clay pit</td>
+<td>Stone</td>
+<td>50</td>
+<td>1.265</td>
+</tr>
+<tr class="row">
+<td>Clay pit</td>
+<td>Iron</td>
+<td>40</td>
+<td>1.24</td>
+</tr>
+<tr class="row">
+<td>Clay pit</td>
+<td>Population</td>
+<td>10</td>
+<td>1.14</td>
+</tr>
+<tr class="row">
+<td>Iron mine</td>
+<td>Wood</td>
+<td>76</td>
+<td>1.252</td>
+</tr>
+<tr class="row">
+<td>Iron mine</td>
+<td>Stone</td>
+<td>65</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Iron mine</td>
+<td>Iron</td>
+<td>70</td>
+<td>1.24</td>
+</tr>
+<tr class="row">
+<td>Iron mine</td>
+<td>Population</td>
+<td>10</td>
+<td>1.17</td>
+</tr>
+<tr class="row">
+<td>Farm</td>
+<td>Wood</td>
+<td>45</td>
+<td>1.252</td>
+</tr>
+<tr class="row">
+<td>Farm</td>
+<td>Stone</td>
+<td>40</td>
+<td>1.275</td>
+</tr>
+<tr class="row">
+<td>Farm</td>
+<td>Iron</td>
+<td>30</td>
+<td>1.24</td>
+</tr>
+<tr class="row">
+<td>Farm</td>
+<td>Population</td>
+<td>0</td>
+<td>1.17</td>
+</tr>
+</tbody>
+</table>
+<div class="snippet"><pre>    /**
+     * @Given /^following building costs:$/
+     */
+    public function followingBuildingCosts2(TableNode $table)
+    {
+        throw new PendingException();
+    }</pre></div>
+</li>
+<li class="undefined">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">following building times:</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>building</td>
+<td>time</td>
+<td>factor</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>Headquarters</td>
+<td>900</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Barracks</td>
+<td>1800</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Stable</td>
+<td>6000</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Workshop</td>
+<td>6000</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Academy</td>
+<td>64800</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Smithy</td>
+<td>6000</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Rally point</td>
+<td>1200</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Market</td>
+<td>2700</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Timber camp</td>
+<td>900</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Clay pit</td>
+<td>900</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Iron mine</td>
+<td>1080</td>
+<td>1.2</td>
+</tr>
+<tr class="row">
+<td>Farm</td>
+<td>1200</td>
+<td>1.2</td>
+</tr>
+</tbody>
+</table>
+<div class="snippet"><pre>    /**
+     * @Given /^following building times:$/
+     */
+    public function followingBuildingTimes(TableNode $table)
+    {
+        throw new PendingException();
+    }</pre></div>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">user with follwoing informations:</span>
+<span class="path">FeatureContext::userWithFollwoingInformations()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>username</td>
+<td>password</td>
+<td>email</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>BlackScorp</td>
+<td>123456</td>
+<td>test@test.de</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">following cities:</span>
+<span class="path">FeatureContext::followingCities()</span>
+</div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>name</td>
+<td>owner</td>
+<td>x</td>
+<td>y</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>BlackScorp's Village</td>
+<td>BlackScorp</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">following techtree:</span>
@@ -2442,7 +2842,6 @@ In order to to login as registered user, I have to input valid informations<br /
 <table class="argument">
 <thead>
 <tr class="row">
-<td>id</td>
 <td>building</td>
 <td>require</td>
 <td>level</td>
@@ -2450,139 +2849,116 @@ In order to to login as registered user, I have to input valid informations<br /
 </thead>
 <tbody>
 <tr class="row">
-<td>1</td>
 <td>Headquarters</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>2</td>
 <td>Hiding place</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>3</td>
 <td>Farm</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>4</td>
 <td>Warehouse</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>5</td>
 <td>Rally point</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>6</td>
 <td>Iron mine</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>7</td>
 <td>Clay pit</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>8</td>
 <td>Timber camp</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row">
-<td>9</td>
 <td>Market</td>
 <td>Headquarters</td>
 <td>3</td>
 </tr>
 <tr class="row">
-<td>10</td>
 <td>Market</td>
 <td>Warehouse</td>
 <td>2</td>
 </tr>
 <tr class="row">
-<td>11</td>
 <td>Barracks</td>
 <td>Headquarters</td>
 <td>3</td>
 </tr>
 <tr class="row">
-<td>12</td>
 <td>Wall</td>
 <td>Barracks</td>
 <td>1</td>
 </tr>
 <tr class="row">
-<td>13</td>
 <td>Smithy</td>
 <td>Headquarters</td>
 <td>5</td>
 </tr>
 <tr class="row">
-<td>14</td>
 <td>Smithy</td>
 <td>Barracks</td>
 <td>1</td>
 </tr>
 <tr class="row">
-<td>15</td>
 <td>Stable</td>
 <td>Barracks</td>
 <td>5</td>
 </tr>
 <tr class="row">
-<td>16</td>
 <td>Stable</td>
 <td>Smithy</td>
 <td>5</td>
 </tr>
 <tr class="row">
-<td>17</td>
 <td>Stable</td>
 <td>Headquarters</td>
 <td>10</td>
 </tr>
 <tr class="row">
-<td>18</td>
 <td>Workshop</td>
 <td>Smithy</td>
 <td>10</td>
 </tr>
 <tr class="row">
-<td>19</td>
 <td>Workshop</td>
 <td>Headquarters</td>
 <td>10</td>
 </tr>
 <tr class="row">
-<td>20</td>
 <td>Workshop</td>
 <td>Stable</td>
 <td>1</td>
 </tr>
 <tr class="row">
-<td>21</td>
 <td>Academy</td>
 <td>Headquarters</td>
 <td>20</td>
 </tr>
 <tr class="row">
-<td>22</td>
 <td>Academy</td>
 <td>Market</td>
 <td>10</td>
 </tr>
 <tr class="row">
-<td>23</td>
 <td>Academy</td>
 <td>Smithy</td>
 <td>20</td>
@@ -2596,24 +2972,24 @@ In order to to login as registered user, I have to input valid informations<br /
 <h3>
 <span class="keyword">Scenario: </span>
 <span class="title">build a building</span>
-<span class="path">features/Building/add_building_queue.feature:62</span>
+<span class="path">features/Building/add_building_queue.feature:127</span>
 </h3>
 <ol>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">Given </span>
-<span class="text">I'm logged in as user "<strong class="passed_param">BlackScorp</strong>"</span>
+<span class="text">I'm logged in as user "<strong class="skipped_param">BlackScorp</strong>"</span>
 <span class="path">FeatureContext::iMLoggedInAsUser()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">I have a city</span>
 <span class="path">FeatureContext::iHaveACity()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following buildings:</span>
@@ -2622,56 +2998,19 @@ In order to to login as registered user, I have to input valid informations<br /
 <table class="argument">
 <thead>
 <tr class="row">
-<td>id</td>
 <td>name</td>
 <td>level</td>
 </tr>
 </thead>
 <tbody>
 <tr class="row">
-<td>1</td>
 <td>Headquarters</td>
 <td>3</td>
-</tr>
-<tr class="row">
-<td>2</td>
-<td>Hiding place</td>
-<td>1</td>
-</tr>
-<tr class="row">
-<td>3</td>
-<td>Warehouse</td>
-<td>1</td>
-</tr>
-<tr class="row">
-<td>4</td>
-<td>Rally point</td>
-<td>1</td>
-</tr>
-<tr class="row">
-<td>5</td>
-<td>Iron mine</td>
-<td>1</td>
-</tr>
-<tr class="row">
-<td>6</td>
-<td>Clay pit</td>
-<td>1</td>
-</tr>
-<tr class="row">
-<td>7</td>
-<td>Timber camp</td>
-<td>1</td>
-</tr>
-<tr class="row">
-<td>8</td>
-<td>Farm</td>
-<td>1</td>
 </tr>
 </tbody>
 </table>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following resources:</span>
@@ -2680,422 +3019,75 @@ In order to to login as registered user, I have to input valid informations<br /
 <table class="argument">
 <thead>
 <tr class="row">
-<td>id</td>
 <td>name</td>
 <td>amount</td>
 </tr>
 </thead>
 <tbody>
 <tr class="row">
-<td>1</td>
 <td>Wood</td>
 <td>300</td>
 </tr>
 <tr class="row">
-<td>2</td>
 <td>Iron</td>
 <td>300</td>
 </tr>
 <tr class="row">
-<td>3</td>
-<td>Clay</td>
+<td>Stone</td>
 <td>300</td>
 </tr>
 </tbody>
 </table>
 </li>
-Array
-(
-    [0] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 3
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 1
-                    [name:protected] => Headquarters
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 1
-            [name:protected] => 
-        )
-
-    [1] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 13
-                    [name:protected] => Hiding place
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 2
-            [name:protected] => 
-        )
-
-    [2] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 12
-                    [name:protected] => Warehouse
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 3
-            [name:protected] => 
-        )
-
-    [3] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 15
-                    [name:protected] => Rally point
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 4
-            [name:protected] => 
-        )
-
-    [4] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 10
-                    [name:protected] => Iron mine
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 5
-            [name:protected] => 
-        )
-
-    [5] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 9
-                    [name:protected] => Clay pit
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 6
-            [name:protected] => 
-        )
-
-    [6] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 8
-                    [name:protected] => Timber camp
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 7
-            [name:protected] => 
-        )
-
-    [7] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 11
-                    [name:protected] => Farm
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 8
-            [name:protected] => 
-        )
-
-)
-<li class="passed">
+<li class="skipped">
+<div class="step">
+<span class="keyword">And </span>
+<span class="text">building queue has <strong class="skipped_param">0</strong> actions</span>
+<span class="path">FeatureContext::buildingQueueHasActions()</span>
+</div>
+</li>
+<li class="skipped">
 <div class="step">
 <span class="keyword">When </span>
-<span class="text">I build "<strong class="passed_param">Barracks</strong>"</span>
+<span class="text">I build "<strong class="skipped_param">Barracks</strong>"</span>
 <span class="path">FeatureContext::iBuild()</span>
 </div>
 </li>
-<li class="pending">
+<li class="skipped">
 <div class="step">
 <span class="keyword">Then </span>
-<span class="text">I should have "<strong class="pending_param">Barracks</strong>" in building Queue</span>
+<span class="text">I should have "<strong class="skipped_param">Barracks</strong>" in building Queue</span>
 <span class="path">FeatureContext::iShouldHaveInBuildingQueue()</span>
 </div>
-<pre class="backtrace">TODO: write pending definition</pre>
 </li>
 <li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
-<span class="text">city should have less resources</span>
-<span class="path">FeatureContext::cityShouldHaveLessResources()</span>
+<span class="text">city should have following resources:</span>
+<span class="path">FeatureContext::cityShouldHaveFollowingResources()</span>
 </div>
+<table class="argument">
+<thead>
+<tr class="row">
+<td>name</td>
+<td>amount</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row">
+<td>Wood</td>
+<td>100</td>
+</tr>
+<tr class="row">
+<td>Stone</td>
+<td>130</td>
+</tr>
+<tr class="row">
+<td>Iron</td>
+<td>210</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ol>
 </div>
@@ -3103,24 +3095,24 @@ Array
 <h3>
 <span class="keyword">Scenario: </span>
 <span class="title">not fullfill the requirements</span>
-<span class="path">features/Building/add_building_queue.feature:84</span>
+<span class="path">features/Building/add_building_queue.feature:147</span>
 </h3>
 <ol>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">Given </span>
-<span class="text">I'm logged in as user "<strong class="passed_param">BlackScorp</strong>"</span>
+<span class="text">I'm logged in as user "<strong class="skipped_param">BlackScorp</strong>"</span>
 <span class="path">FeatureContext::iMLoggedInAsUser()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">I have a city</span>
 <span class="path">FeatureContext::iHaveACity()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following buildings:</span>
@@ -3178,7 +3170,7 @@ Array
 </tbody>
 </table>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following resources:</span>
@@ -3211,391 +3203,19 @@ Array
 </tbody>
 </table>
 </li>
-Array
-(
-    [0] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 3
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 1
-                    [name:protected] => Headquarters
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 1
-            [name:protected] => 
-        )
-
-    [1] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 13
-                    [name:protected] => Hiding place
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 2
-            [name:protected] => 
-        )
-
-    [2] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 12
-                    [name:protected] => Warehouse
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 3
-            [name:protected] => 
-        )
-
-    [3] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 15
-                    [name:protected] => Rally point
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 4
-            [name:protected] => 
-        )
-
-    [4] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 10
-                    [name:protected] => Iron mine
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 5
-            [name:protected] => 
-        )
-
-    [5] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 9
-                    [name:protected] => Clay pit
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 6
-            [name:protected] => 
-        )
-
-    [6] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 8
-                    [name:protected] => Timber camp
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 7
-            [name:protected] => 
-        )
-
-    [7] => OpenTribes\Core\City\Building Object
-        (
-            [level:protected] => 1
-            [maximumLevel:protected] => 
-            [building:protected] => OpenTribes\Core\Building Object
-                (
-                    [id:protected] => 11
-                    [name:protected] => Farm
-                )
-
-            [city:protected] => OpenTribes\Core\City Object
-                (
-                    [x:protected] => 0
-                    [y:protected] => 0
-                    [owner:protected] => OpenTribes\Core\User Object
-                        (
-                            [roles:protected] => OpenTribes\Core\User\Roles Object
-                                (
-                                    [roles:protected] => Array
-                                        (
-                                        )
-
-                                    [user:protected] => OpenTribes\Core\User Object
- *RECURSION*
-                                    [id:protected] => 0
-                                    [name:protected] => 
-                                )
-
-                            [username:protected] => BlackScorp
-                            [password:protected] => 123456
-                            [passwordHash:protected] => e10adc3949ba59abbe56e057f20f883e
-                            [email:protected] => test@test.de
-                            [lastAction:protected] => 
-                            [activationCode:protected] => 
-                            [id:protected] => 1
-                            [name:protected] => 
-                        )
-
-                    [id:protected] => 1
-                    [name:protected] => 
-                )
-
-            [id:protected] => 8
-            [name:protected] => 
-        )
-
-)
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">When </span>
-<span class="text">I build "<strong class="passed_param">Market</strong>"</span>
+<span class="text">I build "<strong class="skipped_param">Market</strong>"</span>
 <span class="path">FeatureContext::iBuild()</span>
 </div>
 </li>
-<li class="failed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">Then </span>
-<span class="text">I should see "<strong class="failed_param">cannot build building</strong>"</span>
+<span class="text">I should see "<strong class="skipped_param">cannot build building</strong>"</span>
 <span class="path">FeatureContext::iShouldSee()</span>
 </div>
-<pre class="backtrace">Failed asserting that null is not null.</pre>
 </li>
 </ol>
 </div>
@@ -3603,24 +3223,24 @@ Array
 <h3>
 <span class="keyword">Scenario: </span>
 <span class="title">invalid building</span>
-<span class="path">features/Building/add_building_queue.feature:105</span>
+<span class="path">features/Building/add_building_queue.feature:168</span>
 </h3>
 <ol>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">Given </span>
-<span class="text">I'm logged in as user "<strong class="passed_param">BlackScorp</strong>"</span>
+<span class="text">I'm logged in as user "<strong class="skipped_param">BlackScorp</strong>"</span>
 <span class="path">FeatureContext::iMLoggedInAsUser()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">I have a city</span>
 <span class="path">FeatureContext::iHaveACity()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following buildings:</span>
@@ -3678,7 +3298,7 @@ Array
 </tbody>
 </table>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">And </span>
 <span class="text">the city have following resources:</span>
@@ -3711,17 +3331,17 @@ Array
 </tbody>
 </table>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">When </span>
-<span class="text">I build "<strong class="passed_param">TestBuilding</strong>"</span>
+<span class="text">I build "<strong class="skipped_param">TestBuilding</strong>"</span>
 <span class="path">FeatureContext::iBuild()</span>
 </div>
 </li>
-<li class="passed">
+<li class="skipped">
 <div class="step">
 <span class="keyword">Then </span>
-<span class="text">I should see "<strong class="passed_param">building not exists</strong>"</span>
+<span class="text">I should see "<strong class="skipped_param">building not exists</strong>"</span>
 <span class="path">FeatureContext::iShouldSee()</span>
 </div>
 </li>
@@ -4022,13 +3642,13 @@ Array
 <div class="summary failed">
 <div class="counters">
 <p class="scenarios">
-33 scenarios (<strong class="passed">31 passed</strong>, <strong class="pending">1 pending</strong>, <strong class="failed">1 failed</strong>)
+33 scenarios (<strong class="passed">30 passed</strong>, <strong class="failed">3 failed</strong>)
 </p>
 <p class="steps">
-183 steps (<strong class="passed">180 passed</strong>, <strong class="skipped">1 skipped</strong>, <strong class="pending">1 pending</strong>, <strong class="failed">1 failed</strong>)
+190 steps (<strong class="passed">149 passed</strong>, <strong class="skipped">32 skipped</strong>, <strong class="undefined">6 undefined</strong>, <strong class="failed">3 failed</strong>)
 </p>
 <p class="time">
-0m2.132s
+0m2.306s
 </p>
 </div>
 <div class="switchers">

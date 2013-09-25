@@ -6,6 +6,6 @@ use OpenTribes\Core\City\Resource as CityResource;
 class Repository implements CityResourceRepository{
     private $data = array();
     public function add(CityResource $resource) {
-        $this->data[$resource->getId()] = $resource;
+        $this->data[$resource->getResource()->getName()] = $resource;
     }
 }

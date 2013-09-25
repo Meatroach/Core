@@ -10,17 +10,15 @@ class Repository implements TileRepositoryInterface {
     private $data;
 
     public function add(MapTile $mapTile) {
-        $this->data[$mapTile->getId()] = $mapTile;
+        $key = implode('_',array($mapTile->getX(),$mapTile->getY()));
+        $this->data[$key] = $mapTile;
     }
 
     public function findByLocation($x, $y) {
+         $key = implode('_',array($x,$y));
       
-        foreach ($this->data as $mapTile) {
-            if ($mapTile->getX() == $x && $mapTile->getY() == $y) {
-                return $mapTile;
-            }
-        }
-        return null;
+         return isset($this->data[$key]) ?$this->data[$key] : null;
+     
     }
 
 }

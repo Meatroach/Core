@@ -18,20 +18,20 @@ class Repository implements UserRepositoryInterface {
     }
 
     public function add(User $user) {
-        $this->data[$user->getId()] = $user;
+        $this->data[$user->getUsername()] = $user;
     }
 
     public function findById($id) {
-        return isset($this->data[$id]) ? $this->data[$id] : null;
-    }
-
-    public function findByUsername($username) {
-        foreach ($this->data as $user) {
-            if ($user->getUsername() === $username) {
+            foreach ($this->data as $user) {
+            if ($user->getId() === $id) {
                 return $user;
             }
         }
-        return null;
+      
+    }
+
+    public function findByUsername($username) {
+         return isset($this->data[$username]) ? $this->data[$username] : null;
     }
 
     public function findByEmail($email) {
