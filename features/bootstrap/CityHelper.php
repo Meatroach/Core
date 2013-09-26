@@ -68,8 +68,8 @@ class CityHelper {
     public function createCities(array $cities) {
         foreach ($cities as $row) {
             $city = new City();
-            $user = $this->userRepository->findByUsername($row['Owner']);
-            $row['Owner'] = $user;
+            $user = $this->userRepository->findByUsername($row['owner']);
+            $row['owner'] = $user;
             foreach ($row as $field => $value) {
                 $city->{$field} = $value;
             }
@@ -83,10 +83,10 @@ class CityHelper {
 
         foreach ($resources as $row) {
 
-            $resource = $this->resourceRepository->findByName($row['Name']);
+            $resource = $this->resourceRepository->findByName($row['name']);
             $cityResource = new CityResource();
-            $row['Resource'] = $resource;
-            $row['City'] = $this->city;
+            $row['resource'] = $resource;
+            $row['city'] = $this->city;
             foreach ($row as $field => $value) {
                 $cityResource->{$field} = $value;
             }
@@ -97,10 +97,10 @@ class CityHelper {
 
     public function assignBuildingsToCity(array $buildings) {
         foreach ($buildings as $row) {
-            $building = $this->buildingRepository->findByName($row['Name']);
+            $building = $this->buildingRepository->findByName($row['name']);
             $cityBuilding = new CityBuilding();
-            $row['Building'] = $building;
-            $row['City'] = $this->city;
+            $row['building'] = $building;
+            $row['city'] = $this->city;
               foreach ($row as $field => $value) {
                 $cityBuilding->{$field} = $value;
             }

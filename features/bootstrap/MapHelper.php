@@ -33,7 +33,7 @@ class MapHelper {
         );
         foreach ($tiles as $tile) {
             $tileEntity = new Tile();
-            $tile['Accessable'] = $statsMapper[$tile['Accessable']];
+            $tile['accessable'] = $statsMapper[$tile['accessable']];
             foreach($tile as $field => $value){
                 $tileEntity->{$field} = $value;
             }

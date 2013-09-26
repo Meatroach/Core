@@ -7,15 +7,16 @@ use OpenTribes\Core\Resource;
 class Repository implements ResourceRepoInterface{
     private $data = array();
     public function add(Resource $resouce) {
-        $this->data[$resouce->getId()] = $resouce;
+        $this->data[$resouce->getName()] = $resouce;
     }
     public function findById($id) {
-       return isset($this->data[$id])? $this->data[$id]:null;
-    }
-    public function findByName($name) {
-        foreach($this->data as $resource){
-            if($resource->getName() === $name) return $resource;
+          foreach($this->data as $resource){
+            if($resource->getId() === $id) return $resource;
         }
         return null;
+    }
+    public function findByName($name) {
+            return isset($this->data[$name])? $this->data[$name]:null;
+    
     }
 }

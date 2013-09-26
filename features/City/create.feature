@@ -6,7 +6,7 @@
      
     Background:
         Given following tiles:
-           | Name | Accessable |
+           | name | accessable |
            | Grass | yes |
            | Forrest | no |
            | Sea | no |
@@ -24,7 +24,7 @@
             | Owner1 | 123456 | owner1@test.de |
             | Owner2 | 123456 | owner2@test.de |
         And following cities:
-            | name | Owner | x | y |
+            | name | owner | x | y |
             | City1 | Owner1 | 0 | 0 |
             | City2 | Owner2 | 2 | 0 |
             | City3 | Owner1 | 4 | 4 |

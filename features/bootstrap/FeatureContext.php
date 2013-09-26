@@ -170,7 +170,7 @@ class FeatureContext extends BehatContext{
      */
     public function followingCities(TableNode $table) {
         $this->cityHelper->setUserRepository($this->userHelper->getUserRepository());
-  
+        $this->cityHelper->setBuildingRepo($this->buildingHelper->getBuildingRepository());
         $this->cityHelper->createCities($table->getHash());
     }
 
@@ -266,14 +266,14 @@ class FeatureContext extends BehatContext{
      */
     public function followingBuildingCosts(TableNode $table)
     {
-        throw new PendingException();
+        $this->buildingHelper->setBuildingCosts($table->getHash());
     }
      /**
      * @Given /^following building times:$/
      */
     public function followingBuildingTimes(TableNode $table)
     {
-        throw new PendingException();
+        $this->buildingHelper->setBuildingBuildTimes($table->getHash());
     }
 
     /**

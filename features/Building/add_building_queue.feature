@@ -27,7 +27,7 @@ Background:
         | Stone | 
         | Iron | 
         | Wood | 
-        | Popuplation | 
+        | Population | 
     And following building costs:
         | building | resource | value | factor |
         | Headquarters | Wood | 90 | 1.26 |
@@ -162,41 +162,21 @@ Scenario: build a building
 Scenario: not fullfill the requirements
   Given I'm logged in as user "BlackScorp"
     And I have a city
-    And the city have following buildings:
-        | id | name | level |
-        | 1 | Headquarters | 3 |
-        | 2 | Hiding place | 1 |
-        | 3 | Warehouse | 1 |
-        | 4 | Rally point | 1 |
-        | 5 | Iron mine | 1 |
-        | 6 | Clay pit | 1 |
-        | 7 | Timber camp | 1 |
-        | 8 | Farm | 1 |
     And the city have following resources:
        | id | name | amount |
        | 1 | Wood | 300 |
        | 2 | Iron | 300 |
-       | 3 | Clay | 300 |
+       | 3 | Stone | 300 |
     When I build "Market"
     Then I should see "cannot build building"
 
 Scenario: invalid building
   Given I'm logged in as user "BlackScorp"
     And I have a city
-    And the city have following buildings:
-        | id | name | level |
-        | 1 | Headquarters | 3 |
-        | 2 | Hiding place | 1 |
-        | 3 | Warehouse | 1 |
-        | 4 | Rally point | 1 |
-        | 5 | Iron mine | 1 |
-        | 6 | Clay pit | 1 |
-        | 7 | Timber camp | 1 |
-        | 8 | Farm | 1 |
     And the city have following resources:
        | id | name | amount |
        | 1 | Wood | 300 |
        | 2 | Iron | 300 |
-       | 3 | Clay | 300 |
+       | 3 | Stone | 300 |
     When I build "TestBuilding"
     Then I should see "building not exists"
