@@ -159,6 +159,21 @@ Scenario: build a building
         | Stone | 130 |
         | Iron | 210 |
 
+Scenario: Building queue is full
+  Given I'm logged in as user "BlackScorp"
+    And I have a city
+    And the city have following buildings:
+        | name | level |
+        | Headquarters | 3 |
+    And the city have following resources:
+       | name | amount |
+       | Wood | 300 |
+       | Iron | 300 |
+       | Stone | 300 |
+    And building queue has 3 actions
+    When I build "Barracks"
+    Then I should see "building queue full"
+
 Scenario: not fullfill the requirements
   Given I'm logged in as user "BlackScorp"
     And I have a city
