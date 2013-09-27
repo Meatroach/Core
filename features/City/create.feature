@@ -34,13 +34,13 @@
     Scenario: create a city
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=2 and y=2
-        And I have a total of 3 aldermen
+        Given I have a total of 3 aldermen
         Then I should have a city
         
     Scenario: not enought aldermen
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=2 and y=2
-        And I have a total of 2 aldermen
+        Given I have a total of 2 aldermen
         Then I should see "to less aldermen"
 
     Scenario: tile is not accessable
