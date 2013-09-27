@@ -34,6 +34,7 @@
     Scenario: create a city
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=2 and y=2
+        Given I have a total of 3 aldermen
         Then I should have a city
         
     Scenario: tile is not accessable

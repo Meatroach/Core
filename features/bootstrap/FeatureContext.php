@@ -293,4 +293,12 @@ class FeatureContext extends BehatContext{
         throw new PendingException();
     }
 
+    /**
+     * @Given /^I have a total of (\d+) aldermen$/
+     */
+    public function citiesHaveAldermen($arg1)
+    {
+        throw new PendingException();
+    }
+
 }
