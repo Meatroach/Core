@@ -3,6 +3,7 @@
         In order to create a city
         as registered player
         I have to find the right place
+        And must fullfill the requirements
      
     Background:
         Given following tiles:
@@ -34,7 +35,7 @@
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=2 and y=2
         Then I should have a city
-
+        
     Scenario: tile is not accessable
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=1 and y=1

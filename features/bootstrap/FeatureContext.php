@@ -33,6 +33,7 @@ class FeatureContext extends BehatContext{
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
+        \xdebug_disable(); //disbale tracking lines with xdebug
         // Initialize your context here
         $this->parameters = $parameters;
         $this->exceptionHelper = new ExceptionHelper();
