@@ -17,7 +17,7 @@ namespace OpenTribes\Core;
 class Tile extends Entity {
 
     /**
-     * @var Bool $accessable
+     * @var Boolean $accessable
      */
     protected $accessable;
 
@@ -43,7 +43,7 @@ class Tile extends Entity {
     }
 
     /**
-     * @param Bool $accessable
+     * @param Boolean $accessable
      * @return \OpenTribes\Core\Tile
      */
     public function setAccessable($accessable) {
