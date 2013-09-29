@@ -36,7 +36,7 @@ class Tile extends Entity {
     }
 
     /**
-     * @return String $name
+     * @return \String $name
      */
     public function getName() {
         return $this->name;
@@ -52,7 +52,7 @@ class Tile extends Entity {
     }
 
     /**
-     * @return Bool $accessable
+     * @return \Boolean $accessable
      */
     public function getAccessable() {
         return $this->accessable;

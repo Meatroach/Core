@@ -150,7 +150,6 @@ Scenario: build a building
        | Wood | 300 |
        | Iron | 300 |
        | Stone | 300 |
-    And building queue has 0 actions
     When I build "Barracks"
     Then I should have "Barracks" in building Queue
     And city should have following resources:

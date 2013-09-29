@@ -10,10 +10,22 @@ class Interactor{
     protected $cityBuildingRepository;
     protected $buildingRepository;
     protected $techTree;
-    public function __construct(CityBuildingRepository $cityBuildingRepo,BuildingRepository $buildingRepo,Techtree $techtree) {
+    protected $calculator;
+    protected $cityBuildingQueueRepository;
+    public function __construct(
+            CityBuildingRepository $cityBuildingRepo,
+            BuildingRepository $buildingRepo,
+            ResourceRepository $resourceRepo,
+            CityResourceRepository $cityResourceRepo,
+            CityBuildingQueueRepository $cityBuildingQueueRepo,
+            Techtree $techtree,
+            CostsCalculator $calculator
+            ) {
         $this->cityBuildingRepository = $cityBuildingRepo;
         $this->buildingRepository = $buildingRepo;
         $this->techTree = $techtree;
+        $this->calculator = $calculator;
+        $this->cityBuildingQueueRepository = $this->cityBuildingQueueRepo;
     }
     public function __invoke(Request $request) {
         $building = $this->buildingRepository->findByName($request->getBuildingName());
@@ -23,6 +35,10 @@ class Interactor{
         
         $this->techTree->setBuildings($buildings);
         if(!$this->techTree->canBuild($building)) throw new CannotBuildException();
+        
+        $resources = $this->cityResourceRepository->findResourceByCity($request->getCity());
+        $this->calculator->setResources($resources);
+        if(!$this->calculator->hasEnoughtResources())
         
         return new Response($building);
        

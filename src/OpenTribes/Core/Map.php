@@ -31,7 +31,7 @@ class Map extends Entity {
     }
 
     /**
-     * @return String $name
+     * @return \String $name
      */
     public function getName() {
         return $this->name;

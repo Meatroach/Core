@@ -136,35 +136,35 @@ class User extends Entity {
     }
 
     /**
-     * @return String $username
+     * @return \String $username
      */
     public function getUsername() {
         return $this->username;
     }
 
     /**
-     * @return String $password
+     * @return \String $password
      */
     public function getPassword() {
         return $this->password;
     }
 
     /**
-     * @return String $email
+     * @return \String $email
      */
     public function getEmail() {
         return $this->email;
     }
 
     /**
-     * @return String $activationCode
+     * @return \String $activationCode
      */
     public function getActivationCode() {
         return $this->activationCode;
     }
 
     /**
-     * @return String passwordHash
+     * @return \String passwordHash
      */
     public function getPasswordHash() {
         return $this->passwordHash;

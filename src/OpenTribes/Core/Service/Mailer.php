@@ -1,14 +1,7 @@
 <?php
 
-namespace OpenTribes\Core\Util;
-
+namespace OpenTribes\Core\Service;
+use OpenTribes\Core\Mail;
 interface Mailer{
-    public function setRecipient($recipient);
-    public function setBody($body);
-    public function setSubject($subject);
-    public function getRecipient();
-    public function getBody();
-    public function getSubject();
-    
-    public function send();
+    public function send(Mail $mail);
 }

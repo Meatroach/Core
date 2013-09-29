@@ -8,6 +8,6 @@ interface Repository{
 public function add(CityBuilding $building);
 public function findByBuildingName($name);
 public function findByCityName($name);
-public function findBuildingsByCity(City $city);
+public function findByCity(City $city);
 public function findAll();
 }

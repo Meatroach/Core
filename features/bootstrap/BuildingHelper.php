@@ -1,14 +1,15 @@
 <?php
-
-use OpenTribes\Core\Building\Mock\Repository as BuildingRepository;
-use OpenTribes\Core\Resource\Mock\Repository as ResourceRepository;
-use OpenTribes\Core\Building\Costs\Mock\Repository as BuildingCostsRepository;
-use OpenTribes\Core\Building\BuildTime\Mock\Repository as BuildTimeRepository;
+//Entities
 use OpenTribes\Core\Building;
+use OpenTribes\Core\Building\Costs as BuildingCosts;
 use OpenTribes\Core\Resource;
 use OpenTribes\Core\Techtree;
-use OpenTribes\Core\Building\Costs as BuildingCosts;
-use OpenTribes\Core\Building\BuildTime;
+
+//Repositories
+use OpenTribes\Core\Mock\Building\Repository as BuildingRepository;
+use OpenTribes\Core\Mock\Resource\Repository as ResourceRepository;
+use OpenTribes\Core\Mock\Building\Costs\Repository as BuildingCostsRepository;
+
 class BuildingHelper {
 
     protected $exception;

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Util;
+namespace OpenTribes\Core\Service;
 
 interface CodeGenerator{
 public function create();

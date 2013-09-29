@@ -27,8 +27,8 @@ class Techtree extends Entity {
             return true;
 
         $requirements = $this->requirements[$building->getName()];
-      
-        
+
+
         foreach ($requirements as $row) {
             $buildingName = $row['building']->getName();
             if (isset($this->buildings[$buildingName]) &&

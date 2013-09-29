@@ -1,19 +1,15 @@
 <?php
 
+//Enteties
 use OpenTribes\Core\City;
 use OpenTribes\Core\City\Building as CityBuilding;
-use OpenTribes\Core\City\Mock\Repository as CityRepository;
-use OpenTribes\Core\User\Mock\Repository as UserRepository;
-use OpenTribes\Core\City\Building\Mock\Repository as CityBuildingRepository;
-use OpenTribes\Core\City\Create\Request as CityCreateRequest;
-use OpenTribes\Core\City\Create\Interactor as CityCreateInteractor;
-use OpenTribes\Core\Building\Mock\Repository as BuildingRepository;
-use OpenTribes\Core\Resource\Mock\Repository as ResourceRepository;
-use OpenTribes\Core\City\Resource\Mock\Repository as CityResourceRepository;
 use OpenTribes\Core\City\Resource as CityResource;
 use OpenTribes\Core\Techtree;
-use OpenTribes\Core\City\Building\Create\Request as CityBuildingCreateRequest;
-use OpenTribes\Core\City\Building\Create\Interactor as CityBuildingCreateInteractor;
+
+//Repositories
+use OpenTribes\Core\Mock\City\Repository as CityRepository;
+use OpenTribes\Core\Mock\City\Building\Repository as CityBuildingRepository;
+use OpenTribes\Core\Mock\City\Resource\Repository as CityResourceRepository;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 

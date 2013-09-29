@@ -3,12 +3,8 @@
         In order to create a city
         as registered player
         I have to find the right place
-<<<<<<< HEAD
         And must fullfill the requirements
-=======
-        I must fullfill the requirements
->>>>>>> 2404b232ee163feecc506b975415bf9991f86c3f
-     
+
     Background:
         Given following tiles:
            | name | accessable |
@@ -38,18 +34,8 @@
     Scenario: create a city
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=2 and y=2
-        Given I have a total of 3 aldermen
         Then I should have a city
         
-<<<<<<< HEAD
-=======
-    Scenario: not enought aldermen
-        Given I'm logged in as user "BlackScorp"
-        When I create a city at location x=2 and y=2
-        Given I have a total of 2 aldermen
-        Then I should see "to less aldermen"
-
->>>>>>> 2404b232ee163feecc506b975415bf9991f86c3f
     Scenario: tile is not accessable
         Given I'm logged in as user "BlackScorp"
         When I create a city at location x=1 and y=1

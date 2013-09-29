@@ -1,12 +1,14 @@
 <?php
-
-use OpenTribes\Core\Tile\Mock\Repository as TileRepository;
-use OpenTribes\Core\Entity\Factory as EntityFactory;
+//Entities
 use OpenTribes\Core\Tile;
-use OpenTribes\Core\Map\Tile\Mock\Repository as MapTileRepository;
 use OpenTribes\Core\Map;
 use OpenTribes\Core\Map\Tile as MapTile;
-use OpenTribes\Core\Map\Mock\Repository as MapRepository;
+
+//Repositories
+use OpenTribes\Core\Mock\Tile\Repository as TileRepository;
+use OpenTribes\Core\Mock\Map\Repository as MapRepository;
+use OpenTribes\Core\Mock\Map\Tile\Repository as MapTileRepository;
+
 class MapHelper {
 
     protected $tileRepository;

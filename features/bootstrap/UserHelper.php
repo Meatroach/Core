@@ -1,27 +1,25 @@
 <?php
 
+//Entities
 use OpenTribes\Core\User;
-use OpenTribes\Core\User\Roles as UserRoles;
-use OpenTribes\Core\Role\Mock\Repository as RoleRepository;
-use OpenTribes\Core\User\Roles\Mock\Repository as UserRolesRepository;
-use OpenTribes\Core\User\Mock\Repository as UserRepository;
-use OpenTribes\Core\Util\Mock\Hasher as MockHasher;
-use OpenTribes\Core\Util\Mock\QwertyGenerator as MockCodeGenerator;
-use OpenTribes\Core\Util\Mock\Filemailer as MockMailer;
 use OpenTribes\Core\Role;
-use OpenTribes\Core\User\Create\Request as UserCreateRequest;
-use OpenTribes\Core\User\Create\Interactor as UserCreateInteractor;
-use OpenTribes\Core\User\Login\Request as UserLoginRequest;
-use OpenTribes\Core\User\Login\Interactor as UserLoginInteractor;
-use OpenTribes\Core\User\Authenticate\Request as UserAuthenticateRequest;
-use OpenTribes\Core\User\Authenticate\Interactor as UserAuthenticateInteractor;
-use OpenTribes\Core\User\ActivationMail\Create\Request as CreateActivationMailRequest;
-use OpenTribes\Core\User\ActivationMail\Create\Interactor as CreateActivationMailInteractor;
-use OpenTribes\Core\User\ActivationMail\Send\Request as SendActivationMailRequest;
-use OpenTribes\Core\User\ActivationMail\Send\Interactor as SendActivationMailInteractor;
-use OpenTribes\Core\User\Activate\Request as UserActivateRequest;
-use OpenTribes\Core\User\Activate\Interactor as UserActivateInteractor;
-use OpenTribes\Core\Entity\Factory as EntityFactory;
+use OpenTribes\Core\User\Role as UserRole;
+
+//Repositories
+use OpenTribes\Core\Mock\User\Repository as UserRepository;
+use OpenTribes\Core\Mock\Role\Repository as RoleRepository;
+use OpenTribes\Core\Mock\User\Role\Repository as UserRoleRepository;
+
+//Services
+use OpenTribes\Core\Mock\Service\Md5Hasher as Hasher;
+use OpenTribes\Core\Mock\Service\FileMailer as Mailer;
+use OpenTribes\Core\Mock\Service\QwertyGenerator as Generator;
+
+//Requests
+
+//Interactors
+
+
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -34,16 +32,16 @@ class UserHelper {
     protected $codeGenerator;
     protected $exception = null;
     protected $mailer = null;
-    protected $userRolesRepository;
+    protected $userRoleRepository;
  
     public function __construct(ExceptionHelper $exception) {
         $this->roleRepository = new RoleRepository();
         $this->userRepository = new UserRepository();
-        $this->userRolesRepository = new UserRolesRepository();
+        $this->userRoleRepository = new UserRoleRepository();
 
-        $this->hasher = new MockHasher();
-        $this->codeGenerator = new MockCodeGenerator();
-        $this->mailer = new MockMailer();
+        $this->hasher = new Hasher();
+        $this->codeGenerator = new Generator();
+        $this->mailer = new Mailer();
         $this->exception = $exception;
         $this->initRoles();
     }
@@ -54,22 +52,16 @@ class UserHelper {
      * Method to Init base Roles
      */
     private function initRoles() {
-        $roleId = 0;
-        $guest = new Role();
-        $roleId++;
-        $guest->setId($roleId);
-        $guest->setName('Guest');
-        $this->roleRepository->add($guest);
-        $user = new Role();
-        $roleId++;
-        $user->setId($roleId);
-        $user->setName('User');
-        $this->roleRepository->add($user);
-        $admin = new Role();
-        $roleId++;
-        $admin->setId($roleId);
-        $admin->setName('Admin');
-        $this->roleRepository->add($admin);
+        
+        $role = new Role();
+        $role->setName('Guest');
+        $this->roleRepository->add($role);
+        $role = new Role();
+        $role->setName('User');
+        $this->roleRepository->add($role);
+        $role = new Role();
+        $role->setName('Admin');
+        $this->roleRepository->add($role);
     }
 
     /**
@@ -88,8 +80,10 @@ class UserHelper {
 
         //Load guest role
         $role = $this->roleRepository->findByName($name);
-        //Set Roles
-        $this->user->getRoles()->addRole($role);
+        $userRole = new UserRole();
+        $userRole->setUser($this->user);
+        $userRole->setRole($role);
+        $this->userRoleRepository->add($userRole);
     }
 
     /**
