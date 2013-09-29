@@ -17,11 +17,11 @@ use OpenTribes\Core\Tile as BaseTile;
  */
 class Tile extends Entity{
     /**
-     * @var Int $x
+     * @var Integer $x
      */
     protected $x;
     /**
-     * @var Int $y
+     * @var Integer $y
      */
     protected $y;
     /**
@@ -50,7 +50,7 @@ class Tile extends Entity{
         return $this;
     }
     /**
-     * @param Int $x
+     * @param Integer $x
      * @return \OpenTribes\Core\Map\Tile
      */
     public function setX($x){
@@ -58,7 +58,7 @@ class Tile extends Entity{
         return $this;
     }
     /**
-     * @param Int $y
+     * @param Integer $y
      * @return \OpenTribes\Core\Map\Tile
      */
     public function setY($y){
@@ -78,13 +78,13 @@ class Tile extends Entity{
         return $this->tile;
     }
     /**
-     * @return Int $x
+     * @return Integer $x
      */
     public function getX(){
         return $this->x;
     }
     /**
-     * @return Int $y
+     * @return Integer $y
      */
     public function getY(){
         return $this->y;
