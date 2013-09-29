@@ -10,7 +10,7 @@
 namespace OpenTribes\Core\User;
 
 use OpenTribes\Core\Entity;
-use OpenTribes\Core\Role;
+use OpenTribes\Core\Role as BaseRole;
 use OpenTribes\Core\User;
 /**
  * User Role relationship Entity
@@ -36,7 +36,7 @@ class Role extends Entity{
      * @param \OpenTribes\Core\Role $role
      * @return \OpenTribes\Core\User\Role
      */
-    public function setRole(Role $role){
+    public function setRole(BaseRole $role){
         $this->role = $role;
         return $this;
     }
