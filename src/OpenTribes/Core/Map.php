@@ -1,27 +1,40 @@
 <?php
 
+/**
+ * This file is part of the "Open Tribes" Core Module.
+ *
+ * @package    OpenTribes\Core
+ * @author     Witali Mik <mik@blackscorp.de>
+ * @copyright  (c) 2013 BlackScorp Games
+ * @license    For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace OpenTribes\Core;
 
-use OpenTribes\Core\Map\Tile as MapTile;
-use OpenTribes\Core\City;
-class Map extends Entity{
-    protected $tiles = array();
-    protected $cities = array();
-    public function addTile(MapTile $tile){ 
-        $this->tiles[] = $tile;
-    }
-    public function addCity(City $city){
-            if(!isset($this->cities[$city->getY()][$city->getX()]))
-            $this->cities[$city->getY()] = array();
-        
-        $this->cities[$city->getY()][$city->getX()] = $city;
-    }
-    public function getCities(){
-        return $this->cities;
+/**
+ * Map Entity
+ */
+class Map extends Entity {
+
+    /**
+     * @var String $name 
+     */
+    protected $name;
+
+    /**
+     * @param String $name
+     * @return \OpenTribes\Core\Map
+     */
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 
-    public function getTiles(){
-        return $this->tiles;
+    /**
+     * @return String $name
+     */
+    public function getName() {
+        return $this->name;
     }
-   
+
 }
