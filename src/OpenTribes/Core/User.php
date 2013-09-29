@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * This file is part of the "Open Tribes" Core Module.
+ *
+ * @package    OpenTribes\Core
+ * @author     Witali Mik <mik@blackscorp.de>
+ * @copyright  (c) 2013 BlackScorp Games
+ * @license    For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace OpenTribes\Core;
 
-use OpenTribes\Core\User\Roles;
 use OpenTribes\Core\User\Exception\Username\Short as UserNameTooShortException;
 use OpenTribes\Core\User\Exception\Username\Long as UserNameTooLongException;
 use OpenTribes\Core\User\Exception\Username\Invalid as UserNameInvalidException;
@@ -12,26 +20,65 @@ use OpenTribes\Core\User\Exception\Password\Short as PasswordTooShortException;
 use OpenTribes\Core\User\Exception\Email\EmptyException as EmailEmptyException;
 use OpenTribes\Core\User\Exception\Email\Invalid as EmailInvalidException;
 
+/**
+ * User Entity class
+ */
 class User extends Entity {
 
-    protected $roles;
+    /**
+     * @var String $username 
+     */
     protected $username;
+
+    /**
+     * @var String $password 
+     */
     protected $password;
+
+    /**
+     * @var String $passwordHash 
+     */
     protected $passwordHash;
+
+    /**
+     * @var String $email 
+     */
     protected $email;
+
+    /**
+     * @var \DateTime $lastAction 
+     */
     protected $lastAction;
+
+    /**
+     * @var String $activationCode 
+     */
     protected $activationCode;
 
+    /**
+     * @param String $code
+     * @return \OpenTribes\Core\User
+     */
     public function setActivationCode($code) {
         $this->activationCode = $code;
         return $this;
     }
 
-    public function setLastAction(\DateTime $lastAction = null) {
-        $this->lastAction = $lastAction? : new \DateTime();
+    /**
+     * @param \DateTime $lastAction
+     * @return \OpenTribes\Core\User
+     */
+    public function setLastAction(\DateTime $lastAction) {
+        $this->lastAction = $lastAction;
         return $this;
     }
 
+    /**
+     * @param String $password
+     * @return \OpenTribes\Core\User
+     * @throws PasswordEmptyException
+     * @throws PasswordTooShortException
+     */
     public function setPassword($password) {
         if (in_array($password, array(null, false, '', array()), true))
             throw new PasswordEmptyException;
@@ -41,11 +88,24 @@ class User extends Entity {
         $this->password = $password;
         return $this;
     }
-    public function setPasswordHash($hash){
+
+    /**
+     * @param String $hash
+     * @return \OpenTribes\Core\User
+     */
+    public function setPasswordHash($hash) {
         $this->passwordHash = $hash;
         return $this;
     }
 
+    /**
+     * @param String $username
+     * @return \OpenTribes\Core\User
+     * @throws UserNameEmptyException
+     * @throws UserNameInvalidException
+     * @throws UserNameTooShortException
+     * @throws UserNameTooLongException
+     */
     public function setUsername($username) {
         if (in_array($username, array(null, false, '', array()), true))
             throw new UserNameEmptyException;
@@ -60,6 +120,12 @@ class User extends Entity {
         return $this;
     }
 
+    /**
+     * @param String $email
+     * @return \OpenTribes\Core\User
+     * @throws EmailEmptyException
+     * @throws EmailInvalidException
+     */
     public function setEmail($email) {
         if (in_array($email, array(null, false, '', array()), true))
             throw new EmailEmptyException;
@@ -69,33 +135,47 @@ class User extends Entity {
         return $this;
     }
 
-    public function setRoles(Roles $roles) {
-        $roles->setUser($this);
-        $this->roles = $roles;
-        return $this;
-    }
-
-    public function getRoles() {
-        return $this->roles;
-    }
-
+    /**
+     * @return String $username
+     */
     public function getUsername() {
         return $this->username;
     }
 
+    /**
+     * @return String $password
+     */
     public function getPassword() {
         return $this->password;
     }
 
+    /**
+     * @return String $email
+     */
     public function getEmail() {
         return $this->email;
     }
 
+    /**
+     * @return String $activationCode
+     */
     public function getActivationCode() {
         return $this->activationCode;
     }
-    public function getPasswordHash(){
+
+    /**
+     * @return String passwordHash
+     */
+    public function getPasswordHash() {
         return $this->passwordHash;
     }
+
+    /**
+     * @return \DateTime $lastAction
+     */
+    public function getLastAction() {
+        return $this->lastAction;
+    }
+
 }
 
