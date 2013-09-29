@@ -18,12 +18,6 @@ use OpenTribes\Core\Entity\Exception\UnknownProperty as UnknownPropertyException
  */
 abstract class Entity {
 
-    /** @type int $id */
-    protected $id = 0;
-
-    /** @type string $name */
-    protected $name = '';
-
     /**
      * @param string $name
      *
@@ -44,23 +38,6 @@ abstract class Entity {
         }
     }
 
-    /**
-     * @api
-     *
-     * @return int $id Entity ID
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
-     * @api
-     *
-     * @return string $name Entity Name
-     */
-    public function getName() {
-        return $this->name;
-    }
 
     /**
      * @param string $name
@@ -79,29 +56,5 @@ abstract class Entity {
                 get_class($this)
             ));
         }
-    }
-
-    /**
-     * @api
-     *
-     * @param int $id
-     *
-     * @return $this Provides a fluent interface.
-     */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @api
-     * 
-     * @param string $name
-     *
-     * @return $this Provides a fluent interface.
-     */
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
     }
 }
