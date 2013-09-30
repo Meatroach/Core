@@ -3,10 +3,10 @@
 namespace OpenTribes\Core\User\Activate;
 
 use OpenTribes\Core\User\Repository as UserRepository;
-use OpenTribes\Core\User\Roles\Repository as UserRolesRepository;
+use OpenTribes\Core\User\Role\Repository as UserRoleRepository;
 use OpenTribes\Core\Role\Repository as RoleRepository;
 
-use OpenTribes\Core\User\Roles as UserRoles;
+use OpenTribes\Core\User\Role as UserRoles;
 
 use OpenTribes\Core\User\Activate\Exception\NotExists as NotExistsException;
 use OpenTribes\Core\User\Activate\Exception\Invalid as InvalidCodeException;
@@ -20,9 +20,11 @@ class Interactor extends BaseInteractor {
     protected $userRolesRepository;
     protected $roleRepository;
 
-    public function __construct(UserRepository $userRepository, RoleRepository $roleRepository, UserRolesRepository $userRolesRepository) {
+    public function __construct(UserRepository $userRepository, 
+            RoleRepository $roleRepository, 
+            UserRoleRepository $userRolesRepository) {
         $this->userRepository = $userRepository;
-        $this->userRolesRepository = $userRolesRepository;
+        $this->userRoleRepository = $userRolesRepository;
         $this->roleRepository = $roleRepository;
     }
 
@@ -38,13 +40,15 @@ class Interactor extends BaseInteractor {
             throw new InvalidCodeException;
 
         $user->setActivationCode('');
-        $roles = new UserRoles();
-        $roles->addRole($role);
+        $userRole = new UserRoles();
+        $userRole->setRole($role);
+        $userRole->setUser($user);
+       
 
-        $user->setRoles($roles);
+        
 
         $this->userRepository->add($user);
-        $this->userRolesRepository->add($roles);
+        $this->userRoleRepository->add($userRole);
 
         return new Response($user);
     }

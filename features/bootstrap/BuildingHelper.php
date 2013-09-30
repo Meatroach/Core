@@ -2,6 +2,7 @@
 //Entities
 use OpenTribes\Core\Building;
 use OpenTribes\Core\Building\Costs as BuildingCosts;
+use OpenTribes\Core\Building\BuildTime;
 use OpenTribes\Core\Resource;
 use OpenTribes\Core\Techtree;
 
@@ -9,6 +10,7 @@ use OpenTribes\Core\Techtree;
 use OpenTribes\Core\Mock\Building\Repository as BuildingRepository;
 use OpenTribes\Core\Mock\Resource\Repository as ResourceRepository;
 use OpenTribes\Core\Mock\Building\Costs\Repository as BuildingCostsRepository;
+use OpenTribes\Core\Mock\Building\BuildTime\Repository as BuildingBuildTimeRepository;
 
 class BuildingHelper {
 
@@ -23,7 +25,7 @@ class BuildingHelper {
         $this->buildingRepository = new BuildingRepository();
         $this->buildingCostsRepository = new BuildingCostsRepository();
         $this->resourceRepository = new ResourceRepository();
-        $this->buildTimeRepository = new BuildTimeRepository();
+        $this->buildTimeRepository = new BuildingBuildTimeRepository();
         $this->techTree = new Techtree();
     }
 

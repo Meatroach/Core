@@ -13,6 +13,6 @@ class Repository implements MapTileRepositoryInterface{
         return isset($this->mapTiles[$key])?$this->mapTiles[$key]:null;
     }
     private function getKey($x,$y){
-        return sprint('%d_%d',$x,$y);
+        return sprintf('%d_%d',$x,$y);
     }
 }

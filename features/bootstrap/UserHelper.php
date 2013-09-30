@@ -16,10 +16,13 @@ use OpenTribes\Core\Mock\Service\FileMailer as Mailer;
 use OpenTribes\Core\Mock\Service\QwertyGenerator as Generator;
 
 //Requests
-
+use OpenTribes\Core\User\Create\Request as UserCreateRequest;
+use OpenTribes\Core\User\Login\Request as UserLoginRequest;
+use OpenTribes\Core\User\Activate\Request as UserActivateRequest;
 //Interactors
-
-
+use OpenTribes\Core\User\Create\Interactor as UserCreateInteractor;
+use OpenTribes\Core\User\Login\Interactor as UserLoginInteractor;
+use OpenTribes\Core\User\Activate\Interactor as UserActivateInteractor;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -69,7 +72,7 @@ class UserHelper {
      */
     public function newUser() {
         $this->user = new User();
-        $this->user->setRoles(new UserRoles());
+       
     }
 
     /**
@@ -100,9 +103,11 @@ class UserHelper {
             }
             //hash password
             $user->setPasswordHash($this->hasher->hash($user->getPassword()));
-            $roles = new UserRoles();
-
-            $user->setRoles($roles);
+            $role = $this->roleRepository->findByName('Guest');
+            $userRole = new UserRole();
+            $userRole->setRole($role);
+            $userRole->setUser($user);
+            $this->userRoleRepository->add($userRole);
             $this->userRepository->add($user);
         }
     }
@@ -176,7 +181,7 @@ class UserHelper {
         foreach ($data as $row) {
             $request = new UserActivateRequest($row['username'], $row['activation_code'], 'User');
         }
-        $interactor = new UserActivateInteractor($this->userRepository, $this->roleRepository, $this->userRolesRepository);
+        $interactor = new UserActivateInteractor($this->userRepository, $this->roleRepository, $this->userRoleRepository);
         try {
             $this->response = $interactor($request);
         } catch (\Exception $e) {
