@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\User\ActivationMail\Create;
 
 use OpenTribes\Core\User\Repository as UserRepository;
-use OpenTribes\Core\Util\CodeGenerator;
+use OpenTribes\Core\Service\CodeGenerator;
 use OpenTribes\Core\User\ActivationMail\View\Mail;
 
 class Interactor{
@@ -14,7 +14,7 @@ class Interactor{
         $this->userRepository = $userRepository;
         $this->codeGenerator = $codeGenerator;
     }
-    public function __invoke(Request $request) {
+    public function execute(Request $request) {
         $code = $this->codeGenerator->create();
         $user = $request->getUser();
         $user->setActivationCode($code);
