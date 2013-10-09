@@ -6,7 +6,7 @@ use OpenTribes\Core\User\Repository as UserRepository;
 use OpenTribes\Core\User\Role\Repository as UserRoleRepository;
 use OpenTribes\Core\Role\Repository as RoleRepository;
 
-use OpenTribes\Core\User\Role as UserRoles;
+use OpenTribes\Core\User\Role as UserRole;
 
 use OpenTribes\Core\User\Activate\Exception\NotExists as NotExistsException;
 use OpenTribes\Core\User\Activate\Exception\Invalid as InvalidCodeException;
@@ -40,10 +40,10 @@ class Interactor extends BaseInteractor {
             throw new InvalidCodeException;
 
         $user->setActivationCode('');
-        $userRole = new UserRoles();
+        $userRole = new UserRole();
         $userRole->setRole($role);
         $userRole->setUser($user);
-       
+        $user->addRole($userRole);
 
         
 
