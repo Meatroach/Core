@@ -86,7 +86,11 @@ class UserHelper {
         $userRole = new UserRole();
         $userRole->setUser($this->user);
         $userRole->setRole($role);
+        
+        $this->user->addRole($userRole);
+        
         $this->userRoleRepository->add($userRole);
+        $this->userRepository->add($this->user);
     }
 
     /**
@@ -126,7 +130,7 @@ class UserHelper {
             $request = new UserCreateRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm'], 'Guest');
         }
 
-        $interactor = new UserCreateInteractor($this->userRepository, $this->roleRepository, $this->userRolesRepository, $this->hasher);
+        $interactor = new UserCreateInteractor($this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher);
         try {
             $this->response = $interactor($request);
         } catch (\Exception $e) {
@@ -148,7 +152,7 @@ class UserHelper {
         try {
             $this->response = $interactor($request);
             $authRequest = new UserAuthenticateRequest($this->response->getUser(), 'User');
-            $authInteractor = new UserAuthenticateInteractor($this->userRepository, $this->roleRepository, $this->userRolesRepository);
+            $authInteractor = new UserAuthenticateInteractor($this->userRepository, $this->roleRepository, $this->userRoleRepository);
         
             $this->response = $authInteractor($authRequest);
         
@@ -204,7 +208,7 @@ class UserHelper {
      */
     public function assertIsCreateResponse() {
         assertInstanceOf('\OpenTribes\Core\User\Create\Response', $this->response);
-        assertNotNull($this->userRepository->findById($this->response->getUser()->getId()));
+        assertNotNull($this->response->getUser());
     }
 
     /**
@@ -236,7 +240,7 @@ class UserHelper {
     public function assertHasRole($role) {
         $user = $this->response->getUser();
      
-        assertTrue($user->getRoles()->hasRole($role));
+        assertTrue($user->hasRole($role));
     }
    
 }
