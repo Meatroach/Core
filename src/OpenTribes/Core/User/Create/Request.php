@@ -10,7 +10,7 @@ class Request {
     protected $email;
     protected $emailConfirm;
     protected $rolename;
-    public function __construct($username = null, $password = null, $email = null,$passwordConfirm = null,$emailConfirm=null,$rolename=null) {
+    public function __construct($username, $password, $email,$passwordConfirm,$emailConfirm,$rolename) {
         $this->setUsername($username)
                 ->setEmail($email)
                 ->setPassword($password)
