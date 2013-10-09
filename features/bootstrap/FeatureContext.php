@@ -3,23 +3,21 @@
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
+    Behat\Behat\Exception\PendingException,
+    \Behat\Behat\Event\FeatureEvent;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
-
 use Symfony\Component\HttpKernel\Client;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
-
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
 /**
  * Behat context class.
  */
-
-class FeatureContext extends BehatContext{
+class FeatureContext extends BehatContext {
 
     protected $userHelper;
     protected $cityHelper;
@@ -33,14 +31,47 @@ class FeatureContext extends BehatContext{
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
-        xdebug_disable(); //disbale tracking lines with xdebug
-       
         // Initialize your context here
         $this->parameters = $parameters;
         $this->exceptionHelper = new ExceptionHelper();
         $this->userHelper = new UserHelper($this->exceptionHelper);
         $this->cityHelper = new CityHelper($this->exceptionHelper);
         $this->buildingHelper = new BuildingHelper($this->exceptionHelper);
+    }
+
+    /** @BeforeScenario */
+    public function before($event) {
+        $this->startProfile();
+    }
+
+    /** @AfterScenario */
+    public function after($event) {
+
+        $stepName = $event->getScenario()->getTitle();
+        $featureName = $event->getScenario()->getFeature()->getTitle();
+        $name = str_replace(' ', '-', $featureName . '::' . $stepName);
+        $this->endProfile($name);
+    }
+
+    private function startProfile() {
+        if (extension_loaded('xhprof')) {
+
+            include_once '/usr/share/php/xhprof_lib/utils/xhprof_lib.php';
+            include_once '/usr/share/php/xhprof_lib/utils/xhprof_runs.php';
+            xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY + XHPROF_FLAGS_NO_BUILTINS);
+        }
+    }
+
+    private function endProfile($name = 'OpenTribes-Core') {
+        if (extension_loaded('xhprof')) {
+
+            $xhprof_data = xhprof_disable();
+            if (!is_dir('/tmp/xhprof'))
+                mkdir('/tmp/xhprof');
+            $xhprof_runs = new XHProfRuns_Default();
+
+            $xhprof_runs->save_run($xhprof_data, $name);
+        }
     }
 
 //
@@ -58,6 +89,7 @@ class FeatureContext extends BehatContext{
      * @Given /^I\'m not registered user$/
      */
     public function iamNotRegisteredUser() {
+
         $this->userHelper->newUser();
     }
 
@@ -121,7 +153,7 @@ class FeatureContext extends BehatContext{
      * @Given /^user with follwoing informations:$/
      */
     public function userWithFollwoingInformations(TableNode $table) {
-        
+
         $this->userHelper->createDumpUser($table->getHash());
     }
 
@@ -247,7 +279,7 @@ class FeatureContext extends BehatContext{
      */
     public function iBuild($arg1) {
         $this->cityHelper->setTechTree($this->buildingHelper->getTechTree());
-     $this->cityHelper->build($arg1);
+        $this->cityHelper->build($arg1);
     }
 
     /**
@@ -263,42 +295,39 @@ class FeatureContext extends BehatContext{
     public function cityShouldHaveLessResources() {
         throw new PendingException();
     }
-        /**
+
+    /**
      * @Given /^following building costs:$/
      */
-    public function followingBuildingCosts(TableNode $table)
-    {
+    public function followingBuildingCosts(TableNode $table) {
         $this->buildingHelper->setBuildingCosts($table->getHash());
     }
-     /**
+
+    /**
      * @Given /^following building times:$/
      */
-    public function followingBuildingTimes(TableNode $table)
-    {
+    public function followingBuildingTimes(TableNode $table) {
         $this->buildingHelper->setBuildingBuildTimes($table->getHash());
     }
 
     /**
      * @Given /^building queue has (\d+) actions$/
      */
-    public function buildingQueueHasActions($arg1)
-    {
+    public function buildingQueueHasActions($arg1) {
         throw new PendingException();
     }
 
     /**
      * @Given /^city should have following resources:$/
      */
-    public function cityShouldHaveFollowingResources(TableNode $table)
-    {
+    public function cityShouldHaveFollowingResources(TableNode $table) {
         throw new PendingException();
     }
 
     /**
      * @Given /^I have a total of (\d+) aldermen$/
      */
-    public function citiesHaveAldermen($arg1)
-    {
+    public function citiesHaveAldermen($arg1) {
         throw new PendingException();
     }
 
