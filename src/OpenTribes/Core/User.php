@@ -11,6 +11,8 @@
 
 namespace OpenTribes\Core;
 
+use OpenTribes\Core\Message\Repository as MessageRepository;
+use OpenTribes\Core\Message;
 use OpenTribes\Core\User\Role as UserRole;
 use OpenTribes\Core\User\Exception\Username\Short as UserNameTooShortException;
 use OpenTribes\Core\User\Exception\Username\Long as UserNameTooLongException;
@@ -25,10 +27,12 @@ use OpenTribes\Core\User\Exception\Email\Invalid as EmailInvalidException;
  * User Entity class
  */
 class User extends Entity {
+
     /**
      * @var Integer $id 
      */
     protected $id;
+
     /**
      * @var String $username 
      */
@@ -63,7 +67,21 @@ class User extends Entity {
      * @var Array $userRole 
      */
     protected $userRole = array();
-    
+
+    /**
+     * @var \OpenTribes\Core\Message\Repository $messageRepository 
+     */
+    protected $messageRepository;
+
+    /**
+     * @param \OpenTribes\Core\Message\Repository $messageRepository
+     * @return \OpenTribes\Core\User
+     */
+    public function __construct(MessageRepository $messageRepository) {
+        $this->messageRepository = $messageRepository;
+        return $this;
+    }
+
     /**
      * @param String $code
      * @return \OpenTribes\Core\User
@@ -89,10 +107,15 @@ class User extends Entity {
      * @throws PasswordTooShortException
      */
     public function setPassword($password) {
-        if (in_array($password, array(null, false, '', array()), true))
-            throw new PasswordEmptyException;
-        if (strlen($password) < 6)
-            throw new PasswordTooShortException;
+        if (in_array($password, array(null, false, '', array()), true)) {
+            $this->messageRepository->add(new Message('Password is empty'));
+            return $this;
+        }
+
+        if (strlen($password) < 6) {
+            $this->messageRepository->add(new Message('Password is too short'));
+            return $this;
+        }
 
         $this->password = $password;
         return $this;
@@ -116,14 +139,26 @@ class User extends Entity {
      * @throws UserNameTooLongException
      */
     public function setUsername($username) {
-        if (in_array($username, array(null, false, '', array()), true))
-            throw new UserNameEmptyException;
-        if ((bool) preg_match('/^[-a-z0-9_]++$/iD', $username) === false)
-            throw new UserNameInvalidException;
-        if (strlen($username) < 4)
-            throw new UserNameTooShortException;
-        if (strlen($username) > 32)
-            throw new UserNameTooLongException;
+        if (in_array($username, array(null, false, '', array()), true)) {
+            $this->messageRepository->add(new Message('Username is empty'));
+            return $this;
+        }
+
+        if ((bool) preg_match('/^[-a-z0-9_]++$/iD', $username) === false) {
+            $this->messageRepository->add(new Message('Username is invalid'));
+            return $this;
+        }
+
+        if (strlen($username) < 4) {
+            $this->messageRepository->add(new Message('Username is too short'));
+            return $this;
+        }
+
+        if (strlen($username) > 32) {
+            $this->messageRepository->add(new Message('Username is too long'));
+            return $this;
+        }
+
 
         $this->username = $username;
         return $this;
@@ -136,13 +171,20 @@ class User extends Entity {
      * @throws EmailInvalidException
      */
     public function setEmail($email) {
-        if (in_array($email, array(null, false, '', array()), true))
-            throw new EmailEmptyException;
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-            throw new EmailInvalidException;
+        if (in_array($email, array(null, false, '', array()), true)) {
+            $this->messageRepository->add(new Message('E-Mail address is empty'));
+            return $this;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->messageRepository->add(new Message('E-Mail address is invalid'));
+            return $this;
+        }
+
         $this->email = $email;
         return $this;
     }
+
     /**
      * @param \OpenTribes\Core\User\Role $userRole
      * @return \OpenTribes\Core\User
@@ -151,11 +193,12 @@ class User extends Entity {
         $this->userRole[] = $userRole;
         return $this;
     }
+
     /**
      * @param Integer $id
      * @return \OpenTribes\Core\User
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = (int) $id;
         return $this;
     }
@@ -201,32 +244,33 @@ class User extends Entity {
     public function getLastAction() {
         return $this->lastAction;
     }
-    
+
     /**
      * @return Array $userRoles
      */
-    public function getRoles(){
+    public function getRoles() {
         return $this->userRole;
     }
-    
+
     /**
      * Checks if a user has a role with given name
      * @param String $name
      * @return boolean
      */
-    public function hasRole($name){
-        foreach($this->userRole as $userRole){
+    public function hasRole($name) {
+        foreach ($this->userRole as $userRole) {
             $role = $userRole->getRole();
-            if($role->getName() === $name) return true;
+            if ($role->getName() === $name)
+                return true;
         }
     }
-    
+
     /**
      * @return Integer $id
      */
-    public function getId(){
+    public function getId() {
         return $this->id;
     }
-  
+
 }
 

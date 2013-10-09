@@ -2,6 +2,7 @@
 
 namespace OpenTribes\Core\Mock\User;
 
+use OpenTribes\Core\Message\Repository as MessageRepositoryInterface;
 use OpenTribes\Core\User\Repository as UserRepositoryInterface;
 use OpenTribes\Core\User;
 
@@ -13,8 +14,8 @@ class Repository implements UserRepositoryInterface {
         $this->users[$user->getUsername()] = $user;
     }
 
-    public function create() {
-        return new User();
+    public function create(MessageRepositoryInterface $messageRepository) {
+        return new User($messageRepository);
     }
 
     public function findByEmail($email) {

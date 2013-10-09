@@ -8,6 +8,9 @@ use OpenTribes\Core\User\Role as UserRole;
 use OpenTribes\Core\Mock\User\Repository as UserRepository;
 use OpenTribes\Core\Mock\Role\Repository as RoleRepository;
 use OpenTribes\Core\Mock\User\Role\Repository as UserRoleRepository;
+use OpenTribes\Core\Mock\User\ActivationMail\Repository as ActivationMailRepository;
+use OpenTribes\Core\Mock\Message\Repository as MessageRepository;
+
 //Services
 use OpenTribes\Core\Mock\Service\Md5Hasher as Hasher;
 use OpenTribes\Core\Mock\Service\FileMailer as Mailer;
@@ -18,12 +21,14 @@ use OpenTribes\Core\User\Login\Request as UserLoginRequest;
 use OpenTribes\Core\User\Activate\Request as UserActivateRequest;
 use OpenTribes\Core\User\ActivationMail\Create\Request as ActivationMailCreateRequest;
 use OpenTribes\Core\User\ActivationMail\Send\Request as ActivationMailSendRequest;
+use OpenTribes\Core\User\Authenticate\Request as UserAuthenticateRequest;
 //Interactors
 use OpenTribes\Core\User\Create\Interactor as UserCreateInteractor;
 use OpenTribes\Core\User\Login\Interactor as UserLoginInteractor;
 use OpenTribes\Core\User\Activate\Interactor as UserActivateInteractor;
 use OpenTribes\Core\User\ActivationMail\Create\Interactor as ActivationMailCreateInteractor;
 use OpenTribes\Core\User\ActivationMail\Send\Interactor as ActivationMailSendInteractor;
+use OpenTribes\Core\User\Authenticate\Interactor as UserAuthenticateInteractor;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -37,12 +42,20 @@ class UserHelper {
     protected $exception = null;
     protected $mailer = null;
     protected $userRoleRepository;
-
+    protected $messageRepository;
+    protected $activationMailRepository;
+    //responses
+    protected $userCreateResponse = null;
+    protected $activationMailCreateResponse = null;
+    protected $activationMailSendResponse = null;
+    protected $userLoginResponse = null;
+    
     public function __construct(ExceptionHelper $exception) {
         $this->roleRepository = new RoleRepository();
         $this->userRepository = new UserRepository();
         $this->userRoleRepository = new UserRoleRepository();
-
+        $this->messageRepository = new MessageRepository();
+        $this->activationMailRepository = new ActivationMailRepository;
         $this->hasher = new Hasher();
         $this->codeGenerator = new Generator();
         $this->mailer = new Mailer();
@@ -72,7 +85,7 @@ class UserHelper {
      * Method to create empty user 
      */
     public function newUser() {
-        $this->user = new User();
+        $this->user = new User($this->messageRepository);
     }
 
     /**
@@ -100,7 +113,7 @@ class UserHelper {
     public function createDumpUser(array $data) {
 
         foreach ($data as $row) {
-            $user = new User();
+            $user = new User($this->messageRepository);
 
             foreach ($row as $field => $value) {
                 $user->{$field} = $value;
@@ -130,15 +143,23 @@ class UserHelper {
             $useCreateRequest = new UserCreateRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm'], 'Guest');
         }
 
-        $userCreateInteractor = new UserCreateInteractor($this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher);
-        $activationMailCreateInteractor = new ActivationMailCreateInteractor($this->userRepository, $this->codeGenerator);
+        /*
+          $request = new SendActivationMailRequest($this->response->getMailView(), $user->getEmail(), $user->getUsername(), 'Activate Account');
+          $interactor = new SendActivationMailInteractor($this->mailer);
+          $this->response = $interactor($request);
+         */
+        $userCreateInteractor = new UserCreateInteractor(
+                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator, $this->messageRepository
+        );
+        $activationMailCreateInteractor = new ActivationMailCreateInteractor($this->activationMailRepository);
 
         try {
-            $userCreateResponse = $userCreateInteractor->execute($useCreateRequest);
-            $activationMailCreateRequest = new ActivationMailCreateRequest($userCreateResponse->getUser());
-
-            $activationMailCreateResponse = $activationMailCreateInteractor->execute($activationMailCreateRequest);
-            $this->response = $userCreateResponse;
+            //create user account
+            $this->userCreateResponse = $userCreateInteractor->invoke($useCreateRequest);
+            $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse->getUser());
+            //Create activation Mail
+            $this->activationMailCreateResponse = $activationMailCreateInteractor->invoke($activationMailCreateRequest);
+            
         } catch (\Exception $e) {
             $this->exception->setException($e);
         }
@@ -174,11 +195,6 @@ class UserHelper {
         /**
          * @todo: have to refactor the activation mail part
          */
-        $user = $this->response->getMailView()->getUser();
-
-        $request = new SendActivationMailRequest($this->response->getMailView(), $user->getEmail(), $user->getUsername(), 'Activate Account');
-        $interactor = new SendActivationMailInteractor($this->mailer);
-        $this->response = $interactor($request);
         assertTrue($this->response->getResult());
     }
 
@@ -212,8 +228,8 @@ class UserHelper {
      * Assert Create Account was successfull
      */
     public function assertIsCreateResponse() {
-        assertInstanceOf('\OpenTribes\Core\User\Create\Response', $this->response);
-        assertNotNull($this->response->getUser());
+        assertInstanceOf('\OpenTribes\Core\User\Create\Response', $this->userCreateResponse);
+        assertNotNull($this->userCreateResponse->getUser());
     }
 
     /**
@@ -221,8 +237,8 @@ class UserHelper {
      */
     public function assertHasActivationCode() {
 
-        assertInstanceOf('\OpenTribes\Core\User\ActivationMail\Create\Response', $this->response);
-        assertNotNull($this->response->getMailView()->getUser()->getActivationCode());
+        assertInstanceOf('\OpenTribes\Core\User\ActivationMail\Create\Response', $this->activationMailCreateResponse);
+        assertNotNull($this->userCreateResponse->getUser()->getActivationCode());
     }
 
     /**

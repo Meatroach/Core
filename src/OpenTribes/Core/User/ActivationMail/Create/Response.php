@@ -2,24 +2,23 @@
 
 namespace OpenTribes\Core\User\ActivationMail\Create;
 
-use OpenTribes\Core\User\ActivationMail\View\Mail;
+use OpenTribes\Core\User\ActivationMail;
 
 class Response {
 
-    protected $mailView;
+    protected $activationMail;
 
-
-    public function __construct(Mail $mailView) {
-        $this->setMailView($mailView);
+    public function __construct(ActivationMail $activationMail) {
+        $this->setActivationMail($activationMail);
     }
 
-    public function setMailView(Mail $mailView) {
-        $this->mailView = $mailView;
+    public function setActivationMail(ActivationMail $activationMail) {
+        $this->activationMail = $activationMail;
         return $this;
     }
 
-    public function getMailView() {
-        return $this->mailView;
+    public function getActivationMail() {
+        return $this->activationMail;
     }
 
 }
