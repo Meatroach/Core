@@ -4,7 +4,7 @@ namespace OpenTribes\Core\User\Login;
 
 
 use OpenTribes\Core\User\Repository as UserRepository;
-use OpenTribes\Core\Util\Hasher;
+use OpenTribes\Core\Service\Hasher;
 use OpenTribes\Core\User\Login\Exception\NotExists as UserNotFoundException;
 use OpenTribes\Core\User\Login\Exception\Invalid as IncorrectPasswordException;
 use OpenTribes\Core\User\Login\Exception\NotActive as AccountNotActivatedException;
