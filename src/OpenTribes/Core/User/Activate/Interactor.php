@@ -28,7 +28,7 @@ class Interactor extends BaseInteractor {
         $this->roleRepository = $roleRepository;
     }
 
-    public function __invoke(Request $request) {
+    public function invoke(Request $request) {
         $user = $this->userRepository->findByUsername($request->getUsername());
        
         $role = $this->roleRepository->findByName($request->getRolename());
@@ -40,7 +40,7 @@ class Interactor extends BaseInteractor {
             throw new InvalidCodeException;
 
         $user->setActivationCode('');
-        $userRole = new UserRole();
+        $userRole = new UserRole($user,$role);
         $userRole->setRole($role);
         $userRole->setUser($user);
         $user->addRole($userRole);

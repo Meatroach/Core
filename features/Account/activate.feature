@@ -4,8 +4,8 @@ In order to login as registered user, I need to activate my account
 
 Scenario: activate valid account
     Given user with follwoing informations:
-       | username | password | email | activationCode |
-       | BlackScorp | 123456 | test@test.de | qwerty |
+       | id | username | password | email | activationCode |
+       | 1 | BlackScorp | 123456 | test@test.de | qwerty |
     And I'm not logged in
     And I have "Guest" roles
     When I activate account with following informations:
@@ -16,8 +16,8 @@ Scenario: activate valid account
 
 Scenario: invalid activation code
     Given user with follwoing informations:
-       | username | password | email | activationCode |
-       | BlackScorp | 123456 | test@test.de | qwerty |
+       | id | username | password | email | activationCode |
+       | 1 | BlackScorp | 123456 | test@test.de | qwerty |
     And I'm not logged in
     And I have "Guest" roles
     When I activate account with following informations:
@@ -27,8 +27,8 @@ Scenario: invalid activation code
    
 Scenario: user not exists
     Given user with follwoing informations:
-       | username | password | email | activationCode |
-       | BlackScorp | 123456 | test@test.de | qwerty |
+      | id | username | password | email | activationCode |
+      | 1 | BlackScorp | 123456 | test@test.de | qwerty |
     And I'm not logged in
     And I have "Guest" roles
     When I activate account with following informations:
@@ -38,8 +38,8 @@ Scenario: user not exists
 
 Scenario: user already active
     Given user with follwoing informations:
-       | username | password | email |
-       | BlackScorp | 123456 | test@test.de |
+      | id | username | password | email |
+      | 1 | BlackScorp | 123456 | test@test.de |
     And I'm not logged in
     And I have "Guest" roles
     When I activate account with following informations:

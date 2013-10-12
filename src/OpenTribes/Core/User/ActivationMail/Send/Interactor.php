@@ -8,13 +8,9 @@ class Interactor{
     public function __construct(Mailer $mailer) {
         $this->mailer = $mailer;
     }
-    public function __invoke(Request $request) {
-       
-        $this->mailer->setBody($request->getMailBody());
-        $this->mailer->setRecipient($request->getEmail());
-        $this->mailer->setSubject($request->getSubject());
+    public function invoke(Request $request) {
         
-        $result = $this->mailer->send();
+        $result = $this->mailer->send($request->getActivationMail());
         return new Response($result);
     }
 }

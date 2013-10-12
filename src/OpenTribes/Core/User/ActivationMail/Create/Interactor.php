@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\User\ActivationMail\Create;
 
 use OpenTribes\Core\User\ActivationMail\Repository as ActivationMailRepository;
-
+use OpenTribes\Core\User\ActivationMail;
 class Interactor{
     protected $activationMailRepository;
     
@@ -11,13 +11,12 @@ class Interactor{
         $this->activationMailRepository = $activationMailRepository;
     }
     public function invoke(Request $request) {
-        
+
         $user = $request->getUser();
-        $activationMail = $this->activationMailRepository->create();
-        $activationMail->setEmail($user->getEmail());
+        $activationMail = new ActivationMail();
+        $activationMail->setRecipient($user->getEmail());
         $activationMail->setActivationCode($user->getActivationCode());
-        $activationMail->setUsername($user->getUsername());
-        
+        $activationMail->setUsername($user->getUsername());      
         
        return new Response($activationMail);
     }

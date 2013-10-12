@@ -56,7 +56,7 @@ class Interactor {
      * @throws UserCreateException
      */
     public function invoke(Request $request) {
-
+        
         $this->userValidator
                 ->setUsername($request->getUsername())
                 ->setEmail($request->getEmail())
