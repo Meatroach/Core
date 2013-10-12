@@ -29,5 +29,16 @@ class Repository implements UserRepositoryInterface {
     public function findByUsername($username) {
         return isset($this->users[$username]) ? $this->users[$username] : null;
     }
-
+    public function emailExists($email) {
+        foreach($this->users as $user){
+            if($user->getEmail() === $email) return true;
+        }
+        return false;
+    }
+    public function getUniqueId() {
+        return count($this->users)+1;
+    }
+    public function usernameExists($username) {
+         return isset($this->users[$username]);
+    }
 }

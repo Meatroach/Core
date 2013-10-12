@@ -69,23 +69,16 @@ class UserHelper {
      * Method to Init base Roles
      */
     private function initRoles() {
-
-        $role = new Role();
-        $role->setName('Guest');
-        $this->roleRepository->add($role);
-        $role = new Role();
-        $role->setName('User');
-        $this->roleRepository->add($role);
-        $role = new Role();
-        $role->setName('Admin');
-        $this->roleRepository->add($role);
+        $this->roleRepository->add(new Role('Guest'));
+        $this->roleRepository->add(new Role('User'));
+        $this->roleRepository->add(new Role('Admin'));
     }
 
     /**
      * Method to create empty user 
      */
     public function newUser() {
-        $this->user = new User($this->messageRepository);
+        $this->user = new User(null,'Guest',null,null);
     }
 
     /**
@@ -96,12 +89,8 @@ class UserHelper {
 
         //Load guest role
         $role = $this->roleRepository->findByName($name);
-        $userRole = new UserRole();
-        $userRole->setUser($this->user);
-        $userRole->setRole($role);
-
+        $userRole = new UserRole($this->user,$role);
         $this->user->addRole($userRole);
-
         $this->userRoleRepository->add($userRole);
         $this->userRepository->add($this->user);
     }
@@ -113,17 +102,10 @@ class UserHelper {
     public function createDumpUser(array $data) {
 
         foreach ($data as $row) {
-            $user = new User($this->messageRepository);
-
-            foreach ($row as $field => $value) {
-                $user->{$field} = $value;
-            }
-            //hash password
-            $user->setPasswordHash($this->hasher->hash($user->getPassword()));
+            $user = new User($row['id'],$row['username'],$this->hasher->hash($row['password']),$row['email']);
             $role = $this->roleRepository->findByName('Guest');
-            $userRole = new UserRole();
-            $userRole->setRole($role);
-            $userRole->setUser($user);
+            $userRole = new UserRole($user,$role);
+            $user->addRole($userRole);
             $this->userRoleRepository->add($userRole);
             $this->userRepository->add($user);
         }
@@ -156,7 +138,7 @@ class UserHelper {
         try {
             //create user account
             $this->userCreateResponse = $userCreateInteractor->invoke($useCreateRequest);
-            $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse->getUser());
+            $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse);
             //Create activation Mail
             $this->activationMailCreateResponse = $activationMailCreateInteractor->invoke($activationMailCreateRequest);
             
@@ -245,7 +227,9 @@ class UserHelper {
      * Assert account is activated
      */
     public function assertActivated() {
+        
         $user = $this->response->getUser();
+      
         assertInstanceOf('\OpenTribes\Core\User\Activate\Response', $this->response);
         assertEmpty($user->getActivationCode());
     }

@@ -1,20 +1,29 @@
 <?php
 
+/**
+ * This file is part of the "Open Tribes" Core Module.
+ *
+ * @package    OpenTribes\Core
+ * @author     Witali Mik <mik@blackscorp.de>
+ * @copyright  (c) 2013 BlackScorp Games
+ * @license    For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace OpenTribes\Core\User\Create;
 
-use OpenTribes\Core\Message;
+use OpenTribes\Core\User;
 use OpenTribes\Core\User\Role as UserRole;
-
 use OpenTribes\Core\User\Repository as UserRepository;
 use OpenTribes\Core\Role\Repository as RolesRepository;
 use OpenTribes\Core\User\Role\Repository as UserRoleRepository;
-use OpenTribes\Core\Message\Repository as MessageRepository;
-
 use OpenTribes\Core\Service\Hasher;
 use OpenTribes\Core\Service\CodeGenerator;
-
+use OpenTribes\Core\User\Validator as UserValidator;
 use OpenTribes\Core\User\Create\Exception as UserCreateException;
 
+/**
+ * Interactor used to create a user
+ */
 class Interactor {
 
     private $userRepository = null;
@@ -22,44 +31,53 @@ class Interactor {
     private $userRolesRepository = null;
     private $hasher = null;
     private $codeGenerator = null;
-    private $messageRepository = null;
+    private $userValidator = null;
 
-    public function __construct(UserRepository $userRepository, RolesRepository $rolesRepo, UserRoleRepository $userRolesRepository, Hasher $hasher, CodeGenerator $codeGenerator, MessageRepository $messageRepository) {
+    /**
+     * @param \OpenTribes\Core\User\Repository $userRepository
+     * @param \OpenTribes\Core\Role\Repository $rolesRepo
+     * @param \OpenTribes\Core\User\Role\Repository $userRolesRepository
+     * @param \OpenTribes\Core\Service\Hasher $hasher
+     * @param \OpenTribes\Core\Service\CodeGenerator $codeGenerator
+     * @param \OpenTribes\Core\User\Validator $userValidator
+     */
+    public function __construct(UserRepository $userRepository, RolesRepository $rolesRepo, UserRoleRepository $userRolesRepository, Hasher $hasher, CodeGenerator $codeGenerator, UserValidator $userValidator) {
         $this->userRepository = $userRepository;
         $this->rolesRepository = $rolesRepo;
         $this->userRolesRepository = $userRolesRepository;
         $this->hasher = $hasher;
         $this->codeGenerator = $codeGenerator;
-        $this->messageRepository = $messageRepository;
+        $this->userValidator = $userValidator;
     }
 
+    /**
+     * @param \OpenTribes\Core\User\Create\Request $request
+     * @return \OpenTribes\Core\User\Create\Response
+     * @throws UserCreateException
+     */
     public function invoke(Request $request) {
-        $user = $this->userRepository->create($this->messageRepository);
 
-        $user->setPassword($request->getPassword());
-        $user->setUsername($request->getUsername());
-        $user->setEmail($request->getEmail());
+        $this->userValidator
+                ->setUsername($request->getUsername())
+                ->setEmail($request->getEmail())
+                ->setPassword($request->getPassword())
+                ->setPasswordConfirmed($request->getPassword() === $request->getPasswordConfirm())
+                ->setEmailConfirmed($request->getEmail() === $request->getEmailConfirm())
+                ->setIsUniqueUsername($this->userRepository->usernameExists($request->getUsername()))
+                ->setIsUniqueEmail($this->userRepository->emailExists($request->getEmail()));
 
-        if ($this->userRepository->findByUsername($request->getUsername()))
-            $this->messageRepository->add(new Message('Username already exists'));
-        if ($this->userRepository->findByEmail($request->getEmail()))
-            $this->messageRepository->add(new Message('Email address already exists'));
+        if (!$this->userValidator->isValid()) {
+            throw new UserCreateException('Cannot create User', $this->userValidator->getErrors());
+        }
+        $id = $this->userRepository->getUniqueId();
+        $passwordHash = $this->hasher->hash($request->getPassword());
+        $activationCode = $this->codeGenerator->create();
 
-        if ($request->getEmail() !== $request->getEmailConfirm())
-            $this->messageRepository->add(new Message('email confirm not match email'));
-        if ($request->getPassword() !== $request->getPasswordConfirm())
-            $this->messageRepository->add(new Message('password confirm not match password'));
-
-        if (count($this->messageRepository->findAll()) > 0)
-            throw new UserCreateException();
-
+        $user = new User($id, $request->getUsername(), $passwordHash, $request->getEmail());
+        $user->setActivationCode($activationCode);
 
         $role = $this->rolesRepository->findByName($request->getRoleName());
-        $user->setActivationCode($this->codeGenerator->create());
-        $user->setPasswordHash($this->hasher->hash($request->getPassword()));
-        $userRole = new UserRole();
-        $userRole->setRole($role);
-        $userRole->setUser($user);
+        $userRole = new UserRole($user, $role);
         $user->addRole($userRole);
 
         $this->userRepository->add($user);

@@ -10,4 +10,7 @@ interface Repository {
     public function findByEmail($email);
     public function add(User $user);
     public function create(MessageRepository $messageRepository);
+    public function emailExists($email);
+    public function usernameExists($username);
+    public function getUniqueId();
 }

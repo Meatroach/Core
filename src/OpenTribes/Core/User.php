@@ -11,17 +11,7 @@
 
 namespace OpenTribes\Core;
 
-use OpenTribes\Core\Message\Repository as MessageRepository;
-use OpenTribes\Core\Message;
 use OpenTribes\Core\User\Role as UserRole;
-use OpenTribes\Core\User\Exception\Username\Short as UserNameTooShortException;
-use OpenTribes\Core\User\Exception\Username\Long as UserNameTooLongException;
-use OpenTribes\Core\User\Exception\Username\Invalid as UserNameInvalidException;
-use OpenTribes\Core\User\Exception\Username\EmptyException as UserNameEmptyException;
-use OpenTribes\Core\User\Exception\Password\EmptyException as PasswordEmptyException;
-use OpenTribes\Core\User\Exception\Password\Short as PasswordTooShortException;
-use OpenTribes\Core\User\Exception\Email\EmptyException as EmailEmptyException;
-use OpenTribes\Core\User\Exception\Email\Invalid as EmailInvalidException;
 
 /**
  * User Entity class
@@ -69,16 +59,18 @@ class User extends Entity {
     protected $userRole = array();
 
     /**
-     * @var \OpenTribes\Core\Message\Repository $messageRepository 
-     */
-    protected $messageRepository;
-
-    /**
-     * @param \OpenTribes\Core\Message\Repository $messageRepository
+     * @param Integer $id
+     * @param String $username
+     * @param String $passwordHash
+     * @param String $email
      * @return \OpenTribes\Core\User
      */
-    public function __construct(MessageRepository $messageRepository) {
-        $this->messageRepository = $messageRepository;
+    public function __construct($id, $username, $passwordHash, $email) {
+        $this
+                ->setId($id)
+                ->setUsername($username)
+                ->setPasswordHash($passwordHash)
+                ->setEmail($email);
         return $this;
     }
 
@@ -103,20 +95,8 @@ class User extends Entity {
     /**
      * @param String $password
      * @return \OpenTribes\Core\User
-     * @throws PasswordEmptyException
-     * @throws PasswordTooShortException
      */
     public function setPassword($password) {
-        if (in_array($password, array(null, false, '', array()), true)) {
-            $this->messageRepository->add(new Message('Password is empty'));
-            return $this;
-        }
-
-        if (strlen($password) < 6) {
-            $this->messageRepository->add(new Message('Password is too short'));
-            return $this;
-        }
-
         $this->password = $password;
         return $this;
     }
@@ -133,33 +113,8 @@ class User extends Entity {
     /**
      * @param String $username
      * @return \OpenTribes\Core\User
-     * @throws UserNameEmptyException
-     * @throws UserNameInvalidException
-     * @throws UserNameTooShortException
-     * @throws UserNameTooLongException
      */
     public function setUsername($username) {
-        if (in_array($username, array(null, false, '', array()), true)) {
-            $this->messageRepository->add(new Message('Username is empty'));
-            return $this;
-        }
-
-        if ((bool) preg_match('/^[-a-z0-9_]++$/iD', $username) === false) {
-            $this->messageRepository->add(new Message('Username is invalid'));
-            return $this;
-        }
-
-        if (strlen($username) < 4) {
-            $this->messageRepository->add(new Message('Username is too short'));
-            return $this;
-        }
-
-        if (strlen($username) > 32) {
-            $this->messageRepository->add(new Message('Username is too long'));
-            return $this;
-        }
-
-
         $this->username = $username;
         return $this;
     }
@@ -167,20 +122,8 @@ class User extends Entity {
     /**
      * @param String $email
      * @return \OpenTribes\Core\User
-     * @throws EmailEmptyException
-     * @throws EmailInvalidException
      */
     public function setEmail($email) {
-        if (in_array($email, array(null, false, '', array()), true)) {
-            $this->messageRepository->add(new Message('E-Mail address is empty'));
-            return $this;
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->messageRepository->add(new Message('E-Mail address is invalid'));
-            return $this;
-        }
-
         $this->email = $email;
         return $this;
     }
@@ -246,7 +189,7 @@ class User extends Entity {
     }
 
     /**
-     * @return Array $userRoles
+     * @return \Array $userRoles
      */
     public function getRoles() {
         return $this->userRole;
@@ -255,7 +198,7 @@ class User extends Entity {
     /**
      * Checks if a user has a role with given name
      * @param String $name
-     * @return boolean
+     * @return \Boolean
      */
     public function hasRole($name) {
         foreach ($this->userRole as $userRole) {
@@ -266,7 +209,7 @@ class User extends Entity {
     }
 
     /**
-     * @return Integer $id
+     * @return \Integer $id
      */
     public function getId() {
         return $this->id;
