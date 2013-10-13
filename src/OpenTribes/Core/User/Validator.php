@@ -20,6 +20,7 @@ abstract class Validator {
 
     public function setEmail($email) {
         $this->email = $email;
+        return $this;
     }
 
     public function setPassword($password) {

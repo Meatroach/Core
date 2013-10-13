@@ -23,7 +23,7 @@ class FeatureContext extends BehatContext {
     protected $cityHelper;
     protected $exceptionHelper;
     protected $buildingHelper;
-
+    protected $messageHelper;
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -34,7 +34,8 @@ class FeatureContext extends BehatContext {
         // Initialize your context here
         $this->parameters = $parameters;
         $this->exceptionHelper = new ExceptionHelper();
-        $this->userHelper = new UserHelper($this->exceptionHelper);
+        $this->messageHelper = new MessageHelper();
+        $this->userHelper = new UserHelper($this->messageHelper);
         $this->cityHelper = new CityHelper($this->exceptionHelper);
         $this->buildingHelper = new BuildingHelper($this->exceptionHelper);
     }
@@ -104,7 +105,7 @@ class FeatureContext extends BehatContext {
      * @When /^I register with following informations:$/
      */
     public function iRegisterWithFollowingInformations(TableNode $table) {
-        $this->userHelper->create($table->getHash());
+        $this->userHelper->createAccount($table->getHash());
     }
 
     /**
@@ -183,6 +184,27 @@ class FeatureContext extends BehatContext {
      */
     public function iShouldHaveRoles($arg1) {
         $this->userHelper->assertHasRole($arg1);
+    }
+
+    /**
+     * @Then /^the registration should fail$/
+     */
+    public function theRegistrationShouldFail() {
+        $this->userHelper->asserRegistrationFailed();
+    }
+    /**
+     * @Then /^account activation should fail$/
+     */
+    public function accountActivationShouldFail()
+    {
+        $this->userHelper->assertActivationFailed();
+    }
+
+    /**
+     * @Given /^I should see a message "([^"]*)"$/
+     */
+    public function iShouldSeeAMessage($arg1) {
+       $this->messageHelper->checkMessage($arg1);
     }
 
     /**
@@ -321,13 +343,6 @@ class FeatureContext extends BehatContext {
      * @Given /^city should have following resources:$/
      */
     public function cityShouldHaveFollowingResources(TableNode $table) {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^I have a total of (\d+) aldermen$/
-     */
-    public function citiesHaveAldermen($arg1) {
         throw new PendingException();
     }
 

@@ -2,6 +2,7 @@
 
 namespace OpenTribes\Core\User\ActivationMail\Send;
 use OpenTribes\Core\User\ActivationMail\Create\Response as ActivationMailCreateResponse;
+use OpenTribes\Core\User\ActivationMail;
 class Request{
     protected $activationMail;
 

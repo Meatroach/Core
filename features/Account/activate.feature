@@ -23,7 +23,8 @@ Scenario: invalid activation code
     When I activate account with following informations:
         | username | activation_code |
         | BlackScorp | 123456  | 
-    Then I should see "activation code is invalid"
+    Then account activation should fail
+    And I should see a message "activation code is invalid"
    
 Scenario: user not exists
     Given user with follwoing informations:
@@ -34,7 +35,8 @@ Scenario: user not exists
     When I activate account with following informations:
         | username | activation_code |
         | Dummy | 123456  | 
-    Then I should see "account not exists"
+    Then account activation should fail
+    And I should see "account not exists"
 
 Scenario: user already active
     Given user with follwoing informations:
@@ -45,4 +47,5 @@ Scenario: user already active
     When I activate account with following informations:
         | username | activation_code |
         | BlackScorp | 123456  | 
-    Then I should see "account already active"
+    Then account activation should fail
+    And I should see "account already active"

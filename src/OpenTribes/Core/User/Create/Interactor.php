@@ -67,7 +67,10 @@ class Interactor {
                 ->setIsUniqueEmail($this->userRepository->emailExists($request->getEmail()));
 
         if (!$this->userValidator->isValid()) {
-            throw new UserCreateException('Cannot create User', $this->userValidator->getErrors());
+        
+            $userCreateException = new UserCreateException('Cannot create User');
+            $userCreateException->setMessages( $this->userValidator->getErrors());
+            throw $userCreateException;
         }
         $id = $this->userRepository->getUniqueId();
         $passwordHash = $this->hasher->hash($request->getPassword());

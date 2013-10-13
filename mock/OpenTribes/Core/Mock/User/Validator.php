@@ -57,7 +57,7 @@ class Validator extends UserValidator {
         }
 
         if (!$this->emailConfirmed) {
-            $this->errors[] = 'email confirm is not same as email';
+            $this->errors[] = 'email confirm does not match the email';
             $this->isValid = false;
         }
         if (!$this->isUniqueEmail) {
@@ -77,7 +77,7 @@ class Validator extends UserValidator {
             $this->isValid = false;
         }
         if (!$this->passwordConfirmed) {
-            $this->errors[] = 'password confirm is not same as password';
+            $this->errors[] = 'password confirm does not match the password';
             $this->isValid = false;
         }
         return $this;

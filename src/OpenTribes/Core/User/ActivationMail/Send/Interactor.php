@@ -2,7 +2,7 @@
 
 namespace OpenTribes\Core\User\ActivationMail\Send;
 
-use OpenTribes\Core\Util\Mailer;
+use OpenTribes\Core\Service\Mailer;
 class Interactor{
     protected $mailer;
     public function __construct(Mailer $mailer) {

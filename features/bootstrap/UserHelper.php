@@ -28,6 +28,10 @@ use OpenTribes\Core\User\Activate\Interactor as UserActivateInteractor;
 use OpenTribes\Core\User\ActivationMail\Create\Interactor as ActivationMailCreateInteractor;
 use OpenTribes\Core\User\ActivationMail\Send\Interactor as ActivationMailSendInteractor;
 use OpenTribes\Core\User\Authenticate\Interactor as UserAuthenticateInteractor;
+//Validators
+use OpenTribes\Core\Mock\User\Validator as UserValidator;
+//Exceptions
+use OpenTribes\Core\User\Create\Exception as UserCreateException;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -43,6 +47,8 @@ class UserHelper {
     protected $userRoleRepository;
     protected $messageRepository;
     protected $activationMailRepository;
+    protected $userValidator;
+    protected $messageHelper;
     //responses
     protected $userCreateResponse = null;
     protected $userActivateResponse = null;
@@ -50,16 +56,16 @@ class UserHelper {
     protected $activationMailSendResponse = null;
     protected $userLoginResponse = null;
 
-    public function __construct(ExceptionHelper $exception) {
+    public function __construct(MessageHelper $messageHelper) {
         $this->roleRepository = new RoleRepository();
         $this->userRepository = new UserRepository();
         $this->userRoleRepository = new UserRoleRepository();
-        $this->messageRepository = new MessageRepository();
         $this->activationMailRepository = new ActivationMailRepository;
         $this->hasher = new Hasher();
         $this->codeGenerator = new Generator();
         $this->mailer = new Mailer();
-        $this->exception = $exception;
+        $this->userValidator = new UserValidator();
+        $this->messageHelper = $messageHelper;
         $this->initRoles();
     }
 
@@ -120,30 +126,34 @@ class UserHelper {
      * Method to create a user with an interactor
      * @param array $data Userdata
      */
-    public function create(array $data) {
+    public function createAccount(array $data) {
         foreach ($data as $row) {
-            $useCreateRequest = new UserCreateRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm'], 'Guest');
+            $userCreateRequest = new UserCreateRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm'], 'Guest');
         }
 
 
         $userCreateInteractor = new UserCreateInteractor(
-                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator, $this->messageRepository
+                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator, $this->userValidator
         );
         $activationMailCreateInteractor = new ActivationMailCreateInteractor($this->activationMailRepository);
         $activationMailSendInteractor = new ActivationMailSendInteractor($this->mailer);
 
         try {
             //create user account
-            $this->userCreateResponse = $userCreateInteractor->invoke($useCreateRequest);
-            
+            $this->userCreateResponse = $userCreateInteractor->invoke($userCreateRequest);
+
             //Create activation Mail
             $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse);
             $this->activationMailCreateResponse = $activationMailCreateInteractor->invoke($activationMailCreateRequest);
             //Modify and send Activation Mail
             $activationMailSendRequest = new ActivationMailSendRequest($this->activationMailCreateResponse);
             $this->activationMailSendResponse = $activationMailSendInteractor->invoke($activationMailSendRequest);
-        } catch (\Exception $e) {
-            $this->exception->setException($e);
+        } catch (UserCreateException $e) {
+          
+            $this->exception = $e;
+            $this->messageHelper->setMessages($e->getMessages());
+        } catch (\Exception $e){
+            
         }
     }
 
@@ -165,7 +175,7 @@ class UserHelper {
 
             $this->response = $authInteractor($authRequest);
         } catch (\Exception $e) {
-            $this->exception->setException($e);
+            $this->exception = $e;
         }
     }
 
@@ -189,11 +199,18 @@ class UserHelper {
         try {
             $this->userActivateResponse = $userActivateInteractor->invoke($userActivateRequest);
         } catch (\Exception $e) {
-            $this->exception->setException($e);
+            $this->exception = $e;
         }
     }
 
     //Assertion Methods for testing
+    public function asserRegistrationFailed() {
+        assertNull($this->userCreateResponse);
+    }
+    public function assertActivationFailed(){
+        assertNull($this->userActivateResponse);
+    }
+
     /**
      * Assert Login was successfull
      */
