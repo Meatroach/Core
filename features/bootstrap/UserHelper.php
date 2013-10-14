@@ -217,7 +217,7 @@ class UserHelper {
     }
 
     /**
-     * Assert an activation code mail was created with an interactor
+     * Assert an activation code mail was created
      */
     public function assertHasActivationCode() {
 
