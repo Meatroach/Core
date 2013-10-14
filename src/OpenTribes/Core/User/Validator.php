@@ -2,60 +2,15 @@
 
 namespace OpenTribes\Core\User;
 
-abstract class Validator {
-
-    protected $errors;
-    protected $username;
-    protected $email;
-    protected $password;
-    protected $isUniqueUsername;
-    protected $isUniqueEmail;
-    protected $passwordConfirmed;
-    protected $emailConfirmed;
-
-    public function setUsername($username) {
-        $this->username = $username;
-        return $this;
+use OpenTribes\Core\Validator as BaseValidator;
+use OpenTribes\Core\UserValue;
+abstract class Validator extends BaseValidator{
+    protected $userValue;
+    public function __construct(UserValue $userValue) {
+        $this->userValue = $userValue;
     }
-
-    public function setEmail($email) {
-        $this->email = $email;
-        return $this;
+    public function getUserValue(){
+        return $this->userValue;
     }
-
-    public function setPassword($password) {
-        $this->password = $password;
-        return $this;
-    }
-
-    public function setIsUniqueUsername($isUniqueUsername) {
-        $this->isUniqueUsername = $isUniqueUsername;
-        return $this;
-    }
-
-    public function setIsUniqueEmail($isUniqueEmail) {
-        $this->isUniqueEmail = $isUniqueEmail;
-        return $this;
-    }
-
-    public function setPasswordConfirmed($passwordConfirmed) {
-        $this->passwordConfirmed = $passwordConfirmed;
-        return $this;
-    }
-
-    public function setEmailConfirmed($emailConfirmed) {
-        $this->emailConfirmed = $emailConfirmed;
-        return $this;
-    }
-
-    abstract public function check();
-
-    public function isValid() {
-        return $this->check();
-    }
-
-    public function getErrors() {
-        return $this->errors;
-    }
-
+    
 }

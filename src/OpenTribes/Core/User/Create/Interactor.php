@@ -31,7 +31,6 @@ class Interactor {
     private $userRolesRepository = null;
     private $hasher = null;
     private $codeGenerator = null;
-    private $userValidator = null;
 
     /**
      * @param \OpenTribes\Core\User\Repository $userRepository
@@ -41,42 +40,27 @@ class Interactor {
      * @param \OpenTribes\Core\Service\CodeGenerator $codeGenerator
      * @param \OpenTribes\Core\User\Validator $userValidator
      */
-    public function __construct(UserRepository $userRepository, RolesRepository $rolesRepo, UserRoleRepository $userRolesRepository, Hasher $hasher, CodeGenerator $codeGenerator, UserValidator $userValidator) {
+    public function __construct(UserRepository $userRepository, RolesRepository $rolesRepo, UserRoleRepository $userRolesRepository, Hasher $hasher, CodeGenerator $codeGenerator) {
         $this->userRepository = $userRepository;
         $this->rolesRepository = $rolesRepo;
         $this->userRolesRepository = $userRolesRepository;
         $this->hasher = $hasher;
         $this->codeGenerator = $codeGenerator;
-        $this->userValidator = $userValidator;
     }
 
     /**
      * @param \OpenTribes\Core\User\Create\Request $request
      * @return \OpenTribes\Core\User\Create\Response
-     * @throws UserCreateException
      */
     public function invoke(Request $request) {
-        
-        $this->userValidator
-                ->setUsername($request->getUsername())
-                ->setEmail($request->getEmail())
-                ->setPassword($request->getPassword())
-                ->setPasswordConfirmed($request->getPassword() === $request->getPasswordConfirm())
-                ->setEmailConfirmed($request->getEmail() === $request->getEmailConfirm())
-                ->setIsUniqueUsername($this->userRepository->usernameExists($request->getUsername()))
-                ->setIsUniqueEmail($this->userRepository->emailExists($request->getEmail()));
+        $value = $request->getUserValue();
 
-        if (!$this->userValidator->isValid()) {
-        
-            $userCreateException = new UserCreateException('Cannot create User');
-            $userCreateException->setMessages( $this->userValidator->getErrors());
-            throw $userCreateException;
-        }
+      
         $id = $this->userRepository->getUniqueId();
-        $passwordHash = $this->hasher->hash($request->getPassword());
+        $passwordHash = $this->hasher->hash($value->getPassword());
         $activationCode = $this->codeGenerator->create();
 
-        $user = new User($id, $request->getUsername(), $passwordHash, $request->getEmail());
+        $user = new User($id, $value->getUsername(), $passwordHash, $value->getEmail());
         $user->setActivationCode($activationCode);
 
         $role = $this->rolesRepository->findByName($request->getRoleName());

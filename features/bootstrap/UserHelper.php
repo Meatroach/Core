@@ -9,7 +9,6 @@ use OpenTribes\Core\Mock\User\Repository as UserRepository;
 use OpenTribes\Core\Mock\Role\Repository as RoleRepository;
 use OpenTribes\Core\Mock\User\Role\Repository as UserRoleRepository;
 use OpenTribes\Core\Mock\User\ActivationMail\Repository as ActivationMailRepository;
-use OpenTribes\Core\Mock\Message\Repository as MessageRepository;
 //Services
 use OpenTribes\Core\Mock\Service\Md5Hasher as Hasher;
 use OpenTribes\Core\Mock\Service\FileMailer as Mailer;
@@ -32,6 +31,9 @@ use OpenTribes\Core\User\Authenticate\Interactor as UserAuthenticateInteractor;
 use OpenTribes\Core\Mock\User\Validator as UserValidator;
 //Exceptions
 use OpenTribes\Core\User\Create\Exception as UserCreateException;
+
+//Value Objects
+use OpenTribes\Core\User\UserValue;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -64,7 +66,7 @@ class UserHelper {
         $this->hasher = new Hasher();
         $this->codeGenerator = new Generator();
         $this->mailer = new Mailer();
-        $this->userValidator = new UserValidator();
+        $this->userValidator = new UserValidator(new UserValue);
         $this->messageHelper = $messageHelper;
         $this->initRoles();
     }
@@ -128,32 +130,34 @@ class UserHelper {
      */
     public function createAccount(array $data) {
         foreach ($data as $row) {
-            $userCreateRequest = new UserCreateRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm'], 'Guest');
+            $userCreateValidationRequest = new UserCreateValidationRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm']);
+            
         }
-
+        $userCreateValidationInteractor = new UserCreateValidationInteractor($this->userRepository,$this->userValidator);
 
         $userCreateInteractor = new UserCreateInteractor(
-                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator, $this->userValidator
+                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator
         );
         $activationMailCreateInteractor = new ActivationMailCreateInteractor($this->activationMailRepository);
         $activationMailSendInteractor = new ActivationMailSendInteractor($this->mailer);
 
         try {
+            $this->userCreateValidationResponse = $userCreateValidationInteractor->invoke($userCreateValidationRequest);
             //create user account
+            $userCreateRequest = new UserCreateRequest($this->userCreateValidationResponse, 'Guest');
             $this->userCreateResponse = $userCreateInteractor->invoke($userCreateRequest);
-
             //Create activation Mail
             $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse);
             $this->activationMailCreateResponse = $activationMailCreateInteractor->invoke($activationMailCreateRequest);
             //Modify and send Activation Mail
             $activationMailSendRequest = new ActivationMailSendRequest($this->activationMailCreateResponse);
             $this->activationMailSendResponse = $activationMailSendInteractor->invoke($activationMailSendRequest);
-        } catch (UserCreateException $e) {
+        } catch (\InvalidArgumentException $e) {
           
             $this->exception = $e;
-            $this->messageHelper->setMessages($e->getMessages());
+            $this->messageHelper->setMessages($this->userValidator->getErrors());
         } catch (\Exception $e){
-            
+            $this->exception = $e;
         }
     }
 
