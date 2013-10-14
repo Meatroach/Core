@@ -8,7 +8,7 @@ class Request extends BaseRequest{
     protected $username;
     protected $code;
     protected $rolename;
-    public function __construct($username = null,$code = null,$rolename = null) {
+    public function __construct($username,$code,$rolename) {
        $this->setUsername($username)
                ->setCode($code)
                ->setRolename($rolename);

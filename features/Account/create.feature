@@ -18,7 +18,8 @@ Scenario: username empty
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         |  | 123456  | 123456 | test@test.de | test@test.de |
-    Then I should see "username is empty"
+    Then the registration should fail
+    And I should see a message "Username is empty"
 
 Scenario: username too short
     Given I'm not registered user
@@ -26,7 +27,8 @@ Scenario: username too short
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | b | 123456  | 123456 | test@test.de | test@test.de |
-    Then I should see "username is too short"
+    Then the registration should fail
+    And I should see a message "Username must contain at least 4 characters"
 
 Scenario: username too long
     Given I'm not registered user
@@ -34,7 +36,8 @@ Scenario: username too long
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | blackscorpblackscorpblackscorpblackscorp | 123456  | 123456 | test@test.de | test@test.de |
-    Then I should see "username is too long"
+    Then the registration should fail
+    And I should see a message "Username can not be longer than 32 characters"
 
 Scenario: username has invalid character
     Given I'm not registered user
@@ -42,18 +45,20 @@ Scenario: username has invalid character
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | b@ckscorp! | 123456  | 123456 | test@test.de | test@test.de |
-    Then I should see "username has invalid character"
+    Then the registration should fail
+    And I should see a message "Username has invalid characters"
 
 Scenario: username already exists
     Given I'm not registered user
     And I have "Guest" roles
     And user with follwoing informations:
-       | username | password | email |
-       | BlackScorp | 123456 | test@test.de |
+       | id | username | password | email |
+       | 1 | BlackScorp | 123456 | test@test.de |
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | BlackScorp | 123456  | 123456 | test@test.de | test@test.de |
-    Then I should see "username already exists"
+    Then the registration should fail
+    And I should see a message "Username already exists"
 
 Scenario: empty email
     Given I'm not registered user
@@ -61,18 +66,20 @@ Scenario: empty email
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | BlackScorp | 132456 | 132456 |  | test@test.de |
-    Then I should see "email is empty"
+    Then the registration should fail
+    And I should see a message "email is empty"
 
 Scenario: email already exists
     Given I'm not registered user
     And I have "Guest" roles
     And user with follwoing informations:
-       | username | password | email |
-       | BlackScorp | 123456 | test@test.de |
+      | id | username | password | email |
+      | 1 | BlackScorp | 123456 | test@test.de |
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | Black | 123456  | 123456 | test@test.de | test@test.de |
-    Then I should see "email already exists"
+    Then the registration should fail
+    And I should see a message "email already exists"
 
 Scenario: email is invalid
     Given I'm not registered user
@@ -80,7 +87,8 @@ Scenario: email is invalid
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | blackscorp | 123456  | 123456 | test@test | test@test.de |
-    Then I should see "email is invalid"
+    Then the registration should fail
+    And I should see a message "email is invalid"
 
 Scenario: empty password
     Given I'm not registered user
@@ -88,7 +96,8 @@ Scenario: empty password
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | BlackScorp |  | 132456 | test@test.de | test@test.de |
-    Then I should see "password is empty"
+    Then the registration should fail
+    And I should see a message "Password is empty"
 
 Scenario: password too short
     Given I'm not registered user
@@ -96,7 +105,8 @@ Scenario: password too short
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | BlackScorp | 123 | 132456 | test@test.de | test@test.de |
-    Then I should see "password is too short"
+    Then the registration should fail
+    And I should see "Password must contain at least 6 characters"
 
 Scenario: incorrect password confirm 
     Given I'm not registered user
@@ -104,7 +114,8 @@ Scenario: incorrect password confirm
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | BlackScorp | 123456  | 132456 | test@test.de | test@test.de |
-    Then I should see "password confirm does not match the password"
+    Then the registration should fail
+    And I should see "password confirm does not match the password"
 
 Scenario: incorrect email confirm 
     Given I'm not registered user
@@ -112,4 +123,5 @@ Scenario: incorrect email confirm
     When I register with following informations:
         | username | password | password_confirm | email | email_confirm |
         | BlackScorp | 123456  | 123456 | test@test.de | test@test1.de |
-    Then I should see "email confirm does not match the email"
+    Then the registration should fail
+    And I should see "email confirm does not match the email"

@@ -9,8 +9,6 @@
  */
 namespace OpenTribes\Core;
 
-use OpenTribes\Core\Entity\Exception\UnknownProperty as UnknownPropertyException;
-
 /**
  * A basic Entity class
  * 
@@ -21,7 +19,7 @@ abstract class Entity {
     /**
      * @param string $name
      *
-     * @throws UnknownPropertyException 
+     * @throws \BadMethodCallException 
      *
      * @return mixed $value
      */
@@ -30,7 +28,7 @@ abstract class Entity {
         if (method_exists($this, $method)) {
             return $this->{$method};
         } else {
-            throw new UnknownPropertyException(sprintf(
+            throw new \BadMethodCallException(sprintf(
                 "Cannot get unknown property '%s' in class %s", 
                 $name, 
                 get_class($this)
@@ -43,14 +41,14 @@ abstract class Entity {
      * @param string $name
      * @param mixed $value
      *
-     * @throws UnknownPropertyException 
+     * @throws \BadMethodCallException 
      */
     public function __set($name, $value) {
         $method = 'set' . $name;
         if (method_exists($this, $method)) {
             $this->{$method}($value);
         } else {
-            throw new UnknownPropertyException(sprintf(
+            throw new BadMethodCallException(sprintf(
                 "Cannot set unknown property '%s' in class %s", 
                 $name, 
                 get_class($this)

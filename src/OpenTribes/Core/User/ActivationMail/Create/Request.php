@@ -1,17 +1,18 @@
 <?php
 
 namespace OpenTribes\Core\User\ActivationMail\Create;
+use OpenTribes\Core\User\Create\Response as UserCreateResponse;
 use OpenTribes\Core\User;
 class Request{
-    protected $player;
-    public function __construct(User $player) {
-        $this->setUser($player);
+    protected $user;
+    public function __construct(UserCreateResponse $response) {
+        $this->setUser($response->getUser());
     }
-    public function setUser(User $player){
-        $this->player = $player;
+    public function setUser(User $response){
+        $this->user = $response;
         return $this;
     }
     public function getUser(){
-        return $this->player;
+        return $this->user;
     }
 }

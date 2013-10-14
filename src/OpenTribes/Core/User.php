@@ -12,23 +12,17 @@
 namespace OpenTribes\Core;
 
 use OpenTribes\Core\User\Role as UserRole;
-use OpenTribes\Core\User\Exception\Username\Short as UserNameTooShortException;
-use OpenTribes\Core\User\Exception\Username\Long as UserNameTooLongException;
-use OpenTribes\Core\User\Exception\Username\Invalid as UserNameInvalidException;
-use OpenTribes\Core\User\Exception\Username\EmptyException as UserNameEmptyException;
-use OpenTribes\Core\User\Exception\Password\EmptyException as PasswordEmptyException;
-use OpenTribes\Core\User\Exception\Password\Short as PasswordTooShortException;
-use OpenTribes\Core\User\Exception\Email\EmptyException as EmailEmptyException;
-use OpenTribes\Core\User\Exception\Email\Invalid as EmailInvalidException;
 
 /**
  * User Entity class
  */
 class User extends Entity {
+
     /**
      * @var Integer $id 
      */
     protected $id;
+
     /**
      * @var String $username 
      */
@@ -63,7 +57,23 @@ class User extends Entity {
      * @var Array $userRole 
      */
     protected $userRole = array();
-    
+
+    /**
+     * @param Integer $id
+     * @param String $username
+     * @param String $passwordHash
+     * @param String $email
+     * @return \OpenTribes\Core\User
+     */
+    public function __construct($id, $username, $passwordHash, $email) {
+        $this
+                ->setId($id)
+                ->setUsername($username)
+                ->setPasswordHash($passwordHash)
+                ->setEmail($email);
+        return $this;
+    }
+
     /**
      * @param String $code
      * @return \OpenTribes\Core\User
@@ -85,15 +95,8 @@ class User extends Entity {
     /**
      * @param String $password
      * @return \OpenTribes\Core\User
-     * @throws PasswordEmptyException
-     * @throws PasswordTooShortException
      */
     public function setPassword($password) {
-        if (in_array($password, array(null, false, '', array()), true))
-            throw new PasswordEmptyException;
-        if (strlen($password) < 6)
-            throw new PasswordTooShortException;
-
         $this->password = $password;
         return $this;
     }
@@ -110,21 +113,8 @@ class User extends Entity {
     /**
      * @param String $username
      * @return \OpenTribes\Core\User
-     * @throws UserNameEmptyException
-     * @throws UserNameInvalidException
-     * @throws UserNameTooShortException
-     * @throws UserNameTooLongException
      */
     public function setUsername($username) {
-        if (in_array($username, array(null, false, '', array()), true))
-            throw new UserNameEmptyException;
-        if ((bool) preg_match('/^[-a-z0-9_]++$/iD', $username) === false)
-            throw new UserNameInvalidException;
-        if (strlen($username) < 4)
-            throw new UserNameTooShortException;
-        if (strlen($username) > 32)
-            throw new UserNameTooLongException;
-
         $this->username = $username;
         return $this;
     }
@@ -132,17 +122,12 @@ class User extends Entity {
     /**
      * @param String $email
      * @return \OpenTribes\Core\User
-     * @throws EmailEmptyException
-     * @throws EmailInvalidException
      */
     public function setEmail($email) {
-        if (in_array($email, array(null, false, '', array()), true))
-            throw new EmailEmptyException;
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-            throw new EmailInvalidException;
         $this->email = $email;
         return $this;
     }
+
     /**
      * @param \OpenTribes\Core\User\Role $userRole
      * @return \OpenTribes\Core\User
@@ -151,11 +136,12 @@ class User extends Entity {
         $this->userRole[] = $userRole;
         return $this;
     }
+
     /**
      * @param Integer $id
      * @return \OpenTribes\Core\User
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = (int) $id;
         return $this;
     }
@@ -201,32 +187,33 @@ class User extends Entity {
     public function getLastAction() {
         return $this->lastAction;
     }
-    
+
     /**
-     * @return Array $userRoles
+     * @return \Array $userRoles
      */
-    public function getRoles(){
+    public function getRoles() {
         return $this->userRole;
     }
-    
+
     /**
      * Checks if a user has a role with given name
      * @param String $name
-     * @return boolean
+     * @return \Boolean
      */
-    public function hasRole($name){
-        foreach($this->userRole as $userRole){
+    public function hasRole($name) {
+        foreach ($this->userRole as $userRole) {
             $role = $userRole->getRole();
-            if($role->getName() === $name) return true;
+            if ($role->getName() === $name)
+                return true;
         }
     }
-    
+
     /**
-     * @return Integer $id
+     * @return \Integer $id
      */
-    public function getId(){
+    public function getId() {
         return $this->id;
     }
-  
+
 }
 

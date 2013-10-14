@@ -27,6 +27,15 @@ class Role extends Entity {
      * @param String $name
      * @return \OpenTribes\Core\Role
      */
+    public function __construct($name) {
+        $this->setName($name);
+        return $this;
+    }
+
+    /**
+     * @param String $name
+     * @return \OpenTribes\Core\Role
+     */
     public function setName($name) {
         $this->name = $name;
         return $this;

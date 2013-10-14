@@ -13,7 +13,7 @@ use OpenTribes\Core\User\Activate\Exception\Invalid as InvalidCodeException;
 use OpenTribes\Core\User\Activate\Exception\Active as AlreadyActiveException;
 
 use OpenTribes\Core\Interactor as BaseInteractor;
-
+use OpenTribes\Core\User\Activate\Validator as UserActivationValidator;
 class Interactor extends BaseInteractor {
 
     protected $userRepository;
@@ -22,13 +22,14 @@ class Interactor extends BaseInteractor {
 
     public function __construct(UserRepository $userRepository, 
             RoleRepository $roleRepository, 
-            UserRoleRepository $userRolesRepository) {
+            UserRoleRepository $userRolesRepository,
+            UserActivationValidator $activationValidator) {
         $this->userRepository = $userRepository;
         $this->userRoleRepository = $userRolesRepository;
         $this->roleRepository = $roleRepository;
     }
 
-    public function __invoke(Request $request) {
+    public function invoke(Request $request) {
         $user = $this->userRepository->findByUsername($request->getUsername());
        
         $role = $this->roleRepository->findByName($request->getRolename());
@@ -40,13 +41,8 @@ class Interactor extends BaseInteractor {
             throw new InvalidCodeException;
 
         $user->setActivationCode('');
-        $userRole = new UserRole();
-        $userRole->setRole($role);
-        $userRole->setUser($user);
+        $userRole = new UserRole($user,$role);
         $user->addRole($userRole);
-
-        
-
         $this->userRepository->add($user);
         $this->userRoleRepository->add($userRole);
 

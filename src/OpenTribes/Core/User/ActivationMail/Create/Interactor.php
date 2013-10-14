@@ -2,25 +2,22 @@
 
 namespace OpenTribes\Core\User\ActivationMail\Create;
 
-use OpenTribes\Core\User\Repository as UserRepository;
-use OpenTribes\Core\Service\CodeGenerator;
-use OpenTribes\Core\User\ActivationMail\View\Mail;
-
+use OpenTribes\Core\User\ActivationMail\Repository as ActivationMailRepository;
+use OpenTribes\Core\User\ActivationMail;
 class Interactor{
-    protected $userRepository;
-    protected $codeGenerator;
+    protected $activationMailRepository;
     
-    public function __construct(UserRepository $userRepository,  CodeGenerator $codeGenerator){
-        $this->userRepository = $userRepository;
-        $this->codeGenerator = $codeGenerator;
+    public function __construct(ActivationMailRepository $activationMailRepository){
+        $this->activationMailRepository = $activationMailRepository;
     }
-    public function execute(Request $request) {
-        $code = $this->codeGenerator->create();
+    public function invoke(Request $request) {
+
         $user = $request->getUser();
-        $user->setActivationCode($code);
-        $this->userRepository->add($user);
+        $activationMail = new ActivationMail();
+        $activationMail->setRecipient($user->getEmail());
+        $activationMail->setActivationCode($user->getActivationCode());
+        $activationMail->setUsername($user->getUsername());      
         
-        
-        return new Response(new Mail($user));
+       return new Response($activationMail);
     }
 }

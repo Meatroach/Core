@@ -32,6 +32,18 @@ class Mail extends Entity {
     protected $subject;
 
     /**
+     * @var String $sender 
+     */
+    protected $sender;
+
+    /**
+     * @return \String $sender
+     */
+    public function getSender() {
+        return $this->sender;
+    }
+
+    /**
      * @return \String $body
      */
     public function getBody() {
@@ -76,6 +88,15 @@ class Mail extends Entity {
      */
     public function setSubject($subject) {
         $this->subject = $subject;
+        return $this;
+    }
+
+    /**
+     * @param String $sender
+     * @return \OpenTribes\Core\Mail
+     */
+    public function setSender($sender) {
+        $this->sender = $sender;
         return $this;
     }
 
