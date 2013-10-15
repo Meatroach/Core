@@ -2,15 +2,12 @@
 
 namespace OpenTribes\Core\User;
 
-use OpenTribes\Core\Validator as BaseValidator;
-use OpenTribes\Core\User\UserValue;
+use OpenTribes\Core\User\Validator as BaseValidator;
+use OpenTribes\Core\User\Create\UserValue;
 abstract class Validator extends BaseValidator{
-    protected $userValue;
+   
     public function __construct(UserValue $userValue) {
         $this->userValue = $userValue;
     }
-    public function getUserValue(){
-        return $this->userValue;
-    }
-    
+   
 }

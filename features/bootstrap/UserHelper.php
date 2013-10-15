@@ -1,5 +1,9 @@
 <?php
 
+//UseCases
+
+use OpenTribes\Core\Guest\Account\Create as AccountCreation;
+
 //Entities
 use OpenTribes\Core\User;
 use OpenTribes\Core\Role;
@@ -20,6 +24,7 @@ use OpenTribes\Core\User\Activate\Request as UserActivateRequest;
 use OpenTribes\Core\User\ActivationMail\Create\Request as ActivationMailCreateRequest;
 use OpenTribes\Core\User\ActivationMail\Send\Request as ActivationMailSendRequest;
 use OpenTribes\Core\User\Authenticate\Request as UserAuthenticateRequest;
+
 //Interactors
 use OpenTribes\Core\User\Create\Interactor as UserCreateInteractor;
 use OpenTribes\Core\User\Login\Interactor as UserLoginInteractor;

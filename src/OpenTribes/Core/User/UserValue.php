@@ -2,7 +2,7 @@
 
 namespace OpenTribes\Core\User;
 
-abstract class UserValue {
+class UserValue {
 
     protected $errors;
     protected $username;

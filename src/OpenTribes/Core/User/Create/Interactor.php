@@ -18,8 +18,7 @@ use OpenTribes\Core\Role\Repository as RolesRepository;
 use OpenTribes\Core\User\Role\Repository as UserRoleRepository;
 use OpenTribes\Core\Service\Hasher;
 use OpenTribes\Core\Service\CodeGenerator;
-use OpenTribes\Core\User\Validator as UserValidator;
-use OpenTribes\Core\User\Create\Exception as UserCreateException;
+
 
 /**
  * Interactor used to create a user

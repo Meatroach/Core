@@ -11,7 +11,7 @@
 
 namespace OpenTribes\Core\User\Create\Validation;
 
-use OpenTribes\Core\User\Validator as UserValidator;
+use OpenTribes\Core\User\Create\Validator as UserValidator;
 
 
 /**
@@ -28,7 +28,7 @@ class Interactor {
      * @param \OpenTribes\Core\User\Role\Repository $userRolesRepository
      * @param \OpenTribes\Core\Service\Hasher $hasher
      * @param \OpenTribes\Core\Service\CodeGenerator $codeGenerator
-     * @param \OpenTribes\Core\User\Validator $userValidator
+     * @param \OpenTribes\Core\User\Create\Validator $userValidator
      */
     public function __construct(UserRepository $userRepository, UserValidator $userValidator) {
         $this->userRepository = $userRepository;

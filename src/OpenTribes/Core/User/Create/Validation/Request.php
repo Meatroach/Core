@@ -9,20 +9,29 @@ class Request {
     protected $password;
     protected $email;
     protected $emailConfirm;
-    public function __construct($username, $password, $email,$passwordConfirm,$emailConfirm) {
+    protected $termsAndConditions;
+
+    public function __construct($username, $password, $email, $passwordConfirm, $emailConfirm, $termsAndConditions) {
         $this->setUsername($username)
                 ->setEmail($email)
                 ->setPassword($password)
                 ->setEmailConfirm($emailConfirm)
-                ->setPasswordConfirm($passwordConfirm);
+                ->setPasswordConfirm($passwordConfirm)
+                ->setTermsAndConditions($termsAndConditions);
+        return $this;
     }
 
+    public function setTermsAndConditions($termsAndConditions) {
+        $this->termsAndConditions = $termsAndConditions;
+        return $this;
+    }
 
-    public function setPasswordConfirm($passwordConfirm){
+    public function setPasswordConfirm($passwordConfirm) {
         $this->passwordConfirm = $passwordConfirm;
         return $this;
     }
-    public function setEmailConfirm($emailConfirm){
+
+    public function setEmailConfirm($emailConfirm) {
         $this->emailConfirm = $emailConfirm;
         return $this;
     }
@@ -53,11 +62,17 @@ class Request {
     public function getEmail() {
         return $this->email;
     }
-    public function getPasswordConfirm(){
+
+    public function getPasswordConfirm() {
         return $this->passwordConfirm;
     }
-    public function getEmailConfirm(){
+
+    public function getEmailConfirm() {
         return $this->emailConfirm;
+    }
+
+    public function getTermsAndConditions() {
+        return $this->termsAndConditions;
     }
 
 }
