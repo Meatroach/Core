@@ -2,6 +2,6 @@
 
 namespace OpenTribes\Core\Service;
 use OpenTribes\Core\Mail;
-interface Mailer{
+interface MailSender{
     public function send(Mail $mail);
 }

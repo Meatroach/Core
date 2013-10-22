@@ -1,8 +1,8 @@
 <?php
+namespace OpenTribes\Core\User\Create\Validation;
 
-namespace OpenTribes\Core\User;
 
-class UserValue {
+class Object {
 
     protected $errors;
     protected $username;

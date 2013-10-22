@@ -1,27 +1,27 @@
 <?php
 
-namespace OpenTribes\Core\Guest\Account;
+namespace OpenTribes\Core\Account\Create;
 
-use OpenTribes\Core\User;
-use OpenTribes\Core\Role;
 use OpenTribes\Core\User\Role as UserRole;
-use OpenTribes\Core\User\ActivationMail;
-//Repositories
 use OpenTribes\Core\User\Repository as UserRepository;
-use OpenTribes\Core\Role\Repository as RoleRepository;
 use OpenTribes\Core\User\Role\Repository as UserRoleRepository;
-use OpenTribes\Core\User\ActivationMail\Repository as ActivationMailRepository;
-//Services
-use OpenTribes\Core\Service\CodeGenerator;
-use OpenTribes\Core\Service\Hasher as PasswordHasher;
-use OpenTribes\Core\Service\Mailer as MailerSender;
-//Validators
-use OpenTribes\Core\User\Create\Validator;
-//Requests
-use OpenTribes\Core\User\Create\Validation\Request as UserCreateValidationRequest;
-use \OpenTribes\Core\User\Create\Request as UserCreateRequest;
+use OpenTribes\Core\Role\Repository as RoleRepository;
+use OpenTribes\Core\User\Activation\Mail\Repository as ActivationMailRepository;
 
-class Create {
+use OpenTribes\Core\Service\CodeGenerator;
+use OpenTribes\Core\Service\MailSender;
+use OpenTribes\Core\Service\Hasher;
+use OpenTribes\Core\User\Create\Validation\Validator;
+
+//Requests and Interactions
+use OpenTribes\Core\User\Create\Validation\Request as UserCreateValidationRequest;
+use OpenTribes\Core\User\Create\Validation\Interaction as UserCreateValidationInteractor;
+use OpenTribes\Core\User\Activation\Create\Request as UserActivationCreateRequest;
+use OpenTribes\Core\User\Activation\Create\Interaction as UserActivationCreateInteractor;
+use OpenTribes\Core\User\Activation\Send\Request as UserActivationSendRequest;
+use OpenTribes\Core\User\Activation\Send\Interaction as UserActivationSendInteractor;
+
+class Context {
 
     private $userRepository;
     private $roleRepository;
@@ -30,43 +30,43 @@ class Create {
     private $codeGenerator;
     private $passwordHasher;
     private $mailSender;
-    private $validator;
+    private $userCreateValidator;
 
-    public function __construct(UserRepository $userRepository,
-            RoleRepository $roleRepository,
+    public function __construct(
+            UserRepository $userRepository,
             UserRoleRepository $userRoleRepository,
+            RoleRepository $roleRepository,
             ActivationMailRepository $activationMailRepository,
             CodeGenerator $codeGenerator,
-            PasswordHasher $passwordHasher,
-            MailerSender $mailSender,
-            Validator $validator) {
+            Hasher $passwordHasher,
+            MailSender $mailSender,
+            Validator $userCreateValidator
+    ) {
         $this->userRepository = $userRepository;
-        $this->roleRepository = $roleRepository;
         $this->userRoleRepository = $userRoleRepository;
+        $this->roleRepository = $roleRepository;
         $this->activationMailRepository = $activationMailRepository;
         $this->codeGenerator = $codeGenerator;
         $this->passwordHasher = $passwordHasher;
         $this->mailSender = $mailSender;
-        $this->validator = $validator;
+        $this->userCreateValidator = $userCreateValidator;
     }
 
-    public function invoke(Request $request) {
+    public function invoke(Request $request,
+            UserRole $userRole) {
 
-        $userCreateValidationRequest = new UserCreateValidationRequest($request->getUsername(), $request->getPassword(), $request->getEmail(), $request->getPasswordConfirm(), $request->getEmailConfirm(), $request->getTermsAndConditions());
-
-        $userCreateValidationInteractor = new UserCreateValidationInteractor($this->userRepository, $this->validator);
+        $userCreateValidationRequest = new UserCreateValidationRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm']);
+        $userCreateValidationInteractor = new UserCreateValidationInteractor($this->userRepository, $this->userValidator);
 
         $userCreateInteractor = new UserCreateInteractor(
-                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->passwordHasher, $this->codeGenerator
+                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator
         );
-
         $activationMailCreateInteractor = new ActivationMailCreateInteractor($this->activationMailRepository);
         $activationMailSendInteractor = new ActivationMailSendInteractor($this->mailer);
 
-
         $this->userCreateValidationResponse = $userCreateValidationInteractor->invoke($userCreateValidationRequest);
         //create user account
-        $userCreateRequest = new UserCreateRequest($this->userCreateValidationResponse, $request->getRolename());
+        $userCreateRequest = new UserCreateRequest($this->userCreateValidationResponse, 'Guest');
         $this->userCreateResponse = $userCreateInteractor->invoke($userCreateRequest);
         //Create activation Mail
         $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse);

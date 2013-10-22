@@ -3,9 +3,14 @@
 namespace OpenTribes\Core;
 
 abstract class Validator{
-    private $errors;
+    protected $errors;
+    protected $validationObject;
     public function getErrors(){
         return $this->errors;
     }
+    public function getValidationObject(){
+        return $this->validationObject;
+    }
+
     abstract public function isValid();
 }
