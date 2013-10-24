@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\User\Create;
+namespace OpenTribes\Core\User\Create\Validation;
 
 use OpenTribes\Core\User\UserValue as BaseUserValue;
 class UserValue extends BaseUserValue{

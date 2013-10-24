@@ -1,44 +1,19 @@
 <?php
 
-//UseCases
+use OpenTribes\Core\Account\Create\Context as AccountCreateContext;
+use OpenTribes\Core\Account\Create\Request as AccountCreateRequest;
 
-use OpenTribes\Core\Guest\Account\Create as AccountCreation;
-
-//Entities
-use OpenTribes\Core\User;
-use OpenTribes\Core\Role;
-use OpenTribes\Core\User\Role as UserRole;
+//dependencies
 //Repositories
 use OpenTribes\Core\Mock\User\Repository as UserRepository;
-use OpenTribes\Core\Mock\Role\Repository as RoleRepository;
 use OpenTribes\Core\Mock\User\Role\Repository as UserRoleRepository;
+use OpenTribes\Core\Mock\Role\Repository as RoleRepository;
 use OpenTribes\Core\Mock\User\ActivationMail\Repository as ActivationMailRepository;
 //Services
 use OpenTribes\Core\Mock\Service\Md5Hasher as Hasher;
-use OpenTribes\Core\Mock\Service\FileMailer as Mailer;
 use OpenTribes\Core\Mock\Service\QwertyGenerator as Generator;
-//Requests
-use OpenTribes\Core\User\Create\Request as UserCreateRequest;
-use OpenTribes\Core\User\Login\Request as UserLoginRequest;
-use OpenTribes\Core\User\Activate\Request as UserActivateRequest;
-use OpenTribes\Core\User\ActivationMail\Create\Request as ActivationMailCreateRequest;
-use OpenTribes\Core\User\ActivationMail\Send\Request as ActivationMailSendRequest;
-use OpenTribes\Core\User\Authenticate\Request as UserAuthenticateRequest;
+use OpenTribes\Core\Mock\Service\DumpMailer as Mailer;
 
-//Interactors
-use OpenTribes\Core\User\Create\Interactor as UserCreateInteractor;
-use OpenTribes\Core\User\Login\Interactor as UserLoginInteractor;
-use OpenTribes\Core\User\Activate\Interactor as UserActivateInteractor;
-use OpenTribes\Core\User\ActivationMail\Create\Interactor as ActivationMailCreateInteractor;
-use OpenTribes\Core\User\ActivationMail\Send\Interactor as ActivationMailSendInteractor;
-use OpenTribes\Core\User\Authenticate\Interactor as UserAuthenticateInteractor;
-//Validators
-use OpenTribes\Core\Mock\User\Validator as UserValidator;
-//Exceptions
-use OpenTribes\Core\User\Create\Exception as UserCreateException;
-
-//Value Objects
-use OpenTribes\Core\User\UserValue;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -67,7 +42,7 @@ class UserHelper {
         $this->roleRepository = new RoleRepository();
         $this->userRepository = new UserRepository();
         $this->userRoleRepository = new UserRoleRepository();
-        $this->activationMailRepository = new ActivationMailRepository;
+        $this->activationMailRepository = new ActivationMailRepository();
         $this->hasher = new Hasher();
         $this->codeGenerator = new Generator();
         $this->mailer = new Mailer();
@@ -134,6 +109,7 @@ class UserHelper {
      * @param array $data Userdata
      */
     public function createAccount(array $data) {
+        $accountCreateRequest = new AccountCreateRequest();
         foreach ($data as $row) {
             $userCreateValidationRequest = new UserCreateValidationRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm']);
             

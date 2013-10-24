@@ -23,7 +23,7 @@ use OpenTribes\Core\Service\CodeGenerator;
 /**
  * Interactor used to create a user
  */
-class Interactor {
+class Interaction {
 
     private $userRepository = null;
     private $rolesRepository = null;
