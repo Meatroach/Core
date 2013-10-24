@@ -25,18 +25,20 @@ class UserHelper {
     protected $response;
     protected $codeGenerator;
     protected $exception = null;
-    protected $mailer = null;
+    protected $mailSender;
     protected $userRoleRepository;
     protected $messageRepository;
     protected $activationMailRepository;
     protected $userValidator;
     protected $messageHelper;
+    protected $hasher;
     //responses
     protected $userCreateResponse = null;
     protected $userActivateResponse = null;
     protected $activationMailCreateResponse = null;
     protected $activationMailSendResponse = null;
     protected $userLoginResponse = null;
+    protected $accountCreateResponse;
 
     public function __construct(MessageHelper $messageHelper) {
         $this->roleRepository = new RoleRepository();
@@ -45,7 +47,7 @@ class UserHelper {
         $this->activationMailRepository = new ActivationMailRepository();
         $this->hasher = new Hasher();
         $this->codeGenerator = new Generator();
-        $this->mailer = new Mailer();
+        $this->mailSender = new Mailer();
         $this->userValidator = new UserValidator(new UserValue);
         $this->messageHelper = $messageHelper;
         $this->initRoles();
@@ -123,22 +125,9 @@ class UserHelper {
         $activationMailSendInteractor = new ActivationMailSendInteractor($this->mailer);
 
         try {
-            $this->userCreateValidationResponse = $userCreateValidationInteractor->invoke($userCreateValidationRequest);
-            //create user account
-            $userCreateRequest = new UserCreateRequest($this->userCreateValidationResponse, 'Guest');
-            $this->userCreateResponse = $userCreateInteractor->invoke($userCreateRequest);
-            //Create activation Mail
-            $activationMailCreateRequest = new ActivationMailCreateRequest($this->userCreateResponse);
-            $this->activationMailCreateResponse = $activationMailCreateInteractor->invoke($activationMailCreateRequest);
-            //Modify and send Activation Mail
-            $activationMailSendRequest = new ActivationMailSendRequest($this->activationMailCreateResponse);
-            $this->activationMailSendResponse = $activationMailSendInteractor->invoke($activationMailSendRequest);
-        } catch (\InvalidArgumentException $e) {
-          
-            $this->exception = $e;
-            $this->messageHelper->setMessages($this->userValidator->getErrors());
-        } catch (\Exception $e){
-            $this->exception = $e;
+            $this->accountCreateResponse = $accountCreateContext->invoke($accountCreateRequest, $this->user->getRoles());
+        } catch (\Exception $e) {
+            
         }
     }
 
@@ -192,7 +181,8 @@ class UserHelper {
     public function asserRegistrationFailed() {
         assertNull($this->userCreateResponse);
     }
-    public function assertActivationFailed(){
+
+    public function assertActivationFailed() {
         assertNull($this->userActivateResponse);
     }
 

@@ -1,9 +1,9 @@
 <?php
-namespace OpenTribes\Core\User;
+namespace OpenTribes\Core\User\Activation;
 
-use OpenTribes\Core\Mail;
+use OpenTribes\Core\Mail as BaseMail;
 
-class ActivationMail extends Mail{
+class Mail extends BaseMail{
     
     protected $activationCode;
     protected $username;
