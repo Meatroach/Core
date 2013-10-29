@@ -14,10 +14,12 @@ use OpenTribes\Core\Service\Hasher;
 
 use OpenTribes\Core\User\Create\Validation\Validator;
 //Requests and Interactions
-use OpenTribes\Core\User\Create\Validation\Request as UserCreateValidationRequest;
-use OpenTribes\Core\User\Create\Validation\Interaction as UserCreateValidationInteraction;
-use OpenTribes\Core\User\Activation\Create\Request as UserActivationCreateRequest;
-use OpenTribes\Core\User\Activation\Create\Interaction as UserActivationCreateInteraction;
+use OpenTribes\Core\User\Create\Validation\Request as CreateUserValidationRequest;
+use OpenTribes\Core\User\Create\Validation\Interaction as CreateUserValidationInteraction;
+use OpenTribes\Core\User\Create\Request as CreateUserRequest;
+use OpenTribes\Core\User\Create\Interaction as CreateUserInteraction;
+use OpenTribes\Core\User\Activation\Create\Request as CreateUserActivationCodeRequest;
+use OpenTribes\Core\User\Activation\Create\Interaction as CreateUserActivationCodeInteraction;
 
 
 class Context {
@@ -44,33 +46,33 @@ class Context {
     }
 
     public function invoke(Request $request) {
-        //Validate Input
-        $userCreateValidationRequest = new UserCreateValidationRequest(
+   
+        $createUserValidationRequest = new CreateUserValidationRequest(
                 $request->getUsername(), $request->getPassword(), $request->getEmail(), $request->getPasswordConfirm(), $request->getEmailConfirm(), $request->getAcceptTermsAndConditions()
         );
-        $userCreateValidationInteraction = new UserCreateValidationInteraction(
+        $createUserValidationInteraction = new CreateUserValidationInteraction(
                 $this->userRepository, $this->userCreateValidator
         );
 
-        $userCreateValidationResponse = $userCreateValidationInteraction->invoke($userCreateValidationRequest);
+        $createUserValidationResponse = $createUserValidationInteraction->invoke($createUserValidationRequest);
 
-        //Create User
-        $userCreateRequest = new UserCreateRequest(
-                $userCreateValidationResponse->getUsername(), $userCreateValidationResponse->getEmail(), $userCreateValidationResponse->getPassword(), $request->getDefaultRolename()
+  
+        $createUserRequest = new CreateUserRequest(
+                $createUserValidationResponse->getUsername(), $createUserValidationResponse->getEmail(), $createUserValidationResponse->getPassword(), $request->getDefaultRolename()
         );
 
-        $userCreateInteraction = new UserCreateInteraction(
+        $createUserInteraction = new CreateUserInteraction(
                 $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->passwordHasher
         );
 
-        $userCreateResponse = $userCreateInteraction->invoke($userCreateRequest);
-        //Create activation code 
-        $activationMailCreateRequest = new UserActivationCreateRequest($userCreateResponse->getUser());
+        $createUserResponse = $createUserInteraction->invoke($createUserRequest);
+ 
+        $createUserActivationCodeRequest = new CreateUserActivationCodeRequest($createUserResponse->getUser());
 
-        $activationMailCreateInteraction = new UserActivationCreateInteraction($this->activationMailRepository, $this->codeGenerator, $this->userRepository);
-        $activationMailCreateResponse = $activationMailCreateInteraction->invoke($activationMailCreateRequest);
+        $createUserActivationCodeInteraction = new CreateUserActivationInteraction($this->activationMailRepository, $this->codeGenerator, $this->userRepository);
+        $createActivationCodeResponse = $createUserActivationCodeInteraction->invoke($createUserActivationCodeRequest);
 
-        return new Response($activationMailCreateResponse);
+        return new Response($createActivationCodeResponse);
     }
 
 }
