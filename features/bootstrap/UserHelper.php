@@ -1,58 +1,22 @@
 <?php
 
-<<<<<<< HEAD
-use OpenTribes\Core\Account\Create\Context as AccountCreateContext;
-use OpenTribes\Core\Account\Create\Request as AccountCreateRequest;
-
 //dependencies
-=======
 //UseCases
-use OpenTribes\Core\Account\Create\Request as AccountCreateRequest;
-use OpenTribes\Core\Account\Create\Context as AccountCreateContext;
+use OpenTribes\Core\Guest\Account\Create\Request as CreateAccountAsGuestRequest;
+use OpenTribes\Core\Guest\Account\Create\Context as CreateAccountAsGuestContext;
 //Entities
 use OpenTribes\Core\User;
 use OpenTribes\Core\Role;
 use OpenTribes\Core\User\Role as UserRole;
->>>>>>> 005af1fdb371df2736b7e2ce4dca90b7429d8a2b
 //Repositories
 use OpenTribes\Core\Mock\User\Repository as UserRepository;
 use OpenTribes\Core\Mock\User\Role\Repository as UserRoleRepository;
-<<<<<<< HEAD
 use OpenTribes\Core\Mock\Role\Repository as RoleRepository;
 use OpenTribes\Core\Mock\User\ActivationMail\Repository as ActivationMailRepository;
 //Services
 use OpenTribes\Core\Mock\Service\Md5Hasher as Hasher;
 use OpenTribes\Core\Mock\Service\QwertyGenerator as Generator;
 use OpenTribes\Core\Mock\Service\DumpMailer as Mailer;
-
-=======
-use OpenTribes\Core\Mock\User\Activation\Mail\Repository as ActivationMailRepository;
-//Services
-use OpenTribes\Core\Mock\Service\Md5Hasher as Hasher;
-use OpenTribes\Core\Mock\Service\DumpMailer as Mailer;
-use OpenTribes\Core\Mock\Service\QwertyGenerator as Generator;
-//Requests
-use OpenTribes\Core\User\Create\Request as UserCreateRequest;
-use OpenTribes\Core\User\Login\Request as UserLoginRequest;
-use OpenTribes\Core\User\Activate\Request as UserActivateRequest;
-use OpenTribes\Core\User\Create\Validation\Request as UserCreateValidationRequest;
-use OpenTribes\Core\User\ActivationMail\Create\Request as ActivationMailCreateRequest;
-use OpenTribes\Core\User\ActivationMail\Send\Request as ActivationMailSendRequest;
-use OpenTribes\Core\User\Authenticate\Request as UserAuthenticateRequest;
-//Interactors
-use OpenTribes\Core\User\Create\Interactor as UserCreateInteractor;
-use OpenTribes\Core\User\Login\Interactor as UserLoginInteractor;
-use OpenTribes\Core\User\Activate\Interactor as UserActivateInteractor;
-use OpenTribes\Core\User\ActivationMail\Create\Interactor as ActivationMailCreateInteractor;
-use OpenTribes\Core\User\ActivationMail\Send\Interactor as ActivationMailSendInteractor;
-use OpenTribes\Core\User\Authenticate\Interactor as UserAuthenticateInteractor;
-//Validators
-use OpenTribes\Core\Mock\User\Validator as UserValidator;
-//Exceptions
-use OpenTribes\Core\User\Create\Exception as UserCreateException;
-//Value Objects
-use OpenTribes\Core\User\UserValue;
->>>>>>> 005af1fdb371df2736b7e2ce4dca90b7429d8a2b
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -71,7 +35,7 @@ class UserHelper {
     protected $userValidator;
     protected $messageHelper;
     protected $hasher;
-    //responses
+//responses
     protected $userCreateResponse = null;
     protected $userActivateResponse = null;
     protected $activationMailCreateResponse = null;
@@ -92,7 +56,7 @@ class UserHelper {
         $this->initRoles();
     }
 
-    // Default Methods to initialize Data
+// Default Methods to initialize Data
 
     /**
      * Method to Init base Roles
@@ -116,7 +80,7 @@ class UserHelper {
      */
     public function addRole($name) {
 
-        //Load guest role
+//Load guest role
         $role = $this->roleRepository->findByName($name);
         $userRole = new UserRole($this->user, $role);
         $this->user->addRole($userRole);
@@ -144,33 +108,18 @@ class UserHelper {
         return $this->userRepository;
     }
 
-    //Interactor tests
+//Interactor tests
     /**
      * Method to create a user with an interactor
      * @param array $data Userdata
      */
-    public function createAccount(array $data) {
-        $accountCreateRequest = new AccountCreateRequest();
-<<<<<<< HEAD
-        foreach ($data as $row) {
-            $userCreateValidationRequest = new UserCreateValidationRequest($row['username'], $row['password'], $row['email'], $row['password_confirm'], $row['email_confirm']);
-            
-        }
-        $userCreateValidationInteractor = new UserCreateValidationInteractor($this->userRepository,$this->userValidator);
-
-        $userCreateInteractor = new UserCreateInteractor(
-                $this->userRepository, $this->roleRepository, $this->userRoleRepository, $this->hasher, $this->codeGenerator
-        );
-        $activationMailCreateInteractor = new ActivationMailCreateInteractor($this->activationMailRepository);
-        $activationMailSendInteractor = new ActivationMailSendInteractor($this->mailer);
-
-=======
-        $accountCreateContext = new AccountCreateContext($this->userRepository, $this->userRoleRepository, $this->roleRepository, $this->activationMailRepository, $this->codeGenerator, $this->hasher, $this->mailSender, $this->userCreateValidator);
->>>>>>> 005af1fdb371df2736b7e2ce4dca90b7429d8a2b
+    public function createAccount($username, $password, $passwordConfirm, $email, $emailConfirm, $acceptTermsAndConditions) {
+        $createAccountRequest = new CreateAccountAsGuestRequest($username, $password, $passwordConfirm, $email, $emailConfirm, $acceptTermsAndConditions, 'User');
+        $createAccountContext = new CreateAccountAsGuestContext($this->userRepository, $this->userRepository, $this->roleRepository, $this->activationMailRepository, $this->codeGenerator, $this->passwordHasher, $this->userCreateValidator);
         try {
-            $this->accountCreateResponse = $accountCreateContext->invoke($accountCreateRequest, $this->user->getRoles());
+            $this->createAccountResponse = $createAccountContext->invoke($createAccountRequest);
         } catch (\Exception $e) {
-            
+            $this->messageHelper->setMessages($this->userCreateValidator->getErrors());
         }
     }
 
@@ -220,7 +169,7 @@ class UserHelper {
         }
     }
 
-    //Assertion Methods for testing
+//Assertion Methods for testing
     public function asserRegistrationFailed() {
         assertNull($this->userCreateResponse);
     }
