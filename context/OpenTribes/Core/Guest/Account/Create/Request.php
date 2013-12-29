@@ -42,7 +42,7 @@ class Request {
         return $this;
     }
 
-    public function setEmaiConfirm($emailConfirm) {
+    public function setEmailConfirm($emailConfirm) {
         $this->emailConfirm = $emailConfirm;
         return $this;
     }
