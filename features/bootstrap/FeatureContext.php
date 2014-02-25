@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Client;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
+use OpenTribes\Core\Mock\Repository\User as UserRepository;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -19,6 +20,9 @@ require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends BehatContext {
 
+    private $userRepository;
+    private $userHelper;
+
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -26,21 +30,27 @@ class FeatureContext extends BehatContext {
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
-        
+        $this->userRepository = new UserRepository;
+        $this->userHelper     = new UserHelper($this->userRepository);
     }
 
     /**
      * @Given /^following users:$/
      */
     public function followingUsers(TableNode $table) {
-        throw new PendingException();
+        foreach ($table->getHash() as $row) {
+            $username = $row['username'];
+            $password = $row['password'];
+            $email    = $row['email'];
+            $this->userHelper->createDummyAccount($username, $password, $email);
+        }
     }
 
     /**
      * @Given /^I\'m not registered user$/
      */
     public function iMNotRegisteredUser() {
-        throw new PendingException();
+
     }
 
     /**

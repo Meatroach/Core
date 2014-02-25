@@ -30,6 +30,7 @@ Examples:
     | b | 123456 | 123456 | test@test.de |  test@test.de |  checked | Username is too short |
     | BlackScorp Test | 123456 | 123456 | test@test.de | test@test.de |  checked | Username contains invalid character |
     | BläckScörp | 123456 | 123456 | test@test.de | test@test.de |  checked | Username contains invalid character |
+    | TestUser | 123456 | 123456 | test@test.de | test@test.de | checked | Username exists |
     | BlackScorpBlackScorpBlackScorpBlackSCorpBlackScorp | 123456 | 123456 | test@test.de | test@test.de |  checked | Username is too long |
     | BlackScorp |  | | test@test.de | test@test.de |  checked | Password is empty |
     | BlackScorp | 123 | 123 | test@test.de | test@test.de |  checked | Password is too short |
@@ -37,4 +38,5 @@ Examples:
     | BlackScorp | 123456 | 123456 |  |  |  checked | Email is empty |
     | BlackScorp | 123456 | 123456 | test | test |  checked | Email is invalid |
     | BlackScorp | 123456 | 123456 | test@test.de | test |  checked | Email confirm not match |
-    | BlackScorp | 123456 | 123456 | test@test.de  | test@test.de |  | Terms and Conditions are not accepted |
+    | BlackScorp | 123456 | 123456 | test@tld.com | test@tld.com  | checked | Email exists |
+    | BlackScorp | 123456 | 123456 | test@test.de | test@test.de |  | Terms and Conditions are not accepted |
