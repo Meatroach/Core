@@ -21,8 +21,7 @@
         "behat/mink-browserkit-driver": "1.2.*@dev"
     },
     "config": {
-        "bin-dir": "bin/",
-        "process-timeout": "600"
+        "bin-dir": "bin/"
     },
     "autoload": {
         "psr-4": {

@@ -1,0 +1,1 @@
+This folder contains classes to mock adapters
