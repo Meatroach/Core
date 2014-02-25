@@ -12,19 +12,24 @@
     "name": "opentribes/core",
     "require": {
         "php": ">=5.3"
-    
+
     },
     "require-dev": {
         "behat/behat": "2.5.*@dev",
-         "behat/mink-extension": "1.2.*@dev",
-        "phpunit/phpunit": "3.7.*@dev"
+        "behat/mink-extension": "1.3.*@dev",
+        "phpunit/phpunit": "3.7.*@dev",
+        "behat/mink-browserkit-driver": "1.2.*@dev"
     },
     "config": {
         "bin-dir": "bin/",
         "process-timeout": "600"
     },
     "autoload": {
-        "psr-0": {"OpenTribes\\Core": ["src/", "mock/","context/"]}
+        "psr-4": {
+            "OpenTribes\\Core\\Domain\\": "src/",
+            "OpenTribes\\Core\\Mock\\":"mock/",
+            "OpenTribes\\Core\\Delivery\\":"app/"
+        }
     }
 
 }
