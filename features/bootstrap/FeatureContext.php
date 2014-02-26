@@ -12,6 +12,8 @@ use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
+use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
+use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -22,6 +24,11 @@ class FeatureContext extends BehatContext {
 
     private $userRepository;
     private $userHelper;
+
+    /**
+     * @var \OpenTribes\Core\Domain\Response\Registration;
+     */
+    private $registrationResponse;
 
     /**
      * Initializes context.
@@ -50,14 +57,24 @@ class FeatureContext extends BehatContext {
      * @Given /^I\'m not registered user$/
      */
     public function iMNotRegisteredUser() {
-
+        
     }
 
     /**
      * @When /^I register with following informations:$/
      */
     public function iRegisterWithFollowingInformations(TableNode $table) {
-        throw new PendingException();
+        foreach ($table->getHash() as $row) {
+            $username           = $row['username'];
+            $password           = $row['password'];
+            $passwordConfirm    = $row['passwordConfirm'];
+            $email              = $row['email'];
+            $emailConfirm       = $row['emailConfirm'];
+            $termsAndConditions = (bool) $row['termsAndConditions'];
+        }
+        $request                           = new RegistrationRequest($username, $password, $passwordConfirm, $email, $emailConfirm, $termsAndConditions);
+        $interaction                       = new RegistrationContext($this->userRepository);
+        $this->registrationResponse = $interaction->process($request);
     }
 
     /**
