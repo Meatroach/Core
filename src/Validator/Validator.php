@@ -10,7 +10,7 @@ namespace OpenTribes\Core\Domain\Validator;
 abstract class Validator {
 
     private $errors = array();
-
+    private $object = null;
     public function isValid() {
         $this->validate();
     }
@@ -25,6 +25,12 @@ abstract class Validator {
         } else {
             $this->errors[] = $error;
         }
+    }
+    protected function setObject($object){
+        $this->object = $object;          
+    }
+    public function getObject(){
+        return $this->object;
     }
 
     public function hasErrors() {

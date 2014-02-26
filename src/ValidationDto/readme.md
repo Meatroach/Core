@@ -1,0 +1,1 @@
+This folder contains validation Data Transfer Objects, they are used as Typehints for Abstract validators
