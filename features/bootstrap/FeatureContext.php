@@ -14,6 +14,9 @@ use Behat\Mink\Driver\BrowserKitDriver;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
 use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
 use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -22,13 +25,16 @@ require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends BehatContext {
 
+    private $interactorResult;
     private $userRepository;
     private $userHelper;
+    private $messageHelper;
 
     /**
      * @var \OpenTribes\Core\Domain\Response\Registration;
      */
     private $registrationResponse;
+    private $registrationValidator;
 
     /**
      * Initializes context.
@@ -37,8 +43,10 @@ class FeatureContext extends BehatContext {
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
-        $this->userRepository = new UserRepository;
-        $this->userHelper     = new UserHelper($this->userRepository);
+        $this->userRepository        = new UserRepository;
+        $this->userHelper            = new UserHelper($this->userRepository);
+        $this->registrationValidator = new RegistrationValidator(new RegistrationValidatorDto);
+        $this->messageHelper         = new MessageHelper();
     }
 
     /**
@@ -72,16 +80,17 @@ class FeatureContext extends BehatContext {
             $emailConfirm       = $row['emailConfirm'];
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
-        $request                           = new RegistrationRequest($username, $password, $passwordConfirm, $email, $emailConfirm, $termsAndConditions);
-        $interaction                       = new RegistrationContext($this->userRepository);
-        $this->registrationResponse = $interaction->process($request);
+        $request                    = new RegistrationRequest($username, $password, $passwordConfirm, $email, $emailConfirm, $termsAndConditions);
+        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator);
+        $this->registrationResponse = new RegistrationResponse;
+        $this->interactorResult     = $interaction->process($request, $this->registrationResponse);
     }
 
     /**
      * @Then /^I should be registered$/
      */
     public function iShouldBeRegistered() {
-        throw new PendingException();
+        assertTrue($this->interactorResult);
     }
 
     /**
@@ -95,14 +104,15 @@ class FeatureContext extends BehatContext {
      * @Then /^I should not be registered$/
      */
     public function iShouldNotBeRegistered() {
-        throw new PendingException();
+        assertFalse($this->interactorResult);
+        $this->messageHelper->setMessages($this->registrationResponse->errors);
     }
 
     /**
      * @Given /^I should see following messages "([^"]*)"$/
      */
-    public function iShouldSeeFollowingMessages($arg1) {
-        throw new PendingException();
+    public function iShouldSeeFollowingMessages($message) {
+        assertTrue($this->messageHelper->hasMessage($message));
     }
 
 }

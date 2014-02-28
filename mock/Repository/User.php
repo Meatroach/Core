@@ -47,5 +47,24 @@ class User implements UserRepository {
     public function sync() {
         
     }
-
+    /**
+     * @param \string $email
+     * @return null|UserEntity
+     */
+    public function findOneByEmail($email) {
+        foreach($this->users as $user){
+            if($user->getEmail() === $email) return $user;
+        }
+        return null;
+    }
+    /**
+     * @param \string $username
+     * @return null|UserEntity
+     */
+    public function findOneByUsername($username) {
+        foreach($this->users as $user){
+            if($user->getUsername() === $username) return $user;
+        }
+        return null;
+    }
 }

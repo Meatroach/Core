@@ -9,4 +9,5 @@ namespace OpenTribes\Core\Domain\Response;
  */
 abstract class Response {
     public $hasErrors = false;
+    public $errors = array();
 }

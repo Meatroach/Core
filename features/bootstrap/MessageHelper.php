@@ -12,7 +12,5 @@ class MessageHelper{
         }
         return false;
     }
-    public function checkMessage($message){
-        assertTrue($this->hasMessage($message));
-    }
+ 
 }

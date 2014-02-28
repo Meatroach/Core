@@ -11,7 +11,7 @@ use OpenTribes\Core\Domain\Entity\User as UserEntity;
 interface User {
 
     /**
-     * @return User
+     * @return UserEntity
      */
     public function create($id, $username, $password, $email);
 
@@ -29,4 +29,12 @@ interface User {
      * Sync Repository with Entity Source
      */
     public function sync();
+    /**
+     * @return UserEntity|null
+     */
+    public function findOneByEmail($email);
+    /**
+     * @return UserEntity|null
+     */
+    public function findOneByUsername($username);
 }
