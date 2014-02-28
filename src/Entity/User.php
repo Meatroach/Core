@@ -13,15 +13,22 @@ class User {
     private $username;
     private $password;
     private $email;
-
+    private $activationCode;
     function __construct($id, $username, $password, $email) {
         $this->id       = $id;
         $this->username = $username;
         $this->password = $password;
         $this->email    = $email;
     }
+    public function getActivationCode() {
+        return $this->activationCode;
+    }
 
-    public function getId() {
+    public function setActivationCode($activationCode) {
+        $this->activationCode = $activationCode;
+    }
+
+        public function getId() {
         return $this->id;
     }
 

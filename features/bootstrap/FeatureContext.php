@@ -17,6 +17,8 @@ use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
+use OpenTribes\Core\Mock\Service\PlainHash as PasswordHasher;
+use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -35,6 +37,8 @@ class FeatureContext extends BehatContext {
      */
     private $registrationResponse;
     private $registrationValidator;
+    private $passwordHasher;
+    private $activationCodeGenerator;
 
     /**
      * Initializes context.
@@ -43,10 +47,12 @@ class FeatureContext extends BehatContext {
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
-        $this->userRepository        = new UserRepository;
-        $this->userHelper            = new UserHelper($this->userRepository);
-        $this->registrationValidator = new RegistrationValidator(new RegistrationValidatorDto);
-        $this->messageHelper         = new MessageHelper();
+        $this->userRepository          = new UserRepository;
+        $this->userHelper              = new UserHelper($this->userRepository);
+        $this->passwordHasher          = new PasswordHasher;
+        $this->activationCodeGenerator = new ActivationCodeGenerator;
+        $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
+        $this->messageHelper           = new MessageHelper();
     }
 
     /**
@@ -80,8 +86,8 @@ class FeatureContext extends BehatContext {
             $emailConfirm       = $row['emailConfirm'];
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
-        $request                    = new RegistrationRequest($username,$email, $emailConfirm, $password, $passwordConfirm,  $termsAndConditions);
-        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator);
+        $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
+        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator,$this->passwordHasher,$this->activationCodeGenerator);
         $this->registrationResponse = new RegistrationResponse;
         $this->interactorResult     = $interaction->process($request, $this->registrationResponse);
     }
