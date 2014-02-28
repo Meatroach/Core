@@ -13,6 +13,7 @@ abstract class Validator {
     private $object = null;
     public function isValid() {
         $this->validate();
+        return $this->hasNoErrors();
     }
 
     public function getErrors() {
@@ -33,8 +34,8 @@ abstract class Validator {
         return $this->object;
     }
 
-    public function hasErrors() {
-        return count($this->errors) > 0;
+    public function hasNoErrors() {
+        return count($this->errors) === 0;
     }
 
     abstract function validate();

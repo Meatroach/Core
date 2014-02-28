@@ -8,6 +8,5 @@ namespace OpenTribes\Core\Domain\Response;
  * @author BlackScorp<witalimik@web.de>
  */
 abstract class Response {
-    public $hasErrors = false;
     public $errors = array();
 }

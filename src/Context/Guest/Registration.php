@@ -24,12 +24,12 @@ class Registration {
 
     public function process(RegistrationRequest $request, RegistrationResponse $response) {
         $this->assignInputToValidator($request);
-        if(!$this->registrationValidator->isValid()){
-            $response->hasErrors = true;
-            $response->errors = $this->registrationValidator->getErrors();
+        
+        if (!$this->registrationValidator->isValid()) {
+            $response->errors    = $this->registrationValidator->getErrors();
             return false;
         }
-        
+       
         return true;
     }
 
@@ -41,8 +41,8 @@ class Registration {
         $validationObject->passwordConfirm    = $request->getPasswordConfirm();
         $validationObject->username           = $request->getUsername();
         $validationObject->termsAndConditions = $request->getTermsAndConditions();
-        $validationObject->isUniqueEmail      = !(bool)$this->userRepository->findOneByEmail($request->getEmail());
-        $validationObject->isUniqueUsername   = !(bool)$this->userRepository->findOneByUsername($request->getUsername());
+        $validationObject->isUniqueEmail      = !(bool) $this->userRepository->findOneByEmail($request->getEmail());
+        $validationObject->isUniqueUsername   = !(bool) $this->userRepository->findOneByUsername($request->getUsername());
     }
 
 }

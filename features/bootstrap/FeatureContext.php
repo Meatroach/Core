@@ -80,7 +80,7 @@ class FeatureContext extends BehatContext {
             $emailConfirm       = $row['emailConfirm'];
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
-        $request                    = new RegistrationRequest($username, $password, $passwordConfirm, $email, $emailConfirm, $termsAndConditions);
+        $request                    = new RegistrationRequest($username,$email, $emailConfirm, $password, $passwordConfirm,  $termsAndConditions);
         $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator);
         $this->registrationResponse = new RegistrationResponse;
         $this->interactorResult     = $interaction->process($request, $this->registrationResponse);
