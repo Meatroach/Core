@@ -103,7 +103,7 @@ class FeatureContext extends BehatContext {
      * @Given /^I should have an activation code$/
      */
     public function iShouldHaveAnActivationCode() {
-        throw new PendingException();
+        assertNotNull($this->registrationResponse->activationCode);
     }
 
     /**

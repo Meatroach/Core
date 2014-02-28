@@ -8,5 +8,7 @@ namespace OpenTribes\Core\Domain\Response;
  * @author BlackScorp<witalimik@web.de>
  */
 class Registration extends Response{
-    public $user;
+    public $username;
+    public $email;
+    public $activationCode;
 }

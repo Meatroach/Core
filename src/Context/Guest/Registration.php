@@ -35,13 +35,15 @@ class Registration {
             $response->errors = $this->registrationValidator->getErrors();
             return false;
         }
-        $id             = $this->userRepository->getUniqueId();
-        $password       = $this->passwordHasher->hash($request->getPassword());
-        $activationCode = $this->activationCodeGenerator->create();
-        $user           = $this->userRepository->create($id, $request->getUsername(), $password, $request->getEmail());
+        $id                       = $this->userRepository->getUniqueId();
+        $password                 = $this->passwordHasher->hash($request->getPassword());
+        $activationCode           = $this->activationCodeGenerator->create();
+        $user                     = $this->userRepository->create($id, $request->getUsername(), $password, $request->getEmail());
         $user->setActivationCode($activationCode);
         $this->userRepository->add($user);
-        
+        $response->username       = $user->getUsername();
+        $response->email          = $user->getEmail();
+        $response->activationCode = $user->getActivationCode();
         return true;
     }
 

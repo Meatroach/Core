@@ -1,16 +1,14 @@
-@Account @Activate
+@ActivateAccount
 Feature: User Activation
 In order to login as registered user, I need to activate my account
 
 Scenario: activate valid account
     Given user with follwoing informations:
        | id | username | password | email | activationCode |
-       | 1 | BlackScorp | 123456 | test@test.de | qwerty |
-    And I'm not logged in
-    And I have "Guest" roles
+       | 1 | BlackScorp | 123456 | test@test.de | test |
     When I activate account with following informations:
-        | username | activation_code |
-        | BlackScorp | qwerty  | 
+        | username | activationCode |
+        | BlackScorp | test  | 
     Then I should be activated
     And I should have "User" roles
 
@@ -40,8 +38,8 @@ Scenario: user not exists
 
 Scenario: user already active
     Given user with follwoing informations:
-      | id | username | password | email |
-      | 1 | BlackScorp | 123456 | test@test.de |
+      | id | username | password | email | activationCode |
+      | 1 | BlackScorp | 123456 | test@test.de | |
     And I'm not logged in
     And I have "Guest" roles
     When I activate account with following informations:
