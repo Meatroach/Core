@@ -47,7 +47,9 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createRoutes(&$app) {
-        
+        $app->get('/',function(){
+            
+        });
     }
 
 }
