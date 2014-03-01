@@ -2,16 +2,20 @@
 
 namespace OpenTribes\Core;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
+use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
+use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
+use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
 /**
  * Description of Module
  *
@@ -51,6 +55,11 @@ class Module implements ServiceProviderInterface {
     private function createRoutes(&$app) {
         $app->get('/',function() use($app){
             return $app['mustache']->render('layout',array());
+        });
+        $app->get('/account/create',function(Request $request) use($app){
+            //$request = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
+            
+            return $app['mustache']->render('pages/registration');
         });
     }
 
