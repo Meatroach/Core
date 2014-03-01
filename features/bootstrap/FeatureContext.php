@@ -13,11 +13,14 @@ use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
 use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
-use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
+use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor,
+    OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
 use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest,
-    OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
+    OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest,
+    OpenTribes\Core\Domain\Request\Login as LoginRequest;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse,
-    OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
+    OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse,
+    OpenTribes\Core\Domain\Response\Login as LoginResponse;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator,
     OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto,
@@ -38,15 +41,19 @@ class FeatureContext extends BehatContext {
     private $messageHelper;
 
     /**
-     * @var \OpenTribes\Core\Domain\Response\Registration;
+     * @var RegistrationResponse;
      */
     private $registrationResponse;
-    private $registrationValidator;
+
     /**
-     *
      * @var ActivateUserResponse
      */
     private $activateUserResponse;
+    /**
+     * @var LoginResponse 
+     */
+    private $loginResponse;
+    private $registrationValidator;
     private $activateUserValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
@@ -151,12 +158,11 @@ class FeatureContext extends BehatContext {
         foreach ($table->getHash() as $row) {
             $username       = $row['username'];
             $activationCode = $row['activationCode'];
-            
         }
-        $request = new ActivateUserRequest($username, $activationCode);
-        $interactor = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $request                    = new ActivateUserRequest($username, $activationCode);
+        $interactor                 = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
         $this->activateUserResponse = new ActivateUserResponse;
-        $this->interactorResult = $interactor->process($request, $this->activateUserResponse);
+        $this->interactorResult     = $interactor->process($request, $this->activateUserResponse);
     }
 
     /**
@@ -179,6 +185,34 @@ class FeatureContext extends BehatContext {
      */
     public function isActivated($username) {
         $this->userHelper->activateUser($username);
+    }
+
+    /**
+     * @When /^I login with following informations:$/
+     */
+    public function iLoginWithFollowingInformations(TableNode $table) {
+        foreach ($table->getHash() as $row) {
+            $username = $row['username'];
+            $password = $row['password'];
+        }
+        $request    = new LoginRequest($username, $password);
+        $interactor = new LoginInteractor($this->userRepository,$this->passwordHasher);
+        $this->loginResponse = new LoginResponse;
+        $this->interactorResult = $interactor->process($request, $this->loginResponse);
+    }
+
+    /**
+     * @Then /^I should be logged in$/
+     */
+    public function iShouldBeLoggedIn() {
+        assertTrue($this->interactorResult);
+    }
+   /**
+     * @Then /^I should not be logged in$/
+     */
+    public function iShouldNotBeLoggedIn()
+    {
+        assertFalse($this->interactorResult);
     }
 
 }
