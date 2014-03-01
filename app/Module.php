@@ -42,13 +42,15 @@ class Module implements ServiceProviderInterface {
         $app->register(new DoctrineServiceProvider());
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
-        $configFile = realpath(__DIR__ . "/config/" . $this->env . ".php");
+  
+        $configFile = realpath(__DIR__ . "/../config/" . $this->env . ".php");
+      
         $app->register(new ConfigServiceProvider($configFile));
     }
 
     private function createRoutes(&$app) {
-        $app->get('/',function(){
-            
+        $app->get('/',function() use($app){
+            return $app['mustache']->render('layout',array());
         });
     }
 
