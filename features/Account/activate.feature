@@ -2,48 +2,39 @@
 Feature: User Activation
 In order to login as registered user, I need to activate my account
 
+Background:
+    Given following users:
+       | username | password | email | activationCode |
+       | BlackScorp | 123456789 | test@tld.com | test |
+
 Scenario: activate valid account
-    Given user with follwoing informations:
-       | id | username | password | email | activationCode |
-       | 1 | BlackScorp | 123456 | test@test.de | test |
+    Given I'am not logged in
     When I activate account with following informations:
         | username | activationCode |
-        | BlackScorp | test  | 
+        | BlackScorp | test | 
     Then I should be activated
-    And I should have "User" roles
 
-Scenario: invalid activation code
-    Given user with follwoing informations:
-       | id | username | password | email | activationCode |
-       | 1 | BlackScorp | 123456 | test@test.de | qwerty |
-    And I'm not logged in
-    And I have "Guest" roles
+Scenario Outline: invalid activations
+    Given I'am not logged in
     When I activate account with following informations:
-        | username | activation_code |
-        | BlackScorp | 123456  | 
-    Then account activation should fail
-    And I should see a message "activation code is invalid"
-   
-Scenario: user not exists
-    Given user with follwoing informations:
-      | id | username | password | email | activationCode |
-      | 1 | BlackScorp | 123456 | test@test.de | qwerty |
-    And I'm not logged in
-    And I have "Guest" roles
-    When I activate account with following informations:
-        | username | activation_code |
-        | Dummy | 123456  | 
-    Then account activation should fail
-    And I should see "account not exists"
+        | username | activationCode |
+        | <username> | <activationCode> | 
+    Then I should not be activated
+    And I should see following messages "<errorMessage>"
+
+Examples:
+    | username | activationCode | errorMessage |
+    | BlackScorp | 123456 | Activation code is invalid |
+    | Test | test | Activation code is invalid |
+    | | 123456 | Activation code is invalid |
+    | Test | | Activation code is invalid |
+
 
 Scenario: user already active
-    Given user with follwoing informations:
-      | id | username | password | email | activationCode |
-      | 1 | BlackScorp | 123456 | test@test.de | |
-    And I'm not logged in
-    And I have "Guest" roles
+    Given I'am not logged in
+    And "BlackScorp" is activated
     When I activate account with following informations:
-        | username | activation_code |
-        | BlackScorp | 123456  | 
-    Then account activation should fail
-    And I should see "account already active"
+        | username | activationCode |
+        | BlackScorp | 123456 | 
+    Then I should not be activated
+    And I should see following messages "Activation code is invalid"

@@ -7,7 +7,7 @@ namespace OpenTribes\Core\Domain\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration {
+class Registration{
 
     private $username           = '';
     private $email              = '';

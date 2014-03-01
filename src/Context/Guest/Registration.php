@@ -2,6 +2,7 @@
 
 namespace OpenTribes\Core\Domain\Context\Guest;
 
+
 use OpenTribes\Core\Domain\Repository\User as UserRepository;
 use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
@@ -14,7 +15,7 @@ use OpenTribes\Core\Domain\Validator\Registration as RegistrationValidator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration {
+class Registration{
 
     private $userRepository;
     private $registrationValidator;

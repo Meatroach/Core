@@ -13,10 +13,15 @@ use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
 use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
-use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
-use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
-use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
+use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
+use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest,
+    OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
+use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse,
+    OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
+use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator,
+    OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto,
+    OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\Mock\Service\PlainHash as PasswordHasher;
 use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;
 
@@ -37,6 +42,12 @@ class FeatureContext extends BehatContext {
      */
     private $registrationResponse;
     private $registrationValidator;
+    /**
+     *
+     * @var ActivateUserResponse
+     */
+    private $activateUserResponse;
+    private $activateUserValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
 
@@ -52,6 +63,7 @@ class FeatureContext extends BehatContext {
         $this->passwordHasher          = new PasswordHasher;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
+        $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->messageHelper           = new MessageHelper();
     }
 
@@ -60,10 +72,14 @@ class FeatureContext extends BehatContext {
      */
     public function followingUsers(TableNode $table) {
         foreach ($table->getHash() as $row) {
-            $username = $row['username'];
-            $password = $row['password'];
-            $email    = $row['email'];
-            $this->userHelper->createDummyAccount($username, $password, $email);
+            $username       = $row['username'];
+            $password       = $row['password'];
+            $email          = $row['email'];
+            $activationCode = null;
+            if (isset($row['activationCode'])) {
+                $activationCode = $row['activationCode'];
+            }
+            $this->userHelper->createDummyAccount($username, $password, $email, $activationCode);
         }
     }
 
@@ -87,7 +103,7 @@ class FeatureContext extends BehatContext {
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
         $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator,$this->passwordHasher,$this->activationCodeGenerator);
+        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
         $this->registrationResponse = new RegistrationResponse;
         $this->interactorResult     = $interaction->process($request, $this->registrationResponse);
     }
@@ -119,6 +135,50 @@ class FeatureContext extends BehatContext {
      */
     public function iShouldSeeFollowingMessages($message) {
         assertTrue($this->messageHelper->hasMessage($message));
+    }
+
+    /**
+     * @Given /^I\'am not logged in$/
+     */
+    public function iAmNotLoggedIn() {
+        
+    }
+
+    /**
+     * @When /^I activate account with following informations:$/
+     */
+    public function iActivateAccountWithFollowingInformations(TableNode $table) {
+        foreach ($table->getHash() as $row) {
+            $username       = $row['username'];
+            $activationCode = $row['activationCode'];
+            
+        }
+        $request = new ActivateUserRequest($username, $activationCode);
+        $interactor = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $this->activateUserResponse = new ActivateUserResponse;
+        $this->interactorResult = $interactor->process($request, $this->activateUserResponse);
+    }
+
+    /**
+     * @Then /^I should be activated$/
+     */
+    public function iShouldBeActivated() {
+        assertTrue($this->interactorResult);
+    }
+
+    /**
+     * @Then /^I should not be activated$/
+     */
+    public function iShouldNotBeActivated() {
+        assertFalse($this->interactorResult);
+        $this->messageHelper->setMessages($this->activateUserResponse->errors);
+    }
+
+    /**
+     * @Given /^"([^"]*)" is activated$/
+     */
+    public function isActivated($username) {
+        $this->userHelper->activateUser($username);
     }
 
 }
