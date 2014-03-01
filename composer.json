@@ -30,7 +30,7 @@
         "psr-4": {
             "OpenTribes\\Core\\Domain\\": "src/",
             "OpenTribes\\Core\\Mock\\": "mock/",
-            "OpenTribes\\Core\\Delivery\\": "app/"
+            "OpenTribes\\Core\\": "app/"
         }
     }
 
