@@ -2,7 +2,6 @@
 
 namespace OpenTribes\Core\Domain\Context\Guest;
 
-
 use OpenTribes\Core\Domain\Repository\User as UserRepository;
 use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
@@ -15,7 +14,7 @@ use OpenTribes\Core\Domain\Validator\Registration as RegistrationValidator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration{
+class Registration {
 
     private $userRepository;
     private $registrationValidator;
@@ -31,19 +30,24 @@ class Registration{
 
     public function process(RegistrationRequest $request, RegistrationResponse $response) {
         $this->assignInputToValidator($request);
-
+        $response->username           = $request->getUsername();
+        $response->email              = $request->getEmail();
+        $response->emailConfirm       = $request->getEmailConfirm();
+        $response->password           = $request->getPassword();
+        $response->passwordConfirm    = $request->getPasswordConfirm();
+        $response->termsAndConditions = $request->getTermsAndConditions();
+        
         if (!$this->registrationValidator->isValid()) {
             $response->errors = $this->registrationValidator->getErrors();
             return false;
         }
-        $id                       = $this->userRepository->getUniqueId();
-        $password                 = $this->passwordHasher->hash($request->getPassword());
-        $activationCode           = $this->activationCodeGenerator->create();
-        $user                     = $this->userRepository->create($id, $request->getUsername(), $password, $request->getEmail());
+        $id             = $this->userRepository->getUniqueId();
+        $password       = $this->passwordHasher->hash($request->getPassword());
+        $activationCode = $this->activationCodeGenerator->create();
+        $user           = $this->userRepository->create($id, $request->getUsername(), $password, $request->getEmail());
         $user->setActivationCode($activationCode);
         $this->userRepository->add($user);
-        $response->username       = $user->getUsername();
-        $response->email          = $user->getEmail();
+
         $response->activationCode = $user->getActivationCode();
         return true;
     }
