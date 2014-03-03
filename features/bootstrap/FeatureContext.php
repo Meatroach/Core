@@ -49,6 +49,7 @@ class FeatureContext extends BehatContext {
      * @var ActivateUserResponse
      */
     private $activateUserResponse;
+
     /**
      * @var LoginResponse 
      */
@@ -57,7 +58,8 @@ class FeatureContext extends BehatContext {
     private $activateUserValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
-
+    
+    private $mink;
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -72,6 +74,14 @@ class FeatureContext extends BehatContext {
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->messageHelper           = new MessageHelper();
+        
+          $mink = new Mink(array(
+            'browserkit' => new Session(new BrowserKitDriver(new Client)),
+        ));
+
+        $mink->setDefaultSessionName('browserkit');
+        $this->mink = $mink;
+        var_dump($this->mink);
     }
 
     /**
@@ -166,6 +176,13 @@ class FeatureContext extends BehatContext {
     }
 
     /**
+     * @Given /^I\'am on site "([^"]*)"$/
+     */
+    public function iAmOnSite($uri) {
+        throw new PendingException();
+    }
+
+    /**
      * @Then /^I should be activated$/
      */
     public function iShouldBeActivated() {
@@ -195,9 +212,9 @@ class FeatureContext extends BehatContext {
             $username = $row['username'];
             $password = $row['password'];
         }
-        $request    = new LoginRequest($username, $password);
-        $interactor = new LoginInteractor($this->userRepository,$this->passwordHasher);
-        $this->loginResponse = new LoginResponse;
+        $request                = new LoginRequest($username, $password);
+        $interactor             = new LoginInteractor($this->userRepository, $this->passwordHasher);
+        $this->loginResponse    = new LoginResponse;
         $this->interactorResult = $interactor->process($request, $this->loginResponse);
     }
 
@@ -207,11 +224,11 @@ class FeatureContext extends BehatContext {
     public function iShouldBeLoggedIn() {
         assertTrue($this->interactorResult);
     }
-   /**
+
+    /**
      * @Then /^I should not be logged in$/
      */
-    public function iShouldNotBeLoggedIn()
-    {
+    public function iShouldNotBeLoggedIn() {
         assertFalse($this->interactorResult);
     }
 
