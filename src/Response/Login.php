@@ -9,4 +9,5 @@ namespace OpenTribes\Core\Domain\Response;
  */
 class Login extends Response{
     public $username;
+    public $password;
 }

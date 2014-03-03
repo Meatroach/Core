@@ -10,7 +10,7 @@ use OpenTribes\Core\Domain\Response\Login as LoginResponse;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use Igorw\Silex\ConfigServiceProvider;
-use OpenTribes\Core\Mock\Repository\User as UserRepository;
+use OpenTribes\Core\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Mock\Service\PlainHash;
 use OpenTribes\Core\Mock\Service\TestGenerator;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
@@ -55,8 +55,8 @@ class Module implements ServiceProviderInterface {
         $app['service.activationCodeGenerator'] = $app->share(function() {
             return new TestGenerator;
         });
-        $app['repository.user'] = $app->share(function() {
-            return new UserRepository();
+        $app['repository.user'] = $app->share(function() use($app) {
+            return new UserRepository($app['db']);
         });
         $app['validationDto.registration'] = $app->share(function() {
             return new RegistrationValidatorDto;
@@ -80,6 +80,7 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createRoutes(&$app) {
+
         $app->get('/', function() use($app) {
             return $app['mustache']->render('layout', array());
         });
@@ -92,7 +93,6 @@ class Module implements ServiceProviderInterface {
                 $request                 = new LoginRequest($username, $password);
                 $interactor              = new LoginInteractor($app['repository.user'], $app['service.passwordHasher']);
                 $response->isSuccessfull = $interactor->process($request, $response);
-                
             }
             return $app['mustache']->render('pages/login', $response);
         })->method('GET|POST');
@@ -115,6 +115,10 @@ class Module implements ServiceProviderInterface {
 
             return $app['mustache']->render('pages/registration', $response);
         })->method('GET|POST');
+        
+        $app->after(function() use($app){
+            $app['repository.user']->sync();
+        });
     }
 
 }

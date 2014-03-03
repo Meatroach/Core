@@ -19,6 +19,8 @@ class Login {
         $this->passwordHasher = $passwordHasher;
     }
     public function process(LoginRequest $request,LoginResponse $response){
+        $response->username = $request->getUsername();
+        $response->password = $request->getPassword();
         $user = $this->userRepository->findOneByUsername($request->getUsername());
         if(!$user) return false;
         return $this->passwordHasher->verify($user->getPassword(), $request->getPassword());
