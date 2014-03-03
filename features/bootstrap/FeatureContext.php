@@ -74,14 +74,14 @@ class FeatureContext extends BehatContext {
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->messageHelper           = new MessageHelper();
-        
+       /* $app = require_once __DIR__.'/../../bootstrap.php';
           $mink = new Mink(array(
-            'browserkit' => new Session(new BrowserKitDriver(new Client)),
+            'browserkit' => new Session(new BrowserKitDriver(new Client($app))),
         ));
 
         $mink->setDefaultSessionName('browserkit');
         $this->mink = $mink;
-        var_dump($this->mink);
+        var_dump($this->mink);*/
     }
 
     /**
