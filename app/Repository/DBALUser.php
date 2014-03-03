@@ -43,8 +43,14 @@ class DBALUser implements UserRepositoryInterface {
 
     public function findOneByEmail($email) {
         $queryBuilder = $this->db->createQueryBuilder();
-        $result       = $queryBuilder->select('u.id')->from('users', 'u')->where('u.email = :email')->setParameter(':email', $email)->execute();
-        //$user = $this->db->executeQuery("SELECT 1 FROM users WHERE email = :email");
+        $result       = $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email')->from('users', 'u')
+                ->where('u.email = :email')
+                ->setParameter(':email', $email)
+                ->execute();
+        $row          = $result->fetch(\PDO::FETCH_OBJ);
+        $entity       = $this->rowToEntity($row);
+        $this->replace($entity);
+        return $entity;
     }
 
     public function findOneByUsername($username) {
@@ -86,6 +92,18 @@ class DBALUser implements UserRepositoryInterface {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
                 $this->db->insert('users', $this->entityToRow($user));
+            }
+        }
+        foreach($this->modified as $id){
+            if(isset($this->users[$id])){
+                $user = $this->users[$id];
+                $this->db->update('users', $this->entityToRow($user), array('id'=>$id));
+            }
+        }
+        foreach($this->deleted as $id){
+            if(isset($this->user[$id])){
+                $user = $this->users[$id];
+                $this->db->delete('users', array('id'=>$id));
             }
         }
     }
