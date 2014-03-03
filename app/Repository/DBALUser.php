@@ -42,25 +42,27 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function findOneByEmail($email) {
-        $queryBuilder = $this->db->createQueryBuilder();
-        $result       = $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email')->from('users', 'u')
+        $result = $this->getQueryBuilder()
                 ->where('u.email = :email')
                 ->setParameter(':email', $email)
                 ->execute();
-        $row          = $result->fetch(\PDO::FETCH_OBJ);
-        $entity       = $this->rowToEntity($row);
+        $row    = $result->fetch(\PDO::FETCH_OBJ);
+        if(!$row) return null;
+        $entity = $this->rowToEntity($row);
         $this->replace($entity);
         return $entity;
     }
 
     public function findOneByUsername($username) {
-        $queryBuilder = $this->db->createQueryBuilder();
-        $result       = $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email')->from('users', 'u')
+
+        $result = $this->getQueryBuilder()
                 ->where('u.username = :username')
                 ->setParameter(':username', $username)
                 ->execute();
-        $row          = $result->fetch(\PDO::FETCH_OBJ);
-        $entity       = $this->rowToEntity($row);
+        
+        $row    = $result->fetch(\PDO::FETCH_OBJ);
+        if(!$row) return null;
+        $entity = $this->rowToEntity($row);
         $this->replace($entity);
         return $entity;
     }
@@ -69,21 +71,29 @@ class DBALUser implements UserRepositoryInterface {
         return 1;
     }
 
+    private function getQueryBuilder() {
+        $queryBuilder = $this->db->createQueryBuilder();
+        return $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email', 'u.activationCode')->from('users', 'u');
+    }
+
     public function replace(UserEntity $user) {
         $this->users[$user->getId()]    = $user;
         $this->modified[$user->getId()] = $user->getId();
     }
 
     private function rowToEntity($row) {
-        return $this->create($row->id, $row->username, $row->password, $row->email);
+        $user = $this->create($row->id, $row->username, $row->password, $row->email);
+        $user->setActivationCode($row->activationCode);
+        return $user;
     }
 
     private function entityToRow(UserEntity $user) {
         return array(
-            'id'       => $user->getId(),
-            'username' => $user->getUsername(),
-            'email'    => $user->getEmail(),
-            'password' => $user->getPassword()
+            'id'             => $user->getId(),
+            'username'       => $user->getUsername(),
+            'email'          => $user->getEmail(),
+            'password'       => $user->getPassword(),
+            'activationCode' => $user->getActivationCode()
         );
     }
 
@@ -94,16 +104,16 @@ class DBALUser implements UserRepositoryInterface {
                 $this->db->insert('users', $this->entityToRow($user));
             }
         }
-        foreach($this->modified as $id){
-            if(isset($this->users[$id])){
+        foreach ($this->modified as $id) {
+            if (isset($this->users[$id])) {
                 $user = $this->users[$id];
-                $this->db->update('users', $this->entityToRow($user), array('id'=>$id));
+                $this->db->update('users', $this->entityToRow($user), array('id' => $id));
             }
         }
-        foreach($this->deleted as $id){
-            if(isset($this->user[$id])){
+        foreach ($this->deleted as $id) {
+            if (isset($this->user[$id])) {
                 $user = $this->users[$id];
-                $this->db->delete('users', array('id'=>$id));
+                $this->db->delete('users', array('id' => $id));
             }
         }
     }
