@@ -1,0 +1,25 @@
+{{>header}}
+<div class="container">
+    {{^isSuccessfull}}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>Invalid login</p>
+    </div>
+    {{/isSuccessfull}}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form role="form" action="account/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" class="form-control" id="username" value="{{username}}" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" value="{{password}}" id="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-default">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{{>footer}}

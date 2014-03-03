@@ -2,7 +2,18 @@
 
 namespace OpenTribes\Core;
 
+use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
+use OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
+use OpenTribes\Core\Domain\Request\Login as LoginRequest;
+use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Domain\Response\Login as LoginResponse;
+use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use Igorw\Silex\ConfigServiceProvider;
+use OpenTribes\Core\Mock\Repository\User as UserRepository;
+use OpenTribes\Core\Mock\Service\PlainHash;
+use OpenTribes\Core\Mock\Service\TestGenerator;
+use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
@@ -12,14 +23,6 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
-use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
-use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
-use OpenTribes\Core\Mock\Repository\User as UserRepository;
-use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
-use OpenTribes\Core\Mock\Service\PlainHash;
-use OpenTribes\Core\Mock\Service\TestGenerator;
 
 /**
  * Description of Module
@@ -80,18 +83,35 @@ class Module implements ServiceProviderInterface {
         $app->get('/', function() use($app) {
             return $app['mustache']->render('layout', array());
         });
-        $app->match('/account/create', function(Request $request) use($app) {
+        $app->match('/account/login', function(Request $request) use($app) {
             $username                = $request->get('username');
-            $email                   = $request->get('email');
-            $emailConfirm            = $request->get('emailConfirm');
             $password                = $request->get('password');
-            $passwordConfirm         = $request->get('passwordConfirm');
-            $termsAndConditions      = (bool) $request->get('termsAndConditions');
-            $request                 = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-            $context                 = new RegistrationContext($app['repository.user'], $app['validator.registration'], $app['service.passwordHasher'], $app['service.activationCodeGenerator']);
-            $response                = new RegistrationResponse;
-            $result                  = $context->process($request, $response);
-            $response->isSuccessfull = $result;
+            $response                = new LoginResponse;
+            $response->isSuccessfull = true;
+            if ($request->getMethod() === 'POST') {
+                $request                 = new LoginRequest($username, $password);
+                $interactor              = new LoginInteractor($app['repository.user'], $app['service.passwordHasher']);
+                $response->isSuccessfull = $interactor->process($request, $response);
+                
+            }
+            return $app['mustache']->render('pages/login', $response);
+        })->method('GET|POST');
+        $app->match('/account/create', function(Request $request) use($app) {
+            $username           = $request->get('username');
+            $email              = $request->get('email');
+            $emailConfirm       = $request->get('emailConfirm');
+            $password           = $request->get('password');
+            $passwordConfirm    = $request->get('passwordConfirm');
+            $termsAndConditions = (bool) $request->get('termsAndConditions');
+            $response           = new RegistrationResponse;
+
+            $response->isSuccessfull = true;
+            if ($request->getMethod() === 'POST') {
+                $request                 = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
+                $context                 = new RegistrationContext($app['repository.user'], $app['validator.registration'], $app['service.passwordHasher'], $app['service.activationCodeGenerator']);
+                $response->isSuccessfull = $context->process($request, $response);
+            }
+
 
             return $app['mustache']->render('pages/registration', $response);
         })->method('GET|POST');
