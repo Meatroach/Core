@@ -58,8 +58,9 @@ class FeatureContext extends BehatContext {
     private $activateUserValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
-    
     private $mink;
+    private $page;
+
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -74,14 +75,13 @@ class FeatureContext extends BehatContext {
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->messageHelper           = new MessageHelper();
-       /* $app = require_once __DIR__.'/../../bootstrap.php';
-          $mink = new Mink(array(
+        $app                           = require __DIR__ . '/../../bootstrap.php';
+        $mink                          = new Mink(array(
             'browserkit' => new Session(new BrowserKitDriver(new Client($app))),
         ));
 
         $mink->setDefaultSessionName('browserkit');
         $this->mink = $mink;
-        var_dump($this->mink);*/
     }
 
     /**
@@ -120,7 +120,8 @@ class FeatureContext extends BehatContext {
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
         $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher,
+                $this->activationCodeGenerator);
         $this->registrationResponse = new RegistrationResponse;
         $this->interactorResult     = $interaction->process($request, $this->registrationResponse);
     }
@@ -179,7 +180,44 @@ class FeatureContext extends BehatContext {
      * @Given /^I\'am on site "([^"]*)"$/
      */
     public function iAmOnSite($uri) {
-        throw new PendingException();
+        $minkSession = $this->mink->getSession();
+        $minkSession->visit($uri);
+        $this->page  = $minkSession->getPage();
+    }
+
+    /**
+     * @When /^I register with following informations on site:$/
+     */
+    public function iRegisterWithFollowingInformationsOnSite(TableNode $table) {
+        foreach ($table->getHash() as $row) {
+
+            foreach ($row as $field => $value) {
+                if ($field === 'termsAndConditions' ){
+                    if((bool)$value)
+                    $this->page->checkField($field);
+                }else{
+                    $this->page->fillField($field, $value); 
+                }
+                
+               
+            }
+            $this->page->pressButton('register');
+        }
+    }
+ /**
+     * @Then /^I should not be registered on site$/
+     */
+    public function iShouldNotBeRegisteredOnSite()
+    {
+        $this->mink->assertSession()->elementExists('css', '.alert-danger');
+    
+    }
+
+    /**
+     * @Given /^I should see following messages "([^"]*)"  on site$/
+     */
+    public function iShouldSeeFollowingMessagesOnSite($message) {
+       $this->mink->assertSession()->pageTextContains($message);
     }
 
     /**

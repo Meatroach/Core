@@ -14,6 +14,7 @@ $app->before(function(Request $request) use ($app) {
         )
     ));
 });
+$env = 'develop';
 $app->register(new CoreModule($env));
 
 return $app;

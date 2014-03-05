@@ -18,7 +18,6 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 
-
 /**
  * Description of Module
  *
@@ -59,8 +58,8 @@ class Module implements ServiceProviderInterface {
         $app['validator.registration'] = $app->share(function() use($app) {
             return new RegistrationValidator($app['validationDto.registration']);
         });
-        $app['controller.account'] = $app->share(function() use($app){
-            return new Account($app['mustache'], $app['repository.user'], $app['service.passwordhHasher']);
+        $app['controller.account'] = $app->share(function() use($app) {
+            return new Account($app['mustache'], $app['repository.user'], $app['service.passwordHasher'],$app['validator.registration'],$app['service.activationCodeGenerator']);
         });
     }
 
@@ -82,9 +81,9 @@ class Module implements ServiceProviderInterface {
             return $app['mustache']->render('layout', array());
         });
         $app->match('/account/login', 'controller.account:loginAction')->method('GET|POST');
-        $app->match('/account/create','controller.account:createAction')->method('GET|POST');
-        
-        $app->after(function() use($app){
+        $app->match('/account/create', 'controller.account:createAction')->method('GET|POST');
+
+        $app->after(function() use($app) {
             $app['repository.user']->sync();
         });
     }

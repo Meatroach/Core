@@ -18,11 +18,11 @@ Scenario: create new account with valid data
 
 Scenario Outline: create new account over Web
     Given I'am on site "account/create"
-     When I register with following informations:
+     When I register with following informations on site:
         | username | password | passwordConfirm | email | emailConfirm | termsAndConditions |
         | <username> | <password>  | <passwordConfirm> | <email>| <emailConfirm> | <termsAndConditions> |
-     Then I should not be registered
-     And I should see following messages "<errorMessage>"
+     Then I should not be registered on site
+     And I should see following messages "<errorMessage>"  on site
 
 Examples:
     | username | password | passwordConfirm | email | emailConfirm | termsAndConditions | errorMessage |
