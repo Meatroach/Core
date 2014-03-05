@@ -75,13 +75,19 @@ class FeatureContext extends BehatContext {
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->messageHelper           = new MessageHelper();
-        $app                           = require __DIR__ . '/../../bootstrap.php';
-        $mink                          = new Mink(array(
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function createMink() {
+        $app                    = require __DIR__ . '/../../bootstrap.php';
+        $mink                   = new Mink(array(
             'browserkit' => new Session(new BrowserKitDriver(new Client($app))),
         ));
-
+        $app['repository.user'] = $this->userRepository;
         $mink->setDefaultSessionName('browserkit');
-        $this->mink = $mink;
+        $this->mink             = $mink;
     }
 
     /**
@@ -192,32 +198,29 @@ class FeatureContext extends BehatContext {
         foreach ($table->getHash() as $row) {
 
             foreach ($row as $field => $value) {
-                if ($field === 'termsAndConditions' ){
-                    if((bool)$value)
-                    $this->page->checkField($field);
-                }else{
-                    $this->page->fillField($field, $value); 
+                if ($field === 'termsAndConditions') {
+                    if ((bool) $value)
+                        $this->page->checkField($field);
+                }else {
+                    $this->page->fillField($field, $value);
                 }
-                
-               
             }
             $this->page->pressButton('register');
         }
     }
- /**
+
+    /**
      * @Then /^I should not be registered on site$/
      */
-    public function iShouldNotBeRegisteredOnSite()
-    {
+    public function iShouldNotBeRegisteredOnSite() {
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
-    
     }
 
     /**
      * @Given /^I should see following messages "([^"]*)"  on site$/
      */
     public function iShouldSeeFollowingMessagesOnSite($message) {
-       $this->mink->assertSession()->pageTextContains($message);
+        $this->mink->assertSession()->pageTextContains($message);
     }
 
     /**
