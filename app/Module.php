@@ -6,8 +6,10 @@ use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Controller\Account;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
+use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\Mock\Service\PlainHash;
 use OpenTribes\Core\Mock\Service\TestGenerator;
+use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Repository\DBALUser as UserRepository;
 use Silex\Application;
@@ -56,10 +58,16 @@ class Module implements ServiceProviderInterface {
             return new RegistrationValidatorDto;
         });
         $app['validator.registration'] = $app->share(function() use($app) {
-            return new RegistrationValidator($app['validationDto.registration'],$app['validator']);
+            return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
+        });
+        $app['validationDto.activate'] = $app->share(function() use($app) {
+            return new ActivateUserValidatorDto;
+        });
+        $app['validator.activate'] = $app->share(function() use($app) {
+            return new ActivateUserValidator($app['validationDto.activate']);
         });
         $app['controller.account'] = $app->share(function() use($app) {
-            return new Account($app['mustache'], $app['repository.user'], $app['service.passwordHasher'],$app['validator.registration'],$app['service.activationCodeGenerator']);
+            return new Account($app['mustache'], $app['repository.user'], $app['service.passwordHasher'], $app['validator.registration'], $app['service.activationCodeGenerator'],$app['validator.activate']);
         });
     }
 
@@ -82,7 +90,7 @@ class Module implements ServiceProviderInterface {
         });
         $app->match('/account/login', 'controller.account:loginAction')->method('GET|POST');
         $app->match('/account/create', 'controller.account:createAction')->method('GET|POST');
-
+        $app->get('/account/activate/{email}/{activationKey}', 'controller.account:activateAction');
         $app->after(function() use($app) {
             $app['repository.user']->sync();
         });
