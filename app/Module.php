@@ -8,7 +8,7 @@ use OpenTribes\Core\Controller\Account;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Service\PlainHash;
 use OpenTribes\Core\Mock\Service\TestGenerator;
-use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Repository\DBALUser as UserRepository;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
@@ -56,7 +56,7 @@ class Module implements ServiceProviderInterface {
             return new RegistrationValidatorDto;
         });
         $app['validator.registration'] = $app->share(function() use($app) {
-            return new RegistrationValidator($app['validationDto.registration']);
+            return new RegistrationValidator($app['validationDto.registration'],$app['validator']);
         });
         $app['controller.account'] = $app->share(function() use($app) {
             return new Account($app['mustache'], $app['repository.user'], $app['service.passwordHasher'],$app['validator.registration'],$app['service.activationCodeGenerator']);
