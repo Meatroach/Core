@@ -15,7 +15,6 @@ Scenario: create new account with valid data
         | username | password | passwordConfirm | email | emailConfirm | termsAndConditions |
         | BlackScorp | 123456  | 123456 | test@test.de | test@test.de | checked |
     Then I should be registered
-    And I should have an activation code
 
 
 

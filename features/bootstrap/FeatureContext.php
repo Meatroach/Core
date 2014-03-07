@@ -60,8 +60,6 @@ class FeatureContext extends BehatContext {
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
 
         $this->userHelper = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
-
-
         $this->messageHelper = new MessageHelper();
     }
 
@@ -112,12 +110,6 @@ class FeatureContext extends BehatContext {
         $this->userHelper->assertRegistrationSucceed();
     }
 
-    /**
-     * @Given /^I should have an activation code$/
-     */
-    public function iShouldHaveAnActivationCode() {
-        // assertNotNull($this->userHelper->getRegistrationResponse()->activationCode);
-    }
 
     /**
      * @Then /^I should not be registered$/
