@@ -19,12 +19,19 @@ Scenario Outline: invalid activations
     And I should see following messages "<errorMessage>"
 
 Examples:
-  | url  | username | activationCode | errorMessage |
-  | account/activate/BlackScorp/123456  | BlackScorp | 123456 | Activation code is invalid |
-   | account/activate/Test/test | Test | test | Activation code is invalid |
-   |account/activate//123456 | | 123456 | Activation code is invalid |
-   |account/activate/Test/ | Test | | Activation code is invalid |
+  | url  | errorMessage |
+  | account/activate/BlackScorp/123456   | Activation code is invalid |
+   | account/activate/Test/test | Activation code is invalid |
 
+Scenario Outline: invalid activation URLs
+    Given I'am not logged in
+    When I visit "<url>"
+    Then I should get 404 errorpage 
+
+Examples:
+  | url  | 
+   |account/activate//123456 |
+   |account/activate/Test/ | 
 
 Scenario: user already active
     Given I'am not logged in

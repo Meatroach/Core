@@ -146,7 +146,15 @@ class FeatureContext extends BehatContext {
         $activationCode = $values[1];
         $this->userHelper->processActivateAccount($username, $activationCode);
     }
-
+ /**
+     * @Then /^I should get (\d+) errorpage$/
+     */
+    public function iShouldGetErrorpage($code)
+    {
+       if($this->mink){
+        $this->mink->assertSession()->statusCodeEquals($code);
+       }
+    }
     /**
      * @Given /^I\'am on site "([^"]*)"$/
      */
