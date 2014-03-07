@@ -26,12 +26,6 @@ class DeliveryContext extends FeatureContext {
         $this->messageHelper = new DeliveryMessageHelper($this->mink);
     }
 
-    /**
-     * @Given /^I\'am on site "([^"]*)"$/
-     */
-    public function iAmOnSite($uri) {
-       
-        $this->mink->getSession()->visit($uri);
-    }
+ 
 
 }

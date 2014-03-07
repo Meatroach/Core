@@ -1,25 +1,20 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException,
-    \Behat\Behat\Event\FeatureEvent;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\BehatContext;
+use Behat\Gherkin\Node\TableNode;
+use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
+use OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
+use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
+use OpenTribes\Core\Domain\Request\Login as LoginRequest;
+use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
+use OpenTribes\Core\Domain\Response\Login as LoginResponse;
+use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
+use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor,
-    OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
-use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest,
-    OpenTribes\Core\Domain\Request\Login as LoginRequest;
-use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse,
-    OpenTribes\Core\Domain\Response\Login as LoginResponse;
-use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator,
-    OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto,
-    OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\Mock\Service\PlainHash as PasswordHasher;
 use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;
+use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -33,10 +28,7 @@ class FeatureContext extends BehatContext {
     protected $userHelper;
     protected $messageHelper;
 
-    /**
-     * @var RegistrationResponse;
-     */
-    private $registrationResponse;
+
 
     /**
      * @var ActivateUserResponse
@@ -51,8 +43,7 @@ class FeatureContext extends BehatContext {
     private $activateUserValidator;
     protected $passwordHasher;
     protected $activationCodeGenerator;
-    private $mink;
-    private $page;
+    protected $mink;
 
     /**
      * Initializes context.
@@ -74,12 +65,7 @@ class FeatureContext extends BehatContext {
         $this->messageHelper = new MessageHelper();
     }
 
-    /**
-     * @BeforeScenario
-     */
-    public function createMink() {
-        
-    }
+ 
 
     /**
      * @Given /^following users:$/
@@ -130,7 +116,7 @@ class FeatureContext extends BehatContext {
      * @Given /^I should have an activation code$/
      */
     public function iShouldHaveAnActivationCode() {
-       // assertNotNull($this->userHelper->getRegistrationResponse()->activationCode);
+        // assertNotNull($this->userHelper->getRegistrationResponse()->activationCode);
     }
 
     /**
@@ -168,15 +154,14 @@ class FeatureContext extends BehatContext {
         $this->activateUserResponse = new ActivateUserResponse;
         $this->interactorResult     = $interactor->process($request, $this->activateUserResponse);
     }
-  /**
+
+    /**
      * @Given /^I\'am on site "([^"]*)"$/
      */
-    public function iAmOnSite($arg1)
-    {
-        
+    public function iAmOnSite($uri) {
+        if ($this->mink)
+            $this->mink->getSession()->visit($uri);
     }
-
- 
 
     /**
      * @Then /^I should be activated$/
