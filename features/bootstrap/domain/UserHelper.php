@@ -98,6 +98,7 @@ class DomainUserHelper {
             $user->setActivationCode($activationCode);
         }
         $this->userRepository->add($user);
+       
     }
 
     public function activateUser($username) {

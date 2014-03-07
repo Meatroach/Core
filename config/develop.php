@@ -5,7 +5,7 @@ return array(
     'mustache.path' => realpath(__DIR__ . '/../templates'),
     'db.options'    => array(
         'driver' => 'pdo_sqlite',
-        'path'   => realpath(__DIR__ . '/../storage/ot.db')
-        
+        'path'   => realpath(__DIR__ . '/../storage/ot.db'),
+        'memory'=>true
     )
 );

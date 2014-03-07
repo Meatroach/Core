@@ -68,7 +68,11 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function getUniqueId() {
-        return 1;
+        $result = $this->db->prepare("SELECT MAX(id) FROM users");
+        $result->execute();
+        $row = $result->fetchColumn();
+        
+        return $row+1;
     }
 
     private function getQueryBuilder() {

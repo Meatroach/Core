@@ -17,7 +17,7 @@ class DeliveryUserHelper {
     private $registrationValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
-    private $registrationResponse;
+    private $user;
     private $page;
     private $mink;
 
@@ -31,7 +31,7 @@ class DeliveryUserHelper {
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->page = $this->mink->getSession()->getPage();
-
+       // echo $this->page->getContent();
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
         $this->page->fillField('emailConfirm', $emailConfirm);
@@ -45,11 +45,16 @@ class DeliveryUserHelper {
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
         $userId = $this->userRepository->getUniqueId();
-        $user   = $this->userRepository->create($userId, $username, $password, $email);
+        $this->user   = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
-            $user->setActivationCode($activationCode);
+            $this->user->setActivationCode($activationCode);
         }
-        $this->userRepository->add($user);
+        $this->userRepository->add($this->user);
+    }
+    
+    public function clear(){
+        $this->userRepository->delete($this->user);
+      
     }
 
     public function assertRegistrationSucceed() {
