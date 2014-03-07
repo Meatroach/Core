@@ -74,9 +74,9 @@ class FeatureContext extends BehatContext {
         
         $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
                 $this->activationCodeGenerator);
-        /*
+        
         $this->deliveryUserHelper = new DeliveryUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
-                $this->activationCodeGenerato);*/
+                $this->activationCodeGenerator);
         $this->messageHelper           = new MessageHelper();
     }
 
