@@ -90,7 +90,7 @@ class Module implements ServiceProviderInterface {
         });
         $app->match('/account/login', 'controller.account:loginAction')->method('GET|POST');
         $app->match('/account/create', 'controller.account:createAction')->method('GET|POST');
-        $app->get('/account/activate/{email}/{activationKey}', 'controller.account:activateAction');
+        $app->get('/account/activate/{username}/{activationKey}', 'controller.account:activateAction');
         $app->after(function() use($app) {
             $app['repository.user']->sync();
         });

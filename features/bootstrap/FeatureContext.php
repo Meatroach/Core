@@ -12,14 +12,11 @@ use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
 use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor,
     OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
-use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest,
-    OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest,
+use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest,
     OpenTribes\Core\Domain\Request\Login as LoginRequest;
-use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse,
-    OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse,
+use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse,
     OpenTribes\Core\Domain\Response\Login as LoginResponse;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator,
     OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
@@ -68,12 +65,14 @@ class FeatureContext extends BehatContext {
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
-        $this->userRepository          = new UserRepository;
-        $this->userHelper              = new UserHelper($this->userRepository);
+        $this->userRepository = new UserRepository;
+
         $this->passwordHasher          = new PasswordHasher;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
+        $this->userHelper              = new UserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
+                $this->activationCodeGenerator);
         $this->messageHelper           = new MessageHelper();
     }
 
@@ -125,11 +124,7 @@ class FeatureContext extends BehatContext {
             $emailConfirm       = $row['emailConfirm'];
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
-        $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher,
-                $this->activationCodeGenerator);
-        $this->registrationResponse = new RegistrationResponse;
-        $this->interactorResult     = $interaction->process($request, $this->registrationResponse);
+        $this->interactorResult = $this->userHelper->processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
     }
 
     /**
@@ -143,7 +138,7 @@ class FeatureContext extends BehatContext {
      * @Given /^I should have an activation code$/
      */
     public function iShouldHaveAnActivationCode() {
-        assertNotNull($this->registrationResponse->activationCode);
+        assertNotNull($this->userHelper->getRegistrationResponse()->activationCode);
     }
 
     /**
@@ -151,7 +146,7 @@ class FeatureContext extends BehatContext {
      */
     public function iShouldNotBeRegistered() {
         assertFalse($this->interactorResult);
-        $this->messageHelper->setMessages($this->registrationResponse->errors);
+        $this->messageHelper->setMessages($this->userHelper->getRegistrationResponse()->errors);
     }
 
     /**
