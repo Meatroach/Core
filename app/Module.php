@@ -19,7 +19,10 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
-
+use OpenTribes\Core\Controller;
+use OpenTribes\Core\Validator;
+use OpenTribes\Core\Repository;
+use OpenTribes\Core\Service;
 /**
  * Description of Module
  *
@@ -45,29 +48,29 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createDependencies(&$app) {
-        $app['service.passwordHasher'] = $app->share(function() {
+        $app[Service::PASSWORD_HASHER] = $app->share(function() {
             return new PlainHash;
         });
-        $app['service.activationCodeGenerator'] = $app->share(function() {
+        $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() {
             return new TestGenerator;
         });
-        $app['repository.user'] = $app->share(function() use($app) {
+        $app[Repository::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);
         });
         $app['validationDto.registration'] = $app->share(function() {
             return new RegistrationValidatorDto;
         });
-        $app['validator.registration'] = $app->share(function() use($app) {
+        $app[Validator::REGISTRATION] = $app->share(function() use($app) {
             return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
         });
         $app['validationDto.activate'] = $app->share(function() use($app) {
             return new ActivateUserValidatorDto;
         });
-        $app['validator.activate'] = $app->share(function() use($app) {
+        $app[Validator::ACTIVATE] = $app->share(function() use($app) {
             return new ActivateUserValidator($app['validationDto.activate']);
         });
-        $app['controller.account'] = $app->share(function() use($app) {
-            return new Account($app['mustache'], $app['repository.user'], $app['service.passwordHasher'], $app['validator.registration'], $app['service.activationCodeGenerator'],$app['validator.activate']);
+        $app[Controller::ACCOUNT] = $app->share(function() use($app) {
+            return new Account($app['mustache'], $app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
     }
 
@@ -88,11 +91,11 @@ class Module implements ServiceProviderInterface {
         $app->get('/', function() use($app) {
             return $app['mustache']->render('layout', array());
         });
-        $app->match('/account/login', 'controller.account:loginAction')->method('GET|POST');
-        $app->match('/account/create', 'controller.account:createAction')->method('GET|POST');
-        $app->get('/account/activate/{username}/{activationKey}', 'controller.account:activateAction');
+        $app->match('/account/login', Controller::ACCOUNT.':loginAction')->method('GET|POST');
+        $app->match('/account/create', Controller::ACCOUNT.':createAction')->method('GET|POST');
+        $app->get('/account/activate/{username}/{activationKey}',Controller::ACCOUNT.':activateAction');
         $app->after(function() use($app) {
-            $app['repository.user']->sync();
+            $app[Repository::USER]->sync();
         });
     }
 
