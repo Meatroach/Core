@@ -2,9 +2,6 @@
 
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
-use OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
-use OpenTribes\Core\Domain\Request\Login as LoginRequest;
-use OpenTribes\Core\Domain\Response\Login as LoginResponse;
 use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
@@ -20,22 +17,11 @@ require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends BehatContext {
 
-    private $interactorResult;
     protected $userRepository;
     protected $userHelper;
     protected $messageHelper;
-
-    /**
-     * @var ActivateUserResponse
-     */
-    private $activateUserResponse;
-
-    /**
-     * @var LoginResponse 
-     */
-    private $loginResponse;
     protected $registrationValidator;
-    private $activateUserValidator;
+    protected $activateUserValidator;
     protected $passwordHasher;
     protected $activationCodeGenerator;
     protected $mink;
@@ -140,21 +126,22 @@ class FeatureContext extends BehatContext {
      * @When /^I visit "([^"]*)"$/
      */
     public function iVisit($url) {
-        $url = str_replace('account/activate/','',$url);
-        $values = explode('/',$url);
-        $username = $values[0];
+        $url            = str_replace('account/activate/', '', $url);
+        $values         = explode('/', $url);
+        $username       = $values[0];
         $activationCode = $values[1];
         $this->userHelper->processActivateAccount($username, $activationCode);
     }
- /**
+
+    /**
      * @Then /^I should get (\d+) errorpage$/
      */
-    public function iShouldGetErrorpage($code)
-    {
-       if($this->mink){
-        $this->mink->assertSession()->statusCodeEquals($code);
-       }
+    public function iShouldGetErrorpage($code) {
+        if ($this->mink) {
+            $this->mink->assertSession()->statusCodeEquals($code);
+        }
     }
+
     /**
      * @Given /^I\'am on site "([^"]*)"$/
      */
@@ -193,24 +180,21 @@ class FeatureContext extends BehatContext {
             $username = $row['username'];
             $password = $row['password'];
         }
-        $request                = new LoginRequest($username, $password);
-        $interactor             = new LoginInteractor($this->userRepository, $this->passwordHasher);
-        $this->loginResponse    = new LoginResponse;
-        $this->interactorResult = $interactor->process($request, $this->loginResponse);
+        $this->userHelper->processLogin($username, $password);
     }
 
     /**
      * @Then /^I should be logged in$/
      */
     public function iShouldBeLoggedIn() {
-        assertTrue($this->interactorResult);
+        $this->userHelper->assertLoginSucceed();
     }
 
     /**
      * @Then /^I should not be logged in$/
      */
     public function iShouldNotBeLoggedIn() {
-        assertFalse($this->interactorResult);
+        $this->userHelper->assertLoginFailed();
     }
 
 }

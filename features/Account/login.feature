@@ -9,14 +9,16 @@ Background:
 
 
 Scenario: login with valid account
-    Given I'am not logged in
+    Given I'am on site "account/login"
+    And I'am not logged in
     When I login with following informations:
         | username | password |
         | BlackScorp | 123456  |
     Then I should be logged in
 
 Scenario Outline: login with invalid informations
-    Given I'am not logged in
+    Given I'am on site "account/login"
+    And I'am not logged in
     When I login with following informations:
         | username | password |
         | <username> | <username>  |

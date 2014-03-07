@@ -11,6 +11,9 @@ use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
 use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
 use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
+use OpenTribes\Core\Domain\Request\Login as LoginRequest;
+use OpenTribes\Core\Domain\Response\Login as LoginResponse;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -23,7 +26,8 @@ class DomainUserHelper {
     private $registrationResponse;
     private $activateAccountResponse;
     private $activateUserValidator;
-
+    private $loginResponse;
+    private $interactorResult;
     public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
@@ -52,8 +56,8 @@ class DomainUserHelper {
     }
 
     public function processActivateAccount($username, $activationCode) {
-        $request                    = new ActivateUserRequest($username, $activationCode);
-        $interactor                 = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $request                       = new ActivateUserRequest($username, $activationCode);
+        $interactor                    = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
         $this->activateAccountResponse = new ActivateUserResponse;
         return $interactor->process($request, $this->activateAccountResponse);
     }
@@ -63,12 +67,28 @@ class DomainUserHelper {
     }
 
     public function assertActivationSucceed() {
-       
+
         assertTrue(count($this->activateAccountResponse->errors) === 0);
     }
 
     public function assertActivationFailed() {
         assertTrue(count($this->activateAccountResponse->errors) > 0);
+    }
+
+    public function processLogin($username, $password) {
+        $request             = new LoginRequest($username, $password);
+        $interactor          = new LoginInteractor($this->userRepository, $this->passwordHasher);
+        $this->loginResponse = new LoginResponse;
+        $this->interactorResult = $interactor->process($request, $this->loginResponse);
+    }
+
+    public function assertLoginSucceed() {
+     
+        assertTrue($this->interactorResult);
+    }
+
+    public function assertLoginFailed() {
+        assertFalse($this->interactorResult);
     }
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
