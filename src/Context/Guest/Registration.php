@@ -8,7 +8,9 @@ use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
 use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
 use OpenTribes\Core\Domain\Service\PasswordHasher;
 use OpenTribes\Core\Domain\Validator\Registration as RegistrationValidator;
-
+use OpenTribes\Core\Domain\Request\CreateUser as CreateUserRequest;
+use OpenTribes\Core\Domain\Interactor\CreateUser as CreateUserInteractor;
+use OpenTribes\Core\Domain\Response\CreateUser as CreateUserResponse;
 /**
  * Description of Registration
  *
@@ -41,12 +43,14 @@ class Registration {
             $response->errors = $this->registrationValidator->getErrors();
             return false;
         }
-        $id             = $this->userRepository->getUniqueId();
-        $password       = $this->passwordHasher->hash($request->getPassword());
+        $createUserRequest = new CreateUserRequest($request->getUsername(), $request->getPassword(), $request->getEmail());
+        $createUserInteractor = new CreateUserInteractor($this->userRepository, $this->passwordHasher);
+        $createUserResponse = new CreateUserResponse;
+        $createUserInteractor->proccess($createUserRequest, $createUserResponse);
         $activationCode = $this->activationCodeGenerator->create();
-        $user           = $this->userRepository->create($id, $request->getUsername(), $password, $request->getEmail());
+        $user           = $this->userRepository->findOneByUsername($createUserResponse->username);
         $user->setActivationCode($activationCode);
-        $this->userRepository->add($user);
+        $this->userRepository->replace($user);
 
         $response->activationCode = $user->getActivationCode();
         return true;
