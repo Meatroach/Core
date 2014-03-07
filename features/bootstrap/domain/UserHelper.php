@@ -7,15 +7,15 @@ use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
 use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
 use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
-
-class UserHelper {
+require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
+class DomainUserHelper {
 
     private $userRepository;
     private $registrationValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
     private $registrationResponse;
-
+    
     public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher,
             ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
@@ -30,6 +30,12 @@ class UserHelper {
                 $this->activationCodeGenerator);
         $this->registrationResponse = new RegistrationResponse;
         return $interaction->process($request, $this->registrationResponse);
+    }
+    public function assertRegistrationSucceed(){
+        assertTrue(count($this->registrationResponse->errors) === 0);
+    }
+    public function assertRegistrationFailed(){
+        assertTrue(count($this->registrationResponse->errors) > 0);
     }
 
     public function getRegistrationResponse() {

@@ -71,8 +71,12 @@ class FeatureContext extends BehatContext {
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
-        $this->userHelper              = new UserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
+        
+        $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
                 $this->activationCodeGenerator);
+        /*
+        $this->deliveryUserHelper = new DeliveryUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
+                $this->activationCodeGenerato);*/
         $this->messageHelper           = new MessageHelper();
     }
 
@@ -124,14 +128,14 @@ class FeatureContext extends BehatContext {
             $emailConfirm       = $row['emailConfirm'];
             $termsAndConditions = (bool) $row['termsAndConditions'];
         }
-        $this->interactorResult = $this->userHelper->processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
+        $this->userHelper->processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
     }
 
     /**
      * @Then /^I should be registered$/
      */
     public function iShouldBeRegistered() {
-        assertTrue($this->interactorResult);
+       $this->userHelper->assertRegistrationSucceed();
     }
 
     /**
@@ -145,7 +149,8 @@ class FeatureContext extends BehatContext {
      * @Then /^I should not be registered$/
      */
     public function iShouldNotBeRegistered() {
-        assertFalse($this->interactorResult);
+        $this->userHelper->assertRegistrationFailed();
+   
         $this->messageHelper->setMessages($this->userHelper->getRegistrationResponse()->errors);
     }
 
