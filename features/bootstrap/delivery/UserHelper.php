@@ -21,8 +21,7 @@ class DeliveryUserHelper {
     private $page;
     private $mink;
 
-    public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher,
-            ActivationCodeGenerator $activationCodeGenerator) {
+    public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
         $this->passwordHasher          = $passwordHasher;
@@ -32,7 +31,7 @@ class DeliveryUserHelper {
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->page = $this->mink->getSession()->getPage();
-       
+
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
         $this->page->fillField('emailConfirm', $emailConfirm);
@@ -54,15 +53,36 @@ class DeliveryUserHelper {
     }
 
     public function assertRegistrationSucceed() {
-       // assertTrue(count($this->registrationResponse->errors) === 0);
+        // assertTrue(count($this->registrationResponse->errors) === 0);
+    }
+
+    public function processActivateAccount($username, $activationCode) {
+        $request                       = new ActivateUserRequest($username, $activationCode);
+        $interactor                    = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $this->activateAccountResponse = new ActivateUserResponse;
+        return $interactor->process($request, $this->activateAccountResponse);
+    }
+
+    public function getActivateAccountResponse() {
+        return $this->activateAccountResponse;
+    }
+
+    public function assertActivationSucceed() {
+        assertTrue(count($this->activateAccountResponse->errors) === 0);
+    }
+
+    public function assertActivationFailed() {
+        assertTrue(count($this->activateAccountResponse->errors) > 0);
     }
 
     public function assertRegistrationFailed() {
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
-    public function getRegistrationResponse(){
-        $response = new stdClass();
+
+    public function getRegistrationResponse() {
+        $response         = new stdClass();
         $response->errors = array();
-        return $response; 
+        return $response;
     }
+
 }

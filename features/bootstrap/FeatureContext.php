@@ -2,11 +2,8 @@
 
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
-use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
 use OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
-use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
 use OpenTribes\Core\Domain\Request\Login as LoginRequest;
-use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
 use OpenTribes\Core\Domain\Response\Login as LoginResponse;
 use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
@@ -27,8 +24,6 @@ class FeatureContext extends BehatContext {
     protected $userRepository;
     protected $userHelper;
     protected $messageHelper;
-
-
 
     /**
      * @var ActivateUserResponse
@@ -59,11 +54,9 @@ class FeatureContext extends BehatContext {
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
 
-        $this->userHelper = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+        $this->userHelper    = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper = new MessageHelper();
     }
-
- 
 
     /**
      * @Given /^following users:$/
@@ -110,7 +103,6 @@ class FeatureContext extends BehatContext {
         $this->userHelper->assertRegistrationSucceed();
     }
 
-
     /**
      * @Then /^I should not be registered$/
      */
@@ -141,10 +133,18 @@ class FeatureContext extends BehatContext {
             $username       = $row['username'];
             $activationCode = $row['activationCode'];
         }
-        $request                    = new ActivateUserRequest($username, $activationCode);
-        $interactor                 = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
-        $this->activateUserResponse = new ActivateUserResponse;
-        $this->interactorResult     = $interactor->process($request, $this->activateUserResponse);
+        $this->userHelper->processActivateAccount($username, $activationCode);
+    }
+
+    /**
+     * @When /^I visit "([^"]*)"$/
+     */
+    public function iVisit($url) {
+        $url = str_replace('account/activate/','',$url);
+        $values = explode('/',$url);
+        $username = $values[0];
+        $activationCode = $values[1];
+        $this->userHelper->processActivateAccount($username, $activationCode);
     }
 
     /**
@@ -159,15 +159,15 @@ class FeatureContext extends BehatContext {
      * @Then /^I should be activated$/
      */
     public function iShouldBeActivated() {
-        assertTrue($this->interactorResult);
+        $this->userHelper->assertActivationSucceed();
     }
 
     /**
      * @Then /^I should not be activated$/
      */
     public function iShouldNotBeActivated() {
-        assertFalse($this->interactorResult);
-        $this->messageHelper->setMessages($this->activateUserResponse->errors);
+        $this->userHelper->assertActivationFailed();
+        $this->messageHelper->setMessages($this->userHelper->getActivateAccountResponse()->errors);
     }
 
     /**

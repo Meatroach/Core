@@ -7,7 +7,13 @@ use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
 use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
 use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
 use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
+use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
+use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
+use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
+
 class DomainUserHelper {
 
     private $userRepository;
@@ -15,31 +21,54 @@ class DomainUserHelper {
     private $passwordHasher;
     private $activationCodeGenerator;
     private $registrationResponse;
-    
-    public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher,
-            ActivationCodeGenerator $activationCodeGenerator) {
+    private $activateAccountResponse;
+    private $activateUserValidator;
+
+    public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
         $this->passwordHasher          = $passwordHasher;
         $this->activationCodeGenerator = $activationCodeGenerator;
+        $this->activateUserValidator   = $activateUserValidator;
     }
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher,
-                $this->activationCodeGenerator);
+        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
         $this->registrationResponse = new RegistrationResponse;
         return $interaction->process($request, $this->registrationResponse);
     }
-    public function assertRegistrationSucceed(){
+
+    public function assertRegistrationSucceed() {
         assertTrue(count($this->registrationResponse->errors) === 0);
     }
-    public function assertRegistrationFailed(){
+
+    public function assertRegistrationFailed() {
         assertTrue(count($this->registrationResponse->errors) > 0);
     }
 
     public function getRegistrationResponse() {
         return $this->registrationResponse;
+    }
+
+    public function processActivateAccount($username, $activationCode) {
+        $request                    = new ActivateUserRequest($username, $activationCode);
+        $interactor                 = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $this->activateAccountResponse = new ActivateUserResponse;
+        return $interactor->process($request, $this->activateAccountResponse);
+    }
+
+    public function getActivateAccountResponse() {
+        return $this->activateAccountResponse;
+    }
+
+    public function assertActivationSucceed() {
+       
+        assertTrue(count($this->activateAccountResponse->errors) === 0);
+    }
+
+    public function assertActivationFailed() {
+        assertTrue(count($this->activateAccountResponse->errors) > 0);
     }
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
