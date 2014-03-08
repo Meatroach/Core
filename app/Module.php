@@ -7,7 +7,7 @@ use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Controller\Account;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
-use OpenTribes\Core\Mock\Service\PlainHash;
+use OpenTribes\Core\Service\PasswordHasher;
 use OpenTribes\Core\Mock\Service\TestGenerator;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Validator\Registration as RegistrationValidator;
@@ -49,7 +49,7 @@ class Module implements ServiceProviderInterface {
 
     private function createDependencies(&$app) {
         $app[Service::PASSWORD_HASHER] = $app->share(function() {
-            return new PlainHash;
+            return new PasswordHasher();
         });
         $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() {
             return new TestGenerator;
@@ -95,7 +95,9 @@ class Module implements ServiceProviderInterface {
         $app->match('/account/create', Controller::ACCOUNT.':createAction')->method('GET|POST');
         $app->get('/account/activate/{username}/{activationKey}',Controller::ACCOUNT.':activateAction');
         $app->after(function() use($app) {
-            $app[Repository::USER]->sync();
+           
+            
+           $app[Repository::USER]->sync();
         });
     }
 

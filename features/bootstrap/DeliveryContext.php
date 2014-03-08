@@ -20,8 +20,10 @@ class DeliveryContext extends FeatureContext {
         ));
         $this->userRepository          = $app[Repository::USER];
         $this->registrationValidator   = $app[Validator::REGISTRATION];
+      
         $this->passwordHasher          = $app[Service::PASSWORD_HASHER];
         $this->activationCodeGenerator = $app[Service::ACTIVATION_CODE_GENERATOR];
+       
         $mink->setDefaultSessionName('browserkit');
         $this->mink                    = $mink;
         $this->userHelper              = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
@@ -30,13 +32,14 @@ class DeliveryContext extends FeatureContext {
 
     /** @BeforeScenario */
     public function before($event) {
-        $this->userRepository->sync();
+       
     }
 
     /** @AfterScenario */
     public function after($event) {
+     
         $this->userHelper->clear();
-        $this->userRepository->sync();
+       
     }
 
 }

@@ -31,7 +31,8 @@ class DeliveryUserHelper {
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->page = $this->mink->getSession()->getPage();
-       // echo $this->page->getContent();
+     
+  
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
         $this->page->fillField('emailConfirm', $emailConfirm);
@@ -54,7 +55,8 @@ class DeliveryUserHelper {
     
     public function clear(){
         $this->userRepository->delete($this->user);
-      
+       
+        $this->userRepository->sync();
     }
 
     public function assertRegistrationSucceed() {
@@ -66,7 +68,7 @@ class DeliveryUserHelper {
         $this->page = $this->mink->getSession()->getPage();
         $url = sprintf('account/activate/%s/%s',$username,$activationCode);
         $this->mink->getSession()->visit($url);
-        
+     
     }
 
     public function getActivateAccountResponse() {
@@ -85,6 +87,7 @@ class DeliveryUserHelper {
     }
 
     public function assertRegistrationFailed() {
+      //  file_put_contents(__DIR__.'/../../../debugHTML/'.date('H-i-s').'.html',   $this->page->getHtml());
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 

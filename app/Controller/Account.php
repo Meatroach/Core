@@ -50,6 +50,7 @@ class Account {
         $response->isSuccessfull = true;
         if ($httpRequest->getMethod() === 'POST') {
             $response->isSuccessfull = $context->process($request, $response);
+           
         }
         return $this->renderer->render('pages/registration', $response);
     }

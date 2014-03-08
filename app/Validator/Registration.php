@@ -42,10 +42,10 @@ class Registration extends AbstractRegistrationValidator {
                 new Assert\Length(array('min' => 6, 'max' => 30, 'minMessage' => 'Password is too short')),
             ),
             'passwordConfirm'               => array(
-                new Assert\EqualTo(array('value' => 'password', 'message' => 'Password confirm not match'))
+                new Assert\EqualTo(array('value'=>$object->password,'message' => 'Password confirm not match'))
             ),
             'emailConfirm'                  => array(
-                new Assert\EqualTo(array('value' => 'email', 'message' => 'Email confirm not match'))
+                new Assert\EqualTo(array('value'=>$object->email, 'message' => 'Email confirm not match'))
             )
         ));
 

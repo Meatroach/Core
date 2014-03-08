@@ -33,20 +33,24 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function create($id, $username, $password, $email) {
-        return new UserEntity($id, $username, $password, $email);
+        return new UserEntity((int)$id, $username, $password, $email);
     }
 
     public function delete(UserEntity $user) {
-        unset($this->users[$user->getId()]);
+        
         $this->deleted[$user->getId()] = $user->getId();
     }
 
     public function findOneByEmail($email) {
+        foreach($this->users as $user){
+            if($user->getEmail() === $email) return $user;
+        }
         $result = $this->getQueryBuilder()
                 ->where('u.email = :email')
                 ->setParameter(':email', $email)
                 ->execute();
         $row    = $result->fetch(\PDO::FETCH_OBJ);
+        
         if(!$row) return null;
         $entity = $this->rowToEntity($row);
         $this->replace($entity);
@@ -54,13 +58,16 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function findOneByUsername($username) {
-
+        foreach($this->users as $user){
+            if($user->getUsername() === $username) return $user;
+        }
         $result = $this->getQueryBuilder()
                 ->where('u.username = :username')
                 ->setParameter(':username', $username)
                 ->execute();
         
         $row    = $result->fetch(\PDO::FETCH_OBJ);
+        
         if(!$row) return null;
         $entity = $this->rowToEntity($row);
         $this->replace($entity);
@@ -103,21 +110,24 @@ class DBALUser implements UserRepositoryInterface {
 
     public function sync() {
         foreach ($this->added as $id) {
-            if (isset($this->users[$id])) {
+            if (isset($this->users[$id]) && !isset($this->deleted[$id])) {
                 $user = $this->users[$id];
                 $this->db->insert('users', $this->entityToRow($user));
             }
         }
         foreach ($this->modified as $id) {
-            if (isset($this->users[$id])) {
+            if (isset($this->users[$id]) && !isset($this->deleted[$id])) {
                 $user = $this->users[$id];
                 $this->db->update('users', $this->entityToRow($user), array('id' => $id));
             }
         }
+       
         foreach ($this->deleted as $id) {
-            if (isset($this->user[$id])) {
+            if (isset($this->users[$id])) {
                 $user = $this->users[$id];
+              
                 $this->db->delete('users', array('id' => $id));
+                unset($this->users[$id]);
             }
         }
     }
