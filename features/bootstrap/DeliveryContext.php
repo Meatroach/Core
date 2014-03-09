@@ -39,8 +39,8 @@ class DeliveryContext extends FeatureContext {
     /** @AfterScenario */
     public function after($event) {
        
-      $result = $this->userRepository->flush();
-        var_dump(sprintf("deleted %d rows",$result));
+     $this->userRepository->flush();
+      
     }
 
 }

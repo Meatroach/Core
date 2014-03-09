@@ -35,8 +35,8 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     private function reassign($id) {
-        if (isset($this->deleted[$id]))
-            unset($this->deleted[$id]);
+        if (isset($this->added[$id]))
+            unset($this->added[$id]);
         if (isset($this->modified[$id]))
             unset($this->modified[$id]);
         if (isset($this->deleted[$id]))
@@ -129,9 +129,6 @@ class DBALUser implements UserRepositoryInterface {
     }
     
     public function sync() {
-        /**
-         * SOMETHING HERE IS WRONG
-         */
         foreach ($this->deleted as $id) {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
@@ -143,7 +140,7 @@ class DBALUser implements UserRepositoryInterface {
         foreach ($this->added as $id) {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
-              //  $this->db->insert('users', $this->entityToRow($user));
+                $this->db->insert('users', $this->entityToRow($user));
                 $this->reassign($id);
             }
         }

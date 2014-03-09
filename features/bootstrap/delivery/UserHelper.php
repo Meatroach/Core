@@ -67,7 +67,7 @@ class DeliveryUserHelper {
     public function assertRegistrationSucceed() {
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
-        file_put_contents(__DIR__ . '/../../../debugHTML/account_create.html', $this->page->getContent());
+      //  file_put_contents(__DIR__ . '/../../../debugHTML/account_create.html', $this->page->getContent());
     }
 
     public function processActivateAccount($username, $activationCode) {
@@ -91,8 +91,7 @@ class DeliveryUserHelper {
     }
 
     public function assertRegistrationFailed() {
-        //  file_put_contents(__DIR__.'/../../../debugHTML/'.md5($this->page->getContent()).'.html',   $this->page->getContent());
-        $this->mink->assertSession()->elementExists('css', '.alert-danger');
+         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
     public function getRegistrationResponse() {
