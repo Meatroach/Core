@@ -96,10 +96,11 @@ class Module implements ServiceProviderInterface {
     private function createRoutes(&$app) {
 
         $app->get('/', function() use($app) {
-             if(!$session->isStarted())
-            $session = $app['session'];
-             
-          
+           
+
+
+
+
             $response          = new \stdClass();
             $response->failed  = false;
             $response->proceed = false;
@@ -109,9 +110,9 @@ class Module implements ServiceProviderInterface {
                 ->method('GET|POST')
                 ->value('template', 'pages/login')
                 ->value('successHandler', function($appResponse) use ($app) {
-                    if($session->isStarted())
-                    $app['session']->set('username', $appResponse->username);
-                    
+                    if ($app['session']->isStarted())
+                        $app['session']->set('username', $appResponse->username);
+
                     return new RedirectResponse('/');
                 });
         $app->match('/account/create', Controller::ACCOUNT . ':createAction')
