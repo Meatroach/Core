@@ -8,7 +8,7 @@ use OpenTribes\Core\Controller\Account;
 use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\Service\PasswordHasher;
-use OpenTribes\Core\Mock\Service\TestGenerator;
+use OpenTribes\Core\Service\CodeGenerator;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Repository\DBALUser as UserRepository;
@@ -52,7 +52,10 @@ class Module implements ServiceProviderInterface {
             return new PasswordHasher();
         });
         $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() {
-            return new TestGenerator;
+            /**
+             * TODO: move the length to config file
+             */
+            return new CodeGenerator(8);
         });
         $app[Repository::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);

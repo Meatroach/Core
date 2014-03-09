@@ -4,8 +4,9 @@ In order to to login as registered user, I have to input valid informations
 
 Background: 
     Given following users:
-        | username | password | email |
-        | BlackScorp | 123456 | test@tld.com |
+        | username | password | email | activationCode |
+        | BlackScorp | 123456 | test@tld.com | |
+        | NotActive | 123456 | test@test2.com | test |
 
 
 Scenario: login with valid account
@@ -30,4 +31,5 @@ Examples:
     | Test | |
     | | 12345 |
     | Test | 1234 |
+    | NotActive | 123456 |
 
