@@ -36,19 +36,18 @@ class Account {
     }
 
     public function createAction(Request $httpRequest) {
-        $username                = $httpRequest->get('username');
-        $email                   = $httpRequest->get('email');
-        $emailConfirm            = $httpRequest->get('emailConfirm');
-        $password                = $httpRequest->get('password');
-        $passwordConfirm         = $httpRequest->get('passwordConfirm');
-        $termsAndConditions      = (bool) $httpRequest->get('termsAndConditions');
-        $response                = new RegistrationResponse;
-        $request                 = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $context                 = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
-        $response->isSuccessfull = true;
+        $username           = $httpRequest->get('username');
+        $email              = $httpRequest->get('email');
+        $emailConfirm       = $httpRequest->get('emailConfirm');
+        $password           = $httpRequest->get('password');
+        $passwordConfirm    = $httpRequest->get('passwordConfirm');
+        $termsAndConditions = (bool) $httpRequest->get('termsAndConditions');
+        $response           = new RegistrationResponse;
+        $request            = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
+        $context            = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
         if ($httpRequest->getMethod() === 'POST') {
-            $response->isProceed = true;
-            $response->isSuccessfull = $context->process($request, $response);
+            $response->proceed = true;
+            $response->failed    = !$context->process($request, $response);
         }
 
         return $response;
@@ -61,10 +60,9 @@ class Account {
         $response                = new LoginResponse;
         $request                 = new LoginRequest($username, $password);
         $interactor              = new LoginInteractor($this->userRepository, $this->passwordHasher);
-        $response->isSuccessfull = true;
         if ($httpRequest->getMethod() === 'POST') {
-            $response->isProceed = true;
-            $response->isSuccessfull = $interactor->process($request, $response);
+            $response->proceed     = true;
+            $response->failed = !$interactor->process($request, $response);
         }
         return $response;
     }
@@ -76,7 +74,8 @@ class Account {
         $request                 = new ActivateUserRequest($username, $activationCode);
         $response                = new ActivateUserResponse;
         $interactor              = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
-        $response->isSuccessfull = $interactor->process($request, $response);
+        $response->proceed = true;
+        $response->failed = !$interactor->process($request, $response);
         return $response;
     }
 

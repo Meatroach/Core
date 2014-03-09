@@ -1,18 +1,18 @@
 {{>header}}
 <div class="container">
-    {{^isSuccessfull}}
+    {{#failed}}
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         {{#errors}}
         <p>{{.}}</p>
         {{/errors}}
     </div>
-    {{/isSuccessfull}}
-    {{#isSuccessfull}}
+    {{/failed}}
+    {{^failed}}
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <p>{{username}} successfully activated</p>
     </div>
-    {{/isSuccessfull}}
+    {{/failed}}
 </div>
 {{>footer}}

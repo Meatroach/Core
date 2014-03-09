@@ -96,18 +96,22 @@ class Module implements ServiceProviderInterface {
     private function createRoutes(&$app) {
 
         $app->get('/', function() use($app) {
+             if(!$session->isStarted())
             $session = $app['session'];
-
-            $response            = new \stdClass();
-            $response->errors    = array();
-            $response->isProceed = false;
+             
+          
+            $response          = new \stdClass();
+            $response->failed  = false;
+            $response->proceed = false;
             return $response;
         })->value('template', 'layout');
         $app->match('/account/login', Controller::ACCOUNT . ':loginAction')
                 ->method('GET|POST')
                 ->value('template', 'pages/login')
                 ->value('successHandler', function($appResponse) use ($app) {
+                    if($session->isStarted())
                     $app['session']->set('username', $appResponse->username);
+                    
                     return new RedirectResponse('/');
                 });
         $app->match('/account/create', Controller::ACCOUNT . ':createAction')
@@ -128,7 +132,7 @@ class Module implements ServiceProviderInterface {
                 $body     = $app['mustache']->render($template, $appResponse);
                 $response = new Response($body);
             }
-            if ($appResponse->isProceed && count($appResponse->errors) === 0 && $request->attributes->has('successHandler')) {
+            if ($appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
                 $handler  = $request->attributes->get('successHandler');
                 $response = $handler($appResponse);
             }

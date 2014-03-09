@@ -9,5 +9,6 @@ namespace OpenTribes\Core\Domain\Response;
  */
 abstract class Response {
     public $errors = array();
-    public $isProceed = false;
+    public $proceed = false;
+    public $failed = true;
 }
