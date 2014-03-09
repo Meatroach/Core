@@ -18,6 +18,10 @@ class DeliveryUserHelper {
     private $passwordHasher;
     private $activationCodeGenerator;
     private $user;
+
+    /**
+     * @var \Behat\Mink\Element\DocumentElement
+     */
     private $page;
     private $mink;
 
@@ -31,8 +35,8 @@ class DeliveryUserHelper {
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->page = $this->mink->getSession()->getPage();
-     
-  
+
+
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
         $this->page->fillField('emailConfirm', $emailConfirm);
@@ -45,49 +49,49 @@ class DeliveryUserHelper {
     }
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
-        $userId = $this->userRepository->getUniqueId();
-        $this->user   = $this->userRepository->create($userId, $username, $password, $email);
+        $userId     = $this->userRepository->getUniqueId();
+        $password   = $this->passwordHasher->hash($password);
+        $this->user = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
             $this->user->setActivationCode($activationCode);
         }
+
         $this->userRepository->add($this->user);
     }
-    
-    public function clear(){
+
+    public function clear() {
         $this->userRepository->delete($this->user);
-       
         $this->userRepository->sync();
     }
 
     public function assertRegistrationSucceed() {
-       
-        // assertTrue(count($this->registrationResponse->errors) === 0);
+        $this->mink->assertSession()->statusCodeEquals(200);
+        $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
+        file_put_contents(__DIR__ . '/../../../debugHTML/account_create.html', $this->page->getContent());
     }
 
     public function processActivateAccount($username, $activationCode) {
         $this->page = $this->mink->getSession()->getPage();
-        $url = sprintf('account/activate/%s/%s',$username,$activationCode);
+        $url        = sprintf('account/activate/%s/%s', $username, $activationCode);
         $this->mink->getSession()->visit($url);
-     
     }
 
     public function getActivateAccountResponse() {
-        $response = new stdClass;
+        $response         = new stdClass;
         $response->errors = array();
         return $response;
     }
 
     public function assertActivationSucceed() {
-      
-    
+        
     }
 
     public function assertActivationFailed() {
-       $this->mink->assertSession()->elementExists('css', '.alert-danger');
+        $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
     public function assertRegistrationFailed() {
-      //  file_put_contents(__DIR__.'/../../../debugHTML/'.date('H-i-s').'.html',   $this->page->getHtml());
+        //  file_put_contents(__DIR__.'/../../../debugHTML/'.md5($this->page->getContent()).'.html',   $this->page->getContent());
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
@@ -96,9 +100,11 @@ class DeliveryUserHelper {
         $response->errors = array();
         return $response;
     }
-      public function activateUser($username) {
+
+    public function activateUser($username) {
         $user = $this->userRepository->findOneByUsername($username);
         $user->setActivationCode(null);
         $this->userRepository->replace($user);
     }
+
 }

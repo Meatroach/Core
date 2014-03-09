@@ -13,10 +13,8 @@ Scenario: create new account with valid data
     And I'm not registered user
     When I register with following informations:
         | username | password | passwordConfirm | email | emailConfirm | termsAndConditions |
-        | BlackScorp | 123456  | 123456 | test@test.de | test@test.de | checked |
+        | BlackScorp1 | 123456  | 123456 | test1@test.de | test1@test.de | checked |
     Then I should be registered
-
-
 
 Scenario Outline: create new account with invalid data
      Given I'am on site "account/create"

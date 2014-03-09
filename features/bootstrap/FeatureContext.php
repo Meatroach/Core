@@ -48,6 +48,7 @@ class FeatureContext extends BehatContext {
      * @Given /^following users:$/
      */
     public function followingUsers(TableNode $table) {
+      
         foreach ($table->getHash() as $row) {
             $username       = $row['username'];
             $password       = $row['password'];

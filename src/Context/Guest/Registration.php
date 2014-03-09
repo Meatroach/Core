@@ -40,7 +40,9 @@ class Registration {
         $response->termsAndConditions = $request->getTermsAndConditions();
         
         if (!$this->registrationValidator->isValid()) {
+            
             $response->errors = $this->registrationValidator->getErrors();
+          
             return false;
         }
         $createUserRequest = new CreateUserRequest($request->getUsername(), $request->getPassword(), $request->getEmail());
@@ -49,8 +51,9 @@ class Registration {
         $createUserInteractor->proccess($createUserRequest, $createUserResponse);
         $activationCode = $this->activationCodeGenerator->create();
         $user           = $this->userRepository->findOneByUsername($createUserResponse->username);
+        
         $user->setActivationCode($activationCode);
-        $this->userRepository->replace($user);
+        $this->userRepository->add($user);
 
         $response->activationCode = $user->getActivationCode();
         return true;

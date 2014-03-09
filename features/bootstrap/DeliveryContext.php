@@ -28,6 +28,7 @@ class DeliveryContext extends FeatureContext {
         $this->mink                    = $mink;
         $this->userHelper              = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
         $this->messageHelper           = new DeliveryMessageHelper($this->mink);
+        
     }
 
     /** @BeforeScenario */
@@ -37,9 +38,9 @@ class DeliveryContext extends FeatureContext {
 
     /** @AfterScenario */
     public function after($event) {
-     
-        $this->userHelper->clear();
        
+      $result = $this->userRepository->flush();
+        var_dump(sprintf("deleted %d rows",$result));
     }
 
 }

@@ -96,8 +96,8 @@ class Module implements ServiceProviderInterface {
         $app->get('/account/activate/{username}/{activationKey}',Controller::ACCOUNT.':activateAction');
         $app->after(function() use($app) {
            
-            
-           $app[Repository::USER]->sync();
+            $app[Repository::USER]->sync();
+           
         });
     }
 
