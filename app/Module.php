@@ -96,7 +96,7 @@ class Module implements ServiceProviderInterface {
     private function createRoutes(&$app) {
 
         $app->get('/', function() use($app) {
-           
+
 
 
 
@@ -105,7 +105,7 @@ class Module implements ServiceProviderInterface {
             $response->failed  = false;
             $response->proceed = false;
             return $response;
-        })->value('template', 'layout');
+        })->value('template', 'pages/landing');
         $app->match('/account/login', Controller::ACCOUNT . ':loginAction')
                 ->method('GET|POST')
                 ->value('template', 'pages/login')
