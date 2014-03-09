@@ -50,9 +50,9 @@ class Account {
         $response->isSuccessfull = true;
         if ($httpRequest->getMethod() === 'POST') {
             $response->isSuccessfull = $context->process($request, $response);
-           
         }
-        return $this->renderer->render('pages/registration', $response);
+        
+        return $response;
     }
 
     public function loginAction(Request $httpRequest) {
@@ -66,19 +66,18 @@ class Account {
         if ($httpRequest->getMethod() === 'POST') {
             $response->isSuccessfull = $interactor->process($request, $response);
         }
-        return $this->renderer->render('pages/login', $response);
+        return $response;
     }
 
     public function activateAction(Request $httpRequest) {
 
-        $username       = $httpRequest->get('username');
-        $activationCode = $httpRequest->get('activationKey');
-        $request        = new ActivateUserRequest($username, $activationCode);
-        $response       = new ActivateUserResponse;
-        $interactor     = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $username                = $httpRequest->get('username');
+        $activationCode          = $httpRequest->get('activationKey');
+        $request                 = new ActivateUserRequest($username, $activationCode);
+        $response                = new ActivateUserResponse;
+        $interactor              = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
         $response->isSuccessfull = $interactor->process($request, $response);
-        
-        return $this->renderer->render('pages/activation', $response);
+        return $response;
     }
 
 }

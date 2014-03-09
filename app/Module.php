@@ -4,14 +4,18 @@ namespace OpenTribes\Core;
 
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
+use OpenTribes\Core\Controller;
 use OpenTribes\Core\Controller\Account;
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
-use OpenTribes\Core\Service\PasswordHasher;
-use OpenTribes\Core\Service\CodeGenerator;
+use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
-use OpenTribes\Core\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Repository;
 use OpenTribes\Core\Repository\DBALUser as UserRepository;
+use OpenTribes\Core\Service;
+use OpenTribes\Core\Service\CodeGenerator;
+use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Validator;
+use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -19,10 +23,9 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
-use OpenTribes\Core\Controller;
-use OpenTribes\Core\Validator;
-use OpenTribes\Core\Repository;
-use OpenTribes\Core\Service;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
+
 /**
  * Description of Module
  *
@@ -94,13 +97,29 @@ class Module implements ServiceProviderInterface {
         $app->get('/', function() use($app) {
             return $app['mustache']->render('layout', array());
         });
-        $app->match('/account/login', Controller::ACCOUNT.':loginAction')->method('GET|POST');
-        $app->match('/account/create', Controller::ACCOUNT.':createAction')->method('GET|POST');
-        $app->get('/account/activate/{username}/{activationKey}',Controller::ACCOUNT.':activateAction');
+        $app->match('/account/login', Controller::ACCOUNT . ':loginAction')
+                ->method('GET|POST')
+                ->value('template', 'pages/login');
+        $app->match('/account/create', Controller::ACCOUNT . ':createAction')
+                ->method('GET|POST')
+                ->value('template', 'pages/registration');
+        $app->get('/account/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
+                ->value('template', 'pages/activation');
+
+        $app->on(KernelEvents::VIEW, function($event) use($app) {
+            $response = $event->getControllerResult();
+
+            $request = $event->getRequest();
+            if ($request->attributes->has('template')) {
+                $template = $request->attributes->get('template');
+                $body     = $app['mustache']->render($template, $response);
+                $response = new Response($body);
+            }
+            $event->setResponse($response);
+        });
         $app->after(function() use($app) {
-           
+
             $app[Repository::USER]->sync();
-           
         });
     }
 
