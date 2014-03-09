@@ -23,6 +23,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -76,7 +77,7 @@ class Module implements ServiceProviderInterface {
             return new ActivateUserValidator($app['validationDto.activate']);
         });
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
-            return new Account($app['mustache'], $app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
+            return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
     }
 
@@ -95,30 +96,45 @@ class Module implements ServiceProviderInterface {
     private function createRoutes(&$app) {
 
         $app->get('/', function() use($app) {
-            return $app['mustache']->render('layout', array());
-        });
+            $session = $app['session'];
+
+            $response            = new \stdClass();
+            $response->errors    = array();
+            $response->isProceed = false;
+            return $response;
+        })->value('template', 'layout');
         $app->match('/account/login', Controller::ACCOUNT . ':loginAction')
                 ->method('GET|POST')
-                ->value('template', 'pages/login');
+                ->value('template', 'pages/login')
+                ->value('successHandler', function($appResponse) use ($app) {
+                    $app['session']->set('username', $appResponse->username);
+                    return new RedirectResponse('/');
+                });
         $app->match('/account/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
                 ->value('template', 'pages/registration');
         $app->get('/account/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value('template', 'pages/activation');
-
+        /**
+         * TODO: this general stuffs will be moved outside of core module
+         */
         $app->on(KernelEvents::VIEW, function($event) use($app) {
-            $response = $event->getControllerResult();
+            $appResponse = $event->getControllerResult();
 
             $request = $event->getRequest();
+
             if ($request->attributes->has('template')) {
                 $template = $request->attributes->get('template');
-                $body     = $app['mustache']->render($template, $response);
+                $body     = $app['mustache']->render($template, $appResponse);
                 $response = new Response($body);
+            }
+            if ($appResponse->isProceed && count($appResponse->errors) === 0 && $request->attributes->has('successHandler')) {
+                $handler  = $request->attributes->get('successHandler');
+                $response = $handler($appResponse);
             }
             $event->setResponse($response);
         });
         $app->after(function() use($app) {
-
             $app[Repository::USER]->sync();
         });
     }

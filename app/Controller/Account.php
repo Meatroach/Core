@@ -21,15 +21,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Account {
 
-    private $renderer;
     private $userRepository;
     private $passwordHasher;
     private $registrationValidator;
     private $activationCodeGenerator;
     private $activateUserValidator;
 
-    public function __construct(Renderer $renderer, UserRepository $userRepository, PasswordHasher $passwordHasher, RegistrationValidator $registrationValidator, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
-        $this->renderer                = $renderer;
+    public function __construct(UserRepository $userRepository, PasswordHasher $passwordHasher, RegistrationValidator $registrationValidator, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;
         $this->passwordHasher          = $passwordHasher;
         $this->registrationValidator   = $registrationValidator;
@@ -49,9 +47,10 @@ class Account {
         $context                 = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
         $response->isSuccessfull = true;
         if ($httpRequest->getMethod() === 'POST') {
+            $response->isProceed = true;
             $response->isSuccessfull = $context->process($request, $response);
         }
-        
+
         return $response;
     }
 
@@ -64,6 +63,7 @@ class Account {
         $interactor              = new LoginInteractor($this->userRepository, $this->passwordHasher);
         $response->isSuccessfull = true;
         if ($httpRequest->getMethod() === 'POST') {
+            $response->isProceed = true;
             $response->isSuccessfull = $interactor->process($request, $response);
         }
         return $response;
