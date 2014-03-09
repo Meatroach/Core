@@ -35,8 +35,6 @@ class DeliveryUserHelper {
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->page = $this->mink->getSession()->getPage();
-
-
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
         $this->page->fillField('emailConfirm', $emailConfirm);
@@ -59,15 +57,9 @@ class DeliveryUserHelper {
         $this->userRepository->add($this->user);
     }
 
-    public function clear() {
-        $this->userRepository->delete($this->user);
-        $this->userRepository->sync();
-    }
-
     public function assertRegistrationSucceed() {
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
-      //  file_put_contents(__DIR__ . '/../../../debugHTML/account_create.html', $this->page->getContent());
     }
 
     public function processActivateAccount($username, $activationCode) {
@@ -82,8 +74,25 @@ class DeliveryUserHelper {
         return $response;
     }
 
+    public function processLogin($username, $password) {
+        $this->page = $this->mink->getSession()->getPage();
+        $this->page->fillField('username', $username);
+        $this->page->fillField('password', $password);
+        $this->page->pressButton('login');
+    }
+
+    public function assertLoginSucceed() {
+        $this->mink->assertSession()->statusCodeEquals(200);
+        $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
+    }
+
+    public function assertLoginFailed() {
+        $this->mink->assertSession()->elementExists('css', '.alert-danger');
+    }
+
     public function assertActivationSucceed() {
-        
+        $this->mink->assertSession()->statusCodeEquals(200);
+        $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
     }
 
     public function assertActivationFailed() {
@@ -91,7 +100,7 @@ class DeliveryUserHelper {
     }
 
     public function assertRegistrationFailed() {
-         $this->mink->assertSession()->elementExists('css', '.alert-danger');
+        $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
     public function getRegistrationResponse() {
