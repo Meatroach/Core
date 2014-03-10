@@ -12,26 +12,20 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 clone repository
 
 ~~~
-
 git clone -b develop https://github.com/Opentribes/Core.git /path/to/your/folder
-
 ~~~
 
 update dependencies
 
 ~~~
-
 cd /path/to/your/folder
 composer update
-
 ~~~
 
 run game
 
 ~~~
-
 php -S localhost:8080 -t web/index.php
-
 ~~~
 
 
