@@ -20,9 +20,11 @@ use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
+use stdClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -89,6 +91,7 @@ class Module implements ServiceProviderInterface {
         $app->register(new DoctrineServiceProvider());
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
+        $app->register(new SwiftmailerServiceProvider());
         $configFile = realpath(__DIR__ . "/../config/" . $this->env . ".php");
         $app->register(new ConfigServiceProvider($configFile));
     }
@@ -101,7 +104,7 @@ class Module implements ServiceProviderInterface {
 
 
 
-            $response          = new \stdClass();
+            $response          = new stdClass();
             $response->failed  = false;
             $response->proceed = false;
             return $response;
@@ -117,6 +120,20 @@ class Module implements ServiceProviderInterface {
                 });
         $app->match('/account/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
+                ->value('successHandler', function($appResponse) use ($app) {
+                    $request = $app['request'];
+                 
+                    $appResponse->url = $request->getHttpHost();
+                    $htmlBody = $app['mustache']->render('mails/html/register', $appResponse);
+                    $textBody = $app['mustache']->render('mails/text/register', $appResponse);
+                    $message  = \Swift_Message::newInstance()
+                            ->setSubject($app['subjects']['registration'])
+                            ->setFrom(array($app['noreply']))
+                            ->setTo(array($appResponse->email))
+                            ->setBody($htmlBody, 'text/html')
+                            ->setBody($textBody, 'text/plain');
+                    $app['mailer']->send($message);
+                })
                 ->value('template', 'pages/registration');
         $app->get('/account/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value('template', 'pages/activation');
@@ -135,7 +152,9 @@ class Module implements ServiceProviderInterface {
             }
             if ($appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
                 $handler  = $request->attributes->get('successHandler');
-                $response = $handler($appResponse);
+                $result   = $handler($appResponse);
+                if ($result)
+                    $response = $result;
             }
             $event->setResponse($response);
         });
