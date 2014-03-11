@@ -10,7 +10,8 @@ $app = new Application;
 $app->before(function(Request $request) use ($app) {
     $app['mustache.options'] = array_merge_recursive($app['mustache.options'], array(
         'helpers' => array(
-            'baseUri' => $request->getBaseUrl() . '/'
+           'baseUrl' => $request->getBaseUrl() . '/'
+  
         )
     ));
 });
