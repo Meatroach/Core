@@ -10,7 +10,7 @@ Background:
 
 
 Scenario: login with valid account
-    Given I'am on site "account/login"
+    Given I'am on site "/"
     And I'am not logged in
     When I login with following informations:
         | username | password |
@@ -18,7 +18,7 @@ Scenario: login with valid account
     Then I should be logged in
 
 Scenario Outline: login with invalid informations
-    Given I'am on site "account/login"
+    Given I'am on site "/"
     And I'am not logged in
     When I login with following informations:
         | username | password |

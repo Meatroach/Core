@@ -25,8 +25,12 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 use stdClass;
+use Swift_Message;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -115,19 +119,38 @@ class Module implements ServiceProviderInterface {
         $app->on(KernelEvents::VIEW,
                 function($event) use($app) {
             $appResponse = $event->getControllerResult();
-
-            $request = $event->getRequest();
-
-            if ($request->attributes->has('template')) {
-                $template = $request->attributes->get('template');
-                $body     = $app['mustache']->render($template, $appResponse);
-                $response = new Response($body);
+            $request     = $event->getRequest();
+            $requestType = $event->getRequestType();
+            if ($requestType === HttpKernelInterface::SUB_REQUEST) {
+                $response = new JsonResponse($appResponse);
             }
-            if ($appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
-                $handler  = $request->attributes->get('successHandler');
-                $result   = $handler($appResponse);
-                if ($result)
-                    $response = $result;
+            if ($request->attributes->has('subRequests')) {
+                $subRequests = $request->attributes->get('subRequests');
+                $tmpResponse = $appResponse;
+                foreach ($subRequests as $values) {
+                    $uri         = $values['url'];
+                    $method      = $values['method'];
+                    $param       = $values['param'];
+                    $subRequest  = Request::create($uri, $method, $param);
+                    $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+                    $content     = json_decode($subResponse->getContent());
+                    $appResponse = (object) array_merge((array) $appResponse, (array) $content);
+                }
+                $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
+            }
+            if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
+                if ($request->attributes->has('template')) {
+                    $template = $request->attributes->get('template');
+                    $body     = $app['mustache']->render($template, $appResponse);
+                    $response = new Response($body);
+                }
+
+                if ($appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
+                    $handler  = $request->attributes->get('successHandler');
+                    $result   = $handler($appResponse);
+                    if ($result)
+                        $response = $result;
+                }
             }
             $event->setResponse($response);
         });
@@ -155,11 +178,11 @@ class Module implements ServiceProviderInterface {
                 ->method('GET|POST')
                 ->value('successHandler',
                         function($appResponse) use ($app) {
-                    $request          = $app['request'];
+                    $request              = $app['request'];
                     $appResponse->baseUrl = $request->getHttpHost();
-                    $htmlBody         = $app['mustache']->render('mails/html/register', $appResponse);
-                    $textBody         = $app['mustache']->render('mails/text/register', $appResponse);
-                    $message          = \Swift_Message::newInstance()
+                    $htmlBody             = $app['mustache']->render('mails/html/register', $appResponse);
+                    $textBody             = $app['mustache']->render('mails/text/register', $appResponse);
+                    $message              = Swift_Message::newInstance()
                             ->setSubject($app['subjects']['registration'])
                             ->setFrom(array($app['noreply']))
                             ->setTo(array($appResponse->email))
@@ -173,9 +196,9 @@ class Module implements ServiceProviderInterface {
                 ->value('template', 'pages/activation');
         $account->get('/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value('template', 'pages/activation');
-        
+
         $account->after(Controller::ACCOUNT . ':after');
-        
+
         return $account;
     }
 
