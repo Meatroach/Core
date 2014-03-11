@@ -106,6 +106,7 @@ class Module implements ServiceProviderInterface {
             $response->proceed = false;
             return $response;
         })->value('template', 'pages/landing');
+        
         $app->match('/account/login', Controller::ACCOUNT . ':loginAction')
                 ->method('GET|POST')
                 ->value('template', 'pages/login')
