@@ -59,3 +59,4 @@ composer.lock
 
 index.html
 !web/assets/js/vendor
+storage
