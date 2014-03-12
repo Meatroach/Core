@@ -3,6 +3,7 @@ test:
 
 install:
 	composer install
+	php cli/index.php install
 
 update:
 	composer update
