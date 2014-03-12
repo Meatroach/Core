@@ -32,9 +32,9 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenTribes\\Core\\Domain\\": "src/",
+            "OpenTribes\\Core\\": "src/",
             "OpenTribes\\Core\\Mock\\": "mock/",
-            "OpenTribes\\Core\\": "app/"
+            "OpenTribes\\Core\\Silex\\": "silex/"
         }
     }
 

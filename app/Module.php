@@ -83,8 +83,7 @@ class Module implements ServiceProviderInterface {
             return new ActivateUserValidator($app['validationDto.activate']);
         });
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
-            return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR],
-                    $app[Validator::ACTIVATE]);
+            return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
     }
 
@@ -103,8 +102,7 @@ class Module implements ServiceProviderInterface {
 
     private function createRoutes(&$app) {
 
-        $app->get('/',
-                function() use($app) {
+        $app->get('/', function() use($app) {
 
             $response          = new stdClass();
             $response->failed  = false;
@@ -116,8 +114,7 @@ class Module implements ServiceProviderInterface {
         /**
          * TODO: this general stuffs will be moved outside of core module
          */
-        $app->on(KernelEvents::VIEW,
-                function($event) use($app) {
+        $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
@@ -127,6 +124,7 @@ class Module implements ServiceProviderInterface {
             if ($request->attributes->has('subRequests')) {
                 $subRequests = $request->attributes->get('subRequests');
                 $tmpResponse = $appResponse;
+
                 foreach ($subRequests as $values) {
                     $uri         = $values['url'];
                     $method      = $values['method'];
@@ -160,26 +158,27 @@ class Module implements ServiceProviderInterface {
         $account = $app['controllers_factory'];
 
         $account->post('/login', Controller::ACCOUNT . ':loginAction')
-                ->value('template', 'pages/login')
-                ->value('successHandler',
-                        function($appResponse) use ($app) {
+                ->value('template', 'pages/landing')
+                ->value('successHandler', function($appResponse) use ($app) {
                     if ($app['session']->isStarted())
                         $app['session']->set('username', $appResponse->username);
 
                     return new RedirectResponse('/');
                 })
-                ->value('subRequests',
-                        array(
-                    'url'    => '/',
-                    'method' => 'GET',
-                    'param'  => array()
+                ->value('subRequests', array(
+                    array(
+                        'url'    => '/',
+                        'method' => 'GET',
+                        'param'  => array())
         ));
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
-                ->value('successHandler',
-                        function($appResponse) use ($app) {
+                ->value('successHandler', function($appResponse) use ($app) {
+                    
                     $request              = $app['request'];
+                   
                     $appResponse->baseUrl = $request->getHttpHost();
+                    
                     $htmlBody             = $app['mustache']->render('mails/html/register', $appResponse);
                     $textBody             = $app['mustache']->render('mails/text/register', $appResponse);
                     $message              = Swift_Message::newInstance()
@@ -188,9 +187,13 @@ class Module implements ServiceProviderInterface {
                             ->setTo(array($appResponse->email))
                             ->setBody($htmlBody, 'text/html')
                             ->setBody($textBody, 'text/plain');
-                    $app['mailer']->send($message);
+                  
+                             //$app['mailer']->send($message);
+                   
+               
                 })
                 ->value('template', 'pages/registration');
+                
         $account->match('/activate', Controller::ACCOUNT . ':activateAction')
                 ->method('GET|POST')
                 ->value('template', 'pages/activation');
