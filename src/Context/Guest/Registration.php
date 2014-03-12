@@ -1,16 +1,16 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Context\Guest;
+namespace OpenTribes\Core\Context\Guest;
 
-use OpenTribes\Core\Domain\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
-use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
-use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
-use OpenTribes\Core\Domain\Service\PasswordHasher;
-use OpenTribes\Core\Domain\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\Domain\Request\CreateUser as CreateUserRequest;
-use OpenTribes\Core\Domain\Interactor\CreateUser as CreateUserInteractor;
-use OpenTribes\Core\Domain\Response\CreateUser as CreateUserResponse;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Service\ActivationCodeGenerator;
+use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Request\CreateUser as CreateUserRequest;
+use OpenTribes\Core\Interactor\CreateUser as CreateUserInteractor;
+use OpenTribes\Core\Response\CreateUser as CreateUserResponse;
 /**
  * Description of Registration
  *

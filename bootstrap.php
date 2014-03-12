@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use OpenTribes\Core\Module as CoreModule;
+use OpenTribes\Core\Silex\Module as CoreModule;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 

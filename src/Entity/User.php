@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Entity;
+namespace OpenTribes\Core\Entity;
 
 /**
  * Description of User

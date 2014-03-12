@@ -2,7 +2,7 @@
 
 namespace OpenTribes\Core\Mock\Service;
 
-use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
+use OpenTribes\Core\Service\ActivationCodeGenerator;
 
 /**
  * Description of TestGenerator

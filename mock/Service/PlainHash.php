@@ -1,7 +1,7 @@
 <?php
 
 namespace OpenTribes\Core\Mock\Service;
-use OpenTribes\Core\Domain\Service\PasswordHasher;
+use OpenTribes\Core\Service\PasswordHasher;
 /**
  * Description of PlainHash
  *

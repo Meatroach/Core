@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Interactor;
-use OpenTribes\Core\Domain\Request\CreateUser as CreateUserRequest;
-use OpenTribes\Core\Domain\Response\CreateUser as CreateUserResponse;
-use OpenTribes\Core\Domain\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Service\PasswordHasher;
+namespace OpenTribes\Core\Interactor;
+use OpenTribes\Core\Request\CreateUser as CreateUserRequest;
+use OpenTribes\Core\Response\CreateUser as CreateUserResponse;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Service\PasswordHasher;
 /**
  * Description of CreateUser
  *

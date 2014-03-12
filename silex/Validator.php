@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core;
+namespace OpenTribes\Core\Silex;
 
 /**
  * Description of Validator

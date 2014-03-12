@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenTribes\Core\Service;
+namespace OpenTribes\Core\Silex\Service;
 
-use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
+use OpenTribes\Core\Service\ActivationCodeGenerator;
 
 /**
  * Description of CodeGenerator

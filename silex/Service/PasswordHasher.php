@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenTribes\Core\Service;
+namespace OpenTribes\Core\Silex\Service;
 
-use OpenTribes\Core\Domain\Service\PasswordHasher as PasswordHasherInterface;
+use OpenTribes\Core\Service\PasswordHasher as PasswordHasherInterface;
 
 /**
  * Description of PasswordHasher

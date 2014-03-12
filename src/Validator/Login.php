@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Validator;
+namespace OpenTribes\Core\Validator;
 
 /**
  * Description of Login

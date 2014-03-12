@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Repository;
+namespace OpenTribes\Core\Repository;
 
-use OpenTribes\Core\Domain\Entity\User as UserEntity;
+use OpenTribes\Core\Entity\User as UserEntity;
 
 /**
  *

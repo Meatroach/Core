@@ -1,21 +1,21 @@
 <?php
 
-namespace OpenTribes\Core;
+namespace OpenTribes\Core\Silex;
 
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
-use OpenTribes\Core\Controller;
-use OpenTribes\Core\Controller\Account;
-use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
+use OpenTribes\Core\Silex\Controller;
+use OpenTribes\Core\Silex\Controller\Account;
+use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
+use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
-use OpenTribes\Core\Repository;
-use OpenTribes\Core\Repository\DBALUser as UserRepository;
-use OpenTribes\Core\Service;
-use OpenTribes\Core\Service\CodeGenerator;
-use OpenTribes\Core\Service\PasswordHasher;
-use OpenTribes\Core\Validator;
-use OpenTribes\Core\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Silex\Repository;
+use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
+use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Silex\Service\CodeGenerator;
+use OpenTribes\Core\Silex\Service\PasswordHasher;
+use OpenTribes\Core\Silex\Validator;
+use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -96,8 +96,15 @@ class Module implements ServiceProviderInterface {
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
-        $configFile = realpath(__DIR__ . "/../config/" . $this->env . ".php");
-        $app->register(new ConfigServiceProvider($configFile));
+        $files = array(
+            'general.php',
+            'database.php',
+            'email.php'
+        );
+        foreach ($files as $file) {
+            $path = realpath(__DIR__ . '/../config/' . $this->env . '/' . $file);
+            $app->register(new ConfigServiceProvider($path));
+        }
     }
 
     private function createRoutes(&$app) {
@@ -174,26 +181,24 @@ class Module implements ServiceProviderInterface {
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
                 ->value('successHandler', function($appResponse) use ($app) {
-                    
-                    $request              = $app['request'];
-                   
+
+                    $request = $app['request'];
+
                     $appResponse->baseUrl = $request->getHttpHost();
-                    
-                    $htmlBody             = $app['mustache']->render('mails/html/register', $appResponse);
-                    $textBody             = $app['mustache']->render('mails/text/register', $appResponse);
-                    $message              = Swift_Message::newInstance()
+
+                    $htmlBody = $app['mustache']->render('mails/html/register', $appResponse);
+                    $textBody = $app['mustache']->render('mails/text/register', $appResponse);
+                    $message  = Swift_Message::newInstance()
                             ->setSubject($app['subjects']['registration'])
                             ->setFrom(array($app['noreply']))
                             ->setTo(array($appResponse->email))
                             ->setBody($htmlBody, 'text/html')
                             ->setBody($textBody, 'text/plain');
-                  
-                             //$app['mailer']->send($message);
-                   
-               
+
+                    //$app['mailer']->send($message);
                 })
                 ->value('template', 'pages/registration');
-                
+
         $account->match('/activate', Controller::ACCOUNT . ':activateAction')
                 ->method('GET|POST')
                 ->value('template', 'pages/activation');

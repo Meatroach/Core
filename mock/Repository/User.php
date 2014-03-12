@@ -2,8 +2,8 @@
 
 namespace OpenTribes\Core\Mock\Repository;
 
-use OpenTribes\Core\Domain\Entity\User as UserEntity;
-use OpenTribes\Core\Domain\Repository\User as UserRepository;
+use OpenTribes\Core\Entity\User as UserEntity;
+use OpenTribes\Core\Repository\User as UserRepository;
 
 /**
  * Description of User

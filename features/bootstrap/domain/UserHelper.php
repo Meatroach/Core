@@ -1,19 +1,19 @@
 <?php
 
-use OpenTribes\Core\Domain\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\Domain\Service\PasswordHasher;
-use OpenTribes\Core\Domain\Service\ActivationCodeGenerator;
-use OpenTribes\Core\Domain\Context\Guest\Registration as RegistrationContext;
-use OpenTribes\Core\Domain\Request\Registration as RegistrationRequest;
-use OpenTribes\Core\Domain\Response\Registration as RegistrationResponse;
-use OpenTribes\Core\Domain\Interactor\ActivateUser as ActivateUserInteractor;
-use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
-use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Service\ActivationCodeGenerator;
+use OpenTribes\Core\Context\Guest\Registration as RegistrationContext;
+use OpenTribes\Core\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Interactor\ActivateUser as ActivateUserInteractor;
+use OpenTribes\Core\Request\ActivateUser as ActivateUserRequest;
+use OpenTribes\Core\Response\ActivateUser as ActivateUserResponse;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
-use OpenTribes\Core\Domain\Interactor\Login as LoginInteractor;
-use OpenTribes\Core\Domain\Request\Login as LoginRequest;
-use OpenTribes\Core\Domain\Response\Login as LoginResponse;
+use OpenTribes\Core\Interactor\Login as LoginInteractor;
+use OpenTribes\Core\Request\Login as LoginRequest;
+use OpenTribes\Core\Response\Login as LoginResponse;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 

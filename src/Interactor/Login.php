@@ -1,11 +1,11 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Interactor;
+namespace OpenTribes\Core\Interactor;
 
-use OpenTribes\Core\Domain\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Request\Login as LoginRequest;
-use OpenTribes\Core\Domain\Response\Login as LoginResponse;
-use OpenTribes\Core\Domain\Service\PasswordHasher;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Request\Login as LoginRequest;
+use OpenTribes\Core\Response\Login as LoginResponse;
+use OpenTribes\Core\Service\PasswordHasher;
 /**
  * Description of Login
  *

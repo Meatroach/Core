@@ -1,7 +1,7 @@
 <?php
 
 namespace OpenTribes\Core\Mock\Validator;
-use OpenTribes\Core\Domain\Validator\ActivateUser as AbstractActivateUserValidator;
+use OpenTribes\Core\Validator\ActivateUser as AbstractActivateUserValidator;
 /**
  * Description of ActivateUser
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Response;
+namespace OpenTribes\Core\Response;
 
 /**
  * Description of Registration

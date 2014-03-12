@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenTribes\Core\Validator;
+namespace OpenTribes\Core\Silex\Validator;
 
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
-use OpenTribes\Core\Domain\Validator\Registration as AbstractRegistrationValidator;
+use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
+use OpenTribes\Core\Validator\Registration as AbstractRegistrationValidator;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints as Assert;
 

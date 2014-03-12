@@ -6,11 +6,11 @@ use Symfony\Component\HttpKernel\Client;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\Driver\BrowserKitDriver;
-use OpenTribes\Core\Validator;
-use OpenTribes\Core\Service;
-use OpenTribes\Core\Repository;
+use OpenTribes\Core\Silex\Validator;
+use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Silex\Repository;
 
-class DeliveryContext extends FeatureContext {
+class SilexContext extends FeatureContext {
 
     public function __construct(array $parameters) {
         parent::__construct($parameters);

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Service;
+namespace OpenTribes\Core\Service;
 
 /**
  *

@@ -1,11 +1,11 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Interactor;
+namespace OpenTribes\Core\Interactor;
 
-use OpenTribes\Core\Domain\Repository\User as UserRepository;
-use OpenTribes\Core\Domain\Request\ActivateUser as ActivateUserRequest;
-use OpenTribes\Core\Domain\Response\ActivateUser as ActivateUserResponse;
-use OpenTribes\Core\Domain\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Request\ActivateUser as ActivateUserRequest;
+use OpenTribes\Core\Response\ActivateUser as ActivateUserResponse;
+use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
 
 /**
  * Description of ActivateUser

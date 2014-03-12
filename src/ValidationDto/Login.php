@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Domain\ValidationDto;
+namespace OpenTribes\Core\ValidationDto;
 
 /**
  * Description of Login

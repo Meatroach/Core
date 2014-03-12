@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenTribes\Core\Repository;
+namespace OpenTribes\Core\Silex\Repository;
 
-use OpenTribes\Core\Domain\Entity\User as UserEntity;
-use OpenTribes\Core\Domain\Repository\User as UserRepositoryInterface;
+use OpenTribes\Core\Entity\User as UserEntity;
+use OpenTribes\Core\Repository\User as UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**

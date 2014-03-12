@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Domain\Request;
+namespace OpenTribes\Core\Request;
 
 /**
  * Description of Login

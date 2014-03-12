@@ -2,8 +2,8 @@
 
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
-use OpenTribes\Core\Domain\ValidationDto\ActivateUser as ActivateUserValidatorDto;
-use OpenTribes\Core\Domain\ValidationDto\Registration as RegistrationValidatorDto;
+use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
+use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
 use OpenTribes\Core\Mock\Service\PlainHash as PasswordHasher;
 use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;

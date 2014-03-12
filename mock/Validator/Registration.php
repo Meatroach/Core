@@ -2,7 +2,7 @@
 
 namespace OpenTribes\Core\Mock\Validator;
 
-use OpenTribes\Core\Domain\Validator\Registration as AbstractRegistration;
+use OpenTribes\Core\Validator\Registration as AbstractRegistration;
 
 /**
  * Description of Registration
