@@ -2,5 +2,6 @@
 
 return array(
     'debug'         => true,
-    'mustache.path' => realpath(__DIR__ . '/../templates')
+    'mustache.path' => realpath(__DIR__ . '/../../templates'),
+    'activationCodeLength' => 8
 );
