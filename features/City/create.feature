@@ -1,4 +1,4 @@
-@City @Create
+@CreateCity
     Feature: Create a city
         In order to create a city
         as registered player
@@ -9,9 +9,9 @@
         Given following tiles:
            | name | accessable |
            | Grass | yes |
-           | Forrest | no |
-           | Sea | no |
-           | Hill | no |
+           | Forrest |  |
+           | Sea |  |
+           | Hill |  |
         And a map "default" with following tiles:
          |   y/x   |   0   |   1   |   2   |   3   |   4   |
          |  0   | Grass | Grass | Grass | Grass | Grass |

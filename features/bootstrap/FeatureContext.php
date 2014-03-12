@@ -1,5 +1,6 @@
 <?php
 
+use Behat\Behat\Exception\PendingException;
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
@@ -9,6 +10,7 @@ use OpenTribes\Core\Mock\Service\PlainHash as PasswordHasher;
 use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Mock\Repository\Tile as TileRepository;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -25,6 +27,8 @@ class FeatureContext extends BehatContext {
     protected $passwordHasher;
     protected $activationCodeGenerator;
     protected $mink;
+    protected $tileRepository;
+    protected $tileHelper;
 
     /**
      * Initializes context.
@@ -33,22 +37,22 @@ class FeatureContext extends BehatContext {
      * @param array $parameters context parameters (set them up through behat.yml)
      */
     public function __construct(array $parameters) {
-        $this->userRepository = new UserRepository;
-
+        $this->userRepository          = new UserRepository;
+        $this->tileRepository          = new TileRepository();
         $this->passwordHasher          = new PasswordHasher;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
-
-        $this->userHelper    = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
-        $this->messageHelper = new MessageHelper();
+        $this->tileHelper              = new TileHelper($this->tileRepository);
+        $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
+        $this->messageHelper           = new MessageHelper();
     }
 
     /**
      * @Given /^following users:$/
      */
     public function followingUsers(TableNode $table) {
-      
+
         foreach ($table->getHash() as $row) {
             $username       = $row['username'];
             $password       = $row['password'];
@@ -196,6 +200,82 @@ class FeatureContext extends BehatContext {
      */
     public function iShouldNotBeLoggedIn() {
         $this->userHelper->assertLoginFailed();
+    }
+
+    /**
+     * @Given /^following tiles:$/
+     */
+    public function followingTiles(TableNode $table) {
+        foreach ($table->getHash() as $row) {
+            $name       = $row['name'];
+            $accessable = (bool) $row['accessable'];
+            $this->tileHelper->createDummyTile($name, $accessable);
+        }
+    }
+
+    /**
+     * @Given /^a map "([^"]*)" with following tiles:$/
+     */
+    public function aMapWithFollowingTiles($mapName, TableNode $table) {
+        $map       = array(
+            array()
+        );
+        $positionX = 0;
+        $positionY = 0;
+        foreach ($table->getRows() as $number => $rows) {
+
+
+            var_dump($rows[0]);
+            foreach ($rows as $row) {
+
+                var_dump($row);
+            }
+        }
+
+
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^user with follwoing informations:$/
+     */
+    public function userWithFollwoingInformations(TableNode $table) {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^following cities:$/
+     */
+    public function followingCities(TableNode $table) {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^I\'m logged in as user "([^"]*)"$/
+     */
+    public function iMLoggedInAsUser($arg1) {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^I create a city at location x=(\d+) and y=(\d+)$/
+     */
+    public function iCreateACityAtLocationXAndY($arg1, $arg2) {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should have a city$/
+     */
+    public function iShouldHaveACity() {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)"$/
+     */
+    public function iShouldSee($arg1) {
+        throw new PendingException();
     }
 
 }
