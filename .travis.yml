@@ -5,4 +5,4 @@ php:
 - 5.5
 before_script:
 - "make install"
-- "make full-test"
+script: make full-test
