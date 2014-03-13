@@ -3,6 +3,7 @@ full-test:
 	bin/behat -p silex -f progress
 
 install:
+	composer self-update
 	composer install --no-progress
 	mkdir storage
 	touch storage/ot.db
