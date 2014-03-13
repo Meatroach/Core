@@ -198,7 +198,7 @@ class Module implements ServiceProviderInterface {
                             ->setBody($htmlBody, 'text/html')
                             ->setBody($textBody, 'text/plain');
 
-                    //$app['mailer']->send($message);
+                    $app['mailer']->send($message);
                 })
                 ->value('template', 'pages/registration');
 

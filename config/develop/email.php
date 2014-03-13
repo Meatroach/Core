@@ -13,5 +13,6 @@ return array(
         'username'   => 'username',
         'password'   => 'password',
         'encryption' => null,
-        'auth_mode'  => null
+        'auth_mode'  => null,
+        'disable_delivery'=>true
         ));
