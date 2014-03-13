@@ -121,9 +121,6 @@ class Module implements ServiceProviderInterface {
         })->value('template', 'pages/landing');
 
         $app->mount('/account', $this->getAccountRoutes($app));
-        /**
-         * TODO: this general stuffs will be moved outside of core module
-         */
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
