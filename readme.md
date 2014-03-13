@@ -1,5 +1,6 @@
 #OpenTribes
 [![Build Status](https://travis-ci.org/Opentribes/Core.png?branch=develop)](https://travis-ci.org/Opentribes/Core)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca/mini.png)](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca)
 
 An OpenSource browserbased Game, written in PHP tested with Behat/Mink using Silex
 
