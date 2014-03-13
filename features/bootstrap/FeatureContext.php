@@ -225,10 +225,10 @@ class FeatureContext extends BehatContext {
         foreach ($table->getRows() as $number => $rows) {
 
 
-            var_dump($rows[0]);
+            //var_dump($rows[0]);
             foreach ($rows as $row) {
 
-                var_dump($row);
+                //var_dump($row);
             }
         }
 

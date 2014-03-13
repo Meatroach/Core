@@ -15,4 +15,5 @@ return array(
         'encryption' => null,
         'auth_mode'  => null,
         'disable_delivery'=>true
-        ));
+        )
+    );

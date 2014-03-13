@@ -15,8 +15,8 @@ class Shema {
     }
 
     public function installShema() {
-        $sm             = $this->connection->getSchemaManager();
-        
+        $sm = $this->connection->getSchemaManager();
+
         $installedShema = $sm->createSchema();
         $newShema       = $this->getShema();
         $sql            = $installedShema->getMigrateToSql($newShema, $this->connection->getDatabasePlatform());
@@ -33,11 +33,13 @@ class Shema {
         $users->addColumn('id', Type::INTEGER, array('length' => 11));
         $users->addColumn('username', Type::STRING, array('length' => 254));
         $users->addColumn('password', Type::STRING, array('length' => 254));
-        $users->addColumn('logins', Type::INTEGER, array('length' => 10, 'unsigned' => true));
-        $users->addColumn('last_login', Type::DATETIME,array('notnull'=>false));
-        $users->addColumn('registered', Type::DATETIME,array('notnull'=>false));
-        $users->addColumn('last_action', Type::DATETIME,array('notnull'=>false));
-        $users->addColumn('email',Type::STRING);
+        $users->addColumn('logins', Type::INTEGER, array('length' => 10, 'unsigned' => true,'notnull'=>false));
+        $users->addColumn('lastLogin', Type::DATETIME, array('notnull' => false));
+        $users->addColumn('registered', Type::DATETIME, array('notnull' => false));
+        $users->addColumn('lastAction', Type::DATETIME, array('notnull' => false));
+        $users->addColumn('activationCode', Type::STRING, array('notnull' => false));
+
+        $users->addColumn('email', Type::STRING);
         $users->setPrimaryKey(array("id"));
 
         $roles = $shema->createTable('roles');

@@ -1,5 +1,6 @@
-test:
-	bin/behat -p html
+full-test:
+	bin/behat -f progress
+	bin/behat -p silex -f progress
 
 install:
 	composer install --no-progress

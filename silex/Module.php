@@ -197,7 +197,7 @@ class Module implements ServiceProviderInterface {
                             ->setTo(array($appResponse->email))
                             ->setBody($htmlBody, 'text/html')
                             ->setBody($textBody, 'text/plain');
-
+                    if(!$app['swiftmailer.options']['disable_delivery'])
                     $app['mailer']->send($message);
                 })
                 ->value('template', 'pages/registration');
