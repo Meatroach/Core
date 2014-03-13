@@ -55,8 +55,5 @@ class Registration extends AbstractRegistrationValidator {
         }
     }
 
-    private function toArray(Registration $object) {
-        
-    }
 
 }

@@ -66,7 +66,6 @@ class DeliveryUserHelper {
         $this->page = $this->mink->getSession()->getPage();
         $url        = sprintf('account/activate/%s/%s', $username, $activationCode);
         $this->mink->getSession()->visit($url);
-        //file_put_contents(__DIR__.'/../../../debugHTML/activate'.date('H-i-s').'.html', $this->page->getContent());
     }
 
     public function getActivateAccountResponse() {
@@ -80,7 +79,6 @@ class DeliveryUserHelper {
         $this->page->fillField('username', $username);
         $this->page->fillField('password', $password);
         $this->page->pressButton('login');
-        //file_put_contents(__DIR__.'/../../../debugHTML/login'.date('H-i-s').'.html', $this->page->getContent());
     }
 
     public function assertLoginSucceed() {

@@ -217,22 +217,6 @@ class FeatureContext extends BehatContext {
      * @Given /^a map "([^"]*)" with following tiles:$/
      */
     public function aMapWithFollowingTiles($mapName, TableNode $table) {
-        $map       = array(
-            array()
-        );
-        $positionX = 0;
-        $positionY = 0;
-        foreach ($table->getRows() as $number => $rows) {
-
-
-            //var_dump($rows[0]);
-            foreach ($rows as $row) {
-
-                //var_dump($row);
-            }
-        }
-
-
         throw new PendingException();
     }
 
