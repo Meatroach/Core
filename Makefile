@@ -2,7 +2,7 @@ test:
 	bin/behat -p html
 
 install:
-	composer install
+	composer install --no-progress
 	mkdir storage
 	touch storage/ot.db
 	php cli/index.php install-shema
