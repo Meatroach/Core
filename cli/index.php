@@ -4,8 +4,6 @@ require_once __DIR__ . '/../bootstrap.php';
 
 use OpenTribes\Core\Silex\Shema;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 $console = new Application;
 $console->register('install-shema')
