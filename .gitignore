@@ -52,8 +52,8 @@ application/cache/*
 vendor
 #composer binary
 bin
-composer.lock
+
 
 index.html
-!web/assets/js/vendor
+!templates/assets/js/vendor
 storage
