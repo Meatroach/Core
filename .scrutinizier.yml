@@ -4,8 +4,6 @@ before_commands:
 tools:
     php_code_coverage:
         enabled: true
-        #filter:
-            #paths: ["src"]
     php_code_sniffer:
         enabled: true
         config:
@@ -14,7 +12,7 @@ tools:
             paths: ["src/*", "silex/*"]
     php_cpd:
         enabled: true
-        excluded_dirs: ["vendor"]
+        excluded_dirs: ["vendor","mock"]
     php_cs_fixer:
         enabled: true
         config:
@@ -23,14 +21,14 @@ tools:
             paths: ["src/*", "silex/*"]
     php_loc:
         enabled: true
-        excluded_dirs: ["vendor"]
+        excluded_dirs: ["vendor","mock"]
     php_mess_detector:
         enabled: true
         filter:
             paths: ["src/*","silex/*"]
     php_pdepend:
         enabled: true
-        excluded_dirs: [ "vendor"]
+        excluded_dirs: [ "vendor","mock"]
     php_analyzer: true
     php_analyzer:
         filter:
