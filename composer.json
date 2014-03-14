@@ -1,39 +1,39 @@
 {
-    "minimum-stability": "dev",
-    "description": "A Tribal Wars Core Module",
-    "keywords": ["Tribal Wars", "Open Source", "Browsergame"],
-    "license": "MIT",
-    "authors": [
+    "minimum-stability" : "dev",
+    "description" : "A Tribal Wars Core Module",
+    "keywords" : [ "Tribal Wars", "Open Source", "Browsergame" ],
+    "license" : "MIT",
+    "authors" : [
         {
-            "name": "Witali Mik",
-            "email": "witalimik@web.de"
+            "name" : "Witali Mik",
+            "email" : "witalimik@web.de"
         }
     ],
-    "name": "opentribes/core",
-    "require": {
-        "php": ">=5.3",
-        "silex/silex": "~1.2",
-        "igorw/config-service-provider": "~1.2",
-        "doctrine/dbal": "~2.5",
-        "mustache/silex-provider": "~1",
-        "swiftmailer/swiftmailer": "~5.1",
-        "symfony/validator": "~2.3"
+    "name" : "opentribes/core",
+    "require" : {
+        "php" : ">=5.3",
+        "silex/silex" : "~1.2",
+        "igorw/config-service-provider" : "~1.2",
+        "doctrine/dbal" : "~2.5",
+        "mustache/silex-provider" : "~1.0",
+        "swiftmailer/swiftmailer" : "~5.1",
+        "symfony/validator" : "~2.3",
+        "symfony/console" : "~2.2"
     },
-    "require-dev": {
-        "behat/behat": "~2.5",
-        "behat/mink-extension": "~1.3",
-        "phpunit/phpunit": "~3.7",
-        "behat/mink-browserkit-driver": "~1.2",
-        "symfony/console":"~2.2"
+    "require-dev" : {
+        "behat/behat" : "~2.5",
+        "behat/mink-extension" : "~1.3",
+        "phpunit/phpunit" : "~3.7",
+        "behat/mink-browserkit-driver" : "~1.2"
     },
-    "config": {
-        "bin-dir": "bin/"
+    "config" : {
+        "bin-dir" : "bin/"
     },
-    "autoload": {
-        "psr-4": {
-            "OpenTribes\\Core\\": "src/",
-            "OpenTribes\\Core\\Mock\\": "mock/",
-            "OpenTribes\\Core\\Silex\\": "silex/"
+    "autoload" : {
+        "psr-4" : {
+            "OpenTribes\\Core\\" : "src/",
+            "OpenTribes\\Core\\Mock\\" : "mock/",
+            "OpenTribes\\Core\\Silex\\" : "silex/"
         }
     }
 
