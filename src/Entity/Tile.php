@@ -10,14 +10,14 @@ namespace OpenTribes\Core\Entity;
 class Tile {
 
     private $name;
-    private $isAccessible;
+    private $accessible;
     private $id;
     private $x;
     private $y;
 
-    function __construct($id, $name, $isAccessible) {
+    function __construct($id, $name, $accessible) {
         $this->name         = $name;
-        $this->isAccessible = $isAccessible;
+        $this->accessible = $accessible;
         $this->id           = $id;
     }
 
@@ -25,8 +25,8 @@ class Tile {
         return $this->name;
     }
 
-    public function getIsAccessible() {
-        return $this->isAccessible;
+    public function isAccessible() {
+        return $this->accessible;
     }
 
     public function getId() {

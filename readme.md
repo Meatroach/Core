@@ -1,4 +1,6 @@
 #OpenTribes
+[![Build Status](https://travis-ci.org/Opentribes/Core.png?branch=develop)](https://travis-ci.org/Opentribes/Core)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca/mini.png)](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca)
 
 An OpenSource browserbased Game, written in PHP tested with Behat/Mink using Silex
 
@@ -9,23 +11,40 @@ The Game is licenced under MIT
 Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TODO&milestone=1&page=1&sort=created&state=open)
 ##installation
 
-clone repository
+- clone repository
 
-~~~
-git clone -b develop https://github.com/Opentribes/Core.git /path/to/your/folder
-~~~
+`git clone -b develop https://github.com/Opentribes/Core.git /path/to/your/folder`
 
-update dependencies
+- update dependencies
 
-~~~
-cd /path/to/your/folder
-composer update
-~~~
+`cd /path/to/your/folder`
 
-run game
+`composer update`
 
-~~~
-php -S localhost:8080 -t web/index.php
-~~~
+- edit files in config/develop
 
+- install database
 
+`php cli/index.php install-shema`
+
+- star server
+
+`php -S localhost:8080 -t web`
+
+- run interactor tests
+
+`bin/behat`
+
+- run silex tests
+
+`bin/behat -p silex`
+
+##shortcuts
+
+- installation
+
+`make install`
+
+- test
+
+`make full-test`

@@ -4,9 +4,6 @@ use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Service\PasswordHasher;
 use OpenTribes\Core\Service\ActivationCodeGenerator;
-use OpenTribes\Core\Context\Guest\Registration as RegistrationContext;
-use OpenTribes\Core\Request\Registration as RegistrationRequest;
-use OpenTribes\Core\Response\Registration as RegistrationResponse;
 use Behat\Mink\Mink;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
@@ -79,7 +76,6 @@ class DeliveryUserHelper {
         $this->page->fillField('username', $username);
         $this->page->fillField('password', $password);
         $this->page->pressButton('login');
-       // file_put_contents(__DIR__.'/../../../debugHTML/login'.date('H-i-s').'.html', $this->page->getContent());
     }
 
     public function assertLoginSucceed() {
