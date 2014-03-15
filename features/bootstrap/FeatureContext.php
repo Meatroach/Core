@@ -290,5 +290,41 @@ class FeatureContext extends BehatContext {
     public function iShouldNotHaveACity() {
         $this->cityHelper->assertCityNotCreated();
     }
+       /**
+     * @When /^I select location "([^"]*)"$/
+     */
+    public function iSelectLocation($location)
+    {
+        $this->cityHelper->selectLocation($location,$this->userHelper->getLoggedInUsername());
+    }
+
+    /**
+     * @Then /^I should have a city in following area:$/
+     */
+    public function iShouldHaveACityInFollowingArea(TableNode $table)
+    {
+        foreach($table->getHash() as $row){
+            $minX = $row['minX'];
+            $maxX = $row['maxX'];
+            $minY = $row['minY'];
+            $maxY = $row['maxY'];
+        }
+        $this->cityHelper->assertCityIsInArea($minX,$maxX,$minY,$maxY);
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^not at following locations:$/
+     */
+    public function notAtFollowingLocations(TableNode $table)
+    {
+        $locations = array();
+        foreach($table->getHash() as $row){
+            $x = $row['x'];
+            $y = $row['y'];
+            $locations[]=array($y,$x);
+        }
+        $this->cityHelper->assertCityIsNotAtLocations($locations);
+    }
 
 }

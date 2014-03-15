@@ -30,7 +30,7 @@ you have to specify the direction
             | City2 | Owner2 | 2 | 0 |
             | City3 | Owner1 | 4 | 4 |
 
-Scenario: Specify direction
+Scenario Outline: Specify direction
     Given I'm logged in as user "BlackScorp"
     And I'am on site "game/start"
     When I select location "<location>"
@@ -45,4 +45,12 @@ Scenario: Specify direction
         | 1 | 1 |
         | 3 | 1 |
         | 3 | 3 |
-    
+
+Examples:
+    | location | minX | maxX | minY | maxY |
+    | north | 0 | 2 | 0 | 2 |
+    | east | 2 | 4 | 0 | 2 |
+    | west | 2 | 4 | 2 | 4 |
+    | south | 0 | 2 | 2 | 4 |
+    | any | 0 | 4 | 0 | 4 |
+

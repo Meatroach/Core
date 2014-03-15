@@ -42,5 +42,13 @@ class CityHelper {
     public function assertCityNotCreated() {
         assertFalse($this->interactorResult);
     }
-
+    public function assertCityIsInArea($minX,$maxX,$minY,$maxY){
+        
+    }
+    public function assertCityIsNotAtLocations(array $locations){
+        
+    }
+    public function selectLocation($location,$username){
+        
+    }
 }
