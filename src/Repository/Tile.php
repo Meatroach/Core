@@ -14,4 +14,5 @@ interface Tile {
 
     public function add(TileEntity $tile);
     public function getUniqueId();
+    public function findByName($name);
 }

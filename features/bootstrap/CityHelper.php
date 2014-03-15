@@ -1,154 +1,23 @@
 <?php
 
-//Enteties
-use OpenTribes\Core\City;
-use OpenTribes\Core\City\Building as CityBuilding;
-use OpenTribes\Core\City\Resource as CityResource;
-use OpenTribes\Core\Techtree;
-
-//Repositories
-use OpenTribes\Core\Mock\City\Repository as CityRepository;
-use OpenTribes\Core\Mock\City\Building\Repository as CityBuildingRepository;
-use OpenTribes\Core\Mock\City\Resource\Repository as CityResourceRepository;
-
-require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
+use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\User as UserRepository;
 
 class CityHelper {
 
-    protected $mapHelper;
-    protected $userRepository;
-    protected $cityRepository;
-    protected $user;
-    protected $response;
-    protected $exception;
-    protected $userHelper;
-    protected $city;
-    protected $buildingRepository;
-    protected $cityBuildingRepository;
-    protected $resourceRepository;
-    protected $cityResourceRepository;
-    protected $techTree;
+    private $userRepository;
+    private $cityRepository;
 
-    public function __construct(ExceptionHelper $exception) {
-        $this->mapHelper = new MapHelper();
-        $this->cityRepository = new CityRepository();
-        $this->exception = $exception;
-        $this->cityBuildingRepository = new CityBuildingRepository();
-        $this->cityResourceRepository = new CityResourceRepository();
-    }
-
-    public function setBuildingRepo(BuildingRepository $repo) {
-        $this->buildingRepository = $repo;
-    }
-
-    public function setResourceRepo(ResourceRepository $repo) {
-        $this->resourceRepository = $repo;
-    }
-
-    public function setTechTree(Techtree $techtree) {
-        $this->techTree = $techtree;
-    }
-
-    public function getMapHelper() {
-        return $this->mapHelper;
-    }
-
-    public function getCity() {
-        return $this->city;
-    }
-
-    public function setUserRepository(UserRepository $userRepository) {
+    function __construct(CityRepository $cityRepository, UserRepository $userRepository) {
         $this->userRepository = $userRepository;
+        $this->cityRepository = $cityRepository;
     }
 
-    public function createCities(array $cities) {
-        foreach ($cities as $row) {
-            $city = new City();
-            $user = $this->userRepository->findByUsername($row['owner']);
-            $row['owner'] = $user;
-            foreach ($row as $field => $value) {
-                $city->{$field} = $value;
-            }
-          
-            
-            $this->cityRepository->add($city);
-        }
-    }
-
-    public function assignResourcesToCity(array $resources) {
-
-        foreach ($resources as $row) {
-
-            $resource = $this->resourceRepository->findByName($row['name']);
-            $cityResource = new CityResource();
-            $row['resource'] = $resource;
-            $row['city'] = $this->city;
-            foreach ($row as $field => $value) {
-                $cityResource->{$field} = $value;
-            }
-
-            $this->cityResourceRepository->add($cityResource);
-        }
-    }
-
-    public function assignBuildingsToCity(array $buildings) {
-        foreach ($buildings as $row) {
-            $building = $this->buildingRepository->findByName($row['name']);
-            $cityBuilding = new CityBuilding();
-            $row['building'] = $building;
-            $row['city'] = $this->city;
-              foreach ($row as $field => $value) {
-                $cityBuilding->{$field} = $value;
-            }
-          
-            $this->cityBuildingRepository->add($cityBuilding);
-        }
-    }
-
-    public function iamUser($username) {
-        $this->user = $this->userRepository->findByUsername($username);
-    }
-
-    public function create($x, $y) {
-        $cityName = $this->user->getUsername() . "'s Village";
-
-        $request = new CityCreateRequest($this->user, $x, $y, $cityName);
-        $interactor = new CityCreateInteractor($this->cityRepository, $this->mapHelper->getMapTileRepository());
-        try {
-
-            $this->response = $interactor($request);
-        } catch (\Exception $e) {
-            $this->exception->setException($e);
-        }
-    }
-
-    public function build($buildingName) {
-        $request = new CityBuildingCreateRequest($this->city, $buildingName);
-        $interactor = new CityBuildingCreateInteractor($this->cityBuildingRepository, $this->buildingRepository, $this->techTree);
-        try {
-            $this->reposne = $interactor($request);
-        } catch (\Exception $e) {
-            $this->exception->setException($e);
-        }
-    }
-
-    public function assignDumpCity() {
-        $this->city = $this->cityRepository->findByUser($this->user);
-          foreach($this->buildingRepository->findAll() as $building){
-                $cityBuilding  = new CityBuilding();
-                $cityBuilding->setBuilding($building);
-                $cityBuilding->setCity($this->city);
-                $cityBuilding->setLevel($building->getMinimumLevel());
-                $this->cityBuildingRepository->add($cityBuilding);
-            }
-    }
-
-    public function assertHasCity() {
-
-        assertNotNull($this->response);
-        assertInstanceOf('OpenTribes\Core\City\Create\Response', $this->response);
-        assertNotNull($this->response->getCity());
-        assertSame($this->user, $this->response->getCity()->getOwner());
+    public function createDummyCity($name, $owner, $y, $x) {
+        $cityId = $this->cityRepository->getUniqueId();
+        $user = $this->userRepository->findOneByUsername($owner);
+        $city = $this->cityRepository->create($cityId, $name, $user, $x, $y);
+        $this->cityRepository->add($city);
     }
 
 }

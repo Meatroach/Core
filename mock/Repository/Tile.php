@@ -11,6 +11,9 @@ use OpenTribes\Core\Repository\Tile as TileRepository;
  * @author BlackScorp<witalimik@web.de>
  */
 class Tile implements TileRepository {
+    /**
+     * @var TileEntity[] 
+     */
     private $tiles;
     public function add(TileEntity $tile) {
         $this->tiles[$tile->getId()] = $tile;
@@ -24,6 +27,12 @@ class Tile implements TileRepository {
         $countTiles =count($this->tiles);
         $countTiles++;
         return $countTiles;
+    }
+    public function findByName($name) {
+        foreach($this->tiles as $tile){
+            if($tile->getName() === $name) return $tile;
+        }
+        return null;
     }
 
 }

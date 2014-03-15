@@ -19,7 +19,7 @@
          |  2   | Grass | Grass | Grass | Grass | Grass |
          |  3   | Grass | Sea | Grass | Hill | Grass |
          |  4   | Grass | Grass | Grass | Grass | Grass |
-        And user with follwoing informations:
+        And following users:
             | username | password | email |
             | BlackScorp | 123456 | test@test.de |
             | Owner1 | 123456 | owner1@test.de |
@@ -32,17 +32,25 @@
       
      
     Scenario: create a city
-        Given I'm logged in as user "BlackScorp"
+        Given I'am on site "game/start"
+        And I'm logged in as user "BlackScorp"
         When I create a city at location x=2 and y=2
         Then I should have a city
         
-    Scenario: tile is not accessable
-        Given I'm logged in as user "BlackScorp"
-        When I create a city at location x=1 and y=1
-        Then I should see "tile not accessable"
+    Scenario Outline: tile is not accessable
+        Given I'am on site "game/start"
+        And I'm logged in as user "BlackScorp"
+        When I create a city at location x=<x> and y=<y>
+        Then I should not have a city
 
-    Scenario: tile is not accessable
-        Given I'm logged in as user "BlackScorp"
-        When I create a city at location x=0 and y=0
-        Then I should see "city found at location" 
+Examples:
+    | x | y |
+    | 0 | 0 |
+    | 2 | 0 |
+    | 4 | 4 |
+    | 1 | 1 |
+    | 1 | 3 |
+    | 3 | 3 | 
+
+
 

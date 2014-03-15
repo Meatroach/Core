@@ -11,6 +11,8 @@ use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Mock\Repository\Tile as TileRepository;
+use OpenTribes\Core\Mock\Repository\Map as MapRepository;
+use OpenTribes\Core\Mock\Repository\City as CityRepository;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -28,7 +30,11 @@ class FeatureContext extends BehatContext {
     protected $activationCodeGenerator;
     protected $mink;
     protected $tileRepository;
+    protected $mapRepository;
+    protected $cityRepository;
+    protected $cityHelper;
     protected $tileHelper;
+    protected $mapHelper;
 
     /**
      * Initializes context.
@@ -38,14 +44,18 @@ class FeatureContext extends BehatContext {
      */
     public function __construct(array $parameters) {
         $this->userRepository          = new UserRepository;
-        $this->tileRepository          = new TileRepository();
+        $this->tileRepository          = new TileRepository;
+        $this->mapRepository           = new MapRepository;
         $this->passwordHasher          = new PasswordHasher;
+        $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->tileHelper              = new TileHelper($this->tileRepository);
+        $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
         $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
+        $this->cityHelper              = new CityHelper($this->cityRepository, $this->userRepository);
     }
 
     /**
@@ -151,8 +161,9 @@ class FeatureContext extends BehatContext {
      * @Given /^I\'am on site "([^"]*)"$/
      */
     public function iAmOnSite($uri) {
-        if ($this->mink)
+        if ($this->mink) {
             $this->mink->getSession()->visit($uri);
+        }
     }
 
     /**
@@ -217,34 +228,52 @@ class FeatureContext extends BehatContext {
      * @Given /^a map "([^"]*)" with following tiles:$/
      */
     public function aMapWithFollowingTiles($mapName, TableNode $table) {
-        throw new PendingException();
-    }
+        $rows = $table->getRows();
 
-    /**
-     * @Given /^user with follwoing informations:$/
-     */
-    public function userWithFollwoingInformations(TableNode $table) {
-        throw new PendingException();
+        unset($rows[0][0]);
+        $positionsY = array();
+        $grid       = array();
+        foreach ($rows as $line => $cols) {
+            if ($line === 0) {
+                $positionsY = $cols;
+                continue;
+            }
+            foreach ($cols as $key => $col) {
+                if ($key === 0) {
+                    $x = $col;
+                    continue;
+                }
+                $y            = $positionsY[$key];
+                $grid[$y][$x] = $col;
+            }
+        }
+        $this->mapHelper->createMap($mapName, $grid);
     }
 
     /**
      * @Given /^following cities:$/
      */
     public function followingCities(TableNode $table) {
-        throw new PendingException();
+        foreach ($table->getHash() as $row) {
+            $name  = $row['name'];
+            $owner = $row['owner'];
+            $x     = $row['x'];
+            $y     = $row['y'];
+            $this->cityHelper->createDummyCity($name, $owner, $y, $x);
+        }
     }
 
     /**
      * @Given /^I\'m logged in as user "([^"]*)"$/
      */
-    public function iMLoggedInAsUser($arg1) {
-        throw new PendingException();
+    public function iMLoggedInAsUser($username) {
+        $this->userHelper->loginAs($username);
     }
 
     /**
      * @When /^I create a city at location x=(\d+) and y=(\d+)$/
      */
-    public function iCreateACityAtLocationXAndY($arg1, $arg2) {
+    public function iCreateACityAtLocationXAndY($x, $y) {
         throw new PendingException();
     }
 
@@ -256,9 +285,9 @@ class FeatureContext extends BehatContext {
     }
 
     /**
-     * @Then /^I should see "([^"]*)"$/
+     * @Then /^I should not have a city$/
      */
-    public function iShouldSee($arg1) {
+    public function iShouldNotHaveACity() {
         throw new PendingException();
     }
 

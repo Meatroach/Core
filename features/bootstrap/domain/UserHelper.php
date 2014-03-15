@@ -28,6 +28,7 @@ class DomainUserHelper {
     private $activateUserValidator;
     private $loginResponse;
     private $interactorResult;
+    private $loggedInUsername;
     public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
@@ -106,5 +107,7 @@ class DomainUserHelper {
         $user->setActivationCode(null);
         $this->userRepository->replace($user);
     }
-
+    public function loginAs($username){
+        $this->loggedInUsername = $username;
+    }
 }

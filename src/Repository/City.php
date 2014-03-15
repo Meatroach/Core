@@ -1,0 +1,19 @@
+<?php
+
+namespace OpenTribes\Core\Repository;
+
+use OpenTribes\Core\Entity\City as CityEntity;
+use OpenTribes\Core\Entity\User as UserEntity;
+
+/**
+ *
+ * @author BlackScorp<witalimik@web.de>
+ */
+interface City {
+
+    public function getUniqueId();
+
+    public function create($id, $name, UserEntity $owner, $x, $y);
+
+    public function add(CityEntity $city);
+}

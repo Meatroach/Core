@@ -11,19 +11,20 @@ class Map {
 
     private $id;
     private $name;
-    private $tiles = array();
+    private $tiles = array(array());
 
-    public function __construct($id, $name, array $tiles) {
+    public function __construct($id, $name) {
         $this->id   = $id;
         $this->name = $name;
-        foreach ($tiles as $tile) {
-            $this->addTile($tile);
-        }
     }
 
-    public function addTile(Tile $tile) {
-        $this->tiles[] = $tile;
+    public function addTile(Tile $tile, $y, $x) {
+        $this->tiles[$y][$x] = $tile;
     }
+    public function getTile($y,$x){
+        return isset($this->tiles[$y][$x])?$this->tiles[$y][$x]:null;
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -35,6 +36,5 @@ class Map {
     public function getTiles() {
         return $this->tiles;
     }
-
 
 }
