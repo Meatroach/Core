@@ -34,13 +34,13 @@
     Scenario: create a city
         Given I'am on site "game/start"
         And I'm logged in as user "BlackScorp"
-        When I create a city at location x=2 and y=2
+        When I create a city at location y=2 and x=2
         Then I should have a city
         
     Scenario Outline: tile is not accessable
         Given I'am on site "game/start"
         And I'm logged in as user "BlackScorp"
-        When I create a city at location x=<x> and y=<y>
+        When I create a city at location y=<y> and x=<x>
         Then I should not have a city
 
 Examples:

@@ -22,8 +22,8 @@ class City implements CityRepository {
         $this->cities[$city->getId()] = $city;
     }
 
-    public function create($id, $name, UserEntity $owner, $x, $y) {
-        return new CityEntity($id, $name, $owner, $x, $y);
+    public function create($id, $name, UserEntity $owner, $y, $x) {
+        return new CityEntity($id, $name, $owner, $y, $x);
     }
 
     public function getUniqueId() {

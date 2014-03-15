@@ -12,8 +12,7 @@ class Tile {
     private $name;
     private $accessible;
     private $id;
-    private $x;
-    private $y;
+
 
     function __construct($id, $name, $accessible) {
         $this->name         = $name;
@@ -33,20 +32,6 @@ class Tile {
         return $this->id;
     }
 
-    public function getX() {
-        return $this->x;
-    }
-
-    public function getY() {
-        return $this->y;
-    }
-
-    public function setX($x) {
-        $this->x = $x;
-    }
-
-    public function setY($y) {
-        $this->y = $y;
-    }
+  
 
 }

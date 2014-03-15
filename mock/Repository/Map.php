@@ -11,6 +11,7 @@ use OpenTribes\Core\Repository\Map as MapRepository;
  * @author BlackScorp<witalimik@web.de>
  */
 class Map implements MapRepository {
+
     /**
      * @var MapEntity
      */
@@ -24,10 +25,16 @@ class Map implements MapRepository {
         return new MapEntity($name);
     }
 
- 
-    public function tileIsAccessible($y, $x) {
-       $tile = $this->map->getTile($y, $x);
-       if(!$tile) return false;
-       return $tile->isAccessible();
+    public function getTile($y, $x) {
+        return $this->map->getTile($y, $x);
     }
+
+    public function tileIsAccessible($y, $x) {
+        $tile = $this->map->getTile($y, $x);
+        if (!$tile)
+            return false;
+
+        return $tile->isAccessible();
+    }
+
 }

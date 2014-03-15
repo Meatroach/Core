@@ -16,4 +16,5 @@ interface Map {
 
     public function add(MapEntity $map);
     public function tileIsAccessible($y,$x);
+    public function getTile($y,$x);
 }

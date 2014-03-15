@@ -13,7 +13,7 @@ interface City {
 
     public function getUniqueId();
 
-    public function create($id, $name, UserEntity $owner, $x, $y);
+    public function create($id, $name, UserEntity $owner, $y, $x);
 
     public function add(CityEntity $city);
     public function cityExistsAt($y,$x);

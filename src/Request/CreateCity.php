@@ -13,7 +13,7 @@ class CreateCity {
     private $y;
     private $username;
 
-    function __construct($username, $x, $y) {
+    function __construct($y, $x, $username) {
         $this->x        = $x;
         $this->y        = $y;
         $this->username = $username;

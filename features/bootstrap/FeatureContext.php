@@ -55,7 +55,7 @@ class FeatureContext extends BehatContext {
         $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
         $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
-        $this->cityHelper              = new CityHelper($this->cityRepository, $this->userRepository);
+        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository);
     }
 
     /**
@@ -271,24 +271,24 @@ class FeatureContext extends BehatContext {
     }
 
     /**
-     * @When /^I create a city at location x=(\d+) and y=(\d+)$/
+     * @When /^I create a city at location y=(\d+) and x=(\d+)$/
      */
-    public function iCreateACityAtLocationXAndY($x, $y) {
-       $this->cityHelper->createCityAsUser($y, $x,$this->userHelper->getLoggedInUsername());
+    public function iCreateACityAtLocationYAndX($y, $x) {
+        $this->cityHelper->createCityAsUser($y, $x, $this->userHelper->getLoggedInUsername());
     }
 
     /**
      * @Then /^I should have a city$/
      */
     public function iShouldHaveACity() {
-        throw new PendingException();
+        $this->cityHelper->assertCityCreated();
     }
 
     /**
      * @Then /^I should not have a city$/
      */
     public function iShouldNotHaveACity() {
-        throw new PendingException();
+        $this->cityHelper->assertCityNotCreated();
     }
 
 }

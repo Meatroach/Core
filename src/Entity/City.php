@@ -15,7 +15,7 @@ class City {
     private $x;
     private $y;
 
-    function __construct($id, $name, User $owner, $x, $y) {
+    function __construct($id, $name, User $owner, $y, $x) {
         $this->id    = $id;
         $this->name  = $name;
         $this->owner = $owner;
