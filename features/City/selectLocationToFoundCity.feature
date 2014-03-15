@@ -1,9 +1,9 @@
-@CreateCity
-    Feature: Create a city
-        In order to create a city
-        as registered player
-        I have to find the right place
-        And must fullfill the requirements
+@SelectLocation
+Feature: Select location for new city
+In Order to create a city
+as registered user
+you have to specify the direction
+
 
     Background:
         Given following tiles:
@@ -29,26 +29,20 @@
             | City1 | Owner1 | 0 | 0 |
             | City2 | Owner2 | 2 | 0 |
             | City3 | Owner1 | 4 | 4 |
-      
-     
-    Scenario: create a city
-        Given I'm logged in as user "BlackScorp"
-        When I create a city at location y=2 and x=2
-        Then I should have a city
-        
-    Scenario Outline: tile is not accessable
-        Given I'm logged in as user "BlackScorp"
-        When I create a city at location y=<y> and x=<x>
-        Then I should not have a city
 
-Examples:
-    | x | y |
-    | 0 | 0 |
-    | 2 | 0 |
-    | 4 | 4 |
-    | 1 | 1 |
-    | 1 | 3 |
-    | 3 | 3 | 
-
-
-
+Scenario: Specify direction
+    Given I'm logged in as user "BlackScorp"
+    And I'am on site "game/start"
+    When I select location "<location>"
+    Then I should have a city in following area:
+        | minX | maxX | minY | maxY |
+        | <minX> | <maxX> | <minY> | <maxY> |
+    But not at following locations:
+        | y | x |
+        | 0 | 0 |
+        | 2 | 0 |
+        | 4 | 4 |
+        | 1 | 1 |
+        | 3 | 1 |
+        | 3 | 3 |
+    
