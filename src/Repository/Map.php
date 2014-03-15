@@ -12,8 +12,8 @@ interface Map {
     /**
      * @return MapEntity
      */
-    public function create($id, $name);
+    public function create($name);
 
     public function add(MapEntity $map);
-    public function getUniqueId();
+    public function tileIsAccessible($y,$x);
 }

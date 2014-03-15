@@ -1,7 +1,7 @@
 <?php
 
 namespace OpenTribes\Core\Entity;
-
+ 
 /**
  * Description of Map
  *
@@ -9,18 +9,22 @@ namespace OpenTribes\Core\Entity;
  */
 class Map {
 
-    private $id;
     private $name;
     private $tiles = array(array());
 
-    public function __construct($id, $name) {
-        $this->id   = $id;
+    public function __construct( $name) {
         $this->name = $name;
     }
 
     public function addTile(Tile $tile, $y, $x) {
         $this->tiles[$y][$x] = $tile;
     }
+    /**
+     * 
+     * @param type $y
+     * @param type $x
+     * @return Tile
+     */
     public function getTile($y,$x){
         return isset($this->tiles[$y][$x])?$this->tiles[$y][$x]:null;
     }

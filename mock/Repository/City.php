@@ -13,6 +13,9 @@ use OpenTribes\Core\Repository\City as CityRepository;
  */
 class City implements CityRepository {
 
+    /**
+     * @var CityEntity[] 
+     */
     private $cities = array();
 
     public function add(CityEntity $city) {
@@ -27,6 +30,20 @@ class City implements CityRepository {
         $countCities = count($this->cities);
         $countCities++;
         return $countCities;
+    }
+
+    public function cityExistsAt($y, $x) {
+
+        return (bool) $this->findByLocation($y, $x);
+    }
+
+    public function findByLocation($y, $x) {
+        foreach ($this->cities as $city) {
+            if ($city->getX() === $x && $city->getY() === $y) {
+                return $city;
+            }
+        }
+        return null;
     }
 
 }

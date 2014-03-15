@@ -14,8 +14,8 @@ class MapHelper {
     }
 
     public function createMap($mapName, array $grid) {
-        $mapId = $this->mapRepository->getUniqueId();
-        $map   = $this->mapRepository->create($mapId, $mapName);
+
+        $map   = $this->mapRepository->create( $mapName);
         foreach($grid as $y => $positions){
             foreach ($positions as $x => $tileName){
                 $tile = $this->tileRepository->findByName($tileName);

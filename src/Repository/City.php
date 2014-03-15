@@ -16,4 +16,6 @@ interface City {
     public function create($id, $name, UserEntity $owner, $x, $y);
 
     public function add(CityEntity $city);
+    public function cityExistsAt($y,$x);
+    public function findByLocation($y,$x);
 }

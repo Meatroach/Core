@@ -274,7 +274,7 @@ class FeatureContext extends BehatContext {
      * @When /^I create a city at location x=(\d+) and y=(\d+)$/
      */
     public function iCreateACityAtLocationXAndY($x, $y) {
-        throw new PendingException();
+       $this->cityHelper->createCityAsUser($y, $x,$this->userHelper->getLoggedInUsername());
     }
 
     /**

@@ -110,4 +110,9 @@ class DomainUserHelper {
     public function loginAs($username){
         $this->loggedInUsername = $username;
     }
+    public function getLoggedInUsername() {
+        return $this->loggedInUsername;
+    }
+
+
 }
