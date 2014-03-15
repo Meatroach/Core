@@ -72,17 +72,19 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function findOneByUsername($username) {
+       
         foreach ($this->users as $user) {
             if ($user->getUsername() === $username)
                 return $user;
         }
+            
         $result = $this->getQueryBuilder()
                 ->where('u.username = :username')
                 ->setParameter(':username', $username)
                 ->execute();
 
-        $row = $result->fetch(\PDO::FETCH_OBJ);
-
+        $row    = $result->fetch(\PDO::FETCH_OBJ);
+     
         if (!$row)
             return null;
         $entity = $this->rowToEntity($row);
@@ -96,7 +98,7 @@ class DBALUser implements UserRepositoryInterface {
         $row    = $result->fetchColumn();
         $row += count($this->users);
         $row -= count($this->deleted);
-        
+
         return $row + 1;
     }
 
@@ -127,7 +129,7 @@ class DBALUser implements UserRepositoryInterface {
             'activationCode' => $user->getActivationCode()
         );
     }
-    
+
     public function sync() {
         foreach ($this->deleted as $id) {
             if (isset($this->users[$id])) {
@@ -152,7 +154,9 @@ class DBALUser implements UserRepositoryInterface {
             }
         }
     }
-    public function flush(){
+
+    public function flush() {
         return $this->db->exec("DELETE FROM users");
     }
+
 }

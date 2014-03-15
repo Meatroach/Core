@@ -15,7 +15,7 @@ class DeliveryUserHelper {
     private $passwordHasher;
     private $activationCodeGenerator;
     private $user;
-
+    private $loggedInUsername;
     /**
      * @var \Behat\Mink\Element\DocumentElement
      */
@@ -46,12 +46,14 @@ class DeliveryUserHelper {
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
         $userId     = $this->userRepository->getUniqueId();
         $password   = $this->passwordHasher->hash($password);
+     
         $this->user = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
             $this->user->setActivationCode($activationCode);
         }
 
         $this->userRepository->add($this->user);
+        
     }
 
     public function assertRegistrationSucceed() {
@@ -110,6 +112,14 @@ class DeliveryUserHelper {
         $user = $this->userRepository->findOneByUsername($username);
         $user->setActivationCode(null);
         $this->userRepository->replace($user);
+    }
+
+    public function loginAs($username) {
+        $this->loggedInUsername = $username;
+    }
+
+    public function getLoggedInUsername() {
+        return $this->loggedInUsername;
     }
 
 }

@@ -22,8 +22,9 @@ class CityHelper {
 
     public function createDummyCity($name, $owner, $y, $x) {
         $cityId = $this->cityRepository->getUniqueId();
-        $user   = $this->userRepository->findOneByUsername($owner);
-        $city   = $this->cityRepository->create($cityId, $name, $user, $y, $x);
+        $user = $this->userRepository->findOneByUsername($owner);
+        
+        $city = $this->cityRepository->create($cityId, $name, $user, $y, $x);
         $this->cityRepository->add($city);
     }
 
