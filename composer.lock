@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5c03862413322e008659553d44056e11",
+    "hash": "acb3690fb61a2db257edced71e7e8f50",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -595,7 +595,7 @@
         },
         {
             "name": "mustache/silex-provider",
-            "version": "dev-master",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/mustache-silex-provider.git",
@@ -735,12 +735,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "403980773fe6956b9322ac478f8c036fff36398e"
+                "reference": "5f449095abfe602d8d2bc11fd287f5f47e1bf8ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/403980773fe6956b9322ac478f8c036fff36398e",
-                "reference": "403980773fe6956b9322ac478f8c036fff36398e",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/5f449095abfe602d8d2bc11fd287f5f47e1bf8ec",
+                "reference": "5f449095abfe602d8d2bc11fd287f5f47e1bf8ec",
                 "shasum": ""
             },
             "require": {
@@ -813,7 +813,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2014-03-11 07:57:40"
+            "time": "2014-03-14 14:04:24"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -821,12 +821,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "9b26d136c57b3e462358652ea5a483a914fe5be1"
+                "reference": "f791cfb1c62a6d5a82f4a6c067716ee64e33354b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9b26d136c57b3e462358652ea5a483a914fe5be1",
-                "reference": "9b26d136c57b3e462358652ea5a483a914fe5be1",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/f791cfb1c62a6d5a82f4a6c067716ee64e33354b",
+                "reference": "f791cfb1c62a6d5a82f4a6c067716ee64e33354b",
                 "shasum": ""
             },
             "require": {
@@ -864,7 +864,62 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-02-28 08:14:07"
+            "time": "2014-03-13 08:32:17"
+        },
+        {
+            "name": "symfony/console",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "563254c27e37efb65aae587286602ae6f5f18acd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/563254c27e37efb65aae587286602ae6f5f18acd",
+                "reference": "563254c27e37efb65aae587286602ae6f5f18acd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-03-03 13:53:19"
         },
         {
             "name": "symfony/debug",
@@ -1298,12 +1353,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Validator.git",
-                "reference": "318ec3d828e4d80a4442d7dfb9d63e967e9c3c62"
+                "reference": "fb7034669c44f503aad72778d64d228620647e39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Validator/zipball/318ec3d828e4d80a4442d7dfb9d63e967e9c3c62",
-                "reference": "318ec3d828e4d80a4442d7dfb9d63e967e9c3c62",
+                "url": "https://api.github.com/repos/symfony/Validator/zipball/fb7034669c44f503aad72778d64d228620647e39",
+                "reference": "fb7034669c44f503aad72778d64d228620647e39",
                 "shasum": ""
             },
             "require": {
@@ -1356,7 +1411,7 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "http://symfony.com",
-            "time": "2014-02-11 13:52:21"
+            "time": "2014-03-10 12:58:20"
         }
     ],
     "packages-dev": [
@@ -1366,12 +1421,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "a12154aae8a09248637fbca8ef3b2ef2ac71f2aa"
+                "reference": "dc8ee90d8d130e966266ff59ac1a68a3de3c2ec1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/a12154aae8a09248637fbca8ef3b2ef2ac71f2aa",
-                "reference": "a12154aae8a09248637fbca8ef3b2ef2ac71f2aa",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/dc8ee90d8d130e966266ff59ac1a68a3de3c2ec1",
+                "reference": "dc8ee90d8d130e966266ff59ac1a68a3de3c2ec1",
                 "shasum": ""
             },
             "require": {
@@ -1420,7 +1475,7 @@
                 "Behat",
                 "Symfony2"
             ],
-            "time": "2014-02-12 17:03:46"
+            "time": "2014-03-13 14:55:50"
         },
         {
             "name": "behat/gherkin",
@@ -1642,67 +1697,6 @@
                 "web"
             ],
             "time": "2014-01-30 23:06:00"
-        },
-        {
-            "name": "henrikbjorn/lurker",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/henrikbjorn/Lurker.git",
-                "reference": "cffdc206d4da1259f4794da6aa94671da33c622d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/henrikbjorn/Lurker/zipball/cffdc206d4da1259f4794da6aa94671da33c622d",
-                "reference": "cffdc206d4da1259f4794da6aa94671da33c622d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/config": "~2.2",
-                "symfony/event-dispatcher": "~2.2"
-            },
-            "suggest": {
-                "ext-inotify": ">=0.1.6"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Lurker": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Henrik Bjrnskov",
-                    "email": "henrik@bjrnskov.dk",
-                    "homepage": "http://henrik.bjrnskov.dk"
-                },
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                },
-                {
-                    "name": "Yaroslav Kiliba",
-                    "email": "om.dattaya@gmail.com"
-                }
-            ],
-            "description": "Resource Watcher.",
-            "keywords": [
-                "filesystem",
-                "resource",
-                "watching"
-            ],
-            "time": "2014-03-01 09:36:49"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2187,61 +2181,6 @@
             "time": "2014-03-03 12:53:01"
         },
         {
-            "name": "symfony/console",
-            "version": "dev-master",
-            "target-dir": "Symfony/Component/Console",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Console.git",
-                "reference": "563254c27e37efb65aae587286602ae6f5f18acd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/563254c27e37efb65aae587286602ae6f5f18acd",
-                "reference": "563254c27e37efb65aae587286602ae6f5f18acd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "symfony/event-dispatcher": "~2.1"
-            },
-            "suggest": {
-                "symfony/event-dispatcher": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Console\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Console Component",
-            "homepage": "http://symfony.com",
-            "time": "2014-03-03 13:53:19"
-        },
-        {
             "name": "symfony/css-selector",
             "version": "dev-master",
             "target-dir": "Symfony/Component/CssSelector",
@@ -2560,9 +2499,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "mustache/silex-provider": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.3"
     },

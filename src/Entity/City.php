@@ -29,7 +29,9 @@ class City {
     public function getName() {
         return $this->name;
     }
-
+    /**
+     * @return User
+     */
     public function getOwner() {
         return $this->owner;
     }

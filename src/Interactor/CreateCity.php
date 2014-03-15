@@ -7,7 +7,7 @@ use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Repository\Map as MapRepository;
 use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
-
+use OpenTribes\Core\View\City as CityView;
 /**
  * Description of CreateCity
  *
@@ -30,7 +30,6 @@ class CreateCity {
         $x     = $request->getX();
         $y     = $request->getY();
         if (!$this->mapRepository->tileIsAccessible($y, $x)) {
-           
             return false;
         }
         
@@ -41,6 +40,7 @@ class CreateCity {
         $name = $owner->getUsername();
         $city = $this->cityRepository->create($id, $name, $owner, $request->getX(), $request->getY());
         $this->cityRepository->add($city);
+        $response->city = new CityView($city);
         return true;
     }
 
