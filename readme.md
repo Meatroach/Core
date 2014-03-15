@@ -27,7 +27,7 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 
 `php cli/index.php install-shema`
 
-- star server
+- start server
 
 `php -S localhost:8080 -t web`
 
