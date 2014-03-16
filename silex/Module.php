@@ -7,6 +7,7 @@ use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
+use OpenTribes\Core\Silex\Controller\Assets;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Service;
@@ -82,6 +83,9 @@ class Module implements ServiceProviderInterface {
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
             return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
+        $app[Controller::ASSETS] = $app->share(function() use($app){
+            return new Assets($app['mustache.assets']);
+        });
     }
 
     private function registerProviders(&$app) {
@@ -95,6 +99,7 @@ class Module implements ServiceProviderInterface {
         $app->register(new SwiftmailerServiceProvider());
         $this->loadConfigurations($app);
     }
+
 
     private function loadConfigurations(&$app) {
         $files = array(
@@ -119,12 +124,14 @@ class Module implements ServiceProviderInterface {
             $response->proceed = false;
             return $response;
         })->value('template', 'pages/landing');
-
+      
+        $app->mount('/assets',$this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
+            $response = $appResponse;
             if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                 $response = new JsonResponse($appResponse);
             }
@@ -150,7 +157,7 @@ class Module implements ServiceProviderInterface {
                     $response = new Response($body);
                 }
 
-                if ($appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
+                if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
                     $handler  = $request->attributes->get('successHandler');
                     $result   = $handler($appResponse);
                     if ($result)
@@ -159,6 +166,14 @@ class Module implements ServiceProviderInterface {
             }
             $event->setResponse($response);
         });
+    }
+    private function getAssetsRoutes(&$app){
+        $assets = $app['controllers_factory'];
+        
+        $assets->assert('file','.+');
+        $assets->get('{type}/{file}',Controller::ASSETS.':load');
+        
+        return $assets;
     }
 
     private function getAccountRoutes(&$app) {
