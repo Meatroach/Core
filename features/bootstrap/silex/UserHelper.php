@@ -16,11 +16,13 @@ class DeliveryUserHelper {
     private $activationCodeGenerator;
     private $user;
     private $loggedInUsername;
+
     /**
      * @var \Behat\Mink\Element\DocumentElement
      */
     private $page;
     private $mink;
+    private $sessionName;
 
     public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
@@ -28,10 +30,15 @@ class DeliveryUserHelper {
         $this->passwordHasher          = $passwordHasher;
         $this->activationCodeGenerator = $activationCodeGenerator;
         $this->mink                    = $mink;
+        $this->sessionName             = $this->mink->getDefaultSessionName();
+    }
+
+    private function loadPage() {
+        $this->page = $this->mink->getSession($this->sessionName)->getPage();
     }
 
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
-        $this->page = $this->mink->getSession()->getPage();
+        $this->loadPage();
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
         $this->page->fillField('emailConfirm', $emailConfirm);
@@ -44,16 +51,15 @@ class DeliveryUserHelper {
     }
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
-        $userId     = $this->userRepository->getUniqueId();
-        $password   = $this->passwordHasher->hash($password);
-     
+        $userId   = $this->userRepository->getUniqueId();
+        $password = $this->passwordHasher->hash($password);
+
         $this->user = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
             $this->user->setActivationCode($activationCode);
         }
 
         $this->userRepository->add($this->user);
-        
     }
 
     public function assertRegistrationSucceed() {
@@ -62,7 +68,7 @@ class DeliveryUserHelper {
     }
 
     public function processActivateAccount($username, $activationCode) {
-        $this->page = $this->mink->getSession()->getPage();
+       $this->loadPage();
         $url        = sprintf('account/activate/%s/%s', $username, $activationCode);
         $this->mink->getSession()->visit($url);
     }
@@ -74,7 +80,7 @@ class DeliveryUserHelper {
     }
 
     public function processLogin($username, $password) {
-        $this->page = $this->mink->getSession()->getPage();
+        $this->loadPage();
         $this->page->fillField('username', $username);
         $this->page->fillField('password', $password);
         $this->page->pressButton('login');

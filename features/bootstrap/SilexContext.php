@@ -23,7 +23,7 @@ class SilexContext extends FeatureContext {
 
         $this->passwordHasher          = $app[Service::PASSWORD_HASHER];
         $this->activationCodeGenerator = $app[Service::ACTIVATION_CODE_GENERATOR];
-
+        $app['session.test'] = true;
         $mink->setDefaultSessionName('browserkit');
         $this->mink       = $mink;
         $this->userHelper = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
