@@ -209,6 +209,10 @@ class Module implements ServiceProviderInterface {
                         'method' => 'GET',
                         'param'  => array())
         ));
+        $account->get('/registration_successfull', function() {
+            return '';
+        })->value('template', 'pages/registration_successfull');
+        
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
                 ->value('successHandler', function($appResponse) use ($app) {
@@ -225,8 +229,11 @@ class Module implements ServiceProviderInterface {
                             ->setTo(array($appResponse->email))
                             ->setBody($htmlBody, 'text/html')
                             ->setBody($textBody, 'text/plain');
-                    if (!$app['swiftmailer.options']['disable_delivery'])
-                        $app['mailer']->send($message);
+                    if (!$app['swiftmailer.options']['disable_delivery']) {
+                         if($app['mailer']->send($message)){
+                             return new RedirectResponse('registration_successfull');
+                         }
+                    }
                 })
                 ->value('template', 'pages/registration');
 
