@@ -5,14 +5,13 @@ return array(
         'registration' => 'Welcome to OpenTribes'
     ),
     'fromMails' => array(
-        'registration' => array('noreply@blackscorp.de' => 'OpenTribes')
+        'registration' => 'noreply@domain.tld'
     ),
     'swiftmailer.options' => array(
-        'host'       => 'localhost',
+        'host'       => 'host',
         'port'       => '25',
         'username'   => 'username',
         'password'   => 'password',
         'encryption' => null,
-        'auth_mode'  => null,
-        )
-    );
+        'auth_mode'  => null
+        ));

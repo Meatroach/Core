@@ -97,6 +97,12 @@ class Module implements ServiceProviderInterface {
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
+
+        if ($this->env === 'test') {
+            $app['swiftmailer.transport'] = $app->share(function() {
+                return new \Swift_NullTransport();
+            });
+        }
         $this->loadConfigurations($app);
     }
 
@@ -131,6 +137,7 @@ class Module implements ServiceProviderInterface {
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
+
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
@@ -226,7 +233,6 @@ class Module implements ServiceProviderInterface {
                     $message  = Swift_Message::newInstance($app['subjects']['registration'])
                             ->setFrom($app['fromMails']['registration'])
                             ->setTo($appResponse->email)
-                            
                             ->setBody($htmlBody, 'text/html')
                             ->addPart($textBody, 'text/plain');
 
