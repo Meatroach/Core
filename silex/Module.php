@@ -212,28 +212,30 @@ class Module implements ServiceProviderInterface {
         $account->get('/registration_successfull', function() {
             return '';
         })->value('template', 'pages/registration_successfull');
-        
+
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
                 ->value('successHandler', function($appResponse) use ($app) {
 
                     $request = $app['request'];
 
-                    $appResponse->baseUrl = $request->getHttpHost();
+                    $appResponse->url = $request->getHttpHost();
 
                     $htmlBody = $app['mustache']->render('mails/html/register', $appResponse);
                     $textBody = $app['mustache']->render('mails/text/register', $appResponse);
-                    $message  = Swift_Message::newInstance()
-                            ->setSubject($app['subjects']['registration'])
-                            ->setFrom(array($app['fromMails']['registration']))
-                            ->setTo(array($appResponse->email))
+                    $message  = Swift_Message::newInstance($app['subjects']['registration'])
+                            ->setFrom($app['fromMails']['registration'])
+                            ->setTo($appResponse->email)
+                            
                             ->setBody($htmlBody, 'text/html')
-                            ->setBody($textBody, 'text/plain');
-                    if (!$app['swiftmailer.options']['disable_delivery']) {
-                         if($app['mailer']->send($message)){
-                             return new RedirectResponse('registration_successfull');
-                         }
+                            ->addPart($textBody, 'text/plain');
+
+                    if ($app['mailer']->send($message)) {
+                        $target = 'registration_successfull';
+                    } else {
+                        $target = 'registration_failed';
                     }
+                    return new RedirectResponse($target);
                 })
                 ->value('template', 'pages/registration');
 
