@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
-
+if(!isset($env)) $env = 'test';
 use OpenTribes\Core\Silex\Module as CoreModule;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;

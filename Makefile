@@ -2,11 +2,17 @@ full-test:
 	bin/behat -f progress
 	bin/behat -p silex -f progress
 
-install:
+install-test:
 	composer self-update
 	composer install --no-progress
 	mkdir storage
 	touch storage/ot.db
+	php cli/index.php install-shema
+	php cli/index.php install-roles
+
+install:
+	composer self-update
+	composer install --no-progress
 	php cli/index.php install-shema
 	php cli/index.php install-roles
 

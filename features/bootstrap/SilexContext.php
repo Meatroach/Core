@@ -14,7 +14,6 @@ class SilexContext extends FeatureContext {
 
     public function __construct(array $parameters) {
         parent::__construct($parameters);
-        $env = 'test';
         $app                         = require __DIR__ . '/../../bootstrap.php';
         $mink                        = new Mink(array(
             'browserkit' => new Session(new BrowserKitDriver(new Client($app))),
