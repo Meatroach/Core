@@ -83,7 +83,7 @@ class Module implements ServiceProviderInterface {
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
             return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
-        $app[Controller::ASSETS] = $app->share(function() use($app){
+        $app[Controller::ASSETS] = $app->share(function() use($app) {
             return new Assets($app['mustache.assets']);
         });
     }
@@ -100,7 +100,6 @@ class Module implements ServiceProviderInterface {
         $this->loadConfigurations($app);
     }
 
-
     private function loadConfigurations(&$app) {
         $files = array(
             'general.php',
@@ -112,26 +111,31 @@ class Module implements ServiceProviderInterface {
 
             $app->register(new ConfigServiceProvider($path));
         }
-  
     }
 
     private function createRoutes(&$app) {
 
         $app->get('/', function() use($app) {
 
-            $response          = new stdClass();
-            $response->failed  = false;
-            $response->proceed = false;
-            return $response;
-        })->value('template', 'pages/landing');
-      
-        $app->mount('/assets',$this->getAssetsRoutes($app));
+                    $response          = new stdClass();
+                    $response->failed  = false;
+                    $response->proceed = false;
+                    return $response;
+                })->value('template', 'pages/landing')
+                ->before(function(Request $request) {
+                    if ($request->getSession()->get('username')) {
+                        return new RedirectResponse('/game');
+                    }
+                });
+
+        $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
+        $app->mount('/game', $this->getGameRoutes($app));
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
-            $response = $appResponse;
+            $response    = $appResponse;
             if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                 $response = new JsonResponse($appResponse);
             }
@@ -167,12 +171,24 @@ class Module implements ServiceProviderInterface {
             $event->setResponse($response);
         });
     }
-    private function getAssetsRoutes(&$app){
+
+    private function getGameRoutes(&$app) {
+        $game = $app['controllers_factory'];
+        $game->get('/', function(Request $request) {
+            $response           = new stdClass();
+            $response->proceed  = false;
+            $response->username = $request->getSession()->get('username');
+            return $response;
+        })->value('template', 'pages/game/landing');
+        return $game;
+    }
+
+    private function getAssetsRoutes(&$app) {
         $assets = $app['controllers_factory'];
-        
-        $assets->assert('file','.+');
-        $assets->get('{type}/{file}',Controller::ASSETS.':load');
-        
+
+        $assets->assert('file', '.+');
+        $assets->get('{type}/{file}', Controller::ASSETS . ':load');
+
         return $assets;
     }
 
@@ -182,8 +198,8 @@ class Module implements ServiceProviderInterface {
         $account->post('/login', Controller::ACCOUNT . ':loginAction')
                 ->value('template', 'pages/landing')
                 ->value('successHandler', function($appResponse) use ($app) {
-                    if ($app['session']->isStarted())
-                        $app['session']->set('username', $appResponse->username);
+
+                    $app['session']->set('username', $appResponse->username);
 
                     return new RedirectResponse('/');
                 })
@@ -209,8 +225,8 @@ class Module implements ServiceProviderInterface {
                             ->setTo(array($appResponse->email))
                             ->setBody($htmlBody, 'text/html')
                             ->setBody($textBody, 'text/plain');
-                    if(!$app['swiftmailer.options']['disable_delivery'])
-                    $app['mailer']->send($message);
+                    if (!$app['swiftmailer.options']['disable_delivery'])
+                        $app['mailer']->send($message);
                 })
                 ->value('template', 'pages/registration');
 

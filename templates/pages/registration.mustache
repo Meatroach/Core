@@ -1,18 +1,19 @@
 {{>header}}
 {{>logo}}
 <div class="container">
-    {{#proceed}}
-    {{#failed}}
-    <div class="alert alert-danger ">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        {{#errors}}
-        <p>{{.}}</p>
-        {{/errors}}
-    </div>
-    {{/failed}}
-    {{/proceed}}
+
     <div class="panel panel-default">
         <div class="panel-body">
+            {{#proceed}}
+            {{#failed}}
+            <div class="alert alert-danger ">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{#errors}}
+                <p>{{.}}</p>
+                {{/errors}}
+            </div>
+            {{/failed}}
+            {{/proceed}}
             <form role="form" action="account/create" method="POST">
                 <div class="form-group">
                     <label for="username">Username</label>
