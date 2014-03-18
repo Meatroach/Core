@@ -1,7 +1,7 @@
 <?php
 
 namespace OpenTribes\Core\Service;
-
+use OpenTribes\Core\Value\Direction;
 /**
  *
  * @author BlackScorp<witalimik@web.de>

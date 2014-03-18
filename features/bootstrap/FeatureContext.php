@@ -8,6 +8,7 @@ use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
 use OpenTribes\Core\Mock\Service\PlainHash as PasswordHasher;
 use OpenTribes\Core\Mock\Service\TestGenerator as ActivationCodeGenerator;
+use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Mock\Repository\Tile as TileRepository;
@@ -24,6 +25,7 @@ class FeatureContext extends BehatContext {
     protected $userRepository;
     protected $userHelper;
     protected $messageHelper;
+    protected $locationCalculator;
     protected $registrationValidator;
     protected $activateUserValidator;
     protected $passwordHasher;
@@ -47,6 +49,7 @@ class FeatureContext extends BehatContext {
         $this->tileRepository          = new TileRepository;
         $this->mapRepository           = new MapRepository;
         $this->passwordHasher          = new PasswordHasher;
+        $this->locationCalculator      = new LocationCalculator(2,2,2);
         $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
@@ -55,7 +58,7 @@ class FeatureContext extends BehatContext {
         $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
         $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
-        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository);
+        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
     }
 
     /**
@@ -290,39 +293,38 @@ class FeatureContext extends BehatContext {
     public function iShouldNotHaveACity() {
         $this->cityHelper->assertCityNotCreated();
     }
-       /**
+
+    /**
      * @When /^I select location "([^"]*)"$/
      */
-    public function iSelectLocation($location)
-    {
-        $this->cityHelper->selectLocation($location,$this->userHelper->getLoggedInUsername());
+    public function iSelectLocation($location) {
+        $this->cityHelper->selectLocation($location, $this->userHelper->getLoggedInUsername());
     }
 
     /**
      * @Then /^I should have a city in following area:$/
      */
-    public function iShouldHaveACityInFollowingArea(TableNode $table)
-    {
-        foreach($table->getHash() as $row){
+    public function iShouldHaveACityInFollowingArea(TableNode $table) {
+        foreach ($table->getHash() as $row) {
             $minX = $row['minX'];
             $maxX = $row['maxX'];
             $minY = $row['minY'];
             $maxY = $row['maxY'];
+             $this->cityHelper->assertCityIsInArea($minX, $maxX, $minY, $maxY);
         }
-        $this->cityHelper->assertCityIsInArea($minX,$maxX,$minY,$maxY);
-        throw new PendingException();
+       
+
     }
 
     /**
      * @Given /^not at following locations:$/
      */
-    public function notAtFollowingLocations(TableNode $table)
-    {
+    public function notAtFollowingLocations(TableNode $table) {
         $locations = array();
-        foreach($table->getHash() as $row){
-            $x = $row['x'];
-            $y = $row['y'];
-            $locations[]=array($y,$x);
+        foreach ($table->getHash() as $row) {
+            $x           = (int)$row['x'];
+            $y           = (int)$row['y'];
+            $locations[] = array($y, $x);
         }
         $this->cityHelper->assertCityIsNotAtLocations($locations);
     }

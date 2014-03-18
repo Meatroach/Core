@@ -9,13 +9,13 @@ namespace OpenTribes\Core\Value;
  */
 class Direction {
 
-    const NORTH          = 'north';
-    const SOUTH          = 'south';
-    const WEST           = 'west';
-    const EAST           = 'east';
-    const ANY            = 'any';
+    const NORTH          = 0;
+    const SOUTH          = 1;
+    const WEST           = 2;
+    const EAST           = 3;
+    const ANY            = null;
 
-    private $value = 'any';
+    private $value = null;
 
     public function __construct($value) {
         if ($this->isValid($value)) {
@@ -24,7 +24,7 @@ class Direction {
     }
 
     public function __toString() {
-        return $this->value;
+        return (string)$this->value;
     }
 
     public static function north() {

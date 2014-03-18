@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Interactor\Player;
+namespace OpenTribes\Core\Interactor;
 use OpenTribes\Core\Request\SelectLocation as SelectLocationRequest;
 use OpenTribes\Core\Response\SelectLocation as SelectLocationResponse;
 use OpenTribes\Core\Service\LocationCalculator;
