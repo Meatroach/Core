@@ -18,8 +18,8 @@ class CityHelper {
     private $mapRepository;
     private $interactorResult;
     private $locationCalculator;
-    private $x;
-    private $y;
+    private $x = 0;
+    private $y = 0;
 
     function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
         $this->userRepository     = $userRepository;
@@ -60,8 +60,8 @@ class CityHelper {
 
     public function assertCityIsNotAtLocations(array $locations) {
         foreach ($locations as $location) {
-            $x = $location['x'];
-            $y = $location['y'];
+            $x = $location[1];
+            $y = $location[0];
             assertNotEquals($this->x, $x);
             assertNotEquals($this->y, $y);
         }

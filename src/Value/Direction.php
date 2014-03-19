@@ -16,15 +16,24 @@ class Direction {
     const ANY            = null;
 
     private $value = null;
-
+    private $directions = array(
+        'south'=>self::SOUTH,
+        'north'=>self::NORTH,
+        'west'=>self::WEST,
+        'east'=>self::EAST,
+        'any' =>self::ANY
+    );
     public function __construct($value) {
         if ($this->isValid($value)) {
-            $this->value = $value;
+            $this->value = $this->directions[$value];
         }
     }
 
     public function __toString() {
         return (string)$this->value;
+    }
+    public function getValue(){
+        return $this->value;
     }
 
     public static function north() {

@@ -12,8 +12,8 @@ use OpenTribes\Core\Value\Direction;
  */
 class LocationCalculator implements LocationCalculatorInterface {
 
-    private $x;
-    private $y;
+    private $x = 0;
+    private $y = 0;
     private $centerX;
     private $centerY;
     private $countCities = 0;
@@ -26,8 +26,9 @@ class LocationCalculator implements LocationCalculatorInterface {
     public function calculate(Direction $direction) {
         $x = 0;
         $y = 0;
+        $direction = $direction->getValue();
         if($direction === Direction::ANY){
-            $square = ~sqrt(4*$this->countCities);
+            $square = ceil(sqrt(4*$this->countCities));
             $direction = $square%4;
         }
         if($direction === Direction::WEST){
@@ -35,8 +36,8 @@ class LocationCalculator implements LocationCalculatorInterface {
             $y = 0;
         }
         if($direction === Direction::NORTH){
-            $x = 0;
-            $y = -1;
+            $x = 1;
+            $y = 1;
         }
         if($direction === Direction::EAST){
             $x = -1;
