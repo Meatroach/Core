@@ -36,7 +36,7 @@ class LocationCalculator implements LocationCalculatorInterface {
             $y = 0;
         }
         if($direction === Direction::NORTH){
-            $x = 1;
+            $x = -1;
             $y = 1;
         }
         if($direction === Direction::EAST){
@@ -47,9 +47,14 @@ class LocationCalculator implements LocationCalculatorInterface {
             $x = 0;
             $y = 1;
         }
-        var_dump($direction);
-        $this->x = $this->centerX+$x;
-        $this->y = $this->centerY+$y;
+       $x = $this->centerX+$x;
+       $minX = $x-1;
+       $maxX = $x+1;
+       $y = $this->centerY+$y;
+       $minY = $y-1;
+       $maxY = $y+1;
+        $this->x = mt_rand($minX, $maxY);
+        $this->y = mt_rand($minY, $maxY);
     }
 
     public function getX() {

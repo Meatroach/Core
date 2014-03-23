@@ -3,7 +3,9 @@
 use OpenTribes\Core\Repository\City as CityRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Repository\Map as MapRepository;
-use OpenTribes\Core\Interactor\CreateCity as CreateCityInteractor;
+use OpenTribes\Core\Context\Player\CreateNewCity as CreateNewCityInteractor;
+use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
+use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
 use OpenTribes\Core\Interactor\SelectLocation as SelectLocationInteractor;
 use OpenTribes\Core\Request\SelectLocation as SelectLocationRequest;
 use OpenTribes\Core\Response\SelectLocation as SelectLocationResponse;
@@ -20,7 +22,8 @@ class CityHelper {
     private $locationCalculator;
     private $x = 0;
     private $y = 0;
-
+    
+    
     function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
         $this->userRepository     = $userRepository;
         $this->cityRepository     = $cityRepository;
@@ -37,7 +40,7 @@ class CityHelper {
     }
 
     public function createCityAsUser($y, $x, $username) {
-        $request                = new CreateCityRequest($y, $x, $username);
+        $request                = new CreateCityRequest($y, $x, $username,$username.'\'s Village');
         $response               = new CreateCityResponse;
         $interactor             = new CreateCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository);
         $this->interactorResult = $interactor->process($request, $response);
@@ -66,14 +69,17 @@ class CityHelper {
             assertNotEquals($this->y, $y);
         }
     }
+    private function getDefaultCityName($username){
+        return sprintf("%s's City",$username);
+    }
 
     public function selectLocation($direction, $username) {
-        $request    = new SelectLocationRequest($direction);
-        $interactor = new SelectLocationInteractor($this->locationCalculator);
-        $response   = new SelectLocationResponse;
-        $interactor->process($request, $response);
-        $this->x    = $response->x;
-        $this->y    = $response->y;
+       $request = new CreateNewCityRequest($username, $direction, $this->getDefaultCityName($username));
+       $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+       $response = new CreateNewCityResponse;
+       $interactor->process($request, $response);
+       $this->x    = $response->city->x;
+        $this->y    = $response->city->y;
     }
 
 }

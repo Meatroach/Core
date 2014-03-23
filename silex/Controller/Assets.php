@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\Silex\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Description of Assets
  *
@@ -32,15 +32,20 @@ class Assets {
         $this->paths = $paths;
     }
 
-    public function load($type, $file) {
-
+    public function load(Request $request,$type, $file) {
+     
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
+           
         }
+        if(!$file) return new Response ('Asset not found',404);
         if (is_file($file)) {
             $extension = pathinfo($file, PATHINFO_EXTENSION);
         }
+        var_dump($request->cookies);
         $response = new Response(file_get_contents($file), 200, $this->getContentTypByExtension($extension));
+     $response = new Response(file_get_contents($file), 200);
+     
         return $response;
     }
 
