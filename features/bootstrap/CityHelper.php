@@ -62,8 +62,8 @@ class CityHelper {
         foreach ($locations as $location) {
             $x = $location[1];
             $y = $location[0];
-            $expectedKey = sprintf('%d/%d',$y,$x);
-            $currentKey = sprintf('%d/%d',$this->y,$this->x);
+            $expectedKey = sprintf('Y%d/X%d',$y,$x);
+            $currentKey = sprintf('Y%d/X%d',$this->y,$this->x);
             assertNotSame($currentKey, $expectedKey,  sprintf("%s is not %s",$expectedKey,$currentKey));
         }
     }

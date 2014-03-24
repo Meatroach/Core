@@ -31,9 +31,10 @@ class Map implements MapRepository {
 
     public function tileIsAccessible($y, $x) {
         $tile = $this->map->getTile($y, $x);
-        if (!$tile)
+        if (!$tile) {
             return false;
-
+        }
+        
         return $tile->isAccessible();
     }
 

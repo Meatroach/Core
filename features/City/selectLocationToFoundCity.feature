@@ -40,7 +40,7 @@ Scenario Outline: Specify direction
     But not at following locations:
         | y | x |
         | 0 | 0 |
-        | 2 | 0 |
+        | 0 | 2 |
         | 1 | 1 |
         | 3 | 1 |
 
