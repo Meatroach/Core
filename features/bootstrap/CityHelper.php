@@ -1,16 +1,14 @@
 <?php
 
-use OpenTribes\Core\Repository\City as CityRepository;
-use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Repository\Map as MapRepository;
 use OpenTribes\Core\Context\Player\CreateNewCity as CreateNewCityInteractor;
-use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
-use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
-use OpenTribes\Core\Interactor\SelectLocation as SelectLocationInteractor;
-use OpenTribes\Core\Request\SelectLocation as SelectLocationRequest;
-use OpenTribes\Core\Response\SelectLocation as SelectLocationResponse;
+use OpenTribes\Core\Interactor\CreateCity as CreateCityInteractor;
+use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\Map as MapRepository;
+use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
+use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
+use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
 use OpenTribes\Core\Service\LocationCalculator;
 
 class CityHelper {
