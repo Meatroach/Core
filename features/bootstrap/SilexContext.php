@@ -28,7 +28,7 @@ class SilexContext extends FeatureContext {
         $mink->setDefaultSessionName('browserkit');
         $this->mink       = $mink;
         $this->userHelper = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
-        $this->cityHelper = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository);
+        $this->cityHelper = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository,$this->locationCalculator);
 
         $this->messageHelper = new DeliveryMessageHelper($this->mink);
     }
