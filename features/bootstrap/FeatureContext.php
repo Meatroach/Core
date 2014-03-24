@@ -49,7 +49,7 @@ class FeatureContext extends BehatContext {
         $this->tileRepository          = new TileRepository;
         $this->mapRepository           = new MapRepository;
         $this->passwordHasher          = new PasswordHasher;
-        $this->locationCalculator      = new LocationCalculator(2,2,2);
+        $this->locationCalculator      = new LocationCalculator(2,2,3);
         $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);

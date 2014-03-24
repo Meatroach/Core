@@ -31,12 +31,18 @@ class CreateCity {
         $x     = $request->getX();
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
+        
+     
         if (!$this->mapRepository->tileIsAccessible($y, $x)) {
             return false;
         }
 
         if ($this->cityRepository->cityExistsAt($y, $x)) {
+            
             return false;
+        }
+        if($y === 2 && $x === 0){
+            var_dump($this->cityRepository);
         }
         $id = $this->cityRepository->getUniqueId();
 

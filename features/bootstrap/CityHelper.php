@@ -22,8 +22,7 @@ class CityHelper {
     private $locationCalculator;
     private $x = 0;
     private $y = 0;
-    
-    
+
     function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
         $this->userRepository     = $userRepository;
         $this->cityRepository     = $cityRepository;
@@ -40,7 +39,7 @@ class CityHelper {
     }
 
     public function createCityAsUser($y, $x, $username) {
-        $request                = new CreateCityRequest($y, $x, $username,$username.'\'s Village');
+        $request                = new CreateCityRequest($y, $x, $username, $username . '\'s Village');
         $response               = new CreateCityResponse;
         $interactor             = new CreateCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository);
         $this->interactorResult = $interactor->process($request, $response);
@@ -65,20 +64,22 @@ class CityHelper {
         foreach ($locations as $location) {
             $x = $location[1];
             $y = $location[0];
-            assertNotEquals($this->x, $x);
-            assertNotEquals($this->y, $y);
+            $expectedKey = sprintf('%d/%d',$y,$x);
+            $currentKey = sprintf('%d/%d',$this->y,$this->x);
+            assertNotSame($currentKey, $expectedKey,  sprintf("%s is not %s",$expectedKey,$currentKey));
         }
     }
-    private function getDefaultCityName($username){
-        return sprintf("%s's City",$username);
+
+    private function getDefaultCityName($username) {
+        return sprintf("%s's City", $username);
     }
 
     public function selectLocation($direction, $username) {
-       $request = new CreateNewCityRequest($username, $direction, $this->getDefaultCityName($username));
-       $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
-       $response = new CreateNewCityResponse;
-       $interactor->process($request, $response);
-       $this->x    = $response->city->x;
+        $request    = new CreateNewCityRequest($username, $direction, $this->getDefaultCityName($username));
+        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+        $response   = new CreateNewCityResponse;
+        $interactor->process($request, $response);
+        $this->x    = $response->city->x;
         $this->y    = $response->city->y;
     }
 

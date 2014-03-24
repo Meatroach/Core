@@ -17,7 +17,7 @@ you have to specify the direction
          |  0   | Grass | Grass | Grass | Grass | Grass |
          |  1   | Grass | Forrest | Grass | Grass | Grass |
          |  2   | Grass | Grass | Grass | Grass | Grass |
-         |  3   | Grass | Sea | Grass | Hill | Grass |
+         |  3   | Grass | Sea | Grass | Grass | Grass |
          |  4   | Grass | Grass | Grass | Grass | Grass |
         And following users:
             | username | password | email |
@@ -28,7 +28,7 @@ you have to specify the direction
             | name | owner | x | y |
             | City1 | Owner1 | 0 | 0 |
             | City2 | Owner2 | 2 | 0 |
-            | City3 | Owner1 | 4 | 4 |
+
 
 Scenario Outline: Specify direction
     Given I'm logged in as user "BlackScorp"
@@ -41,10 +41,9 @@ Scenario Outline: Specify direction
         | y | x |
         | 0 | 0 |
         | 2 | 0 |
-        | 4 | 4 |
         | 1 | 1 |
         | 3 | 1 |
-        | 3 | 3 |
+
 
 Examples:
     | location | minX | maxX | minY | maxY |

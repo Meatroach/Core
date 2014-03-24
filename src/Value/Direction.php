@@ -9,20 +9,21 @@ namespace OpenTribes\Core\Value;
  */
 class Direction {
 
-    const NORTH          = 0;
-    const SOUTH          = 1;
-    const WEST           = 2;
-    const EAST           = 3;
-    const ANY            = null;
+    const EAST = 0;
+    const WEST = 1;
+    const NORTH = 2;
+    const SOUTH = 3;
+    const ANY = null;
 
-    private $value = null;
+    private $value      = null;
     private $directions = array(
-        'south'=>self::SOUTH,
-        'north'=>self::NORTH,
-        'west'=>self::WEST,
-        'east'=>self::EAST,
-        'any' =>self::ANY
+        'south' => self::SOUTH,
+        'north' => self::NORTH,
+        'west'  => self::WEST,
+        'east'  => self::EAST,
+        'any'   => self::ANY
     );
+
     public function __construct($value) {
         if ($this->isValid($value)) {
             $this->value = $this->directions[$value];
@@ -30,9 +31,10 @@ class Direction {
     }
 
     public function __toString() {
-        return (string)$this->value;
+        return (string) $this->value;
     }
-    public function getValue(){
+
+    public function getValue() {
         return $this->value;
     }
 
@@ -43,13 +45,16 @@ class Direction {
     public static function south() {
         return new Direction(Direction::SOUTH);
     }
-    public static function west(){
+
+    public static function west() {
         return new Direction(Direction::WEST);
     }
-    public static function east(){
+
+    public static function east() {
         return new Direction(Direction::EAST);
     }
-    public static function any(){
+
+    public static function any() {
         return new Direction(Direction::ANY);
     }
 
