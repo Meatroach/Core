@@ -32,7 +32,7 @@ class CreateCity {
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
 
-
+       
         if (!$this->mapRepository->tileIsAccessible($y, $x)) {
             return false;
         }
@@ -40,7 +40,8 @@ class CreateCity {
         if ($this->cityRepository->cityExistsAt($y, $x)) {
             return false;
         }
-
+     
+      
         $id = $this->cityRepository->getUniqueId();
 
         $city           = $this->cityRepository->create($id, $name, $owner, $request->getX(), $request->getY());

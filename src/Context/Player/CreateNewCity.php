@@ -43,15 +43,14 @@ class CreateNewCity {
         $selectLocationResponse   = new SelectLocationResponse();
         $createCityInteractor     = new CreateCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository);
         $createCityResponse       = new CreateCityResponse();
-   
-        $seed = time();
-        mt_srand(1395705254);
-        var_dump($seed);
+     
+        //mt_srand(1395);
+     
         do {
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
             $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);
             $cityNotCreated    = !$createCityInteractor->process($createCityRequest, $createCityResponse);
-     
+          
         } while ($cityNotCreated);
         $response->city = $createCityResponse->city;
         return true;

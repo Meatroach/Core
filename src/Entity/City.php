@@ -19,8 +19,8 @@ class City {
         $this->id    = $id;
         $this->name  = $name;
         $this->owner = $owner;
-        $this->x     = $x;
-        $this->y     = $y;
+        $this->x     = (int)$x;
+        $this->y     = (int)$y;
     }
     public function getId() {
         return $this->id;

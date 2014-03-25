@@ -63,6 +63,7 @@ class LocationCalculator implements LocationCalculatorInterface {
         $y =  mt_rand($minY, $maxY);
         $this->x       = $x;
         $this->y       = $y;
+        
     }
 
     public function getX() {
