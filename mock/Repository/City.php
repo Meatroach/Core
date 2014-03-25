@@ -38,7 +38,8 @@ class City implements CityRepository {
     }
 
     public function findByLocation($y, $x) {
-       
+        $y = (int)$y;
+        $x = (int) $x;
         foreach ($this->cities as $city) {
            
             if ($city->getX() === $x && $city->getY() === $y) {

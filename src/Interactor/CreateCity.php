@@ -44,7 +44,7 @@ class CreateCity {
       
         $id = $this->cityRepository->getUniqueId();
 
-        $city           = $this->cityRepository->create($id, $name, $owner, $request->getX(), $request->getY());
+        $city           = $this->cityRepository->create($id, $name, $owner,$y, $x);
         $this->cityRepository->add($city);
         $response->city = new CityView($city);
         return true;

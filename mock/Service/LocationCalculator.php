@@ -37,24 +37,20 @@ class LocationCalculator implements LocationCalculatorInterface {
             $y = -1;
         }
         if ($direction === Direction::EAST) {
-
-            $x = -1;
-            $y = 1;
+            $x = 1;
+            $y = -1;
         }
         if ($direction === Direction::SOUTH) {
 
             $x = 1;
-            $y = -1;
-        }
-        if ($direction === Direction::WEST) {
-            $x = 1;
             $y = 1;
         }
-
-        $this->centerX = $this->centerX + $x;
-        $this->centerY = $this->centerY + $y;
-        $x             = $this->centerX;
-        $y             = $this->centerY;
+        if ($direction === Direction::WEST) {
+            $x = -1;
+            $y = 1;
+        }
+        $x             = $this->centerX +$x;
+        $y             = $this->centerY +$y;
         $minX          = $x - 1;
         $maxX          = $x + 1;
         $minY          = $y - 1;

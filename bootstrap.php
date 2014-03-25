@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 $app = new Application;
 $app->before(function(Request $request) use ($app) {
-    $app['mustache.options'] = array_merge_recursive($app['mustache.options'], array(
+    $app['mustache.options'] = array_merge_recursive($app['mustache.options'],
+            array(
         'helpers' => array(
-           'baseUrl' => $request->getBaseUrl() . '/'
-  
+            'baseUrl' => $request->getBaseUrl() . '/'
         )
     ));
 });

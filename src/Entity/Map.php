@@ -17,7 +17,7 @@ class Map {
     }
 
     public function addTile(Tile $tile, $y, $x) {
-        $this->tiles[$y][$x] = $tile;
+        $this->tiles[(int)$y][(int)$x] = $tile;
     }
     /**
      * 

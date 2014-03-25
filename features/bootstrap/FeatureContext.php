@@ -49,14 +49,15 @@ class FeatureContext extends BehatContext {
         $this->tileRepository          = new TileRepository;
         $this->mapRepository           = new MapRepository;
         $this->passwordHasher          = new PasswordHasher;
-        $this->locationCalculator      = new LocationCalculator(2,2,3);
+        $this->locationCalculator      = new LocationCalculator(2, 2, 2);
         $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->tileHelper              = new TileHelper($this->tileRepository);
         $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
-        $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
+        $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
+                $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
         $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
     }
@@ -231,25 +232,29 @@ class FeatureContext extends BehatContext {
      * @Given /^a map "([^"]*)" with following tiles:$/
      */
     public function aMapWithFollowingTiles($mapName, TableNode $table) {
-        $rows = $table->getRows();
 
-        unset($rows[0][0]);
-        $positionsY = array();
-        $grid       = array();
-        foreach ($rows as $line => $cols) {
-            if ($line === 0) {
-                $positionsY = $cols;
+        $grid         = array();
+   
+
+        $originalGrid = $table->getRows();
+        foreach ($originalGrid as $lineNumber => $rows) {
+
+            if ($lineNumber === 0) {
                 continue;
             }
-            foreach ($cols as $key => $col) {
-                if ($key === 0) {
-                    $x = $col;
-                    continue;
+            foreach ($rows as $cellNumber => $row) {
+                $x = $originalGrid[0][$cellNumber];
+                $y = $originalGrid[$lineNumber][0];
+                if ($cellNumber > 0 && $lineNumber > 0) {
+
+                    if (!isset($grid[$y])) {
+                        $grid[$y] = array();
+                    }
+                    $grid[$y][$x] = $row;
                 }
-                $y            = $positionsY[$key];
-                $grid[$y][$x] = $col;
             }
         }
+
         $this->mapHelper->createMap($mapName, $grid);
     }
 
@@ -310,10 +315,8 @@ class FeatureContext extends BehatContext {
             $maxX = $row['maxX'];
             $minY = $row['minY'];
             $maxY = $row['maxY'];
-             $this->cityHelper->assertCityIsInArea($minX, $maxX, $minY, $maxY);
+            $this->cityHelper->assertCityIsInArea($minX, $maxX, $minY, $maxY);
         }
-       
-
     }
 
     /**
@@ -322,8 +325,8 @@ class FeatureContext extends BehatContext {
     public function notAtFollowingLocations(TableNode $table) {
         $locations = array();
         foreach ($table->getHash() as $row) {
-            $x           = (int)$row['x'];
-            $y           = (int)$row['y'];
+            $x           = (int) $row['x'];
+            $y           = (int) $row['y'];
             $locations[] = array($y, $x);
         }
         $this->cityHelper->assertCityIsNotAtLocations($locations);

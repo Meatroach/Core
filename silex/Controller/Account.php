@@ -40,8 +40,8 @@ class Account {
         $emailConfirm       = $httpRequest->get('emailConfirm');
         $password           = $httpRequest->get('password');
         $passwordConfirm    = $httpRequest->get('passwordConfirm');
-        
         $termsAndConditions = (bool) $httpRequest->get('termsAndConditions');
+        
         $response           = new RegistrationResponse;
         $request            = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
         $context            = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);

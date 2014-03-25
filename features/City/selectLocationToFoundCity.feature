@@ -49,7 +49,7 @@ Examples:
     | location | minX | maxX | minY | maxY |
     | north | 0 | 2 | 0 | 2 |
     | east | 2 | 4 | 0 | 2 |
-    | west | 2 | 4 | 2 | 4 |
-    | south | 0 | 2 | 2 | 4 |
+    | south | 2 | 4 | 2 | 4 |
+    | west | 0 | 2 | 2 | 4 |
     | any | 0 | 4 | 0 | 4 |
 
