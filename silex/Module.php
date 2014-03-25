@@ -27,6 +27,7 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 use stdClass;
 use Swift_Message;
+use Swift_NullTransport;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,10 +98,10 @@ class Module implements ServiceProviderInterface {
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
-
+       
         if ($this->env === 'test') {
             $app['swiftmailer.transport'] = $app->share(function() {
-                return new \Swift_NullTransport();
+                return new Swift_NullTransport();
             });
         }
         $this->loadConfigurations($app);

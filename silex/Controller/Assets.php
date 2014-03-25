@@ -34,28 +34,28 @@ class Assets {
     }
 
     public function load(Request $request, $type, $file) {
-        if ($request->headers->get('If-Modified-Since')) {
-            return new Response('', 304);
-        }
+
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
-        if (!$file)
-            return new Response('Asset not found', 404);
-        if (is_file($file)) {
-            $extension = pathinfo($file, PATHINFO_EXTENSION);
+        if (!$file) {
+            return new Response('Not Found', 404);
         }
 
-
-        $response = new Response(file_get_contents($file), 200, $this->getContentTypByExtension($extension));
-
-
+        $response  = new Response();
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        $content = file_get_contents($file);
+        $eTag    = md5($file);
+        $response->setContent($content);
+        $response->headers->set('Content-Type', $this->getContentTypByExtension($extension));
+        $response->setEtag($eTag);
+        $response->setPublic();
+        $response->isNotModified($request);
         return $response;
     }
 
     private function getContentTypByExtension($extension) {
-        $contentType = isset($this->contentTypes[$extension]) ? $this->contentTypes[$extension] : '';
-        return array('Content-Type' => $contentType);
+        return isset($this->contentTypes[$extension]) ? $this->contentTypes[$extension] : '';
     }
 
 }
