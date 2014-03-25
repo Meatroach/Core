@@ -34,7 +34,9 @@ class Assets {
     }
 
     public function load(Request $request, $type, $file) {
-
+        if ($request->headers->get('If-Modified-Since')) {
+            return new Response('', 304);
+        }
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
@@ -43,6 +45,7 @@ class Assets {
         if (is_file($file)) {
             $extension = pathinfo($file, PATHINFO_EXTENSION);
         }
+
 
         $response = new Response(file_get_contents($file), 200, $this->getContentTypByExtension($extension));
 
