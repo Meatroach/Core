@@ -30,6 +30,10 @@ class FeatureContext extends BehatContext {
     protected $activateUserValidator;
     protected $passwordHasher;
     protected $activationCodeGenerator;
+
+    /**
+     * @var Behat\Mink\Mink 
+     */
     protected $mink;
     protected $tileRepository;
     protected $mapRepository;
@@ -233,8 +237,8 @@ class FeatureContext extends BehatContext {
      */
     public function aMapWithFollowingTiles($mapName, TableNode $table) {
 
-        $grid         = array();
-   
+        $grid = array();
+
 
         $originalGrid = $table->getRows();
         foreach ($originalGrid as $lineNumber => $rows) {
@@ -330,6 +334,24 @@ class FeatureContext extends BehatContext {
             $locations[] = array($y, $x);
         }
         $this->cityHelper->assertCityIsNotAtLocations($locations);
+    }
+
+    /**
+     * @Then /^I should be redirected to "([^"]*)"$/
+     */
+    public function iShouldBeRedirectedTo($url) {
+        if ($this->mink) {
+            $this->mink->assertSession()->addressEquals($url);
+        }
+    }
+
+    /**
+     * @When /^I open "([^"]*)"$/
+     */
+    public function iOpen($uri) {
+        if ($this->mink) {
+            $this->mink->getSession()->visit($uri);
+        }
     }
 
 }
