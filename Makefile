@@ -1,6 +1,7 @@
 full-test:
 	bin/behat -f progress
 	bin/behat -p silex -f progress
+	bin/phpunit tests/
 
 install-test:
 	composer self-update
