@@ -177,7 +177,7 @@ class Module implements ServiceProviderInterface {
                     }
                 }
             }
-            $response->headers->set('Content-Encoding','gzip');
+            //$response->headers->set('Content-Encoding','gzip');
             $event->setResponse($response);
         });
     }
