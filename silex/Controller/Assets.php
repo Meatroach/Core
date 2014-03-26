@@ -41,7 +41,7 @@ class Assets {
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
-
+        
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
 
@@ -50,6 +50,7 @@ class Assets {
         $response->setAutoLastModified();
         $response->setPublic();
         $response->setExpires($expireDate);
+        $response->headers->set('Content-Type', $this->getContentTypByExtension($response->getFile()->getExtension()));
         return $response;
     }
 
