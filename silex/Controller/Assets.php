@@ -47,9 +47,7 @@ class Assets {
         
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-        $headers = array(
-            'Content-Encoding'=>'gzip'
-        );
+    
         $response = new BinaryFileResponse($file, Response::HTTP_OK, array(), true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $response->setExpires($expireDate);
 
