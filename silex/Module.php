@@ -177,6 +177,7 @@ class Module implements ServiceProviderInterface {
                     }
                 }
             }
+        
             $event->setResponse($response);
         });
     }

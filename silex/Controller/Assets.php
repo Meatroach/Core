@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class Assets {
 
-    const CSS  = 'text/css';
-    const PNG  = 'image/png';
-    const JPG  = 'image/jpg';
+    const CSS = 'text/css';
+    const PNG = 'image/png';
+    const JPG = 'image/jpg';
     const JPEG = 'image/jpg';
-    const JS   = 'application/javascript';
+    const JS = 'application/javascript';
     const JSON = 'application/json';
 
     private $contentTypes = array(
@@ -29,7 +29,7 @@ class Assets {
         'js'   => self::JS,
         'json' => self::JSON
     );
-    private $paths        = array();
+    private $paths = array();
 
     public function __construct(array $paths) {
         $this->paths = $paths;
@@ -44,22 +44,19 @@ class Assets {
             return new Response('Not Found', 404);
         }
 
-        $response  = new StreamedResponse();
+        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse();
         $extension = pathinfo($file, PATHINFO_EXTENSION);
- 
-        $eTag    = md5($file);
+
+     
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-        $response->setCallback(function() use($file){
-            readfile($file);
-        });
-     
+        $response->setFile($file, \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE, true, true);
+
         $response->headers->set('Content-Type', $this->getContentTypByExtension($extension));
-        $response->headers->set('Content-Encoding','gzip');
-        $response->setEtag($eTag);
+        $response->headers->set('Content-Encoding', 'gzip');
         $response->setExpires($expireDate);
         $response->setPublic();
-    
+
         $response->isNotModified($request);
         return $response;
     }
