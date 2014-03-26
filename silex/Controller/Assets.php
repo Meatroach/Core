@@ -2,8 +2,10 @@
 
 namespace OpenTribes\Core\Silex\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Description of Assets
@@ -42,14 +44,22 @@ class Assets {
             return new Response('Not Found', 404);
         }
 
-        $response  = new Response();
+        $response  = new StreamedResponse();
         $extension = pathinfo($file, PATHINFO_EXTENSION);
-        $content = file_get_contents($file);
+ 
         $eTag    = md5($file);
-        $response->setContent($content);
+        $expireDate = new DateTime();
+        $expireDate->modify("+1 month");
+        $response->setCallback(function() use($file){
+            readfile($file);
+        });
+     
         $response->headers->set('Content-Type', $this->getContentTypByExtension($extension));
+        $response->headers->set('Content-Encoding','gzip');
         $response->setEtag($eTag);
+        $response->setExpires($expireDate);
         $response->setPublic();
+    
         $response->isNotModified($request);
         return $response;
     }
