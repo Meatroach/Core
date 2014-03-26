@@ -36,26 +36,22 @@ class Assets {
         $this->paths = $paths;
     }
 
-    public function load(Request $request, $type, $file) {
+    public function load($type, $file) {
 
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
         if (!$file) {
-            return new Response('Not Found', 404);
+            return new Response('Not Found', Response::HTTP_NOT_FOUND);
         }
-        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-
-        $response = new BinaryFileResponse();
-        $response->setFile($file, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
+        $headers = array(
+            'Content-Encoding'=>'gzip'
+        );
+        $response = new BinaryFileResponse($file, Response::HTTP_OK, $headers, true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $response->setExpires($expireDate);
-        $response->setPublic();
-        $response->isNotModified($request);
-        
-        $response->headers->set('Content-Type', $this->getContentTypByExtension($extension));
-        $response->headers->set('Content-Encoding', 'gzip');
 
         return $response;
     }
