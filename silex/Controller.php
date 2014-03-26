@@ -10,4 +10,5 @@ namespace OpenTribes\Core\Silex;
 abstract class Controller {
     const ACCOUNT = 'controller.core.account';
     const ASSETS = 'controller.core.assets';
+    const CITY = 'controller.core.city';
 }

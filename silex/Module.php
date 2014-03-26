@@ -98,7 +98,7 @@ class Module implements ServiceProviderInterface {
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
-       
+
         if ($this->env === 'test') {
             $app['swiftmailer.transport'] = $app->share(function() {
                 return new Swift_NullTransport();
@@ -124,11 +124,11 @@ class Module implements ServiceProviderInterface {
 
         $app->get('/', function() use($app) {
 
-                    $response          = new stdClass();
-                    $response->failed  = false;
+                    $response = new stdClass();
+                    $response->failed = false;
                     $response->proceed = false;
                     return $response;
-                })->value('template', 'pages/landing')
+                })->value(RouteValue::TEMPLATE, 'pages/landing')
                 ->before(function(Request $request) {
                     if ($request->getSession()->get('username')) {
                         return new RedirectResponse('/game');
@@ -141,39 +141,40 @@ class Module implements ServiceProviderInterface {
 
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
-            $request     = $event->getRequest();
+            $request = $event->getRequest();
             $requestType = $event->getRequestType();
-            $response    = $appResponse;
+            $response = $appResponse;
             if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                 $response = new JsonResponse($appResponse);
             }
-            if ($request->attributes->has('subRequests')) {
-                $subRequests = $request->attributes->get('subRequests');
+            if ($request->attributes->has(RouteValue::SUB_REQUESTS)) {
+                $subRequests = $request->attributes->get(RouteValue::SUB_REQUESTS);
                 $tmpResponse = $appResponse;
 
                 foreach ($subRequests as $values) {
-                    $uri         = $values['url'];
-                    $method      = $values['method'];
-                    $param       = $values['param'];
-                    $subRequest  = Request::create($uri, $method, $param);
+                    $uri = $values['url'];
+                    $method = $values['method'];
+                    $param = $values['param'];
+                    $subRequest = Request::create($uri, $method, $param);
                     $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-                    $content     = json_decode($subResponse->getContent());
+                    $content = json_decode($subResponse->getContent());
                     $appResponse = (object) array_merge((array) $appResponse, (array) $content);
                 }
                 $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
             }
             if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
-                if ($request->attributes->has('template')) {
-                    $template = $request->attributes->get('template');
-                    $body     = $app['mustache']->render($template, $appResponse);
+                if ($request->attributes->has(RouteValue::TEMPLATE)) {
+                    $template = $request->attributes->get(RouteValue::TEMPLATE);
+                    $body = $app['mustache']->render($template, $appResponse);
                     $response = new Response($body);
                 }
 
                 if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
-                    $handler  = $request->attributes->get('successHandler');
-                    $result   = $handler($appResponse);
-                    if ($result)
+                    $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
+                    $result = $handler($appResponse);
+                    if ($result) {
                         $response = $result;
+                    }
                 }
             }
             $event->setResponse($response);
@@ -182,12 +183,16 @@ class Module implements ServiceProviderInterface {
 
     private function getGameRoutes(&$app) {
         $game = $app['controllers_factory'];
+
         $game->get('/', function(Request $request) {
-            $response           = new stdClass();
-            $response->proceed  = false;
+            $response = new stdClass();
+            $response->proceed = false;
             $response->username = $request->getSession()->get('username');
             return $response;
-        })->value('template', 'pages/game/landing');
+        })->value(RouteValue::TEMPLATE, 'pages/game/landing');
+
+        $game->match('/city/new', Controller::CITY . ':newAction')
+                ->method('POST|GET');
         return $game;
     }
 
@@ -204,14 +209,14 @@ class Module implements ServiceProviderInterface {
         $account = $app['controllers_factory'];
 
         $account->post('/login', Controller::ACCOUNT . ':loginAction')
-                ->value('template', 'pages/landing')
-                ->value('successHandler', function($appResponse) use ($app) {
+                ->value(RouteValue::TEMPLATE, 'pages/landing')
+                ->value(RouteValue::SUCCESS_HANDLER, function($appResponse) use ($app) {
 
                     $app['session']->set('username', $appResponse->username);
 
                     return new RedirectResponse('/');
                 })
-                ->value('subRequests', array(
+                ->value(RouteValue::SUB_REQUESTS, array(
                     array(
                         'url'    => '/',
                         'method' => 'GET',
@@ -219,11 +224,11 @@ class Module implements ServiceProviderInterface {
         ));
         $account->get('/registration_successfull', function() {
             return '';
-        })->value('template', 'pages/registration_successfull');
+        })->value(RouteValue::TEMPLATE, 'pages/registration_successfull');
 
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
-                ->value('successHandler', function($appResponse) use ($app) {
+                ->value(RouteValue::SUCCESS_HANDLER, function($appResponse) use ($app) {
 
                     $request = $app['request'];
 
@@ -231,7 +236,7 @@ class Module implements ServiceProviderInterface {
 
                     $htmlBody = $app['mustache']->render('mails/html/register', $appResponse);
                     $textBody = $app['mustache']->render('mails/text/register', $appResponse);
-                    $message  = Swift_Message::newInstance($app['subjects']['registration'])
+                    $message = Swift_Message::newInstance($app['subjects']['registration'])
                             ->setFrom($app['fromMails']['registration'])
                             ->setTo($appResponse->email)
                             ->setBody($htmlBody, 'text/html')
@@ -244,13 +249,15 @@ class Module implements ServiceProviderInterface {
                     }
                     return new RedirectResponse($target);
                 })
-                ->value('template', 'pages/registration');
+                ->value(RouteValue::TEMPLATE, 'pages/registration');
+
 
         $account->match('/activate', Controller::ACCOUNT . ':activateAction')
                 ->method('GET|POST')
-                ->value('template', 'pages/activation');
+                ->value(RouteValue::TEMPLATE, 'pages/activation');
+
         $account->get('/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
-                ->value('template', 'pages/activation');
+                ->value(RouteValue::TEMPLATE, 'pages/activation');
 
         $account->after(Controller::ACCOUNT . ':after');
 
