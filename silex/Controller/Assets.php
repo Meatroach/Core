@@ -52,6 +52,7 @@ class Assets {
         $response->setExpires($expireDate);
         $response->isNotModified($request);
         $response->headers->set('Content-Type', $this->getContentTypByExtension($response->getFile()->getExtension()));
+        $response->headers->set('Content-Encoding','gzip');
         return $response;
     }
 

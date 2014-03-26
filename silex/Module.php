@@ -2,6 +2,7 @@
 
 namespace OpenTribes\Core\Silex;
 
+use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
@@ -177,7 +178,12 @@ class Module implements ServiceProviderInterface {
                     }
                 }
             }
-            //$response->headers->set('Content-Encoding','gzip');
+       
+            if(!$response->getExpires()){  
+                $response->setExpires(new DateTime());
+            }
+            $response->headers->set('Content-Encoding','gzip');
+            
             $event->setResponse($response);
         });
     }
