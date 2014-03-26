@@ -50,7 +50,7 @@ class Assets {
         $headers = array(
             'Content-Encoding'=>'gzip'
         );
-        $response = new BinaryFileResponse($file, Response::HTTP_OK, $headers, true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
+        $response = new BinaryFileResponse($file, Response::HTTP_OK, array(), true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $response->setExpires($expireDate);
 
         return $response;
