@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Validator\Constraints\DateTime;
+use DateTime;
 
 /**
  * Description of Assets
@@ -50,7 +50,7 @@ class Assets {
         $response->setAutoEtag();
         $response->setAutoLastModified();
         $response->setPublic();
-        //$response->setExpires($expireDate);
+        $response->setExpires($expireDate);
         return $response;
     }
 
