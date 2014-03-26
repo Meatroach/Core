@@ -21,11 +21,15 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 
 `composer update`
 
+- create configuration
+
+`cli/index.php create-configuration develop`
+
 - edit files in config/develop
 
 - install database
 
-`php cli/index.php install-shema`
+`cli/index.php install-shema develop`
 
 - start server
 
