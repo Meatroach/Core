@@ -36,7 +36,7 @@ class Assets {
         $this->paths = $paths;
     }
 
-    public function load($type, $file) {
+    public function load(Request $request,$type, $file) {
 
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
@@ -50,6 +50,7 @@ class Assets {
         $response->setAutoLastModified();
         $response->setPublic();
         $response->setExpires($expireDate);
+        $response->isNotModified($request);
         $response->headers->set('Content-Type', $this->getContentTypByExtension($response->getFile()->getExtension()));
         return $response;
     }
