@@ -2,9 +2,10 @@
 
 namespace OpenTribes\Core\Silex\Controller;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
@@ -43,21 +44,19 @@ class Assets {
         if (!$file) {
             return new Response('Not Found', 404);
         }
-
-        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse();
         $extension = pathinfo($file, PATHINFO_EXTENSION);
-
-     
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-        $response->setFile($file, \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE, true, true);
 
-        $response->headers->set('Content-Type', $this->getContentTypByExtension($extension));
-        $response->headers->set('Content-Encoding', 'gzip');
+        $response = new BinaryFileResponse();
+        $response->setFile($file, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $response->setExpires($expireDate);
         $response->setPublic();
-
         $response->isNotModified($request);
+        
+        $response->headers->set('Content-Type', $this->getContentTypByExtension($extension));
+        $response->headers->set('Content-Encoding', 'gzip');
+
         return $response;
     }
 
