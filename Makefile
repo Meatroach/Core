@@ -1,6 +1,6 @@
 full-test:
-	bin/behat -f progress
-	bin/behat -p silex -f progress
+	bin/behat -f progress --no-snippets
+	bin/behat -p silex -f progress --no-snippets
 	bin/phpunit tests/
 
 install-test:
@@ -27,4 +27,3 @@ install-production:
 update:
 	composer update
 	php cli/index.php install-shema
-

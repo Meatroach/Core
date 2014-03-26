@@ -340,10 +340,8 @@ class FeatureContext extends BehatContext {
      * @Then /^I should be redirected to "([^"]*)"$/
      */
     public function iShouldBeRedirectedTo($url) {
+        
         throw new PendingException;
-        if ($this->mink) {
-            $this->mink->assertSession()->addressEquals($url);
-        }
     }
 
     /**
