@@ -2,11 +2,9 @@
 
 namespace OpenTribes\Core\Silex\Controller;
 
+use DateTime;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use DateTime;
 
 /**
  * Description of Assets
