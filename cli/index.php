@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -31,8 +32,24 @@ $console->register('install-roles')
         });
 $console->register('create-configuration')
         ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for configuration ', 'test')
-        ->setCode(function() {
-            
+        ->setCode(function(InputInterface $input) {
+            $env = $input->getArgument('env');
+            $path = realpath(__DIR__ . '/../config/');
+            foreach (glob($path . '/*.template.php') as $file) {
+                $templateFile = realpath($file);
+                $baseDir = $path.DIRECTORY_SEPARATOR.$env.DIRECTORY_SEPARATOR;
+                $realFile = $baseDir.basename(str_replace('.template', '', $templateFile));
+                $content = require $templateFile;
+                if (file_exists($realFile)) {
+                    $realFileContent = require $realFile;
+                    $content = array_replace_recursive($content, $realFileContent);
+                }
+                if(!is_dir($baseDir)){
+                    mkdir($baseDir);
+                }
+                $newContent = "<?php \n return " . var_export($content, true) . ";";
+                file_put_contents($realFile, $newContent);
+            }
         });
 
 $console->run();

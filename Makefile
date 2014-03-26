@@ -8,22 +8,25 @@ install-test:
 	composer install --no-progress
 	mkdir storage
 	touch storage/ot.db
-	php cli/index.php install-shema
-	php cli/index.php install-roles
+	cli/index.php create-configuration
+	cli/index.php install-shema
+	cli/index.php install-roles
 
 install-dev:
 	composer self-update
 	composer install --no-progress
 	mkdir storage
 	touch storage/ot.db
-	php cli/index.php install-shema develop
-	php cli/index.php install-roles develop
+	cli/index.php create-configuration develop
+	cli/index.php install-shema develop
+	cli/index.php install-roles develop
 
 install-production:
 	composer self-update
 	composer install --no-progress
-	php cli/index.php install-shema production
-	php cli/index.php install-roles production
+	cli/index.php create-configuration production
+	cli/index.php install-shema production
+	cli/index.php install-roles production
 update:
 	composer update
 	php cli/index.php install-shema
