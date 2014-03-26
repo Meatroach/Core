@@ -45,8 +45,7 @@ class Assets {
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
 
-        $response = new BinaryFileResponse();
-        $response->setFile($file);
+        $response = new BinaryFileResponse($file);
         $response->setAutoEtag();
         $response->setAutoLastModified();
         $response->setPublic();
