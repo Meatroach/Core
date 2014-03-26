@@ -14,8 +14,8 @@ $console->register('install-shema')
         ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for shema ', 'test')
         ->setCode(function (InputInterface $input) {
 
-            $env   = $input->getArgument('env');
-            $app   = require __DIR__ . '/../bootstrap.php';
+            $env = $input->getArgument('env');
+            $app = require __DIR__ . '/../bootstrap.php';
             $shema = new Shema($app['db']);
             $shema->installShema();
         });
@@ -24,10 +24,15 @@ $console->register('install-roles')
         ->setDescription('install roles')
         ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for shema ', 'test')
         ->setCode(function (InputInterface $input) {
-            $env   = $input->getArgument('env');
-            $app   = require __DIR__ . '/../bootstrap.php';
+            $env = $input->getArgument('env');
+            $app = require __DIR__ . '/../bootstrap.php';
             $shema = new Shema($app['db']);
             $shema->createRoles();
+        });
+$console->register('create-configuration')
+        ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for configuration ', 'test')
+        ->setCode(function() {
+            
         });
 
 $console->run();
