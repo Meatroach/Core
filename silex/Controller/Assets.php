@@ -42,11 +42,15 @@ class Assets {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
 
-
-        $response = new BinaryFileResponse($file, Response::HTTP_OK, array(), true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-        $response->setExpires($expireDate);
+
+        $response = new BinaryFileResponse();
+        $response->setFile($file);
+        $response->setAutoEtag();
+        $response->setAutoLastModified();
+        $response->setPublic();
+        //$response->setExpires($expireDate);
         return $response;
     }
 
