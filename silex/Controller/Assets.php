@@ -41,16 +41,12 @@ class Assets {
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
-        if (!$file) {
-            return new Response('Not Found', Response::HTTP_NOT_FOUND);
-        }
-        
+
+
+        $response = new BinaryFileResponse($file, Response::HTTP_OK, array(), true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-    
-        $response = new BinaryFileResponse($file, Response::HTTP_OK, array(), true, ResponseHeaderBag::DISPOSITION_INLINE, true, true);
         $response->setExpires($expireDate);
-
         return $response;
     }
 
