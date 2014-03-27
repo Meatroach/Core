@@ -340,7 +340,7 @@ class FeatureContext extends BehatContext {
      * @Then /^I should be redirected to "([^"]*)"$/
      */
     public function iShouldBeRedirectedTo($url) {
-        
+
         throw new PendingException;
     }
 
@@ -351,6 +351,25 @@ class FeatureContext extends BehatContext {
         if ($this->mink) {
             $this->mink->getSession()->visit($uri);
         }
+    }
+
+    /**
+     * @Given /^following Buildings:$/
+     */
+    public function followingBuildings(TableNode $table) {
+        foreach ($table->getHash()as $row) {
+            $name         = $row['name'];
+            $minimumLevel = (int) $row['minimumLevel'];
+            $maximumLevel = (int) $row['maximumLevel'];
+        }
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should see following buildings$/
+     */
+    public function iShouldSeeFollowingBuildings(TableNode $table) {
+        throw new PendingException();
     }
 
 }

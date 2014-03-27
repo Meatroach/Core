@@ -1,4 +1,4 @@
-@Building
+@AddBuilding
 Feature: add building to the queue
     In order to build a building
     As registered user
