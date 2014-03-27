@@ -14,6 +14,7 @@ use OpenTribes\Core\Mock\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Mock\Repository\Tile as TileRepository;
 use OpenTribes\Core\Mock\Repository\Map as MapRepository;
 use OpenTribes\Core\Mock\Repository\City as CityRepository;
+use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -38,9 +39,11 @@ class FeatureContext extends BehatContext {
     protected $tileRepository;
     protected $mapRepository;
     protected $cityRepository;
+    protected $buildingRepository;
     protected $cityHelper;
     protected $tileHelper;
     protected $mapHelper;
+    protected $buildingHelper;
 
     /**
      * Initializes context.
@@ -56,6 +59,7 @@ class FeatureContext extends BehatContext {
         $this->locationCalculator      = new LocationCalculator(2, 2, 2);
         $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
+        $this->buildingRepository      = new BuildingRepository;
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->tileHelper              = new TileHelper($this->tileRepository);
@@ -64,6 +68,7 @@ class FeatureContext extends BehatContext {
                 $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
         $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+        $this->buildingHelper          = new BuildingHelper($this->buildingRepository);
     }
 
     /**
@@ -361,8 +366,9 @@ class FeatureContext extends BehatContext {
             $name         = $row['name'];
             $minimumLevel = (int) $row['minimumLevel'];
             $maximumLevel = (int) $row['maximumLevel'];
+            $this->buildingHelper->createDummyBuilding($name, $minimumLevel, $maximumLevel);
         }
-        throw new PendingException();
+        
     }
 
     /**
