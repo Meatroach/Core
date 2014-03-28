@@ -42,7 +42,7 @@ class Assets {
         
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-
+     
         $response = new BinaryFileResponse($file);
         $response->setAutoEtag();
         $response->setAutoLastModified();
@@ -50,7 +50,6 @@ class Assets {
         $response->setExpires($expireDate);
         $response->isNotModified($request);
         $response->headers->set('Content-Type', $this->getContentTypByExtension($response->getFile()->getExtension()));
-       
         return $response;
     }
 
