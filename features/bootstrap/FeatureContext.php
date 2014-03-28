@@ -64,8 +64,7 @@ class FeatureContext extends BehatContext {
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->tileHelper              = new TileHelper($this->tileRepository);
         $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
-        $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher,
-                $this->activationCodeGenerator, $this->activateUserValidator);
+        $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
         $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
         $this->buildingHelper          = new BuildingHelper($this->buildingRepository);
@@ -154,11 +153,9 @@ class FeatureContext extends BehatContext {
      * @When /^I visit "([^"]*)"$/
      */
     public function iVisit($url) {
-        $url            = str_replace('account/activate/', '', $url);
-        $values         = explode('/', $url);
-        $username       = $values[0];
-        $activationCode = $values[1];
-        $this->userHelper->processActivateAccount($username, $activationCode);
+        if ($this->mink) {
+            $this->mink->getSession()->visit($url);
+        }
     }
 
     /**
@@ -350,15 +347,6 @@ class FeatureContext extends BehatContext {
     }
 
     /**
-     * @When /^I open "([^"]*)"$/
-     */
-    public function iOpen($uri) {
-        if ($this->mink) {
-            $this->mink->getSession()->visit($uri);
-        }
-    }
-
-    /**
      * @Given /^following Buildings:$/
      */
     public function followingBuildings(TableNode $table) {
@@ -368,13 +356,17 @@ class FeatureContext extends BehatContext {
             $maximumLevel = (int) $row['maximumLevel'];
             $this->buildingHelper->createDummyBuilding($name, $minimumLevel, $maximumLevel);
         }
-        
     }
 
     /**
      * @Then /^I should see following buildings$/
      */
     public function iShouldSeeFollowingBuildings(TableNode $table) {
+        foreach ($table->getHash() as $row) {
+            $name  = $row['name'];
+            $level = $row['level'];
+            $this->cityHelper->assertCityHasBuilding($name, $level);
+        }
         throw new PendingException();
     }
 

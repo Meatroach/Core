@@ -20,7 +20,7 @@ class CityHelper {
     private $locationCalculator;
     private $x = 0;
     private $y = 0;
-
+    
     function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
         $this->userRepository     = $userRepository;
         $this->cityRepository     = $cityRepository;
@@ -80,5 +80,7 @@ class CityHelper {
         $this->x    = $response->city->x;
         $this->y    = $response->city->y;
     }
-
+    public function assertCityHasBuilding($name,$level){
+        
+    }
 }

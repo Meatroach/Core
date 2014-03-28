@@ -33,8 +33,9 @@ Background:
 
 Scenario: List my buildings
     Given I'm logged in as user "BlackScorp"
-    When I open "game/city/0/0"
-    Then I should see following buildings
+    When I visit "game/city/0/0"
+    Then I selected the city at y=0 and x=0
+    And I should see following buildings
         | name | level |
         | Headquarters |  1 | 
         | Barracks | 0 | 

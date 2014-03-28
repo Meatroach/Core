@@ -1,6 +1,6 @@
 <?php
 use Behat\Mink\Mink;
-class DeliveryMessageHelper extends MessageHelper{
+class SilexMessageHelper extends MessageHelper{
     private $mink;
     public function __construct(Mink $mink) {
         $this->mink = $mink;

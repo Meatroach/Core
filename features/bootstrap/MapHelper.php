@@ -15,17 +15,15 @@ class MapHelper {
 
     public function createMap($mapName, array $grid) {
 
-        $map   = $this->mapRepository->create( $mapName);
-       
-        foreach($grid as $y => $positions){
-            foreach ($positions as $x => $tileName){
+        $map = $this->mapRepository->create($mapName);
+
+        foreach ($grid as $y => $positions) {
+            foreach ($positions as $x => $tileName) {
                 $tile = $this->tileRepository->findByName($tileName);
                 $map->addTile($tile, $y, $x);
             }
         }
-          $this->mapRepository->add($map);
-        
-      
+        $this->mapRepository->add($map);
     }
 
 }

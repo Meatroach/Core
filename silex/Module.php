@@ -88,18 +88,19 @@ class Module implements ServiceProviderInterface {
         $app[Controller::ASSETS] = $app->share(function() use($app) {
             return new Assets($app['mustache.assets']);
         });
+    
     }
 
     private function registerProviders(&$app) {
 
-        $app->register(new ValidatorServiceProvider);
+
         $app->register(new ServiceControllerServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new DoctrineServiceProvider());
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
-
+        $app->register(new ValidatorServiceProvider);
         if ($this->env === 'test') {
             $app['swiftmailer.transport'] = $app->share(function() {
                 return new Swift_NullTransport();
@@ -125,8 +126,8 @@ class Module implements ServiceProviderInterface {
 
         $app->get('/', function() use($app) {
 
-                    $response = new stdClass();
-                    $response->failed = false;
+                    $response          = new stdClass();
+                    $response->failed  = false;
                     $response->proceed = false;
                     return $response;
                 })->value(RouteValue::TEMPLATE, 'pages/landing')
@@ -142,9 +143,9 @@ class Module implements ServiceProviderInterface {
 
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
-            $request = $event->getRequest();
+            $request     = $event->getRequest();
             $requestType = $event->getRequestType();
-            $response = $appResponse;
+            $response    = $appResponse;
             if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                 $response = new JsonResponse($appResponse);
             }
@@ -153,12 +154,12 @@ class Module implements ServiceProviderInterface {
                 $tmpResponse = $appResponse;
 
                 foreach ($subRequests as $values) {
-                    $uri = $values['url'];
-                    $method = $values['method'];
-                    $param = $values['param'];
-                    $subRequest = Request::create($uri, $method, $param);
+                    $uri         = $values['url'];
+                    $method      = $values['method'];
+                    $param       = $values['param'];
+                    $subRequest  = Request::create($uri, $method, $param);
                     $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-                    $content = json_decode($subResponse->getContent());
+                    $content     = json_decode($subResponse->getContent());
                     $appResponse = (object) array_merge((array) $appResponse, (array) $content);
                 }
                 $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
@@ -166,24 +167,24 @@ class Module implements ServiceProviderInterface {
             if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
                 if ($request->attributes->has(RouteValue::TEMPLATE)) {
                     $template = $request->attributes->get(RouteValue::TEMPLATE);
-                    $body = $app['mustache']->render($template, $appResponse);
+                    $body     = $app['mustache']->render($template, $appResponse);
                     $response = new Response($body);
                 }
 
                 if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
                     $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
-                    $result = $handler($appResponse);
+                    $result  = $handler($appResponse);
                     if ($result) {
                         $response = $result;
                     }
                 }
             }
-       
-            if(!$response->getExpires()){  
+
+            if (!$response->getExpires()) {
                 $response->setExpires(new DateTime());
             }
-            $response->headers->set('Content-Encoding','gzip');
-            
+            $response->headers->set('Content-Encoding', 'gzip');
+
             $event->setResponse($response);
         });
     }
@@ -192,8 +193,8 @@ class Module implements ServiceProviderInterface {
         $game = $app['controllers_factory'];
 
         $game->get('/', function(Request $request) {
-            $response = new stdClass();
-            $response->proceed = false;
+            $response           = new stdClass();
+            $response->proceed  = false;
             $response->username = $request->getSession()->get('username');
             return $response;
         })->value(RouteValue::TEMPLATE, 'pages/game/landing');
@@ -243,7 +244,7 @@ class Module implements ServiceProviderInterface {
 
                     $htmlBody = $app['mustache']->render('mails/html/register', $appResponse);
                     $textBody = $app['mustache']->render('mails/text/register', $appResponse);
-                    $message = Swift_Message::newInstance($app['subjects']['registration'])
+                    $message  = Swift_Message::newInstance($app['subjects']['registration'])
                             ->setFrom($app['fromMails']['registration'])
                             ->setTo($appResponse->email)
                             ->setBody($htmlBody, 'text/html')

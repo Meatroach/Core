@@ -14,7 +14,7 @@ class SilexContext extends FeatureContext {
 
     public function __construct(array $parameters) {
         parent::__construct($parameters);
-        $env = 'test';
+        $env                         = 'test';
         $app                         = require __DIR__ . '/../../bootstrap.php';
         $mink                        = new Mink(array(
             'browserkit' => new Session(new BrowserKitDriver(new Client($app))),
@@ -24,13 +24,13 @@ class SilexContext extends FeatureContext {
 
         $this->passwordHasher          = $app[Service::PASSWORD_HASHER];
         $this->activationCodeGenerator = $app[Service::ACTIVATION_CODE_GENERATOR];
-        $app['session.test'] = true;
+        $app['session.test']           = true;
         $mink->setDefaultSessionName('browserkit');
-        $this->mink       = $mink;
-        $this->userHelper = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
-        $this->cityHelper = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository,$this->locationCalculator);
+        $this->mink                    = $mink;
+        $this->userHelper              = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
 
-        $this->messageHelper = new DeliveryMessageHelper($this->mink);
+        $this->messageHelper = new SilexMessageHelper($this->mink);
     }
 
     /** @BeforeScenario */

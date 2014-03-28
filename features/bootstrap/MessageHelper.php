@@ -6,7 +6,7 @@ class MessageHelper{
         $this->messages = $messages;
     }
     public function hasMessage($expectedMessage){
-        assertTrue(in_array($expectedMessage, $this->messages));
+        assertTrue(in_array($expectedMessage, $this->messages),  sprintf('"%s" Message not found',$expectedMessage));
     
     }
  

@@ -68,9 +68,7 @@ class DeliveryUserHelper {
     }
 
     public function processActivateAccount($username, $activationCode) {
-       $this->loadPage();
-        $url        = sprintf('account/activate/%s/%s', $username, $activationCode);
-        $this->mink->getSession()->visit($url);
+   
     }
 
     public function getActivateAccountResponse() {

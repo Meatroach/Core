@@ -17,7 +17,7 @@ class Map {
     /**
      * @var Tile[]
      */
-    private $tiles = array();
+    private $tiles = array(array());
 
     /**
      * @param \string $name
@@ -34,9 +34,6 @@ class Map {
     public function addTile(Tile $tile, $y, $x) {
         $y = (int) $y;
         $x = (int) $x;
-        if (!is_array($this->tiles[$y])) {
-            $this->tiles[$y] = array();
-        }
         $this->tiles[$y][$x] = $tile;
     }
 

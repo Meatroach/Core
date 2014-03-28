@@ -6,7 +6,7 @@ Feature: add building to the queue
 
 Background:
     Given following Buildings:
-        | Name | minimumLevel | maximumLevel | 
+        | name | minimumLevel | maximumLevel | 
         | Headquarters |  1 | 30 |
         | Barracks | 0 | 25 |
         | Stable | 0 | 20 |
@@ -107,7 +107,7 @@ Background:
         | Warehouse | 1020 | 1.2 |
         | Hiding place | 1800 | 1.2 |
         | Wall | 3600 | 1.2 |
-    And user with follwoing informations:
+    And following users:
         | username | password | email |
         | BlackScorp | 123456 | test@test.de |
     And following cities:
