@@ -2,6 +2,7 @@
     "minimum-stability" : "dev",
     "description" : "A Tribal Wars Core Module",
     "keywords" : [ "Tribal Wars", "Open Source", "Browsergame" ],
+    "homepage" : "http://ot.blackscorp.de",
     "license" : "MIT",
     "authors" : [
         {
@@ -10,6 +11,13 @@
         }
     ],
     "name" : "opentribes/core",
+    "support" : {
+        "irc" : "https://gitter.im/Opentribes/Core",
+        "issues" : "https://github.com/Opentribes/Core/issues",
+        "forum" : "http://webgamers.de",
+        "wiki" : "https://github.com/Opentribes/Core/wiki",
+        "source" : "https://github.com/Opentribes/Core"
+    },
     "require" : {
         "php" : ">=5.3",
         "silex/silex" : "~1.2",
