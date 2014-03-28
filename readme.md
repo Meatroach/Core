@@ -1,7 +1,7 @@
 #OpenTribes
 [![Build Status](https://travis-ci.org/Opentribes/Core.png?branch=develop)](https://travis-ci.org/Opentribes/Core)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca/mini.png)](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca)
-
+[![Gitter chat](https://badges.gitter.im/Opentribes/Core.png)](https://gitter.im/Opentribes/Core)
 An OpenSource browserbased Game, written in PHP tested with Behat/Mink using Silex
 
 This Project is used to practise [Behavior Driven Development](http://de.wikipedia.org/wiki/Behavior_Driven_Development) and [Clean Code Achitecture](http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html)

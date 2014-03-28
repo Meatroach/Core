@@ -12,7 +12,6 @@
     ],
     "name" : "opentribes/core",
     "support" : {
-        "irc" : "https://gitter.im/Opentribes/Core",
         "issues" : "https://github.com/Opentribes/Core/issues",
         "forum" : "http://webgamers.de",
         "wiki" : "https://github.com/Opentribes/Core/wiki",

@@ -6,3 +6,10 @@ php:
 before_script:
 - make install-test
 script: make full-test
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/62d2ef3db2dd2b321922
+    on_success: change  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: false     # default: false
