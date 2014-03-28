@@ -9,6 +9,11 @@ This Project is used to practise [Behavior Driven Development](http://de.wikiped
 The Game is licenced under MIT 
 
 Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TODO&milestone=1&page=1&sort=created&state=open)
+
+##[Api Documentation](http://opentribes.github.io/API/)
+
+##[Demo Site](http://ot.blackscorp.de/)
+
 ##installation
 
 - clone repository
