@@ -7,17 +7,36 @@ use OpenTribes\Core\Request\Login as LoginRequest;
 use OpenTribes\Core\Response\Login as LoginResponse;
 use OpenTribes\Core\Service\PasswordHasher;
 /**
- * Description of Login
+ * Interactor to verify password for active user
  *
  * @author BlackScorp<witalimik@web.de>
  */
 class Login {
+
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
+
+    /**
+     * @var PasswordHasher
+     */
     private $passwordHasher;
+
+    /**
+     * @param \OpenTribes\Core\Repository\User $userRepository
+     * @param \OpenTribes\Core\Service\PasswordHasher $passwordHasher
+     */
     function __construct(UserRepository $userRepository,PasswordHasher $passwordHasher) {
         $this->userRepository = $userRepository;
         $this->passwordHasher = $passwordHasher;
     }
+
+    /**
+     * @param \OpenTribes\Core\Request\Login $request
+     * @param \OpenTribes\Core\Response\Login $response
+     * @return \boolean
+     */
     public function process(LoginRequest $request,LoginResponse $response){
         $response->username = $request->getUsername();
         $response->password = $request->getPassword();

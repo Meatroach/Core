@@ -1,42 +1,73 @@
 <?php
 
 namespace OpenTribes\Core\Entity;
- 
+
 /**
- * Description of Map
+ * Map Entity
  *
  * @author BlackScorp<witalimik@web.de>
  */
 class Map {
 
+    /**
+     * @var \string
+     */
     private $name;
-    private $tiles = array(array());
 
-    public function __construct( $name) {
+    /**
+     * @var Tile[]
+     */
+    private $tiles = array();
+
+    /**
+     * @param \string $name
+     */
+    public function __construct($name) {
         $this->name = $name;
     }
 
-    public function addTile(Tile $tile, $y, $x) {
-        $this->tiles[(int)$y][(int)$x] = $tile;
-    }
     /**
-     * 
-     * @param type $y
-     * @param type $x
-     * @return Tile
+     * @param \OpenTribes\Core\Entity\Tile $tile
+     * @param \integer $y
+     * @param \integer $x
      */
-    public function getTile($y,$x){
-        return isset($this->tiles[$y][$x])?$this->tiles[$y][$x]:null;
+    public function addTile(Tile $tile, $y, $x) {
+        $y = (int) $y;
+        $x = (int) $x;
+        if (!is_array($this->tiles[$y])) {
+            $this->tiles[$y] = array();
+        }
+        $this->tiles[$y][$x] = $tile;
     }
 
+    /**
+     * @param \integer $y
+     * @param \integer $x
+     * @return Tile
+     */
+    public function getTile($y, $x) {
+        $y = (int) $y;
+        $x = (int) $x;
+        return isset($this->tiles[$y][$x]) ? $this->tiles[$y][$x] : null;
+    }
+
+    /**
+     * @return \integer
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @return \string
+     */
     public function getName() {
         return $this->name;
     }
 
+    /**
+     * @return Tiles[]
+     */
     public function getTiles() {
         return $this->tiles;
     }
