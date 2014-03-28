@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "description": "A Tribal Wars Core Module",
     "keywords": ["Tribal Wars", "Open Source", "Browsergame"],
     "homepage": "http://ot.blackscorp.de",
@@ -19,19 +18,19 @@
     },
     "require": {
         "php": ">=5.3",
-        "silex/silex": "~1.2",
-        "igorw/config-service-provider": "~1.2",
-        "doctrine/dbal": "~2.5",
+        "silex/silex": "~1.1",
+        "igorw/config-service-provider": "~1.1",
+        "doctrine/dbal": "~2.4",
         "mustache/silex-provider": "~1.0",
         "swiftmailer/swiftmailer": "~5.1",
-        "symfony/validator": "~2.5",
-        "symfony/console": "~2.5"
+        "symfony/validator": "~2.4",
+        "symfony/console": "~2.4"
     },
     "require-dev": {
         "behat/behat": "~2.5",
         "behat/mink": "~1.5",
         "phpunit/phpunit": "~3.7",
-        "behat/mink-browserkit-driver": "~1.2"
+        "behat/mink-browserkit-driver": "~1.1"
     },
     "config": {
         "bin-dir": "bin/"

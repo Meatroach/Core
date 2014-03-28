@@ -56,6 +56,7 @@ class Module implements ServiceProviderInterface {
     public function register(Application $app) {
 
         $this->registerProviders($app);
+        $this->loadConfigurations($app);
         $this->createDependencies($app);
         $this->createRoutes($app);
     }
@@ -88,25 +89,22 @@ class Module implements ServiceProviderInterface {
         $app[Controller::ASSETS] = $app->share(function() use($app) {
             return new Assets($app['mustache.assets']);
         });
-    
+        if ($this->env === 'test') {
+            $app['swiftmailer.transport'] = $app->share(function() {
+                return new Swift_NullTransport();
+            });
+        }
     }
 
     private function registerProviders(&$app) {
 
-
+        $app->register(new ValidatorServiceProvider);
         $app->register(new ServiceControllerServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new DoctrineServiceProvider());
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
-        $app->register(new ValidatorServiceProvider);
-        if ($this->env === 'test') {
-            $app['swiftmailer.transport'] = $app->share(function() {
-                return new Swift_NullTransport();
-            });
-        }
-        $this->loadConfigurations($app);
     }
 
     private function loadConfigurations(&$app) {
@@ -267,7 +265,10 @@ class Module implements ServiceProviderInterface {
         $account->get('/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value(RouteValue::TEMPLATE, 'pages/activation');
 
-        $account->after(Controller::ACCOUNT . ':after');
+        $account->after(function() use($app){
+        
+            return $app[Controller::ACCOUNT]->after();
+        });
 
         return $account;
     }
