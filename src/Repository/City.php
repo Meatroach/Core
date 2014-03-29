@@ -49,4 +49,6 @@ interface City {
      * @return \OpenTribes\Core\Entity\City|null
      */
     public function findByLocation($y, $x);
+    
+    public function replace(CityEntity $city);
 }

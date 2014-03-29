@@ -49,5 +49,7 @@ class City implements CityRepository {
         }
         return null;
     }
-
+    public function replace(CityEntity $city) {
+        $this->cities[$city->getId()] = $city;
+    }
 }

@@ -24,5 +24,7 @@ class Building implements BuildingRepository{
         $countBuilding++;
         return $countBuilding;
     }
-
+    public function findAll() {
+        return $this->buildings;
+    }
 }

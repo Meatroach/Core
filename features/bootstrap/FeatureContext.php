@@ -15,7 +15,7 @@ use OpenTribes\Core\Mock\Repository\Tile as TileRepository;
 use OpenTribes\Core\Mock\Repository\Map as MapRepository;
 use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
-
+use OpenTribes\Core\Mock\Repository\CityBuildings as CityBuildingsRepository;
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
 /**
@@ -40,6 +40,7 @@ class FeatureContext extends BehatContext {
     protected $mapRepository;
     protected $cityRepository;
     protected $buildingRepository;
+    protected $cityBuildingsRepository;
     protected $cityHelper;
     protected $tileHelper;
     protected $mapHelper;
@@ -60,13 +61,14 @@ class FeatureContext extends BehatContext {
         $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->buildingRepository      = new BuildingRepository;
+        $this->cityBuildingsRepository = new CityBuildingsRepository($this->cityRepository);
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->tileHelper              = new TileHelper($this->tileRepository);
         $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
         $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
-        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator,$this->cityBuildingsRepository,$this->buildingRepository);
         $this->buildingHelper          = new BuildingHelper($this->buildingRepository);
     }
 
@@ -342,8 +344,10 @@ class FeatureContext extends BehatContext {
      * @Then /^I should be redirected to "([^"]*)"$/
      */
     public function iShouldBeRedirectedTo($url) {
-
         throw new PendingException;
+        if ($this->mink) {
+            $this->mink->assertSession()->addressEquals($url);
+        }
     }
 
     /**
@@ -365,8 +369,31 @@ class FeatureContext extends BehatContext {
         foreach ($table->getHash() as $row) {
             $name  = $row['name'];
             $level = $row['level'];
-            $this->cityHelper->assertCityHasBuilding($name, $level);
+            $this->cityHelper->assertCityHasBuilding($name,$level);
         }
+        
+    }
+
+    /**
+     * @Then /^I selected the city at y=(\d+) and x=(\d+)$/
+     */
+    public function iSelectedTheCityAtYAndX($y, $x) {
+        $this->cityHelper->selectPosition($y,$x);
+    }
+    
+    /**
+     * @Then /^I should see following cities:$/
+     */
+    public function iShouldSeeFollowingCities(TableNode $table)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I selected user "([^"]*)"$/
+     */
+    public function iSelectedUser($arg1)
+    {
         throw new PendingException();
     }
 

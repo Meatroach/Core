@@ -1,0 +1,30 @@
+<?php
+
+namespace OpenTribes\Core\Mock\Repository;
+
+use OpenTribes\Core\Entity\City as CityEntity;
+use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
+use OpenTribes\Core\Repository\City as CityRepository;
+/**
+ * Description of CityBuildings
+ *
+ * @author BlackScorp<witalimik@web.de>
+ */
+class CityBuildings implements CityBuildingsRepository {
+    
+    private $city;
+    private $cityRepository;
+    public function __construct(CityRepository $cityRepository) {
+        $this->cityRepository = $cityRepository;
+    }
+
+    public function replace(CityEntity $city) {
+        $this->cityRepository->replace($city);
+    }
+
+    public function findByLocation($y, $x) {
+        $this->city = $this->cityRepository->findByLocation($y, $x);
+        return $this->city;
+    }
+
+}

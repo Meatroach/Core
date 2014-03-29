@@ -5,10 +5,15 @@ use OpenTribes\Core\Interactor\CreateCity as CreateCityInteractor;
 use OpenTribes\Core\Repository\City as CityRepository;
 use OpenTribes\Core\Repository\Map as MapRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Repository\Building as BuildingRepository;
+use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
 use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
+use OpenTribes\Core\Context\Player\ViewCityBuildings as ViewCityBuildingsInteractor;
+use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
+use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsResponse;
 use OpenTribes\Core\Service\LocationCalculator;
 
 class CityHelper {
@@ -16,16 +21,21 @@ class CityHelper {
     private $userRepository;
     private $cityRepository;
     private $mapRepository;
+    private $cityBuildingsRepository;
     private $interactorResult;
     private $locationCalculator;
+    private $viewCityBuildingsResponse;
+    private $buildingRepository;
     private $x = 0;
     private $y = 0;
-    
-    function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
-        $this->userRepository     = $userRepository;
-        $this->cityRepository     = $cityRepository;
-        $this->mapRepository      = $mapRepository;
-        $this->locationCalculator = $locationCalculator;
+
+    function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
+        $this->userRepository          = $userRepository;
+        $this->cityRepository          = $cityRepository;
+        $this->mapRepository           = $mapRepository;
+        $this->locationCalculator      = $locationCalculator;
+        $this->cityBuildingsRepository = $cityBuildingsRepository;
+        $this->buildingRepository      = $buildingRepository;
     }
 
     public function createDummyCity($name, $owner, $y, $x) {
@@ -60,11 +70,11 @@ class CityHelper {
 
     public function assertCityIsNotAtLocations(array $locations) {
         foreach ($locations as $location) {
-            $x = $location[1];
-            $y = $location[0];
-            $expectedKey = sprintf('Y%d/X%d',$y,$x);
-            $currentKey = sprintf('Y%d/X%d',$this->y,$this->x);
-            assertNotSame($currentKey, $expectedKey,  sprintf("%s is not %s",$expectedKey,$currentKey));
+            $x           = $location[1];
+            $y           = $location[0];
+            $expectedKey = sprintf('Y%d/X%d', $y, $x);
+            $currentKey  = sprintf('Y%d/X%d', $this->y, $this->x);
+            assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
         }
     }
 
@@ -80,7 +90,27 @@ class CityHelper {
         $this->x    = $response->city->x;
         $this->y    = $response->city->y;
     }
-    public function assertCityHasBuilding($name,$level){
-        
+
+    public function selectPosition($y, $x) {
+        $request                         = new ViewCityBuildingsRequest($y, $x);
+        $interactor                      = new ViewCityBuildingsInteractor($this->cityBuildingsRepository, $this->buildingRepository);
+        $this->viewCityBuildingsResponse = new ViewCityBuildingsResponse;
+        $this->interactorResult          = $interactor->process($request, $this->viewCityBuildingsResponse);
     }
+
+    public function assertCityHasBuilding($name, $level) {
+        $buildings = $this->viewCityBuildingsResponse->buildings;
+        $found = null;
+        foreach($buildings as $building){
+            if($building->name === $name){
+                $found = $building;
+                break;
+            }
+        }
+        assertNotNull($found);
+        assertSame($found->name, $name);
+        assertSame($found->level,(int)$level);
+      
+    }
+
 }

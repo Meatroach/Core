@@ -30,4 +30,5 @@ interface Building {
      * @return \integer
      */
     public function getUniqueId();
+    public function findAll();
 }
