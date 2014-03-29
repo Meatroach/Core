@@ -36,6 +36,15 @@ class City implements CityRepository {
 
         return (bool) $this->findByLocation($y, $x);
     }
+    public function findAllByOwner(UserEntity $owner){
+        $found = array();
+        foreach($this->cities as $city){
+            if($city->getOwner() === $owner){
+                $found[]=$city;
+            }
+        }
+        return $found;
+    }
 
     public function findByLocation($y, $x) {
         $y = (int)$y;

@@ -19,7 +19,8 @@ Background:
 Scenario: List custom cities
     Given I'm logged in as user "BlackScorp"
     When I visit "game/city/list"
-    Then I should see following cities:
+    Then I selected user "BlackScorp"
+    And I should see following cities:
             | name | owner | x | y |
             | City1 | BlackScorp | 0 | 0 |
             | City2 | BlackScorp | 2 | 0 |

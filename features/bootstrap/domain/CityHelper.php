@@ -14,6 +14,9 @@ use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
 use OpenTribes\Core\Context\Player\ViewCityBuildings as ViewCityBuildingsInteractor;
 use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
 use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsResponse;
+use OpenTribes\Core\Interactor\ViewCities as ViewCitiesInteractor;
+use OpenTribes\Core\Response\ViewCities as ViewCitiesResponse;
+use OpenTribes\Core\Request\ViewCities as ViewCitiesRequest;
 use OpenTribes\Core\Service\LocationCalculator;
 
 class CityHelper {
@@ -28,6 +31,7 @@ class CityHelper {
     private $buildingRepository;
     private $x = 0;
     private $y = 0;
+    private $viewCitiesResponse;
 
     function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
         $this->userRepository          = $userRepository;
@@ -100,17 +104,41 @@ class CityHelper {
 
     public function assertCityHasBuilding($name, $level) {
         $buildings = $this->viewCityBuildingsResponse->buildings;
-        $found = null;
-        foreach($buildings as $building){
-            if($building->name === $name){
+        $found     = null;
+        foreach ($buildings as $building) {
+            if ($building->name === $name) {
                 $found = $building;
                 break;
             }
         }
         assertNotNull($found);
         assertSame($found->name, $name);
-        assertSame($found->level,(int)$level);
-      
+        assertSame($found->level, (int) $level);
+    }
+
+    public function listUsersCities($username) {
+        $request                  = new ViewCitiesRequest($username);
+        $interactor               = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
+        $this->viewCitiesResponse = new ViewCitiesResponse();
+        $this->interactorResult   = $interactor->process($request, $this->viewCitiesResponse);
+    }
+
+    public function assertCityExists($name, $owner, $y, $x) {
+        $found  = null;
+        $cities = $this->viewCitiesResponse->cities;
+
+        foreach ($cities as $city) {
+            if ($city->name === $name) {
+                $found = $city;
+                break;
+            }
+        }
+
+        assertNotNull($found);
+        assertSame($city->name, $name);
+        assertSame($city->owner, $owner);
+        assertSame($city->y, $y);
+        assertSame($city->x, $x);
     }
 
 }
