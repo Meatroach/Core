@@ -20,7 +20,13 @@ class ViewCities {
     }
     public function process(ViewCitiesRequest $request,ViewCitiesResponse $response){
         $owner = $this->userRepository->findOneByUsername($request->getUsername());
+        if(!$owner){
+            return false;
+        }
         $cities = $this->cityRepository->findAllByOwner($owner);
+        if(count($cities) < 0){
+            return false;
+        }
         foreach($cities as $city){
             $response->cities[]=new CityView($city);
         }

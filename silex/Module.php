@@ -9,8 +9,10 @@ use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
 use OpenTribes\Core\Silex\Controller\Assets;
+use OpenTribes\Core\Silex\Controller\City;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
+use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
@@ -62,38 +64,63 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createDependencies(&$app) {
-        $app[Service::PASSWORD_HASHER] = $app->share(function() {
-            return new PasswordHasher();
-        });
-        $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
-            return new CodeGenerator($app['activationCodeLength']);
-        });
-        $app[Repository::USER] = $app->share(function() use($app) {
-            return new UserRepository($app['db']);
-        });
-        $app['validationDto.registration'] = $app->share(function() {
-            return new RegistrationValidatorDto;
-        });
-        $app[Validator::REGISTRATION] = $app->share(function() use($app) {
-            return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
-        });
-        $app['validationDto.activate'] = $app->share(function() use($app) {
-            return new ActivateUserValidatorDto;
-        });
-        $app[Validator::ACTIVATE] = $app->share(function() use($app) {
-            return new ActivateUserValidator($app['validationDto.activate']);
-        });
+        $this->createRepositories($app);
+        $this->createServices($app);
+        $this->createValidators($app);
+        $this->createControllers($app);
+
+        if ($this->env === 'test') {
+            $app['swiftmailer.transport'] = $app->share(function() {
+                return new Swift_NullTransport();
+            });
+        }
+    }
+
+    private function createControllers(&$app) {
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
             return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
         $app[Controller::ASSETS] = $app->share(function() use($app) {
             return new Assets($app['mustache.assets']);
         });
-        if ($this->env === 'test') {
-            $app['swiftmailer.transport'] = $app->share(function() {
-                return new Swift_NullTransport();
-            });
-        }
+
+        $app[Controller::CITY] = $app->share(function() use($app) {
+            return new City($app[Repository::USER], $app[Repository::CITY]);
+        });
+    }
+
+    private function createServices(&$app) {
+        $app[Service::PASSWORD_HASHER] = $app->share(function() {
+            return new PasswordHasher();
+        });
+        $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
+            return new CodeGenerator($app['activationCodeLength']);
+        });
+    }
+
+    private function createRepositories(&$app) {
+        $app[Repository::USER] = $app->share(function() use($app) {
+            return new UserRepository($app['db']);
+        });
+        $app[Repository::CITY] = $app->share(function() use($app) {
+            return new CityRepository($app['db']);
+        });
+    }
+
+    private function createValidators(&$app) {
+        $app['validationDto.registration'] = $app->share(function() {
+            return new RegistrationValidatorDto;
+        });
+        $app['validationDto.activate'] = $app->share(function() use($app) {
+            return new ActivateUserValidatorDto;
+        });
+        $app[Validator::REGISTRATION] = $app->share(function() use($app) {
+            return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
+        });
+
+        $app[Validator::ACTIVATE] = $app->share(function() use($app) {
+            return new ActivateUserValidator($app['validationDto.activate']);
+        });
     }
 
     private function registerProviders(&$app) {
@@ -181,7 +208,6 @@ class Module implements ServiceProviderInterface {
             if (!$response->getExpires()) {
                 $response->setExpires(new DateTime());
             }
-            $response->headers->set('Content-Encoding', 'gzip');
 
             $event->setResponse($response);
         });
@@ -197,8 +223,17 @@ class Module implements ServiceProviderInterface {
             return $response;
         })->value(RouteValue::TEMPLATE, 'pages/game/landing');
 
+        $game->get('/city/list/{username}', Controller::CITY, ':listAction')
+                ->value(RouteValue::TEMPLATE, 'pages/game/landing')
+                ->value('username', function(Request $request) {
+                    return $request->getSession()->get('username');
+                });
+
+
+
         $game->match('/city/new', Controller::CITY . ':newAction')
                 ->method('POST|GET');
+
         return $game;
     }
 
@@ -265,8 +300,8 @@ class Module implements ServiceProviderInterface {
         $account->get('/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value(RouteValue::TEMPLATE, 'pages/activation');
 
-        $account->after(function() use($app){
-        
+        $account->after(function() use($app) {
+
             return $app[Controller::ACCOUNT]->after();
         });
 
