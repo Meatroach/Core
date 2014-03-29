@@ -48,22 +48,23 @@ class City {
 
     public function newAction(Request $httpRequest) {
         $username        = $httpRequest->getSession()->get('username');
-        $direction       = $httpRequest->get('direction');
+        $direction       = $httpRequest->get('direction', 'any');
         //Has to be in config
         $defaultCityName = sprintf('%s\'s City', $username);
-
+        $directions      = array(
+            array('name' => 'any', 'selected' => $direction === 'any'),
+            array('name' => 'north', 'selected' => $direction === 'north'),
+            array('name' => 'east', 'selected' => $direction === 'east'),
+            array('name' => 'south', 'selected' => $direction === 'south'),
+            array('name' => 'west', 'selected' => $direction === 'west'),
+        );
 
         $request  = new CreateNewCityRequest($username, $direction, $defaultCityName);
         $intactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
         $response = new CreateNewCityResponse;
 
-        $response->directions = array(
-            Direction::any()->getValue(),
-            Direction::north()->getValue(),
-            Direction::east()->getValue(),
-            Direction::south()->getValue(),
-            Direction::west()->getValue()
-        );
+
+        $response->directions = $directions;
         return $response;
     }
 

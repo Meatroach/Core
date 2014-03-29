@@ -61,4 +61,7 @@ class City implements CityRepository {
     public function replace(CityEntity $city) {
         $this->cities[$city->getId()] = $city;
     }
+    public function countAll() {
+        return count($this->cities);
+    }
 }

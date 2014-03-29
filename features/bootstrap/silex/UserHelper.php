@@ -8,7 +8,7 @@ use Behat\Mink\Mink;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
-class DeliveryUserHelper {
+class SilexUserHelper {
 
     private $userRepository;
     private $registrationValidator;

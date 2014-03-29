@@ -24,11 +24,13 @@ class SilexContext extends FeatureContext {
 
         $this->passwordHasher          = $app[Service::PASSWORD_HASHER];
         $this->activationCodeGenerator = $app[Service::ACTIVATION_CODE_GENERATOR];
+        $this->locationCalculator      = $app[Service::LOCATION_CALCULATOR];
+        $this->mapRepository = $app[Repository::MAP];
         $app['session.test']           = true;
         $mink->setDefaultSessionName('browserkit');
         $this->mink                    = $mink;
-        $this->userHelper              = new DeliveryUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
-        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+        $this->userHelper              = new SilexUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+        $this->cityHelper              = new SilexCityHelper($this->mink, $this->cityRepository, $this->userRepository, $this->mapRepository,$this->locationCalculator);
 
         $this->messageHelper = new SilexMessageHelper($this->mink);
     }

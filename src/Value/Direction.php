@@ -13,9 +13,9 @@ class Direction {
     const WEST = 1;
     const NORTH = 2;
     const SOUTH = 3;
-    const ANY = null;
+    const ANY = -1;
 
-    private $value      = null;
+    private $value      = -1;
     private $directions = array(
         'south' => self::SOUTH,
         'north' => self::NORTH,
@@ -25,8 +25,13 @@ class Direction {
     );
 
     public function __construct($value) {
+        if(is_string($value) && !is_numeric($value) && isset($this->directions[$value])){
+            $value = $this->directions[$value];
+         
+        }
+    
         if ($this->isValid($value)) {
-            $this->value = $this->directions[$value];
+            $this->value = $value;
         }
     }
 
@@ -59,13 +64,7 @@ class Direction {
     }
 
     private function isValid($value) {
-        return in_array($value, array(
-            self::NORTH,
-            self::SOUTH,
-            self::WEST,
-            self::EAST,
-            self::ANY
-        ));
+        return in_array($value, ($this->directions));
     }
 
 }

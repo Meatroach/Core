@@ -18,19 +18,23 @@ class LocationCalculator implements LocationCalculatorInterface {
     private $centerY;
     private $countCities = 0;
 
-    public function __construct($centerY, $centerX, $countCities) {
-        $this->centerX     = $centerX;
-        $this->centerY     = $centerY;
+  
+   public function setCenterPosition($y,$x){
+        $this->centerX = $x;
+        $this->centerY = $y;
+    }
+    public function setCountCities($countCities){
         $this->countCities = $countCities;
     }
-
     public function calculate(Direction $direction) {
 
 
         $direction = $direction->getValue();
         if ($direction === Direction::ANY) {
+           
             $square    = ceil(sqrt(4 * $this->countCities));
             $direction = $square % 4;
+            
         }
         if ($direction === Direction::NORTH) {
             $x = -1;
