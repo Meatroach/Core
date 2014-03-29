@@ -13,9 +13,12 @@ use OpenTribes\Core\Repository\City as CityInterface;
  * @author BlackScorp<witalimik@web.de>
  */
 class DBALCity implements CityInterface {
+
     private $cities = array();
+    private $db;
+
     public function __construct(Connection $db) {
-        ;
+        $this->db = $db;
     }
 
     public function add(CityEntity $city) {
@@ -45,5 +48,7 @@ class DBALCity implements CityInterface {
     public function replace(CityEntity $city) {
         
     }
-
+    public function countAll() {
+        ;
+    }
 }

@@ -37,5 +37,10 @@ class Map implements MapRepository {
         
         return $tile->isAccessible();
     }
-
+    public function getCenterX() {
+        return $this->map->getWidth()/2;
+    }
+    public function getCenterY() {
+        return $this->map->getHeight()/2;
+    }
 }

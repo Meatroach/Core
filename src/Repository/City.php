@@ -52,4 +52,5 @@ interface City {
     
     public function replace(CityEntity $city);
     public function findAllByOwner(UserEntity $owner);
+    public function countAll();
 }

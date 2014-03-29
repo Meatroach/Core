@@ -18,7 +18,8 @@ class Map {
      * @var Tile[]
      */
     private $tiles = array(array());
-
+    private $width = 0;
+    private $height = 0;
     /**
      * @param \string $name
      */
@@ -34,6 +35,8 @@ class Map {
     public function addTile(Tile $tile, $y, $x) {
         $y = (int) $y;
         $x = (int) $x;
+        $this->setWidth(max($x,$this->getWidth()));
+        $this->setHeight(max($y,$this->getHeight()));
         $this->tiles[$y][$x] = $tile;
     }
 
@@ -68,5 +71,21 @@ class Map {
     public function getTiles() {
         return $this->tiles;
     }
+    public function getWidth() {
+        return $this->width;
+    }
+
+    public function getHeight() {
+        return $this->height;
+    }
+
+    public function setWidth($width) {
+        $this->width = $width;
+    }
+
+    public function setHeight($height) {
+        $this->height = $height;
+    }
+
 
 }

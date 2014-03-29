@@ -6,6 +6,7 @@ use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Mock\Repository\Map as MapRepository;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
 use OpenTribes\Core\Silex\Controller\Assets;
@@ -16,6 +17,7 @@ use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
+use OpenTribes\Core\Silex\Service\LocationCalculator;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
@@ -85,7 +87,7 @@ class Module implements ServiceProviderInterface {
         });
 
         $app[Controller::CITY] = $app->share(function() use($app) {
-            return new City($app[Repository::USER], $app[Repository::CITY]);
+            return new City($app[Repository::USER], $app[Repository::CITY],$app[Repository::MAP],$app[Service::LOCATION_CALCULATOR]);
         });
     }
 
@@ -96,6 +98,9 @@ class Module implements ServiceProviderInterface {
         $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
             return new CodeGenerator($app['activationCodeLength']);
         });
+        $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app){
+            return new LocationCalculator;
+        });
     }
 
     private function createRepositories(&$app) {
@@ -104,6 +109,9 @@ class Module implements ServiceProviderInterface {
         });
         $app[Repository::CITY] = $app->share(function() use($app) {
             return new CityRepository($app['db']);
+        });
+        $app[Repository::MAP] = $app->share(function() use($app){
+            return new MapRepository;
         });
     }
 
@@ -196,8 +204,15 @@ class Module implements ServiceProviderInterface {
                     $response = new Response($body);
                 }
 
-                if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has('successHandler')) {
+                if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(RouteValue::SUCCESS_HANDLER)) {
                     $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
+                    $result  = $handler($appResponse);
+                    if ($result) {
+                        $response = $result;
+                    }
+                }
+                 if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
+                    $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
                     $result  = $handler($appResponse);
                     if ($result) {
                         $response = $result;
@@ -223,16 +238,19 @@ class Module implements ServiceProviderInterface {
             return $response;
         })->value(RouteValue::TEMPLATE, 'pages/game/landing');
 
-        $game->get('/city/list/{username}', Controller::CITY, ':listAction')
-                ->value(RouteValue::TEMPLATE, 'pages/game/landing')
-                ->value('username', function(Request $request) {
-                    return $request->getSession()->get('username');
-                });
+        $game->get('/city/list/{username}', Controller::CITY . ':listAction')
+                ->value('username',null)
+                ->value(RouteValue::ERROR_HANDLER,function(){
+                    return new RedirectResponse('/game/start');
+                })
+                ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
+            
 
 
 
-        $game->match('/city/new', Controller::CITY . ':newAction')
-                ->method('POST|GET');
+        $game->match('/start', Controller::CITY . ':newAction')
+                ->method('POST|GET')
+                ->value(RouteValue::TEMPLATE,'pages/game/newcity');
 
         return $game;
     }

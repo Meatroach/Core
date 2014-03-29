@@ -12,4 +12,5 @@ class CreateNewCity extends Response{
      * @var CityView
      */
     public $city;
+    public $directions;
 }

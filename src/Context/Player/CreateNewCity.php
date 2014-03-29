@@ -43,8 +43,8 @@ class CreateNewCity {
         $selectLocationResponse   = new SelectLocationResponse();
         $createCityInteractor     = new CreateCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository);
         $createCityResponse       = new CreateCityResponse();
-     
-      
+        $this->locationCalculator->setCenterPosition($this->mapRepository->getCenterY(), $this->mapRepository->getCenterX());
+        $this->locationCalculator->setCountCities($this->cityRepository->countAll());
         do {
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
             $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);

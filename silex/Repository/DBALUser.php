@@ -55,8 +55,9 @@ class DBALUser implements UserRepositoryInterface {
 
     public function findOneByEmail($email) {
         foreach ($this->users as $user) {
-            if ($user->getEmail() === $email)
+            if ($user->getEmail() === $email) {
                 return $user;
+            }
         }
         $result = $this->getQueryBuilder()
                 ->where('u.email = :email')
@@ -64,29 +65,32 @@ class DBALUser implements UserRepositoryInterface {
                 ->execute();
         $row    = $result->fetch(\PDO::FETCH_OBJ);
 
-        if (!$row)
+        if (!$row) {
             return null;
+        }
         $entity = $this->rowToEntity($row);
         $this->replace($entity);
         return $entity;
     }
 
     public function findOneByUsername($username) {
-       
+
         foreach ($this->users as $user) {
-            if ($user->getUsername() === $username)
+            if ($user->getUsername() === $username) {
                 return $user;
+            }
         }
-            
+
         $result = $this->getQueryBuilder()
                 ->where('u.username = :username')
                 ->setParameter(':username', $username)
                 ->execute();
-
-        $row    = $result->fetch(\PDO::FETCH_OBJ);
-     
-        if (!$row)
+ 
+        $row = $result->fetch(\PDO::FETCH_OBJ);
+       
+        if (!$row) {
             return null;
+        }
         $entity = $this->rowToEntity($row);
         $this->replace($entity);
         return $entity;
