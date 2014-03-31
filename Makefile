@@ -9,7 +9,7 @@ install-test:
 	mkdir storage
 	touch storage/ot.db
 	cli/index.php create-configuration
-	cli/index.php install-shema
+	cli/index.php install-schema
 	cli/index.php install-roles
 
 install-dev:
@@ -18,14 +18,14 @@ install-dev:
 	mkdir storage
 	touch storage/ot.db
 	cli/index.php create-configuration develop
-	cli/index.php install-shema develop
+	cli/index.php install-schema develop
 	cli/index.php install-roles develop
 
 install-production:
 	composer self-update
 	composer install --no-progress
 	cli/index.php create-configuration production
-	cli/index.php install-shema production
+	cli/index.php install-schema production
 	cli/index.php install-roles production
 update:
 	composer update
