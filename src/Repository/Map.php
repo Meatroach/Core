@@ -19,4 +19,5 @@ interface Map {
     public function getTile($y,$x);
     public function getCenterX();
     public function getCenterY();
+    
 }

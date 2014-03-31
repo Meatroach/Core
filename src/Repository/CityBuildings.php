@@ -15,4 +15,5 @@ interface CityBuildings {
     public function findByLocation($y, $x);
 
     public function replace(CityEntity $city);
+    public function sync();
 }

@@ -37,4 +37,5 @@ interface User {
      * @return UserEntity|null
      */
     public function findOneByUsername($username);
+   
 }

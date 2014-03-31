@@ -64,4 +64,7 @@ class City implements CityRepository {
     public function countAll() {
         return count($this->cities);
     }
+    public function sync() {
+        ;
+    }
 }

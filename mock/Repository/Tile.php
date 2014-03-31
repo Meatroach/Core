@@ -34,5 +34,8 @@ class Tile implements TileRepository {
         }
         return null;
     }
+    public function sync() {
+        ;
+    }
 
 }

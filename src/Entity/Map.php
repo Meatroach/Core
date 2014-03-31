@@ -35,8 +35,6 @@ class Map {
     public function addTile(Tile $tile, $y, $x) {
         $y = (int) $y;
         $x = (int) $x;
-        $this->setWidth(max($x,$this->getWidth()));
-        $this->setHeight(max($y,$this->getHeight()));
         $this->tiles[$y][$x] = $tile;
     }
 

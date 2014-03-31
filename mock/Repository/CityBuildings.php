@@ -26,5 +26,8 @@ class CityBuildings implements CityBuildingsRepository {
         $this->city = $this->cityRepository->findByLocation($y, $x);
         return $this->city;
     }
+    public function sync() {
+        ;
+    }
 
 }

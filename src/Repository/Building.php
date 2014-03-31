@@ -31,4 +31,5 @@ interface Building {
      */
     public function getUniqueId();
     public function findAll();
+    public function sync();
 }

@@ -21,6 +21,8 @@ class MapHelper {
             foreach ($positions as $x => $tileName) {
                 $tile = $this->tileRepository->findByName($tileName);
                 $map->addTile($tile, $y, $x);
+                $map->setWidth(max($x, $map->getWidth()));
+                $map->setHeight(max($y, $map->getHeight()));
             }
         }
         $this->mapRepository->add($map);

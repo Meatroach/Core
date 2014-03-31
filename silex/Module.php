@@ -6,7 +6,7 @@ use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
-use OpenTribes\Core\Mock\Repository\Map as MapRepository;
+use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
 use OpenTribes\Core\Silex\Controller\Assets;
@@ -17,7 +17,7 @@ use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
-use OpenTribes\Core\Silex\Service\LocationCalculator;
+use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
@@ -111,7 +111,7 @@ class Module implements ServiceProviderInterface {
             return new CityRepository($app['db']);
         });
         $app[Repository::MAP] = $app->share(function() use($app){
-            return new MapRepository;
+            return new MapRepository($app['db']);
         });
     }
 

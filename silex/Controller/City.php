@@ -60,12 +60,17 @@ class City {
         );
 
         $request  = new CreateNewCityRequest($username, $direction, $defaultCityName);
-        $intactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
         $response = new CreateNewCityResponse;
-
+        if ($httpRequest->getMethod() === 'POST') {
+            $response->proceed = true;
+            $response->failed  = !$interactor->process($request, $response);
+        }
 
         $response->directions = $directions;
         return $response;
     }
-
+    public function after(){
+        $this->cityRepository->sync();
+    }
 }

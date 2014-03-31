@@ -27,4 +27,7 @@ class Building implements BuildingRepository{
     public function findAll() {
         return $this->buildings;
     }
+    public function sync() {
+        ;
+    }
 }

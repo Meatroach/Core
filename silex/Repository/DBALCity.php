@@ -22,7 +22,7 @@ class DBALCity implements CityInterface {
     }
 
     public function add(CityEntity $city) {
-        
+        $this->cities[$city->getId()] = $city;
     }
 
     public function cityExistsAt($y, $x) {
@@ -30,7 +30,7 @@ class DBALCity implements CityInterface {
     }
 
     public function create($id, $name, UserEntity $owner, $y, $x) {
-        
+        return new CityEntity($id, $name, $owner, $y, $x);
     }
 
     public function findAllByOwner(UserEntity $owner) {
@@ -49,6 +49,9 @@ class DBALCity implements CityInterface {
         
     }
     public function countAll() {
+        ;
+    }
+    public function sync() {
         ;
     }
 }
