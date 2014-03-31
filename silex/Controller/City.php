@@ -12,7 +12,6 @@ use OpenTribes\Core\Request\ViewCities as ViewCitiesRequest;
 use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
 use OpenTribes\Core\Response\ViewCities as ViewCitiesResponse;
 use OpenTribes\Core\Service\LocationCalculator;
-use OpenTribes\Core\Value\Direction;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
