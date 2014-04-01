@@ -53,12 +53,17 @@ class Schema {
         $map->addColumn('width', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $map->addColumn('height', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $map->setPrimaryKey(array('id'));
-        $tile = $this->createTable('tiles', $schema);
+        $tile     = $this->createTable('tiles', $schema);
+        $tile->addColumn('id', Type::INTEGER, array('length' => 11));
+        $tile->addColumn('name', Type::STRING, array('length' => 254));
+        $tile->addColumn('accessable', Type::BOOLEAN);
+        $tile->setPrimaryKey(array('id'));
         $mapTiles = $this->createTable('map_tiles', $schema);
-        $mapTiles->addColumn('id', Type::INTEGER, array('length' => 11));
         $mapTiles->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $mapTiles->addColumn('y', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $mapTiles->addColumn('map_id', Type::INTEGER, array('length' => 11));
+        $mapTiles->addColumn('tile_id', Type::INTEGER, array('length' => 11));
+        $mapTiles->setPrimaryKey(array('map_id', 'tile_id', 'x', 'y'));
     }
 
     private function createCitySchema(&$schema) {
