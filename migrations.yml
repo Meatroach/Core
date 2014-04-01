@@ -1,0 +1,4 @@
+name: OpenTribes Migrations
+migrations_namespace: OpenTribes\Core\Migrations
+table_name: doctrine_migration_versions
+migrations_directory: /migrations

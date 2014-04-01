@@ -2,37 +2,65 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use OpenTribes\Core\Silex\Enviroment as Env;
 use OpenTribes\Core\Silex\Schema;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 
-$console = new Application;
+$env = 'test';
+
+$argument = end($argv);
+if (in_array($argument, Env::all())) {
+    $env = $argument;
+}
+$app = require __DIR__ . '/../bootstrap.php';
+
+$console   = new Application;
+$helperSet = new HelperSet(array(
+    new ConnectionHelper($app['db']),
+    new DialogHelper(),
+        ));
+
+$console->setHelperSet($helperSet);
+
+$console->addCommands(array(
+    new DiffCommand(),
+    new ExecuteCommand(),
+    new GenerateCommand(),
+    new MigrateCommand(),
+    new StatusCommand(),
+    new VersionCommand()
+));
+
+
+
 
 $console->register('install-schema')
         ->setDescription('install the database')
-        ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for schema ', 'test')
-        ->setCode(function (InputInterface $input) {
-
-            $env   = $input->getArgument('env');
-            $app   = require __DIR__ . '/../bootstrap.php';
+        ->setCode(function (InputInterface $input) use($app) {
             $shema = new Schema($app['db']);
             $shema->installSchema();
         });
 
 $console->register('install-roles')
         ->setDescription('install roles')
-        ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for schema ', 'test')
-        ->setCode(function (InputInterface $input) {
-            $env   = $input->getArgument('env');
-            $app   = require __DIR__ . '/../bootstrap.php';
+        ->setCode(function (InputInterface $input)use($app) {
             $shema = new Schema($app['db']);
             $shema->createRoles();
         });
 $console->register('create-configuration')
-        ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for configuration ', 'test')
-        ->setCode(function(InputInterface $input) {
-            $env     = $input->getArgument('env');
+        ->setCode(function(InputInterface $input) use($env) {
+
             $path    = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
             if (!is_dir($baseDir)) {
@@ -51,12 +79,5 @@ $console->register('create-configuration')
             }
         });
 
-$console->register('create-map')
-        ->addArgument('env', InputArgument::OPTIONAL, 'Sets the enviroment for configuration ', 'test')
-        ->setCode(function(InputInterface $input) {
-                $env   = $input->getArgument('env');
-            $app   = require __DIR__ . '/../bootstrap.php';
-            $mapRepository = $app[\OpenTribes\Core\Silex\Repository::MAP];
-        });
 
 $console->run();
