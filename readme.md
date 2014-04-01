@@ -34,7 +34,7 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 
 - install database
 
-`cli/index.php install-shema develop`
+`cli/index.php install-schema develop`
 
 - start server
 
