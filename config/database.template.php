@@ -11,6 +11,7 @@ return array(
         'user'     => 'username',
         'password' => 'password',
         'charset'  => 'utf8',
+        'memory'   => true,
         'path'     => realpath(__DIR__.'/../storage/ot.db')
     )
 );

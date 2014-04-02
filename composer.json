@@ -38,7 +38,8 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenTribes\\Core\\": "src/",
+            "OpenTribes\\Core\\" : "src/",
+            "OpenTribes\\Core\\Migrations\\" : "migrations/",
             "OpenTribes\\Core\\Mock\\": "mock/",
             "OpenTribes\\Core\\Silex\\": "silex/"
         }

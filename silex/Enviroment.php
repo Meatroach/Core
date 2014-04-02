@@ -10,7 +10,7 @@ namespace OpenTribes\Core\Silex;
 abstract class Enviroment {
 
     const TEST = 'test';
-    const DEV  = 'development';
+    const DEV  = 'develop';
     const PROD = 'production';
 
     public static function all() {

@@ -23,6 +23,7 @@ $argument = end($argv);
 if (in_array($argument, Env::all())) {
     $env = $argument;
 }
+
 $app = require __DIR__ . '/../bootstrap.php';
 
 $console   = new Application;
@@ -31,26 +32,28 @@ $helperSet = new HelperSet(array(
     new DialogHelper(),
         ));
 
+
 $console->setHelperSet($helperSet);
 
-$console->addCommands(array(
-    new DiffCommand(),
-    new ExecuteCommand(),
-    new GenerateCommand(),
-    new MigrateCommand(),
-    new StatusCommand(),
-    new VersionCommand()
-));
+
+$console->add(new MigrateCommand())
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+
+$console->add(new GenerateCommand())
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+
+$console->add(new StatusCommand())
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+
+$console->add(new VersionCommand())
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+
+$console->add(new ExecuteCommand())
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+$console->add(new DiffCommand())
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 
-
-
-$console->register('install-schema')
-        ->setDescription('install the database')
-        ->setCode(function (InputInterface $input) use($app) {
-            $shema = new Schema($app['db']);
-            $shema->installSchema();
-        });
 
 $console->register('install-roles')
         ->setDescription('install roles')
@@ -59,8 +62,8 @@ $console->register('install-roles')
             $shema->createRoles();
         });
 $console->register('create-configuration')
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
         ->setCode(function(InputInterface $input) use($env) {
-
             $path    = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
             if (!is_dir($baseDir)) {

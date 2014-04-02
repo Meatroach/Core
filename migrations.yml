@@ -2,3 +2,10 @@ name: OpenTribes Migrations
 migrations_namespace: OpenTribes\Core\Migrations
 table_name: doctrine_migration_versions
 migrations_directory: /migrations
+migrations:
+    migration1:
+       version: 20140401164753
+       class: OpenTribes\Core\Migrations\Initial
+    migration2:
+        version: 20140402104821
+        class:  OpenTribes\Core\Migrations\Map
