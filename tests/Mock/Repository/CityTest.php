@@ -1,7 +1,11 @@
 <?php
+
+namespace OpenTribes\Core\Test\Mock\Repository;
+
 use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\User as UserRepository;
-class CityTest extends PHPUnit_Framework_TestCase{
+class CityTest extends \PHPUnit_Framework_TestCase {
+
     private $cityRepository;
     private $userRepository;
     public function setUp() {

@@ -99,7 +99,7 @@ class Module implements ServiceProviderInterface {
         $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
             return new CodeGenerator($app['activationCodeLength']);
         });
-        $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app){
+        $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app) {
             return new LocationCalculator;
         });
     }
@@ -111,7 +111,7 @@ class Module implements ServiceProviderInterface {
         $app[Repository::CITY] = $app->share(function() use($app) {
             return new CityRepository($app['db']);
         });
-        $app[Repository::MAP] = $app->share(function() use($app){
+        $app[Repository::MAP] = $app->share(function() use($app) {
             return new MapRepository($app['db']);
         });
         $app[Repository::MAP_TILES] = $app->share(function() use($app) {
@@ -215,7 +215,7 @@ class Module implements ServiceProviderInterface {
                         $response = $result;
                     }
                 }
-                 if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
+                if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
                     $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
                     $result  = $handler($appResponse);
                     if ($result) {
@@ -243,7 +243,7 @@ class Module implements ServiceProviderInterface {
         })->value(RouteValue::TEMPLATE, 'pages/game/landing');
 
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
-                ->value('username',null)
+                ->value('username', null)
                 ->value(RouteValue::ERROR_HANDLER, function() {
                     return new RedirectResponse('/game/start');
                 })
@@ -253,9 +253,14 @@ class Module implements ServiceProviderInterface {
 
 
         $game->match('/start', Controller::CITY . ':newAction')
+                ->value(RouteValue::SUCCESS_HANDLER, function() {
+                    return new RedirectResponse('/city/list');
+                })
                 ->method('POST|GET')
                 ->value(RouteValue::TEMPLATE, 'pages/game/newcity');
-
+        $game->after(function() use($app) {
+            $app[Repository::CITY]->sync();
+        });
         return $game;
     }
 

@@ -35,12 +35,15 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     private function reassign($id) {
-        if (isset($this->added[$id]))
+        if (isset($this->added[$id])) {
             unset($this->added[$id]);
-        if (isset($this->modified[$id]))
+        }
+        if (isset($this->modified[$id])) {
             unset($this->modified[$id]);
-        if (isset($this->deleted[$id]))
+        }
+        if (isset($this->deleted[$id])) {
             unset($this->deleted[$id]);
+        }
     }
 
     public function create($id, $username, $password, $email) {

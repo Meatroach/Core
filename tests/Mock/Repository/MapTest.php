@@ -1,9 +1,10 @@
 <?php
+namespace OpenTribes\Core\Test\Mock\Repository;
 
 use OpenTribes\Core\Mock\Repository\Map as MapRepository;
 use OpenTribes\Core\Mock\Repository\Tile as TileRepository;
 
-class MapTest extends PHPUnit_Framework_TestCase {
+class MapTest extends \PHPUnit_Framework_TestCase {
 
     private $mapRepository;
     private $tileRepository;
