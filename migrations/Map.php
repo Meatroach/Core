@@ -18,8 +18,7 @@ class Map extends AbstractMigration {
      */
     private $table;
 
-    public function up(Schema $schema)
-    {
+    public function up(Schema $schema) {
         $this->table = $schema->createTable('maps');
         $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
@@ -45,10 +44,10 @@ class Map extends AbstractMigration {
         $this->table->addForeignKeyConstraint($tileTable, array('tile_id'), array('id'), array(), 'fk_tile');
     }
 
-    public function down(Schema $schema)
-    {
-       $schema->dropTable('maps');
+    public function down(Schema $schema) {
+        $schema->dropTable('maps');
         $schema->dropTable('tiles');
         $schema->dropTable('map_tiles');
     }
+
 }

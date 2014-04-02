@@ -6,27 +6,20 @@ full-test:
 install-test:
 	composer self-update
 	composer install --no-progress
-	mkdir storage
-	touch storage/ot.db
-	cli/index.php create-configuration
-	cli/index.php install-schema
-	cli/index.php install-roles
+	cli/config.php create
+        cli/migration.php migrations:migrate --no-interaction
 
 install-dev:
 	composer self-update
 	composer install --no-progress
 	mkdir storage
 	touch storage/ot.db
-	cli/index.php create-configuration develop
-	cli/index.php install-schema develop
-	cli/index.php install-roles develop
+	cli/config.php create develop
+	cli/migration.php migrations:migrate develop
 
 install-production:
 	composer self-update
 	composer install --no-progress
-	cli/index.php create-configuration production
-	cli/index.php install-schema production
-	cli/index.php install-roles production
-update:
-	composer update
-	php cli/index.php install-shema
+	cli/config.php create production
+	cli/migration.php migrations:migrate --no-interaction production
+

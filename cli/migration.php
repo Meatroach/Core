@@ -10,7 +10,6 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 use OpenTribes\Core\Silex\Enviroment as Env;
-use OpenTribes\Core\Silex\Schema;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -26,7 +25,8 @@ if (in_array($argument, Env::all())) {
 
 $app = require __DIR__ . '/../bootstrap.php';
 
-$console   = new Application;
+$console = new Application;
+
 $helperSet = new HelperSet(array(
     new ConnectionHelper($app['db']),
     new DialogHelper(),
@@ -54,16 +54,10 @@ $console->add(new DiffCommand())
         ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 
-
-$console->register('install-roles')
-        ->setDescription('install roles')
-        ->setCode(function (InputInterface $input)use($app) {
-            $shema = new Schema($app['db']);
-            $shema->createRoles();
-        });
 $console->register('create-configuration')
         ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
-        ->setCode(function(InputInterface $input) use($env) {
+        ->setCode(function(InputInterface $input) {
+            $env     = $input->getArgument('env');
             $path    = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
             if (!is_dir($baseDir)) {
