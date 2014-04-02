@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Table;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Initial extends AbstractMigration {
+class VersionInitial extends AbstractMigration {
 
     /**
      * @var Table
