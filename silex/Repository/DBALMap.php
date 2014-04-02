@@ -26,7 +26,7 @@ class DBALMap implements MapRepository {
     public function add(MapEntity $map) {
         $this->map = $map;
     }
-
+    
     public function create($name) {
         return new MapEntity($name);
     }

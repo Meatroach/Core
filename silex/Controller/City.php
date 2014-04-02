@@ -5,7 +5,7 @@ namespace OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Context\Player\CreateNewCity as CreateNewCityInteractor;
 use OpenTribes\Core\Interactor\ViewCities as ViewCitiesInteractor;
 use OpenTribes\Core\Repository\City as CityRepository;
-use OpenTribes\Core\Repository\Map as MapRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
 use OpenTribes\Core\Request\ViewCities as ViewCitiesRequest;
@@ -23,13 +23,13 @@ class City {
 
     private $cityRepository;
     private $userRepository;
-    private $mapRepository;
+    private $mapTilesRepository;
     private $locationCalculator;
 
-    public function __construct(UserRepository $userRepository, CityRepository $cityRepository, MapRepository $mapRepository, LocationCalculator $locationCalculator) {
+    public function __construct(UserRepository $userRepository, CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, LocationCalculator $locationCalculator) {
         $this->cityRepository     = $cityRepository;
         $this->userRepository     = $userRepository;
-        $this->mapRepository      = $mapRepository;
+        $this->mapTilesRepository = $mapTilesRepository;
         $this->locationCalculator = $locationCalculator;
     }
 
@@ -58,9 +58,9 @@ class City {
             array('name' => 'west', 'selected' => $direction === 'west'),
         );
 
-        $request  = new CreateNewCityRequest($username, $direction, $defaultCityName);
-        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
-        $response = new CreateNewCityResponse;
+        $request    = new CreateNewCityRequest($username, $direction, $defaultCityName);
+        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
+        $response   = new CreateNewCityResponse;
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
             $response->failed  = !$interactor->process($request, $response);
@@ -69,7 +69,9 @@ class City {
         $response->directions = $directions;
         return $response;
     }
-    public function after(){
+
+    public function after() {
         $this->cityRepository->sync();
     }
+
 }

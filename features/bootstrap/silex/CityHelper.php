@@ -51,11 +51,11 @@ class SilexCityHelper {
 
     public function assertCityIsInArea($minX, $maxX, $minY, $maxY) {
         $this->loadPage();
-
-        assertGreaterThanOrEqual((int) $minX, $this->x);
-        assertLessThanOrEqual((int) $maxX, $this->x);
-        assertGreaterThanOrEqual((int) $minY, $this->y);
-        assertLessThanOrEqual((int) $maxY, $this->y);
+        
+        assertGreaterThanOrEqual((int) $minX, $x);
+        assertLessThanOrEqual((int) $maxX, $x);
+        assertGreaterThanOrEqual((int) $minY, $y);
+        assertLessThanOrEqual((int) $maxY, $y);
     }
 
     public function selectPosition($y, $x) {

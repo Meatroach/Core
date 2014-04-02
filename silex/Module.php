@@ -5,19 +5,20 @@ namespace OpenTribes\Core\Silex;
 use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
+use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
-use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
 use OpenTribes\Core\Silex\Controller\Assets;
 use OpenTribes\Core\Silex\Controller\City;
 use OpenTribes\Core\Silex\Repository;
-use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
+use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
+use OpenTribes\Core\Silex\Repository\DBALMapTiles as MapTilesRepository;
+use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
-use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
@@ -87,7 +88,7 @@ class Module implements ServiceProviderInterface {
         });
 
         $app[Controller::CITY] = $app->share(function() use($app) {
-            return new City($app[Repository::USER], $app[Repository::CITY],$app[Repository::MAP],$app[Service::LOCATION_CALCULATOR]);
+            return new City($app[Repository::USER], $app[Repository::CITY], $app[Repository::MAP_TILES], $app[Service::LOCATION_CALCULATOR]);
         });
     }
 
@@ -112,6 +113,9 @@ class Module implements ServiceProviderInterface {
         });
         $app[Repository::MAP] = $app->share(function() use($app){
             return new MapRepository($app['db']);
+        });
+        $app[Repository::MAP_TILES] = $app->share(function() use($app) {
+            return new MapTilesRepository($app['db']);
         });
     }
 
@@ -240,17 +244,17 @@ class Module implements ServiceProviderInterface {
 
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
                 ->value('username',null)
-                ->value(RouteValue::ERROR_HANDLER,function(){
+                ->value(RouteValue::ERROR_HANDLER, function() {
                     return new RedirectResponse('/game/start');
                 })
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
-            
+
 
 
 
         $game->match('/start', Controller::CITY . ':newAction')
                 ->method('POST|GET')
-                ->value(RouteValue::TEMPLATE,'pages/game/newcity');
+                ->value(RouteValue::TEMPLATE, 'pages/game/newcity');
 
         return $game;
     }

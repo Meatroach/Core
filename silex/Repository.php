@@ -8,7 +8,10 @@ namespace OpenTribes\Core\Silex;
  * @author BlackScorp<witalimik@web.de>
  */
 abstract class Repository {
-   const USER = 'repository.core.user';
-   const CITY = 'repository.core.city';
-   const MAP = 'repository.core.map';
+
+    const USER      = 'repository.core.user';
+    const CITY      = 'repository.core.city';
+    const MAP       = 'repository.core.map';
+    const MAP_TILES = 'repository.core.mapTiles';
+
 }
