@@ -14,11 +14,13 @@ class CreateCity {
     private $username;
     private $defaultCityName;
 
+
     function __construct($y, $x, $username, $defaultCityName) {
         $this->x               = $x;
         $this->y               = $y;
         $this->username        = $username;
         $this->defaultCityName = $defaultCityName;
+
     }
 
     public function getDefaultCityName() {
@@ -36,5 +38,6 @@ class CreateCity {
     public function getY() {
         return $this->y;
     }
+
 
 }

@@ -4,7 +4,7 @@ namespace OpenTribes\Core\Interactor;
 
 use OpenTribes\Core\Repository\City as CityRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Repository\Map as MapRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
 use OpenTribes\Core\View\City as CityView;
@@ -29,17 +29,17 @@ class CreateCity {
     /**
      * @var MapRepository
      */
-    private $mapRepository;
+    private $mapTilesRepository;
 
     /**
      * @param \OpenTribes\Core\Repository\City $cityRepository
-     * @param \OpenTribes\Core\Repository\Map $mapRepository
+     * @param \OpenTribes\Core\Repository\MapTiles $mapTilesRepository
      * @param \OpenTribes\Core\Repository\User $userRepository
      */
-    function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository) {
+    function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository) {
         $this->cityRepository = $cityRepository;
         $this->userRepository = $userRepository;
-        $this->mapRepository  = $mapRepository;
+        $this->mapTilesRepository= $mapTilesRepository;
     }
 
     /**
@@ -52,9 +52,12 @@ class CreateCity {
         $x     = $request->getX();
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
+        $map   = $this->mapTilesRepository->getMap();
 
-
-        if (!$this->mapRepository->tileIsAccessible($y, $x)) {
+        if (!$map->isValidLocation($y, $x)) {
+            return false;
+        }
+        if (!$map->isAccessible($y, $x)) {
             return false;
         }
 

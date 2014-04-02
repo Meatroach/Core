@@ -16,6 +16,7 @@ use OpenTribes\Core\Mock\Repository\Map as MapRepository;
 use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Mock\Repository\CityBuildings as CityBuildingsRepository;
+use OpenTribes\Core\Mock\Repository\MapTiles as MapTilesRepository;
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -42,6 +43,7 @@ class FeatureContext extends BehatContext {
     protected $cityRepository;
     protected $buildingRepository;
     protected $cityBuildingsRepository;
+    protected $mapTilesRepository;
     protected $cityHelper;
     protected $tileHelper;
     protected $mapHelper;
@@ -62,14 +64,15 @@ class FeatureContext extends BehatContext {
         $this->cityRepository          = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
         $this->buildingRepository      = new BuildingRepository;
+        $this->mapTilesRepository      = new MapTilesRepository;
         $this->cityBuildingsRepository = new CityBuildingsRepository($this->cityRepository);
         $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
         $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
         $this->tileHelper              = new TileHelper($this->tileRepository);
-        $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository);
+        $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository, $this->mapTilesRepository);
         $this->userHelper              = new DomainUserHelper($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
         $this->messageHelper           = new MessageHelper();
-        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator, $this->cityBuildingsRepository, $this->buildingRepository);
+        $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator, $this->cityBuildingsRepository, $this->buildingRepository);
         $this->buildingHelper          = new BuildingHelper($this->buildingRepository);
     }
 

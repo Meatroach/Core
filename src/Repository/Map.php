@@ -15,9 +15,6 @@ interface Map {
     public function create($name);
 
     public function add(MapEntity $map);
-    public function tileIsAccessible($y,$x);
-    public function getTile($y,$x);
-    public function getCenterX();
-    public function getCenterY();
+
     
 }

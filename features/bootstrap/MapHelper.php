@@ -2,15 +2,18 @@
 
 use OpenTribes\Core\Repository\Map as MapRepository;
 use OpenTribes\Core\Repository\Tile as TileRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 
 class MapHelper {
 
     private $mapRepository;
     private $tileRepository;
+    private $mapTilesRepository;
 
-    function __construct(MapRepository $mapRepository, TileRepository $tileRepository) {
+    function __construct(MapRepository $mapRepository, TileRepository $tileRepository, MapTilesRepository $mapTilesRepository) {
         $this->mapRepository  = $mapRepository;
         $this->tileRepository = $tileRepository;
+        $this->mapTilesRepository = $mapTilesRepository;
     }
 
     public function createMap($mapName, array $grid) {
@@ -25,6 +28,7 @@ class MapHelper {
                 $map->setHeight(max($y, $map->getHeight()));
             }
         }
+        $this->mapTilesRepository->add($map);
         $this->mapRepository->add($map);
     }
 

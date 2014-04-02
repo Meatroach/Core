@@ -5,6 +5,7 @@ namespace OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Entity\Map as MapEntity;
 use OpenTribes\Core\Repository\Map as MapRepository;
 use Doctrine\DBAL\Connection;
+
 /**
  * Description of Map
  *
@@ -17,6 +18,7 @@ class DBALMap implements MapRepository {
      */
     private $map = null;
     private $db;
+
     public function __construct(Connection $db) {
         $this->db = $db;
     }
@@ -29,22 +31,4 @@ class DBALMap implements MapRepository {
         return new MapEntity($name);
     }
 
-    public function getTile($y, $x) {
-        return $this->map->getTile($y, $x);
-    }
-
-    public function tileIsAccessible($y, $x) {
-        $tile = $this->map->getTile($y, $x);
-        if (!$tile) {
-            return false;
-        }
-        
-        return $tile->isAccessible();
-    }
-    public function getCenterX() {
-        return $this->map->getWidth()/2;
-    }
-    public function getCenterY() {
-        return $this->map->getHeight()/2;
-    }
 }

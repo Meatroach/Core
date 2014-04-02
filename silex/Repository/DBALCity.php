@@ -26,7 +26,12 @@ class DBALCity implements CityInterface {
     }
 
     public function cityExistsAt($y, $x) {
-        
+        $result = $this->db->prepare("SELECT 1 FROM cities WHERE y = :y AND x = :x ");
+        $result->execute(array(
+            ':y' => $y,
+            ':x' => $x
+        ));
+       return (bool) $result->fetchColumn();
     }
 
     public function create($id, $name, UserEntity $owner, $y, $x) {
@@ -48,10 +53,13 @@ class DBALCity implements CityInterface {
     public function replace(CityEntity $city) {
         
     }
+
     public function countAll() {
         ;
     }
+
     public function sync() {
         ;
     }
+
 }

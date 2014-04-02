@@ -17,6 +17,7 @@ class VersionInitial extends AbstractMigration {
      */
     private $table;
 
+
     public function up(Schema $schema) {
 
 

@@ -18,8 +18,9 @@ class Map {
      * @var Tile[]
      */
     private $tiles = array(array());
-    private $width = 0;
-    private $height = 0;
+    private $width   = 0;
+    private $height  = 0;
+
     /**
      * @param \string $name
      */
@@ -49,13 +50,7 @@ class Map {
         return isset($this->tiles[$y][$x]) ? $this->tiles[$y][$x] : null;
     }
 
-    /**
-     * @return \integer
-     */
-    public function getId() {
-        return $this->id;
-    }
-
+  
     /**
      * @return \string
      */
@@ -85,5 +80,19 @@ class Map {
         $this->height = $height;
     }
 
+    public function getCenterX() {
+        return ~~($this->getWidth() / 2);
+    }
+
+    public function getCenterY() {
+        return ~~($this->getHeight() / 2);
+    }
+    public function isValidLocation($y, $x) {
+        return $x > 0 && $y > 0 && $x <= $this->getWidth() && $y <= $this->getHeight();
+    }
+
+    public function isAccessible($y, $x) {
+        return $this->getTile($y, $x)->isAccessible();
+    }
 
 }

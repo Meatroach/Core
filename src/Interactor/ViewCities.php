@@ -24,7 +24,7 @@ class ViewCities {
             return false;
         }
         $cities = $this->cityRepository->findAllByOwner($owner);
-        if(count($cities) < 0){
+        if (count($cities) <= 0) {
             return false;
         }
         foreach($cities as $city){

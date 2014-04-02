@@ -3,7 +3,7 @@
 use OpenTribes\Core\Context\Player\CreateNewCity as CreateNewCityInteractor;
 use OpenTribes\Core\Interactor\CreateCity as CreateCityInteractor;
 use OpenTribes\Core\Repository\City as CityRepository;
-use OpenTribes\Core\Repository\Map as MapRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
@@ -23,7 +23,7 @@ class CityHelper {
 
     private $userRepository;
     private $cityRepository;
-    private $mapRepository;
+    private $mapTilesRepository      ;
     private $cityBuildingsRepository;
     private $interactorResult;
     private $locationCalculator;
@@ -32,11 +32,12 @@ class CityHelper {
     private $x = 0;
     private $y = 0;
     private $viewCitiesResponse;
+  
 
-    function __construct(CityRepository $cityRepository, MapRepository $mapRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
+    function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
         $this->userRepository          = $userRepository;
         $this->cityRepository          = $cityRepository;
-        $this->mapRepository           = $mapRepository;
+        $this->mapTilesRepository      = $mapTilesRepository;
         $this->locationCalculator      = $locationCalculator;
         $this->cityBuildingsRepository = $cityBuildingsRepository;
         $this->buildingRepository      = $buildingRepository;
@@ -53,7 +54,7 @@ class CityHelper {
     public function createCityAsUser($y, $x, $username) {
         $request                = new CreateCityRequest($y, $x, $username, $username . '\'s Village');
         $response               = new CreateCityResponse;
-        $interactor             = new CreateCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository);
+        $interactor             = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository      , $this->userRepository);
         $this->interactorResult = $interactor->process($request, $response);
     }
 
@@ -88,7 +89,7 @@ class CityHelper {
 
     public function selectLocation($direction, $username) {
         $request    = new CreateNewCityRequest($username, $direction, $this->getDefaultCityName($username));
-        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapRepository, $this->userRepository, $this->locationCalculator);
+        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository      , $this->userRepository, $this->locationCalculator);
         $response   = new CreateNewCityResponse;
         $interactor->process($request, $response);
         $this->x    = $response->city->x;

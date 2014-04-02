@@ -51,11 +51,27 @@ class SilexCityHelper {
 
     public function assertCityIsInArea($minX, $maxX, $minY, $maxY) {
         $this->loadPage();
-       
+
         assertGreaterThanOrEqual((int) $minX, $this->x);
         assertLessThanOrEqual((int) $maxX, $this->x);
         assertGreaterThanOrEqual((int) $minY, $this->y);
         assertLessThanOrEqual((int) $maxY, $this->y);
+    }
+
+    public function selectPosition($y, $x) {
+        throw new Behat\Behat\Exception\PendingException;
+    }
+
+    public function assertCityHasBuilding($name, $level) {
+        throw new Behat\Behat\Exception\PendingException;
+    }
+
+    public function createCityAsUser($y, $x, $username) {
+        throw new Behat\Behat\Exception\PendingException;
+    }
+
+    public function listUsersCities($username) {
+        throw new Behat\Behat\Exception\PendingException;
     }
 
 }
