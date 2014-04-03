@@ -13,16 +13,13 @@ use stdClass;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class DBALCity implements CityInterface {
+class DBALCity extends Repository implements CityInterface {
 
     /**
      * @var CityEntity[]
      */
-    private $cities   = array();
+    private $cities = array();
     private $db;
-    private $added    = array();
-    private $modified = array();
-    private $deleted  = array();
 
     public function __construct(Connection $db) {
         $this->db = $db;
@@ -30,9 +27,8 @@ class DBALCity implements CityInterface {
 
     public function add(CityEntity $city) {
         $id                = $city->getId();
-        $this->reassign($id);
         $this->cities[$id] = $city;
-        $this->added[$id]  = $id;
+        parent::markAdded($id);
     }
 
     public function cityExistsAt($y, $x) {
@@ -49,7 +45,31 @@ class DBALCity implements CityInterface {
     }
 
     public function findAllByOwner(UserEntity $owner) {
-        
+        $found = array();
+        foreach ($this->cities as $city) {
+            if ($city === $owner) {
+                $found[$city->getId()] = $city;
+            }
+        }
+        $result = $this->getQueryBuilder()
+                        ->where('user_id = :user_id')
+                        ->setParameter(':user_id', $owner->getId())->execute();
+        $rows   = $result->fetchAll(\PDO::FETCH_OBJ);
+        if (count($rows) < 0) {
+            return $found;
+        }
+        foreach ($rows as $row) {
+            $entity                  = $this->rowToEntity($row);
+            $found[$entity->getId()] = $entity;
+            $this->replace($entity);
+        }
+        return $found;
+    }
+
+    private function getQueryBuilder() {
+        $queryBuilder = $this->db->createQueryBuilder();
+        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y')
+                        ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
     }
 
     public function findByLocation($y, $x) {
@@ -58,42 +78,49 @@ class DBALCity implements CityInterface {
                 return $city;
             }
         }
-        $sql    = "SELECT * FROM cities c INNER JOIN users u ON(c.user_id = u.id) WHERE y =:y AND x = :x";
-        $result = $this->db->prepare($sql);
-        $result->execute(array(
-            ':y' => $y,
-            ':x' => $x
-        ));
+        $result = $this->getQueryBuilder()
+                        ->where('x = :x')
+                        ->where('y = :y')
+                        ->setParameters(array(
+                            ':y' => $y,
+                            ':x' => $x
+                        ))->execute();
+        $row    = $result->fetch(\PDO::FETCH_OBJ);
+        if (!$row) {
+            return null;
+        }
+        $entity = $this->rowToEntity($row);
+        $this->replace($entity);
+        return $entity;
     }
 
     public function delete(CityEntity $city) {
-        $id                 = $city->getId();
-        $this->reassign($id);
-        $this->deleted[$id] = $id;
+        $id = $city->getId();
+        parent::markDeleted($id);
     }
 
     public function getUniqueId() {
-        
+        $result = $this->db->prepare("SELECT MAX(id) FROM cities");
+        $result->execute();
+        $row    = $result->fetchColumn();
+        $row += count($this->cities);
+        $row -= count(parent::getDeleted());
+        return $row + 1;
     }
 
     public function replace(CityEntity $city) {
-        
+        $id                = $city->getId();
+        $this->cities[$id] = $city;
+        parent::markModified($id);
     }
 
     public function countAll() {
         ;
     }
 
-    private function reassign($id) {
-        if (isset($this->added[$id])) {
-            unset($this->added[$id]);
-        }
-        if (isset($this->modified[$id])) {
-            unset($this->modified[$id]);
-        }
-        if (isset($this->deleted[$id])) {
-            unset($this->deleted[$id]);
-        }
+    private function rowToEntity(stdClass $row) {
+        $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
+        return $this->create($row->cityId, $row->cityName, $owner, $row->y, $row->x);
     }
 
     private function entityToRow(CityEntity $city) {
@@ -106,29 +133,27 @@ class DBALCity implements CityInterface {
         );
     }
 
-
-
     public function sync() {
-        foreach ($this->deleted as $id) {
+        foreach (parent::getDeleted() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
                 $this->db->delete('cities', array('id' => $id));
                 unset($this->cities[$id]);
-                $this->reassign($id);
+                parent::reassign($id);
             }
         }
-        foreach ($this->added as $id) {
+        foreach (parent::getAdded() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
                 $this->db->insert('cities', $this->entityToRow($cities));
-                $this->reassign($id);
+                parent::reassign($id);
             }
         }
-        foreach ($this->modified as $id) {
+        foreach (parent::getModified() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
                 $this->db->update('cities', $this->entityToRow($cities), array('id' => $id));
-                $this->reassign($id);
+                parent::reassign($id);
             }
         }
     }

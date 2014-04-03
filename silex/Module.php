@@ -178,7 +178,7 @@ class Module implements ServiceProviderInterface {
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
-
+        $app->mount('/city', $this->getCityRoutes($app));
         $app->on(KernelEvents::VIEW, function($event) use($app) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
@@ -231,6 +231,13 @@ class Module implements ServiceProviderInterface {
 
             $event->setResponse($response);
         });
+    }
+
+    private function getCityRoutes(&$app) {
+        $city = $app['controllers_factory'];
+        $city->get('/list', Controller::CITY . ':listAction')
+                ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
+        return $city;
     }
 
     private function getGameRoutes(&$app) {

@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class DBALUser implements UserRepositoryInterface {
+class DBALUser extends Repository implements UserRepositoryInterface {
 
     private $db;
 
@@ -19,32 +19,16 @@ class DBALUser implements UserRepositoryInterface {
      * @var UserEntity[]
      */
     private $users    = array();
-    private $added    = array();
-    private $modified = array();
-    private $deleted  = array();
+
 
     public function __construct(Connection $db) {
         $this->db = $db;
     }
 
     public function add(UserEntity $user) {
-        $id = $user->getId();
-
-        $this->reassign($id);
+        $id               = $user->getId();
         $this->users[$id] = $user;
-        $this->added[$id] = $id;
-    }
-
-    private function reassign($id) {
-        if (isset($this->added[$id])) {
-            unset($this->added[$id]);
-        }
-        if (isset($this->modified[$id])) {
-            unset($this->modified[$id]);
-        }
-        if (isset($this->deleted[$id])) {
-            unset($this->deleted[$id]);
-        }
+        parent::markAdded($id);
     }
 
     public function create($id, $username, $password, $email) {
@@ -52,9 +36,8 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function delete(UserEntity $user) {
-        $id                 = $user->getId();
-        $this->reassign($id);
-        $this->deleted[$id] = $id;
+        $id = $user->getId();
+        parent::markDeleted($id);
     }
 
     public function findOneByEmail($email) {
@@ -89,9 +72,9 @@ class DBALUser implements UserRepositoryInterface {
                 ->where('u.username = :username')
                 ->setParameter(':username', $username)
                 ->execute();
- 
+
         $row = $result->fetch(\PDO::FETCH_OBJ);
-       
+
         if (!$row) {
             return null;
         }
@@ -105,8 +88,7 @@ class DBALUser implements UserRepositoryInterface {
         $result->execute();
         $row    = $result->fetchColumn();
         $row += count($this->users);
-        $row -= count($this->deleted);
-
+        $row -= count(parent::getDeleted());
         return $row + 1;
     }
 
@@ -116,10 +98,9 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function replace(UserEntity $user) {
-        $id                  = $user->getId();
-        $this->reassign($id);
-        $this->users[$id]    = $user;
-        $this->modified[$id] = $id;
+        $id               = $user->getId();
+        $this->users[$id] = $user;
+        parent::markModified($id);
     }
 
     private function rowToEntity($row) {
@@ -139,28 +120,27 @@ class DBALUser implements UserRepositoryInterface {
     }
 
     public function sync() {
-        foreach ($this->deleted as $id) {
-            
+        foreach (parent::getDeleted() as $id) {
             if (isset($this->users[$id])) {
-                $user = $this->users[$id];
+                $user             = $this->users[$id];
                 $this->db->delete('users', array('id' => $id));
-                $this->users[$id] = null;
-                $this->reassign($id);
+                unset($this->users[$id]);
+                parent::reassign($id);
             }
         }
 
-        foreach ($this->added as $id) {
+        foreach (parent::getAdded() as $id) {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
                 $this->db->insert('users', $this->entityToRow($user));
-                $this->reassign($id);
+                parent::reassign($id);
             }
         }
-        foreach ($this->modified as $id) {
+        foreach (parent::getModified() as $id) {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
                 $this->db->update('users', $this->entityToRow($user), array('id' => $id));
-                $this->reassign($id);
+                parent::reassign($id);
             }
         }
     }

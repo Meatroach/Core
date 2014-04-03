@@ -42,6 +42,7 @@ class City {
         $response          = new ViewCitiesResponse;
         $response->proceed = true;
         $response->failed  = !$interactor->process($request, $response);
+        var_dump($response);
         return $response;
     }
 
