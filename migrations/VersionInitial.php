@@ -44,8 +44,8 @@ class VersionInitial extends AbstractMigration {
         $this->table->addColumn('user_id', Type::INTEGER);
         $this->table->addColumn('role_id', Type::INTEGER);
         $this->table->setPrimaryKey(array('user_id', 'role_id'));
-        //$this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array(), 'fk_user');
-        //$this->table->addForeignKeyConstraint($rolesTable, array('role_id'), array('id'), array(), 'fk_role');
+        $this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array(), 'fk_user');
+        $this->table->addForeignKeyConstraint($rolesTable, array('role_id'), array('id'), array(), 'fk_role');
 
         $this->table = $schema->createTable('maps');
         $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
@@ -68,8 +68,8 @@ class VersionInitial extends AbstractMigration {
         $this->table->addColumn('map_id', Type::INTEGER, array('length' => 11));
         $this->table->addColumn('tile_id', Type::INTEGER, array('length' => 11));
         $this->table->setPrimaryKey(array('map_id', 'tile_id', 'x', 'y'));
-        //$this->table->addForeignKeyConstraint($mapTable, array('map_id'), array('id'), array(), 'fk_map');
-        //$this->table->addForeignKeyConstraint($tileTable, array('tile_id'), array('id'), array(), 'fk_tile');
+        $this->table->addForeignKeyConstraint($mapTable, array('map_id'), array('id'), array(), 'fk_map');
+        $this->table->addForeignKeyConstraint($tileTable, array('tile_id'), array('id'), array(), 'fk_tile');
         $mapTilesTable = $this->table;
 
         $this->table = $schema->createTable('cities');
@@ -78,9 +78,9 @@ class VersionInitial extends AbstractMigration {
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
         $this->table->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('y', Type::INTEGER, array('length' => 11, 'unsigned' => true));
-        $this->table->addColumn('user_id', Type::INTEGER, array('length' => 11));
+        $this->table->addColumn('user_id', Type::INTEGER, array('length' => 11, 'notNull' => false));
         $this->table->setPrimaryKey(array('id', 'x', 'y'));
-        //$this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTIOn'), 'fk_city_owner');
+        $this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTIOn'), 'fk_city_owner');
     }
 
     public function down(Schema $schema) {
