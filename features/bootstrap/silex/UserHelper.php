@@ -63,6 +63,7 @@ class SilexUserHelper {
     }
 
     public function assertRegistrationSucceed() {
+        $this->loadPage();
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
     }

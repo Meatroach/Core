@@ -315,9 +315,9 @@ class Module implements ServiceProviderInterface {
                             ->addPart($textBody, 'text/plain');
 
                     if ($app['mailer']->send($message)) {
-                        $target = $baseUrl . 'registration_successfull';
+                        $target = $baseUrl . 'account/registration_successfull';
                     } else {
-                        $target = $baseUrl . 'registration_failed';
+                        $target = $baseUrl . 'account/registration_failed';
                     }
                     return new RedirectResponse($target);
                 })
