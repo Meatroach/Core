@@ -6,6 +6,8 @@ full-test:
 install-test:
 	composer self-update
 	composer install --no-progress
+	mkdir storage
+	touch storage/ot.db
 	cli/config.php create
         cli/migration.php migrations:migrate --no-interaction
 
