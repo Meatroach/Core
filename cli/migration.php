@@ -9,7 +9,6 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use Doctrine\DBAL\Connection;
 use OpenTribes\Core\Silex\Enviroment as Env;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;

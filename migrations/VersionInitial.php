@@ -70,7 +70,7 @@ class VersionInitial extends AbstractMigration {
         $this->table->setPrimaryKey(array('map_id', 'tile_id', 'x', 'y'));
         $this->table->addForeignKeyConstraint($mapTable, array('map_id'), array('id'), array(), 'fk_map');
         $this->table->addForeignKeyConstraint($tileTable, array('tile_id'), array('id'), array(), 'fk_tile');
-        $mapTilesTable = $this->table;
+       
 
         $this->table = $schema->createTable('cities');
 

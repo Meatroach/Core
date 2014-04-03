@@ -106,9 +106,7 @@ class DBALCity implements CityInterface {
         );
     }
 
-    private function rowToEntity(stdClass $row) {
-        
-    }
+
 
     public function sync() {
         foreach ($this->deleted as $id) {
