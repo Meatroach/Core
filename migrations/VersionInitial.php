@@ -58,7 +58,7 @@ class VersionInitial extends AbstractMigration {
         $this->table = $schema->createTable('tiles');
         $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
-        $this->table->addColumn('accessable', Type::BOOLEAN);
+        $this->table->addColumn('accessible', Type::BOOLEAN);
         $this->table->setPrimaryKey(array('id'));
         $tileTable   = $this->table;
 

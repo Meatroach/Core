@@ -168,9 +168,10 @@ class Module implements ServiceProviderInterface {
                     $response->proceed = false;
                     return $response;
                 })->value(RouteValue::TEMPLATE, 'pages/landing')
-                ->before(function(Request $request) {
+                ->before(function(Request $request) use($app) {
                     if ($request->getSession()->get('username')) {
-                        return new RedirectResponse('/game');
+                        $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                        return new RedirectResponse($baseUrl . 'game');
                     }
                 });
 
@@ -244,8 +245,10 @@ class Module implements ServiceProviderInterface {
 
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
                 ->value('username', null)
-                ->value(RouteValue::ERROR_HANDLER, function() {
-                    return new RedirectResponse('/game/start');
+                ->value(RouteValue::ERROR_HANDLER, function() use($app) {
+                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+
+                    return new RedirectResponse($baseUrl . 'game/start');
                 })
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
 
@@ -253,8 +256,9 @@ class Module implements ServiceProviderInterface {
 
 
         $game->match('/start', Controller::CITY . ':newAction')
-                ->value(RouteValue::SUCCESS_HANDLER, function() {
-                    return new RedirectResponse('/city/list');
+                ->value(RouteValue::SUCCESS_HANDLER, function() use($app) {
+                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                    return new RedirectResponse($baseUrl . 'city/list');
                 })
                 ->method('POST|GET')
                 ->value(RouteValue::TEMPLATE, 'pages/game/newcity');
@@ -279,10 +283,10 @@ class Module implements ServiceProviderInterface {
         $account->post('/login', Controller::ACCOUNT . ':loginAction')
                 ->value(RouteValue::TEMPLATE, 'pages/landing')
                 ->value(RouteValue::SUCCESS_HANDLER, function($appResponse) use ($app) {
-
+                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     $app['session']->set('username', $appResponse->username);
 
-                    return new RedirectResponse('/');
+                    return new RedirectResponse($baseUrl);
                 })
                 ->value(RouteValue::SUB_REQUESTS, array(
                     array(
@@ -297,7 +301,7 @@ class Module implements ServiceProviderInterface {
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
                 ->value(RouteValue::SUCCESS_HANDLER, function($appResponse) use ($app) {
-
+                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     $request = $app['request'];
 
                     $appResponse->url = $request->getHttpHost();
@@ -311,9 +315,9 @@ class Module implements ServiceProviderInterface {
                             ->addPart($textBody, 'text/plain');
 
                     if ($app['mailer']->send($message)) {
-                        $target = 'registration_successfull';
+                        $target = $baseUrl . 'registration_successfull';
                     } else {
-                        $target = 'registration_failed';
+                        $target = $baseUrl . 'registration_failed';
                     }
                     return new RedirectResponse($target);
                 })

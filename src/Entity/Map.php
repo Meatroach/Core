@@ -73,11 +73,11 @@ class Map {
     }
 
     public function setWidth($width) {
-        $this->width = $width;
+        $this->width = (int) $width;
     }
 
     public function setHeight($height) {
-        $this->height = $height;
+        $this->height = (int) $height;
     }
 
     public function getCenterX() {
@@ -92,7 +92,10 @@ class Map {
     }
 
     public function isAccessible($y, $x) {
-        return $this->getTile($y, $x)->isAccessible();
+        if ($this->getTile($y, $x)) {
+            return $this->getTile($y, $x)->isAccessible();
+        }
+        return true;
     }
 
 }

@@ -13,6 +13,7 @@ use Doctrine\DBAL\Connection;
  * @author Witali
  */
 class DBALMapTiles implements MapTilesRepository {
+
     /**
      * @var Connection
      */
@@ -36,23 +37,31 @@ class DBALMapTiles implements MapTilesRepository {
         $this->load();
         return $this->map;
     }
+
+    private function getQueryBuilder() {
+        $queryBuilder = $this->db->createQueryBuilder();
+        return $queryBuilder->select('m.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.accessible AS isAccessible', 'mt.x AS x', 'mt.y AS y')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
+    }
+
     private function load() {
-        $sql       = "SELECT m.name as mapName,m.width as mapWidth,m.height as mapHeight,t.id as tileId,t.name as tileName,t.accessible as accessible as mapName,mt.x as x,mt.y as y FROM map m INNER JOIN map_tiles mt ON(m.id=mt.map_id) INNER JOIN tiles t ON(t.id = mt.tile_id)";
-        $statement = $this->db->prepare($sql);
-        $statement->execute();
-        $result    = $statement->fetchAll(\PDO::FETCH_OBJ);
-        $tiles     = array();
-        $map       = $this->map;
-        foreach ($result as $row) {
-            
+
+        $result = $this->getQueryBuilder()->execute();
+
+        $rows  = $result->fetchAll(\PDO::FETCH_OBJ);
+        $tiles = array();
+        $map   = $this->map;
+
+
+        foreach ($rows as $row) {
+
             if (!$map) {
                 $map = new MapEntity($row->mapName);
-                $map->setHeight($row->mapWidth);
+                $map->setWidth($row->mapWidth);
                 $map->setHeight($row->mapHeight);
             }
             $tile = isset($tiles[$row->tileId]) ? $tiles[$row->tileId] : null;
             if (!$tile) {
-                $tile                  = new TileEntity($row->tileId, $row->tileName, $row->accessible);
+                $tile                  = new TileEntity($row->tileId, $row->tileName, $row->isAccessible);
                 $tiles[$tile->getId()] = $tile;
             }
             $map->addTile($tile, $row->y, $row->x);
