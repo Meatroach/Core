@@ -32,12 +32,14 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     public function cityExistsAt($y, $x) {
-        $result = $this->db->prepare("SELECT 1 FROM cities WHERE y = :y AND x = :x ");
+        $result = $this->db->prepare("SELECT id FROM cities WHERE y = :y AND x = :x ");
         $result->execute(array(
             ':y' => $y,
             ':x' => $x
         ));
-        return (bool) $result->fetchColumn();
+        $column = $result->fetchColumn();
+
+        return (bool) $column;
     }
 
     public function create($id, $name, UserEntity $owner, $y, $x) {
@@ -115,7 +117,7 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     public function countAll() {
-        ;
+        return count($this->cities);
     }
 
     private function rowToEntity(stdClass $row) {
@@ -156,6 +158,10 @@ class DBALCity extends Repository implements CityInterface {
                 parent::reassign($id);
             }
         }
+    }
+
+    public function flush() {
+        return $this->db->exec("DELETE FROM cities");
     }
 
 }

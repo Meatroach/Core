@@ -55,8 +55,8 @@ class SilexCityHelper {
         $spanY = $this->page->find('css', 'span.y');
         
         $this->mink->assertSession()->statusCodeEquals(200);
-      
-    
+        
+        
         assertGreaterThanOrEqual((int) $minX, $x);
         assertLessThanOrEqual((int) $maxX, $x);
         assertGreaterThanOrEqual((int) $minY, $y);

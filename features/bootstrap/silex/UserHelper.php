@@ -24,7 +24,7 @@ class SilexUserHelper {
     private $page;
     private $mink;
     private $sessionName;
-
+    private $loggedInUsername;
 
     public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
@@ -123,12 +123,13 @@ class SilexUserHelper {
 
     public function loginAs($username) {
         $this->mink->getSession()->setCookie('username', $username);
+        $this->loggedInUsername = $username;
     }
 
     
 
     public function getLoggedInUsername() {
-        return $this->mink->getSession()->getCookie('username');
+        return $this->loggedInUsername;
     }
 
 }
