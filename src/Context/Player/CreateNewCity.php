@@ -41,7 +41,7 @@ class CreateNewCity {
         $defaultCityName = $request->getDefaultCityName();
 
         $map = $this->mapTilesRepository->getMap();
-        
+        if(!$map) throw new \Exception ("Please create a map");
         $selectLocationInteractor = new SelectLocationInteractor($this->locationCalculator);
         $selectLocationRequest    = new SelectLocationRequest($direction);
         $selectLocationResponse   = new SelectLocationResponse();

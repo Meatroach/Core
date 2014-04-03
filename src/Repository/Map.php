@@ -12,9 +12,10 @@ interface Map {
     /**
      * @return MapEntity
      */
-    public function create($name);
+    public function create($id,$name);
+    public function getUniqueId();
 
     public function add(MapEntity $map);
-
+    public function sync();
     
 }

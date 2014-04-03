@@ -78,6 +78,8 @@ class Account {
         $response->failed = !$interactor->process($request, $response);
         return $response;
     }
+  
+
     public function after(){
         $this->userRepository->sync();
     }

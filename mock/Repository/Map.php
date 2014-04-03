@@ -21,8 +21,8 @@ class Map implements MapRepository {
         $this->map = $map;
     }
 
-    public function create($name) {
-        return new MapEntity($name);
+    public function create($id,$name) {
+        return new MapEntity($id,$name);
     }
 
     public function getTile($y, $x) {
@@ -42,5 +42,11 @@ class Map implements MapRepository {
     }
     public function getCenterY() {
         return $this->map->getHeight()/2;
+    }
+    public function sync() {
+        ;
+    }
+    public function getUniqueId() {
+        return 1;
     }
 }

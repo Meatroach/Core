@@ -13,7 +13,7 @@ class Map {
      * @var \string
      */
     private $name;
-
+    private $id;
     /**
      * @var Tile[]
      */
@@ -22,9 +22,10 @@ class Map {
     private $height  = 0;
 
     /**
+     * @param \integer $id
      * @param \string $name
      */
-    public function __construct($name) {
+    public function __construct($id,$name) {
         $this->name = $name;
     }
 
@@ -97,5 +98,9 @@ class Map {
         }
         return true;
     }
+    public function getId() {
+        return $this->id;
+    }
+
 
 }

@@ -279,11 +279,16 @@ class Module implements ServiceProviderInterface {
 
     private function getAccountRoutes(&$app) {
         $account = $app['controllers_factory'];
+        $account->get('/logout', function()use($app) {
+            $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+            $app['session']->remove('username');
 
+            return new RedirectResponse($baseUrl);
+        });
         $account->post('/login', Controller::ACCOUNT . ':loginAction')
                 ->value(RouteValue::TEMPLATE, 'pages/landing')
                 ->value(RouteValue::SUCCESS_HANDLER, function($appResponse) use ($app) {
-                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     $app['session']->set('username', $appResponse->username);
 
                     return new RedirectResponse($baseUrl);
@@ -301,7 +306,7 @@ class Module implements ServiceProviderInterface {
         $account->match('/create', Controller::ACCOUNT . ':createAction')
                 ->method('GET|POST')
                 ->value(RouteValue::SUCCESS_HANDLER, function($appResponse) use ($app) {
-                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     $request = $app['request'];
 
                     $appResponse->url = $request->getHttpHost();
