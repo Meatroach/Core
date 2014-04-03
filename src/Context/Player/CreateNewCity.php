@@ -49,13 +49,15 @@ class CreateNewCity {
         $createCityResponse       = new CreateCityResponse();
         $this->locationCalculator->setCenterPosition($map->getCenterY(), $map->getCenterX());
         $this->locationCalculator->setCountCities($this->cityRepository->countAll());
- 
+        $i = 0;
         do {
-    
+            $i++;
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
             $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);
             $cityNotCreated    = !$createCityInteractor->process($createCityRequest, $createCityResponse);
-          
+            if($i > 10){
+                return false;
+            }
         } while ($cityNotCreated);
 
         $response->city = $createCityResponse->city;

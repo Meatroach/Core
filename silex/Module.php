@@ -174,7 +174,7 @@ class Module implements ServiceProviderInterface {
                         return new RedirectResponse($baseUrl . 'game');
                     }
                 });
-
+       
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));

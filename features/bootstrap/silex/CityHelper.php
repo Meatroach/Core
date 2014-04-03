@@ -51,7 +51,12 @@ class SilexCityHelper {
 
     public function assertCityIsInArea($minX, $maxX, $minY, $maxY) {
         $this->loadPage();
+        $spanX = $this->page->find('css', 'span.x');
+        $spanY = $this->page->find('css', 'span.y');
         
+        $this->mink->assertSession()->statusCodeEquals(200);
+      
+    
         assertGreaterThanOrEqual((int) $minX, $x);
         assertLessThanOrEqual((int) $maxX, $x);
         assertGreaterThanOrEqual((int) $minY, $y);

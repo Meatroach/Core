@@ -1,10 +1,12 @@
 <?php
 
-use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\Service\PasswordHasher;
-use OpenTribes\Core\Service\ActivationCodeGenerator;
+use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Mink;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Service\ActivationCodeGenerator;
+use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Validator\Registration as RegistrationValidator;
+
 
 require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
@@ -15,14 +17,14 @@ class SilexUserHelper {
     private $passwordHasher;
     private $activationCodeGenerator;
     private $user;
-    private $loggedInUsername;
-
+ 
     /**
-     * @var \Behat\Mink\Element\DocumentElement
+     * @var DocumentElement
      */
     private $page;
     private $mink;
     private $sessionName;
+
 
     public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
@@ -69,7 +71,7 @@ class SilexUserHelper {
     }
 
     public function processActivateAccount($username, $activationCode) {
-   
+        
     }
 
     public function getActivateAccountResponse() {
@@ -120,11 +122,13 @@ class SilexUserHelper {
     }
 
     public function loginAs($username) {
-        $this->loggedInUsername = $username;
+        $this->mink->getSession()->setCookie('username', $username);
     }
 
+    
+
     public function getLoggedInUsername() {
-        return $this->loggedInUsername;
+        return $this->mink->getSession()->getCookie('username');
     }
 
 }
