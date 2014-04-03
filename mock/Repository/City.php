@@ -67,4 +67,9 @@ class City implements CityRepository {
     public function sync() {
         ;
     }
+
+    public function delete(CityEntity $city) {
+        unset($this->cities[$city->getId()]);
+    }
+
 }

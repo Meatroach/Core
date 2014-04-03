@@ -66,6 +66,12 @@ class DBALCity implements CityInterface {
         ));
     }
 
+    public function delete(CityEntity $city) {
+        $id                 = $city->getId();
+        $this->reassign($id);
+        $this->deleted[$id] = $id;
+    }
+
     public function getUniqueId() {
         
     }

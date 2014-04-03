@@ -27,6 +27,12 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $this->userRepository->sync();
     }
 
+    private function deleteDummyCity() {
+        $city = $this->cityRepository->findByLocation(1, 1);
+        $this->cityRepository->delete($city);
+        $this->cityRepository->sync();
+    }
+
     private function createDummyCity() {
         $user = $this->userRepository->findOneByUsername('TestUser');
         $city = $this->cityRepository->create(1, 'TestCity', $user, 1, 1);
@@ -50,6 +56,7 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     public function tearDown() {
         $this->deleteDummyUser();
+        $this->deleteDummyCity();
     }
 
 }
