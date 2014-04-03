@@ -13,9 +13,7 @@ $console->register('create')
             $env     = $input->getArgument('env');
             $path    = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
-            if ($env === 'test' && is_dir($baseDir)) {
-               system("rm -rf " . escapeshellarg($baseDir));
-            }
+       
             if (!is_dir($baseDir)) {
                 mkdir($baseDir);
             }

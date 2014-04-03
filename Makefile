@@ -9,7 +9,7 @@ install-test:
 	mkdir storage
 	touch storage/ot.db
 	cli/config.php create
-        cli/migration.php migrations:migrate --no-interaction
+	cli/migration.php migrations:migrate --no-interaction
 
 install-dev:
 	composer self-update
