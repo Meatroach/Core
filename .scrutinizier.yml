@@ -4,6 +4,13 @@ before_commands:
     - 'touch storage/ot.db'
     - 'cli/config.php create'
     - 'cli/migration.php migrations:migrate --no-interaction'
+filter:
+    excluded_paths:
+        - vendor/
+        - bin/
+        - config/
+        - templates/
+        - cli/
 tools:
     php_mess_detector: true
     php_analyzer: true

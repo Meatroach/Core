@@ -12,7 +12,7 @@ interface Building {
     /**
      * Create new building entity
      * @param integer $id
-     * @param \string $name
+     * @param string $name
      * @param integer $minimumLevel
      * @param integer $maximumLevel
      * @return BuildingEntity
