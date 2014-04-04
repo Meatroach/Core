@@ -29,7 +29,8 @@ class LocationCalculator implements LocationCalculatorInterface {
 
     public function calculate(Direction $direction) {
 
-
+        $x         = 0;
+        $y         = 0;
         $direction = $direction->getValue();
         if ($direction === Direction::ANY) {
             $square    = ceil(sqrt(4 * $this->countCities));

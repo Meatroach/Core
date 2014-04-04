@@ -71,5 +71,8 @@ class City implements CityRepository {
     public function delete(CityEntity $city) {
         unset($this->cities[$city->getId()]);
     }
+    public function flush() {
+        $this->cities = array();
+    }
 
 }

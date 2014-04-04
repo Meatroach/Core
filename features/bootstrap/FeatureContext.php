@@ -111,8 +111,8 @@ class FeatureContext extends BehatContext {
             $email              = $row['email'];
             $emailConfirm       = $row['emailConfirm'];
             $termsAndConditions = (bool) $row['termsAndConditions'];
+            $this->userHelper->processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
         }
-        $this->userHelper->processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
     }
 
     /**
@@ -151,8 +151,8 @@ class FeatureContext extends BehatContext {
         foreach ($table->getHash() as $row) {
             $username       = $row['username'];
             $activationCode = $row['activationCode'];
+            $this->userHelper->processActivateAccount($username, $activationCode);
         }
-        $this->userHelper->processActivateAccount($username, $activationCode);
     }
 
     /**
@@ -211,8 +211,9 @@ class FeatureContext extends BehatContext {
         foreach ($table->getHash() as $row) {
             $username = $row['username'];
             $password = $row['password'];
+            $this->userHelper->processLogin($username, $password);
         }
-        $this->userHelper->processLogin($username, $password);
+       
     }
 
     /**
@@ -348,7 +349,7 @@ class FeatureContext extends BehatContext {
      * @Then /^I should be redirected to "([^"]*)"$/
      */
     public function iShouldBeRedirectedTo($url) {
-     
+
         if ($this->mink) {
             $this->mink->assertSession()->addressEquals($url);
         }

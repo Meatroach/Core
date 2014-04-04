@@ -80,6 +80,18 @@ class SilexCityHelper {
         }
     }
 
+    public function assertCityCreated() {
+        $this->mink->assertSession()->statusCodeEquals(200);
+    }
+
+    public function assertCityNotCreated() {
+        throw new Behat\Behat\Exception\PendingException;
+    }
+
+    public function assertCityExists($name, $owner, $y, $x) {
+        throw new Behat\Behat\Exception\PendingException;
+    }
+
     public function selectPosition($y, $x) {
         throw new Behat\Behat\Exception\PendingException;
     }

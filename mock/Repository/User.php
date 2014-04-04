@@ -67,4 +67,9 @@ class User implements UserRepository {
         }
         return null;
     }
+
+    public function flush() {
+        $this->users = array();
+    }
+
 }

@@ -37,5 +37,5 @@ interface User {
      * @return UserEntity|null
      */
     public function findOneByUsername($username);
-   
+    public function flush();
 }

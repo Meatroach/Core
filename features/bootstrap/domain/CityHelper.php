@@ -136,10 +136,10 @@ class CityHelper {
         }
 
         assertNotNull($found);
-        assertSame($city->name, $name);
-        assertSame($city->owner, $owner);
-        assertSame($city->y, $y);
-        assertSame($city->x, $x);
+        assertSame($found->name, $name);
+        assertSame($found->owner, $owner);
+        assertSame($found->y, $y);
+        assertSame($found->x, $x);
     }
 
 }

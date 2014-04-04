@@ -56,4 +56,6 @@ interface City {
     public function sync();
 
     public function delete(CityEntity $city);
+
+    public function flush();
 }
