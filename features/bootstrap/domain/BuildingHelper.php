@@ -6,7 +6,7 @@ class BuildingHelper {
 
     private $buildingRepository;
 
-    function __construct(BuildingRepository $buildingRepository) {
+    public function __construct(BuildingRepository $buildingRepository) {
         $this->buildingRepository = $buildingRepository;
     }
 

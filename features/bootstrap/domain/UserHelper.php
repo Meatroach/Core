@@ -107,6 +107,9 @@ class DomainUserHelper {
 
     public function activateUser($username) {
         $user = $this->userRepository->findOneByUsername($username);
+        if(!$user){
+            throw new Exception("could not activate user,user not found");
+        }
         $user->setActivationCode(null);
         $this->userRepository->replace($user);
     }
