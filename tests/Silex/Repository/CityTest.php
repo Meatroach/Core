@@ -23,12 +23,18 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     private function deleteDummyUser() {
         $user = $this->userRepository->findOneByUsername('TestUser');
+        if(!$user){
+            throw new Exception("Could not delete Dummy User");
+        }
         $this->userRepository->delete($user);
         $this->userRepository->sync();
     }
 
     private function deleteDummyCities() {
         $owner  = $this->userRepository->findOneByUsername('TestUser');
+        if(!$owner){
+            throw new Exception("Could not delete Dummy Cities, owner not found");
+        }
         $cities = $this->cityRepository->findAllByOwner($owner);
 
         foreach ($cities as $city) {

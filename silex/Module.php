@@ -93,7 +93,7 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createServices(Application &$app) {
-        
+
         $app[Service::PASSWORD_HASHER] = $app->share(function() {
             return new PasswordHasher();
         });
@@ -105,7 +105,7 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    private function createRepositories(&$app) {
+    private function createRepositories(Application &$app) {
         $app[Repository::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);
         });
@@ -166,6 +166,9 @@ class Module implements ServiceProviderInterface {
         }
     }
 
+    /**
+     * @param Application $app
+     */
     private function createRoutes(Application &$app) {
 
         $app->get('/', function() use($app) {
@@ -181,7 +184,7 @@ class Module implements ServiceProviderInterface {
                         return new RedirectResponse($baseUrl . 'game');
                     }
                 });
-       
+
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
@@ -240,6 +243,10 @@ class Module implements ServiceProviderInterface {
         });
     }
 
+    /**
+     * @param Application $app
+     * @return Application
+     */
     private function getCityRoutes(Application &$app) {
         $city = $app['controllers_factory'];
         $city->get('/list', Controller::CITY . ':listAction')
@@ -247,6 +254,10 @@ class Module implements ServiceProviderInterface {
         return $city;
     }
 
+    /**
+     * @param Application $app
+     * @return Application
+     */
     private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
 
@@ -282,6 +293,10 @@ class Module implements ServiceProviderInterface {
         return $game;
     }
 
+    /**
+     * @param Application $app
+     * @return Application
+     */
     private function getAssetsRoutes(Application &$app) {
         $assets = $app['controllers_factory'];
 
@@ -291,6 +306,11 @@ class Module implements ServiceProviderInterface {
         return $assets;
     }
 
+    /**
+     * 
+     * @param Application $app
+     * @return Application
+     */
     private function getAccountRoutes(Application &$app) {
         $account = $app['controllers_factory'];
         $account->get('/logout', function()use($app) {

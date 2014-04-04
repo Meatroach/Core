@@ -41,7 +41,14 @@ class DBALCity extends Repository implements CityInterface {
 
         return (bool) $column;
     }
-
+    /**
+     * @param integer $id
+     * @param string $name
+     * @param UserEntity $owner
+     * @param integer $y
+     * @param integer $x
+     * @return CityEntity
+     */
     public function create($id, $name, UserEntity $owner, $y, $x) {
         return new CityEntity($id, $name, $owner, $y, $x);
     }

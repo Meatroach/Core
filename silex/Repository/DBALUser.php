@@ -30,6 +30,13 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         parent::markAdded($id);
     }
 
+    /**
+     * @param integer $id
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @return UserEntity
+     */
     public function create($id, $username, $password, $email) {
         return new UserEntity((int) $id, $username, $password, $email);
     }
@@ -38,7 +45,10 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $id = $user->getId();
         parent::markDeleted($id);
     }
-
+    /**
+     * @param string $email
+     * @return null|UserEntity
+     */
     public function findOneByEmail($email) {
         foreach ($this->users as $user) {
             if ($user->getEmail() === $email) {
@@ -58,7 +68,10 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $this->replace($entity);
         return $entity;
     }
-
+    /**
+     * @param string $username
+     * @return null|UserEntity
+     */
     public function findOneByUsername($username) {
 
         foreach ($this->users as $user) {
@@ -81,7 +94,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $this->replace($entity);
         return $entity;
     }
-
+    /**
+     * @return integer
+     */
     public function getUniqueId() {
         $result = $this->db->prepare("SELECT MAX(id) FROM users");
         $result->execute();
@@ -90,12 +105,16 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $row -= count(parent::getDeleted());
         return $row + 1;
     }
-
+    /**
+     * @return \Doctrine\DBAL\Query\QueryBuilder
+     */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
         return $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email', 'u.activationCode')->from('users', 'u');
     }
-
+    /**
+     * @param UserEntity $user
+     */
     public function replace(UserEntity $user) {
         $id               = $user->getId();
         $this->users[$id] = $user;
