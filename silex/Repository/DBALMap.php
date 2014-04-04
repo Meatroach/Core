@@ -38,16 +38,22 @@ class DBALMap implements MapRepository {
         $this->db = $db;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function add(MapEntity $map) {
         $this->map   = $map;
         $this->reassign();
         $this->added = true;
     }
 
-    public function create($id,$name) {
-        return new MapEntity($id,$name);
+    /**
+     * {@inheritDoc}
+     */
+    public function create($id, $name) {
+        return new MapEntity($id, $name);
     }
-    
+
     private function entityToRow(MapEntity $map) {
         return array(
             'id'     => $map->getId(),
@@ -57,6 +63,9 @@ class DBALMap implements MapRepository {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function sync() {
         if ($this->map && $this->added) {
             $this->db->insert('maps', $this->entityToRow($this->map));
@@ -68,7 +77,12 @@ class DBALMap implements MapRepository {
             $this->db->delete('maps', array('id' => $this->map->getId()));
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUniqueId() {
         return 1;
     }
+
 }

@@ -20,25 +20,25 @@ interface City {
     /**
      * Create new city entity
      * @param integer $id
-     * @param \string $name
-     * @param \OpenTribes\Core\Entity\User $owner
-     * @param \interger $y
-     * @param \integer $x
+     * @param string $name
+     * @param UserEntity $owner
+     * @param interger $y
+     * @param integer $x
      * @return CityEntity
      */
     public function create($id, $name, UserEntity $owner, $y, $x);
 
     /**
      * Add city entity into repository
-     * @param \OpenTribes\Core\Entity\City $city
+     * @param CityEntity $city
      * @return void
      */
     public function add(CityEntity $city);
 
     /**
      * check if city exists at location
-     * @param \integer $y
-     * @param \interger $x
+     * @param integer $y
+     * @param interger $x
      * @return boolean
      */
     public function cityExistsAt($y, $x);
@@ -47,7 +47,7 @@ interface City {
      * find city entity by given location
      * @param integer $y
      * @param integer $x
-     * @return \OpenTribes\Core\Entity\City|null
+     * @return CityEntity|null
      */
     public function findByLocation($y, $x);
     
@@ -55,6 +55,10 @@ interface City {
      * @return void
      */
     public function replace(CityEntity $city);
+    /**
+     * @param UserEntity $owner City Owner
+     * @return CityEntity[]
+     */
     public function findAllByOwner(UserEntity $owner);
 
     /**

@@ -17,40 +17,40 @@ class Map implements MapRepository {
      */
     private $map = null;
 
+    /**
+     * {@inheritDoc}
+     */
     public function add(MapEntity $map) {
         $this->map = $map;
     }
 
-    public function create($id,$name) {
-        return new MapEntity($id,$name);
+    /**
+     * {@inheritDoc}
+     */
+    public function create($id, $name) {
+        return new MapEntity($id, $name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getTile($y, $x) {
         return $this->map->getTile($y, $x);
     }
 
+
     /**
-     * @param string $y
-     * @param string $x
+     * {@inheritDoc}
      */
-    public function tileIsAccessible($y, $x) {
-        $tile = $this->map->getTile($y, $x);
-        if (!$tile) {
-            return false;
-        }
-        
-        return $tile->isAccessible();
-    }
-    public function getCenterX() {
-        return $this->map->getWidth()/2;
-    }
-    public function getCenterY() {
-        return $this->map->getHeight()/2;
-    }
     public function sync() {
         ;
     }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUniqueId() {
         return 1;
     }
+
 }

@@ -12,6 +12,7 @@ use Doctrine\DBAL\Connection;
  * @author BlackScorp<witalimik@web.de>
  */
 class DBALUser extends Repository implements UserRepositoryInterface {
+
     /**
      * @var Connection 
      */
@@ -22,10 +23,16 @@ class DBALUser extends Repository implements UserRepositoryInterface {
      */
     private $users = array();
 
+    /**
+     * @param Connection $db DBAL Connection
+     */
     public function __construct(Connection $db) {
         $this->db = $db;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function add(UserEntity $user) {
         $id               = $user->getId();
         $this->users[$id] = $user;
@@ -33,23 +40,22 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     /**
-     * @param integer $id
-     * @param string $username
-     * @param string $password
-     * @param string $email
-     * @return UserEntity
+     * {@inheritDoc}
      */
     public function create($id, $username, $password, $email) {
         return new UserEntity((int) $id, $username, $password, $email);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function delete(UserEntity $user) {
         $id = $user->getId();
         parent::markDeleted($id);
     }
+
     /**
-     * @param string $email
-     * @return null|UserEntity
+     * {@inheritDoc}
      */
     public function findOneByEmail($email) {
         foreach ($this->users as $user) {
@@ -70,9 +76,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $this->replace($entity);
         return $entity;
     }
+
     /**
-     * @param string $username
-     * @return null|UserEntity
+     * {@inheritDoc}
      */
     public function findOneByUsername($username) {
 
@@ -96,8 +102,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $this->replace($entity);
         return $entity;
     }
+
     /**
-     * @return integer
+     * {@inheritDoc}
      */
     public function getUniqueId() {
         $result = $this->db->prepare("SELECT MAX(id) FROM users");
@@ -105,8 +112,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $row    = $result->fetchColumn();
         $row += count($this->users);
         $row -= count(parent::getDeleted());
-        return $row + 1;
+        return (int) ($row + 1);
     }
+
     /**
      * @return \Doctrine\DBAL\Query\QueryBuilder
      */
@@ -114,8 +122,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $queryBuilder = $this->db->createQueryBuilder();
         return $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email', 'u.activationCode')->from('users', 'u');
     }
+
     /**
-     * @param UserEntity $user
+     * {@inheritDoc}
      */
     public function replace(UserEntity $user) {
         $id               = $user->getId();
@@ -139,6 +148,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function sync() {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->users[$id])) {
@@ -164,6 +176,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function flush() {
         return $this->db->exec("DELETE FROM users");
     }

@@ -23,16 +23,25 @@ class DBALCity extends Repository implements CityInterface {
     private $cities = array();
     private $db;
 
+    /**
+     * @param Connection $db
+     */
     public function __construct(Connection $db) {
         $this->db = $db;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function add(CityEntity $city) {
         $id                = $city->getId();
         $this->cities[$id] = $city;
         parent::markAdded($id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function cityExistsAt($y, $x) {
         $result = $this->db->prepare("SELECT id FROM cities WHERE y = :y AND x = :x ");
         $result->execute(array(
@@ -45,20 +54,14 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     /**
-     * @param integer $id
-     * @param string $name
-     * @param UserEntity $owner
-     * @param integer $y
-     * @param integer $x
-     * @return CityEntity
+     * {@inheritDoc}
      */
     public function create($id, $name, UserEntity $owner, $y, $x) {
         return new CityEntity($id, $name, $owner, $y, $x);
     }
 
     /**
-     * @param UserEntity $owner
-     * @return CityEntity[]|array
+     * {@inheritDoc}
      */
     public function findAllByOwner(UserEntity $owner) {
         $found = array();
@@ -82,6 +85,7 @@ class DBALCity extends Repository implements CityInterface {
         }
         return $found;
     }
+
     /**
      * @return QueryBuilder
      */
@@ -90,10 +94,9 @@ class DBALCity extends Repository implements CityInterface {
         return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y')
                         ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
     }
+
     /**
-     * @param integer $y
-     * @param integer $x
-     * @return null|CityEntity
+     * {@inheritDoc}
      */
     public function findByLocation($y, $x) {
         foreach ($this->cities as $city) {
@@ -116,15 +119,17 @@ class DBALCity extends Repository implements CityInterface {
         $this->replace($entity);
         return $entity;
     }
+
     /**
-     * @param CityEntity $city
+     * {@inheritDoc}
      */
     public function delete(CityEntity $city) {
         $id = $city->getId();
         parent::markDeleted($id);
     }
+
     /**
-     * @return integer
+     * {@inheritDoc}
      */
     public function getUniqueId() {
         $result = $this->db->prepare("SELECT MAX(id) FROM cities");
@@ -132,18 +137,20 @@ class DBALCity extends Repository implements CityInterface {
         $row    = $result->fetchColumn();
         $row += count($this->cities);
         $row -= count(parent::getDeleted());
-        return $row + 1;
+        return (int) ($row + 1);
     }
+
     /**
-     * @param CityEntity $city
+     * {@inheritDoc}
      */
     public function replace(CityEntity $city) {
         $id                = $city->getId();
         $this->cities[$id] = $city;
         parent::markModified($id);
     }
+
     /**
-     * @return integer
+     * {@inheritDoc}
      */
     public function countAll() {
         return count($this->cities);
@@ -164,6 +171,9 @@ class DBALCity extends Repository implements CityInterface {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function sync() {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->cities[$id])) {
@@ -188,6 +198,9 @@ class DBALCity extends Repository implements CityInterface {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function flush() {
         return $this->db->exec("DELETE FROM cities");
     }
