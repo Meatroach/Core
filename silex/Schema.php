@@ -110,6 +110,9 @@ class Schema {
         $cityBuildings->setPrimaryKey(array("city_id", 'building_id'));
     }
 
+    /**
+     * @param DoctrineSchema $schema
+     */
     private function createAccountSchema(&$schema) {
         $users = $this->createTable('users', $schema);
         $users->addColumn('id', Type::INTEGER, array('length' => 11));

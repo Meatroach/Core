@@ -29,6 +29,10 @@ class Map implements MapRepository {
         return $this->map->getTile($y, $x);
     }
 
+    /**
+     * @param string $y
+     * @param string $x
+     */
     public function tileIsAccessible($y, $x) {
         $tile = $this->map->getTile($y, $x);
         if (!$tile) {

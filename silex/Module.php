@@ -149,6 +149,9 @@ class Module implements ServiceProviderInterface {
         $app->register(new SwiftmailerServiceProvider());
     }
 
+    /**
+     * @param Application $app
+     */
     private function loadConfigurations(&$app) {
         $files = array(
             'general.php',

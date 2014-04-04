@@ -10,6 +10,7 @@ use OpenTribes\Core\Entity\Map as MapEntity;
  */
 interface Map {
     /**
+     * @param integer $id
      * @return MapEntity
      */
     public function create($id,$name);

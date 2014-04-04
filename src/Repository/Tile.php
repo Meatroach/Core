@@ -11,6 +11,8 @@ use OpenTribes\Core\Entity\Tile as TileEntity;
 interface Tile {
 
     /**
+     * @param integer $id
+     * @param boolean $isAccessible
      * @return TileEntity
      */
     public function create($id, $name, $isAccessible);

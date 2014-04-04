@@ -19,7 +19,7 @@ interface City {
 
     /**
      * Create new city entity
-     * @param \integer $id
+     * @param integer $id
      * @param \string $name
      * @param \OpenTribes\Core\Entity\User $owner
      * @param \interger $y
@@ -45,8 +45,8 @@ interface City {
 
     /**
      * find city entity by given location
-     * @param \integer $y
-     * @param \interger $x
+     * @param integer $y
+     * @param integer $x
      * @return \OpenTribes\Core\Entity\City|null
      */
     public function findByLocation($y, $x);
