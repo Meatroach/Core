@@ -190,7 +190,7 @@ class Module implements ServiceProviderInterface {
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
         $app->mount('/city', $this->getCityRoutes($app));
-        $module = $this;
+        $module = &$this;
         $app->on(KernelEvents::VIEW, function($event) use($app,$module) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
@@ -212,7 +212,7 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    public function createResponse($request, $appResponse, $app) {
+    private function createResponse($request, $appResponse, $app) {
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
 
@@ -238,7 +238,7 @@ class Module implements ServiceProviderInterface {
         return $response;
     }
 
-    public function handleSubRequests(array $subRequests, $appResponse, $app) {
+    private function handleSubRequests(array $subRequests, $appResponse, $app) {
         $tmpResponse = $appResponse;
 
         foreach ($subRequests as $values) {
