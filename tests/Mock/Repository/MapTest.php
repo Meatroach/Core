@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenTribes\Core\Test\Mock\Repository;
 
 use OpenTribes\Core\Mock\Repository\Map as MapRepository;
@@ -25,15 +26,13 @@ class MapTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testFindAccessableTile() {
-
-     
-        $this->assertTrue($this->mapRepository->tileIsAccessible("0", "0"));
+        $map = $this->mapRepository->get();
+        $this->assertTrue($map->isAccessible("0", "0"));
     }
 
     public function testFindNotAccessableTile() {
-
-
-        $this->assertFalse($this->mapRepository->tileIsAccessible("1", "1"));
+        $map = $this->mapRepository->get();
+        $this->assertFalse($map->isAccessible("1", "1"));
     }
 
 }

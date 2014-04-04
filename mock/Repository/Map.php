@@ -38,7 +38,6 @@ class Map implements MapRepository {
         return $this->map->getTile($y, $x);
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -51,6 +50,13 @@ class Map implements MapRepository {
      */
     public function getUniqueId() {
         return 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function get() {
+        return $this->map;
     }
 
 }

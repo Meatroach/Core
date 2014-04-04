@@ -9,11 +9,12 @@ use OpenTribes\Core\Entity\Map as MapEntity;
  * @author BlackScorp<witalimik@web.de>
  */
 interface Map {
+
     /**
      * @param integer $id
      * @return MapEntity
      */
-    public function create($id,$name);
+    public function create($id, $name);
 
     /**
      * @return integer
@@ -29,5 +30,9 @@ interface Map {
      * @return void
      */
     public function sync();
-    
+
+    /**
+     * @return MapEntity
+     */
+    public function get();
 }
