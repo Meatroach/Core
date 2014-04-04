@@ -1,16 +1,19 @@
 before_commands:
-    - make install-test
-
+    - composer install --no-progress
+    - mkdir storage
+    - touch storage/ot.db
+    - cli/config.php create
+    - cli/migration.php migrations:migrate --no-interaction
+    
 tools:
     php_code_coverage:
         enabled: true
-        test_command: bin/phpunit --coverage-clover coverage.clover tests/
         #filter:
             #paths: ["src"]
     php_code_sniffer:
         enabled: true
         config:
-            standard: PSR2
+            standard: ALL
         filter:
             paths: ["src/*", "tests/*"]
     php_cpd:
