@@ -27,6 +27,11 @@ class Schema {
         }
     }
 
+    /**
+     * @param DoctrineSchema $schema
+     *
+     * @return DoctrineSchema
+     */
     private function createSchema(&$schema) {
 
 
@@ -38,7 +43,7 @@ class Schema {
     }
     /**
      *
-     * @param \string $tableName
+     * @param string $tableName
      * @param DoctrineSchema $schema
      * @return Table
      */

@@ -35,7 +35,7 @@ class CreateUser {
      *
      * @param \OpenTribes\Core\Request\CreateUser $request
      * @param \OpenTribes\Core\Response\CreateUser $response
-     * @return \boolean
+     * @return boolean
      */
     public function proccess(CreateUserRequest $request,CreateUserResponse $response){
         $userId = $this->userRepository->getUniqueId();

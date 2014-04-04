@@ -9,6 +9,11 @@ class BuildingHelper {
     function __construct(BuildingRepository $buildingRepository) {
         $this->buildingRepository = $buildingRepository;
     }
+
+    /**
+     * @param integer $minimumLevel
+     * @param integer $maximumLevel
+     */
     public function createDummyBuilding($name,$minimumLevel,$maximumLevel){
         $buildingId = $this->buildingRepository->getUniqueId();
         $building = $this->buildingRepository->create($buildingId, $name, $minimumLevel, $maximumLevel);

@@ -22,14 +22,19 @@ interface Building {
     /**
      * Add building entity into repository
      * @param BuildingEntity $building
+     * @return void
      */
     public function add(BuildingEntity $building);
 
     /**
      * get unique ID to create new entity
-     * @return \integer
+     * @return integer
      */
     public function getUniqueId();
     public function findAll();
+
+    /**
+     * @return void
+     */
     public function sync();
 }

@@ -38,6 +38,9 @@ class ViewCityBuildings {
         return false;
     }
 
+    /**
+     * @param \OpenTribes\Core\Entity\City $city
+     */
     private function createBuildings($city) {
         $buildings = $this->buildingRepository->findAll();
         foreach ($buildings as $building) {

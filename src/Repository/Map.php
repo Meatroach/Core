@@ -13,9 +13,20 @@ interface Map {
      * @return MapEntity
      */
     public function create($id,$name);
+
+    /**
+     * @return integer
+     */
     public function getUniqueId();
 
+    /**
+     * @return void
+     */
     public function add(MapEntity $map);
+
+    /**
+     * @return void
+     */
     public function sync();
     
 }

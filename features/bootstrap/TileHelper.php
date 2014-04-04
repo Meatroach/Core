@@ -14,6 +14,10 @@ class TileHelper {
     function __construct(TileRepository $tileRepository) {
         $this->tileRepository = $tileRepository;
     }
+
+    /**
+     * @param boolean $isAccessible
+     */
     public function createDummyTile($name,$isAccessible){
         $id = $this->tileRepository->getUniqueId();
         $tile = $this->tileRepository->create($id, $name, $isAccessible);
