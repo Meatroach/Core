@@ -139,7 +139,6 @@ class DBALCity extends Repository implements CityInterface {
     public function sync() {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->cities[$id])) {
-                $cities = $this->cities[$id];
                 $this->db->delete('cities', array('id' => $id));
                 unset($this->cities[$id]);
                 parent::reassign($id);

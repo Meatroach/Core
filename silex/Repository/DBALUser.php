@@ -18,8 +18,7 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     /**
      * @var UserEntity[]
      */
-    private $users    = array();
-
+    private $users = array();
 
     public function __construct(Connection $db) {
         $this->db = $db;
@@ -122,7 +121,6 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     public function sync() {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->users[$id])) {
-                $user             = $this->users[$id];
                 $this->db->delete('users', array('id' => $id));
                 unset($this->users[$id]);
                 parent::reassign($id);

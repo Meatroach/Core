@@ -66,7 +66,7 @@ class Module implements ServiceProviderInterface {
         $this->createRoutes($app);
     }
 
-    private function createDependencies(&$app) {
+    private function createDependencies(Application &$app) {
         $this->createRepositories($app);
         $this->createServices($app);
         $this->createValidators($app);
@@ -79,7 +79,7 @@ class Module implements ServiceProviderInterface {
         }
     }
 
-    private function createControllers(&$app) {
+    private function createControllers(Application &$app) {
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
             return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
@@ -92,7 +92,8 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    private function createServices(&$app) {
+    private function createServices(Application &$app) {
+        
         $app[Service::PASSWORD_HASHER] = $app->share(function() {
             return new PasswordHasher();
         });
@@ -119,7 +120,7 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    private function createValidators(&$app) {
+    private function createValidators(Application &$app) {
         $app['validationDto.registration'] = $app->share(function() {
             return new RegistrationValidatorDto;
         });
@@ -138,7 +139,7 @@ class Module implements ServiceProviderInterface {
     /**
      * @param Application $app
      */
-    private function registerProviders(&$app) {
+    private function registerProviders(Application &$app) {
 
         $app->register(new ValidatorServiceProvider);
         $app->register(new ServiceControllerServiceProvider());
@@ -152,7 +153,7 @@ class Module implements ServiceProviderInterface {
     /**
      * @param Application $app
      */
-    private function loadConfigurations(&$app) {
+    private function loadConfigurations(Application &$app) {
         $files = array(
             'general.php',
             'database.php',
@@ -165,7 +166,7 @@ class Module implements ServiceProviderInterface {
         }
     }
 
-    private function createRoutes(&$app) {
+    private function createRoutes(Application &$app) {
 
         $app->get('/', function() use($app) {
 
@@ -239,14 +240,14 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    private function getCityRoutes(&$app) {
+    private function getCityRoutes(Application &$app) {
         $city = $app['controllers_factory'];
         $city->get('/list', Controller::CITY . ':listAction')
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
         return $city;
     }
 
-    private function getGameRoutes(&$app) {
+    private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
 
         $game->get('/', function(Request $request) {
@@ -281,7 +282,7 @@ class Module implements ServiceProviderInterface {
         return $game;
     }
 
-    private function getAssetsRoutes(&$app) {
+    private function getAssetsRoutes(Application &$app) {
         $assets = $app['controllers_factory'];
 
         $assets->assert('file', '.+');
@@ -290,7 +291,7 @@ class Module implements ServiceProviderInterface {
         return $assets;
     }
 
-    private function getAccountRoutes(&$app) {
+    private function getAccountRoutes(Application &$app) {
         $account = $app['controllers_factory'];
         $account->get('/logout', function()use($app) {
             $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
