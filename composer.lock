@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b5777669ffd48c02547e3020821af7a0",
+    "hash": "3def02f83ede0f76cf485e96bb659272",
     "packages": [
         {
             "name": "doctrine/annotations",
