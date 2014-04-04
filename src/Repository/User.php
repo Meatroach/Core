@@ -20,13 +20,23 @@ interface User {
      */
     public function getUniqueId();
 
+    /**
+     * @return void
+     */
     public function add(UserEntity $user);
 
+    /**
+     * @return void
+     */
     public function replace(UserEntity $user);
 
+    /**
+     * @return void
+     */
     public function delete(UserEntity $user);
     /**
      * Sync Repository with Entity Source
+     * @return void
      */
     public function sync();
     /**
@@ -37,5 +47,9 @@ interface User {
      * @return UserEntity|null
      */
     public function findOneByUsername($username);
+
+    /**
+     * @return null|integer
+     */
     public function flush();
 }

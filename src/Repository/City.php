@@ -13,7 +13,7 @@ interface City {
 
     /**
      * get unique ID to create new entity
-     * @return \integer
+     * @return integer
      */
     public function getUniqueId();
 
@@ -31,6 +31,7 @@ interface City {
     /**
      * Add city entity into repository
      * @param \OpenTribes\Core\Entity\City $city
+     * @return void
      */
     public function add(CityEntity $city);
 
@@ -38,7 +39,7 @@ interface City {
      * check if city exists at location
      * @param \integer $y
      * @param \interger $x
-     * @return \boolean
+     * @return boolean
      */
     public function cityExistsAt($y, $x);
 
@@ -50,12 +51,29 @@ interface City {
      */
     public function findByLocation($y, $x);
     
+    /**
+     * @return void
+     */
     public function replace(CityEntity $city);
     public function findAllByOwner(UserEntity $owner);
+
+    /**
+     * @return integer
+     */
     public function countAll();
+
+    /**
+     * @return void
+     */
     public function sync();
 
+    /**
+     * @return void
+     */
     public function delete(CityEntity $city);
 
+    /**
+     * @return null|integer
+     */
     public function flush();
 }

@@ -88,6 +88,10 @@ class SilexCityHelper {
         throw new Behat\Behat\Exception\PendingException;
     }
 
+    /**
+     * @param integer $y
+     * @param integer $x
+     */
     public function assertCityExists($name, $owner, $y, $x) {
         throw new Behat\Behat\Exception\PendingException;
     }

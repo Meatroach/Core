@@ -53,6 +53,9 @@ class Assets {
         return $response;
     }
 
+    /**
+     * @param string $extension
+     */
     private function getContentTypByExtension($extension) {
         return isset($this->contentTypes[$extension]) ? $this->contentTypes[$extension] : '';
     }

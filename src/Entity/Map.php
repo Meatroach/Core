@@ -61,7 +61,7 @@ class Map {
     }
 
     /**
-     * @return Tiles[]
+     * @return Tile[]
      */
     public function getTiles() {
         return $this->tiles;

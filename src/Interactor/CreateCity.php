@@ -45,7 +45,7 @@ class CreateCity {
     /**
      * @param \OpenTribes\Core\Request\CreateCity $request
      * @param \OpenTribes\Core\Response\CreateCity $response
-     * @return \boolean
+     * @return boolean
      */
     public function process(CreateCityRequest $request, CreateCityResponse $response) {
         $owner = $this->userRepository->findOneByUsername($request->getUsername());

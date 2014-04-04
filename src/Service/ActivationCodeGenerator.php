@@ -8,5 +8,8 @@ namespace OpenTribes\Core\Service;
  */
 interface ActivationCodeGenerator {
 
+    /**
+     * @return string
+     */
     public function create();
 }

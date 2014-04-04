@@ -37,7 +37,7 @@ class ActivateUser {
      *
      * @param \OpenTribes\Core\Request\ActivateUser $request
      * @param \OpenTribes\Core\Response\ActivateUser $response
-     * @return \boolean
+     * @return boolean
      */
     public function process(ActivateUserRequest $request, ActivateUserResponse $response) {
         $object = $this->activateUserValidator->getObject();

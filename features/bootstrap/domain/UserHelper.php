@@ -37,6 +37,9 @@ class DomainUserHelper {
         $this->activateUserValidator   = $activateUserValidator;
     }
 
+    /**
+     * @param boolean $termsAndConditions
+     */
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
         $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);

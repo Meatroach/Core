@@ -135,6 +135,9 @@ class Module implements ServiceProviderInterface {
         });
     }
 
+    /**
+     * @param Application $app
+     */
     private function registerProviders(&$app) {
 
         $app->register(new ValidatorServiceProvider);

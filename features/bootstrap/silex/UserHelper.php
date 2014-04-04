@@ -39,6 +39,9 @@ class SilexUserHelper {
         $this->page = $this->mink->getSession($this->sessionName)->getPage();
     }
 
+    /**
+     * @param boolean $termsAndConditions
+     */
     public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->loadPage();
         $this->page->fillField('username', $username);

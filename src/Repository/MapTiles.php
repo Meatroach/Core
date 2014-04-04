@@ -17,5 +17,8 @@ interface MapTiles {
      */
     public function getMap();
 
+    /**
+     * @return void
+     */
     public function add(MapEntity $map);
 }

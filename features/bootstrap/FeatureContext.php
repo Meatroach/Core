@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Exception\PendingException;
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;

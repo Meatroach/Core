@@ -124,6 +124,10 @@ class CityHelper {
         $this->interactorResult   = $interactor->process($request, $this->viewCitiesResponse);
     }
 
+    /**
+     * @param integer $y
+     * @param integer $x
+     */
     public function assertCityExists($name, $owner, $y, $x) {
         $found  = null;
         $cities = $this->viewCitiesResponse->cities;
