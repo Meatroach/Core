@@ -27,7 +27,7 @@ class Login {
      * @param \OpenTribes\Core\Repository\User $userRepository
      * @param \OpenTribes\Core\Service\PasswordHasher $passwordHasher
      */
-    function __construct(UserRepository $userRepository,PasswordHasher $passwordHasher) {
+    public function __construct(UserRepository $userRepository,PasswordHasher $passwordHasher) {
         $this->userRepository = $userRepository;
         $this->passwordHasher = $passwordHasher;
     }
