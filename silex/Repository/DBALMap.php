@@ -67,8 +67,11 @@ class DBALMap implements MapRepository {
      * {@inheritDoc}
      */
     public function sync() {
+     
         if ($this->map && $this->added) {
-            $this->db->insert('maps', $this->entityToRow($this->map));
+             
+           $result = $this->db->insert('maps', $this->entityToRow($this->map));
+   
         }
         if ($this->map && $this->modified) {
             $this->db->update('maps', $this->entityToRow($this->map), array('id' => $this->map->getId()));

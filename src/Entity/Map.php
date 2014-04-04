@@ -93,6 +93,10 @@ class Map {
         return $x > 0 && $y > 0 && $x <= $this->getWidth() && $y <= $this->getHeight();
     }
 
+    /**
+     * @param string $y
+     * @param string $x
+     */
     public function isAccessible($y, $x) {
         if ($this->getTile($y, $x)) {
             return $this->getTile($y, $x)->isAccessible();

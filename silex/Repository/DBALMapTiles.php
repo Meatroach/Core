@@ -65,7 +65,7 @@ class DBALMapTiles implements MapTilesRepository {
         $rows   = $result->fetchAll(PDO::FETCH_OBJ);
         $tiles  = array();
         $map    = $this->map;
-
+    
 
         foreach ($rows as $row) {
 

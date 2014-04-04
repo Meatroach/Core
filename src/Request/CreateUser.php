@@ -19,6 +19,9 @@ class CreateUser {
         $this->email    = $email;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }
@@ -27,6 +30,9 @@ class CreateUser {
         return $this->password;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail() {
         return $this->email;
     }

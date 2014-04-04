@@ -172,26 +172,23 @@ class Module implements ServiceProviderInterface {
      */
     private function createRoutes(Application &$app) {
 
-        $app->get('/', function() use($app) {
-
-                    $response          = new stdClass();
-                    $response->failed  = false;
-                    $response->proceed = false;
-                    return $response;
-                })->value(RouteValue::TEMPLATE, 'pages/landing')
-                ->before(function(Request $request) use($app) {
-                    if ($request->getSession()->get('username')) {
-                        $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-                        return new RedirectResponse($baseUrl . 'game');
-                    }
-                });
+        $app->get('/', function(Request $request) use($app) {
+            $response          = new stdClass();
+            $response->failed  = false;
+            $response->proceed = false;
+            return $response;
+        })->before(function(Request $request) use($app) {
+            if ($request->getSession()->get('username')) {
+                $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                return new RedirectResponse($baseUrl . 'game');
+            }
+        })->value(RouteValue::TEMPLATE, 'pages/landing');
 
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
-        $app->mount('/city', $this->getCityRoutes($app));
         $module = $this;
-        $app->on(KernelEvents::VIEW, function($event) use($app,$module) {
+        $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
@@ -212,6 +209,9 @@ class Module implements ServiceProviderInterface {
         });
     }
 
+    /**
+     * @param Application $app
+     */
     public function createResponse($request, $appResponse, $app) {
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
@@ -238,6 +238,9 @@ class Module implements ServiceProviderInterface {
         return $response;
     }
 
+    /**
+     * @param Application $app
+     */
     public function handleSubRequests(array $subRequests, $appResponse, $app) {
         $tmpResponse = $appResponse;
 
@@ -258,20 +261,18 @@ class Module implements ServiceProviderInterface {
      * @param Application $app
      * @return ControllerCollection
      */
-    private function getCityRoutes(Application &$app) {
-        $city = $app['controllers_factory'];
-        $city->get('/list', Controller::CITY . ':listAction')
-                ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
-        return $city;
-    }
-
-    /**
-     * @param Application $app
-     * @return ControllerCollection
-     */
     private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
+        $game->before(function(Request $request) use($app) {
 
+            $cityController = $app[Controller::CITY];
+            $response       = $cityController->listAction($request);
+            $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
+            $startUrl       = $baseUrl . 'game/start';
+            if ($response->failed && $request->getRequestUri() !== $startUrl) {
+                return new RedirectResponse($startUrl);
+            }
+        });
         $game->get('/', function(Request $request) {
             $response           = new stdClass();
             $response->proceed  = false;
@@ -283,13 +284,20 @@ class Module implements ServiceProviderInterface {
                 ->value('username', null)
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
 
-
-
-
         $game->match('/start', Controller::CITY . ':newAction')
                 ->value(RouteValue::SUCCESS_HANDLER, function() use($app) {
                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     return new RedirectResponse($baseUrl . 'game/city/list');
+                })
+                ->before(function(Request $request) use($app) {
+                    $cityController = $app[Controller::CITY];
+                    $response       = $cityController->listAction($request);
+                    $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
+                    $cityListUrl    = $baseUrl . 'game/city/list';
+     
+                    if (!$response->failed) {
+                        return new RedirectResponse($cityListUrl);
+                    }
                 })
                 ->method('POST|GET')
                 ->value(RouteValue::TEMPLATE, 'pages/game/newcity');

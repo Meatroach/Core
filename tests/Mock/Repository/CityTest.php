@@ -11,7 +11,7 @@ class CityTest extends \PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->cityRepository = new CityRepository();
         $this->userRepository = new UserRepository();
-        
+      
         $userId = $this->userRepository->getUniqueId();
         $user = $this->userRepository->create($userId, 'TestUser', '123456', 'test@test.de');
                 

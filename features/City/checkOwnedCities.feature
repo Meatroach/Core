@@ -12,7 +12,7 @@ Background:
 Scenario: Redirect to select location page
     Given I'm logged in as user "BlackScorp"
     When I visit "/"
-    Then I should be redirected to "game/city/new"
+    Then I should be redirected to "/game/start"
 
 Scenario: No redirects
     Given following cities:
@@ -21,7 +21,7 @@ Scenario: No redirects
             | City2 | BlackScorp | 0 | 0 | false |
     And I'm logged in as user "BlackScorp"
     When I visit "/"
-    Then I should be redirected to "game/city"
+    Then I should be redirected to "/game/"
 
 Scenario: Redirect from new city screen
     Given following cities:
@@ -29,5 +29,5 @@ Scenario: Redirect from new city screen
             | City1 | BlackScorp | 0 | 0 | true |
             | City2 | BlackScorp | 0 | 0 | false |
     And I'm logged in as user "BlackScorp"
-    When I visit "game/city/new"
-    Then I should be redirected to "game/city"
+    When I visit "/game/start"
+    Then I should be redirected to "/game/city/list"
