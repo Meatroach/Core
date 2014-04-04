@@ -34,7 +34,8 @@ Scenario Outline: Specify direction
     Given I'm logged in as user "BlackScorp"
     And I'am on site "game/start"
     When I select location "<location>"
-    Then I should have a city in following area:
+    Then I should be redirected to "/game/city/list"
+    And I should have a city in following area:
         | minX | maxX | minY | maxY |
         | <minX> | <maxX> | <minY> | <maxY> |
     But not at following locations:

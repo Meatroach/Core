@@ -27,26 +27,45 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $this->userRepository->sync();
     }
 
-    private function deleteDummyCity() {
-        $city = $this->cityRepository->findByLocation(1, 1);
-        $this->cityRepository->delete($city);
+    private function deleteDummyCities() {
+        $owner  = $this->userRepository->findOneByUsername('TestUser');
+        $cities = $this->cityRepository->findAllByOwner($owner);
+
+        foreach ($cities as $city) {
+            $this->cityRepository->delete($city);
+        }
         $this->cityRepository->sync();
     }
 
-    private function createDummyCity() {
+    private function createDummyCities() {
         $user = $this->userRepository->findOneByUsername('TestUser');
-        $city = $this->cityRepository->create(1, 'TestCity', $user, 1, 1);
-        $this->cityRepository->add($city);
+        for ($y = 0; $y < 5; $y++) {
+            for ($x = 0; $x < 5; $x++) {
+                $cityId = $this->cityRepository->getUniqueId();
+                $city   = $this->cityRepository->create($cityId, 'TestCity' . $y . $x, $user, $y, $x);
+                $this->cityRepository->add($city);
+            }
+        }
+
         $this->cityRepository->sync();
+    }
+
+    public function testFindCityByOwner() {
+        $owner  = $this->userRepository->findOneByUsername('TestUser');
+        $cities = $this->cityRepository->findAllByOwner($owner);
+        $this->assertTrue(is_array($cities));
+        foreach ($cities as $city) {
+            $this->assertInstanceOf('\OpenTribes\Core\Entity\City', $city);
+        }
     }
 
     public function setUp() {
-        $env = 'develop';
+        $env                  = 'develop';
         $app                  = require __DIR__ . '/../../../bootstrap.php';
         $this->userRepository = new UserRepository($app['db']);
         $this->cityRepository = new CityRepository($app['db']);
         $this->createDummyUser();
-        $this->createDummyCity();
+        $this->createDummyCities();
     }
 
     public function testCityIsCreated() {
@@ -55,8 +74,8 @@ class CityTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
+        $this->deleteDummyCities();
         $this->deleteDummyUser();
-        $this->deleteDummyCity();
     }
 
 }

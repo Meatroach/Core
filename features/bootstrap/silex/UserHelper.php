@@ -122,6 +122,7 @@ class SilexUserHelper {
     }
 
     public function loginAs($username) {
+       
         $this->mink->getSession()->setCookie('username', $username);
         $this->loggedInUsername = $username;
     }

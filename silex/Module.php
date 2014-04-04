@@ -265,7 +265,7 @@ class Module implements ServiceProviderInterface {
         $game->match('/start', Controller::CITY . ':newAction')
                 ->value(RouteValue::SUCCESS_HANDLER, function() use($app) {
                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-                    return new RedirectResponse($baseUrl . 'city/list');
+                    return new RedirectResponse($baseUrl . 'game/city/list');
                 })
                 ->method('POST|GET')
                 ->value(RouteValue::TEMPLATE, 'pages/game/newcity');

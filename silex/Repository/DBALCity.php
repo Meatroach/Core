@@ -49,10 +49,11 @@ class DBALCity extends Repository implements CityInterface {
     public function findAllByOwner(UserEntity $owner) {
         $found = array();
         foreach ($this->cities as $city) {
-            if ($city === $owner) {
+            if ($city->getOwner() === $owner) {
                 $found[$city->getId()] = $city;
             }
         }
+        
         $result = $this->getQueryBuilder()
                         ->where('user_id = :user_id')
                         ->setParameter(':user_id', $owner->getId())->execute();

@@ -12,7 +12,8 @@ class MapTest extends \PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->mapRepository  = new MapRepository();
         $this->tileRepository = new TileRepository();
-        $map                  = $this->mapRepository->create('TestMap');
+        $mapId                = $this->mapRepository->getUniqueId();
+        $map                  = $this->mapRepository->create($mapId, 'TestMap');
         $tileId               = $this->tileRepository->getUniqueId();
         $tile                 = $this->tileRepository->create($tileId, 'TestAccessibleTile', true);
         $map->addTile($tile, "0", "0");

@@ -35,11 +35,14 @@ class City {
 
     public function listAction(Request $httpRequest) {
         $defaultUsername = $httpRequest->getSession()->get('username');
-        $username        = $httpRequest->get('username', $defaultUsername);
-
+        $username        = $httpRequest->get('username');
+        if (!$username) {
+            $username = $defaultUsername;
+        }
         $request           = new ViewCitiesRequest($username);
         $interactor        = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
         $response          = new ViewCitiesResponse;
+     
         $response->proceed = true;
         $response->failed  = !$interactor->process($request, $response);
         return $response;

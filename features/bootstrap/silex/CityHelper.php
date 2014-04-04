@@ -22,8 +22,10 @@ class SilexCityHelper {
      * @var \Behat\Mink\Element\DocumentElement
      */
     private $page;
+    private $x;
+    private $y;
 
-    public function __construct(Mink $mink, CityRepository $cityRepository, UserRepository $userRepository, $mapRepository) {
+    public function __construct(Mink $mink, CityRepository $cityRepository, UserRepository $userRepository, MapRepository $mapRepository) {
         $this->cityRepository = $cityRepository;
         $this->userRepository = $userRepository;
         $this->mapRepository  = $mapRepository;
@@ -45,6 +47,7 @@ class SilexCityHelper {
 
     public function selectLocation($direction, $username) {
         $this->loadPage();
+        $this->mink->getSession()->setCookie('username', $username);
         $this->page->selectFieldOption('direction', $direction);
         $this->page->pressButton('select');
     }
@@ -53,14 +56,28 @@ class SilexCityHelper {
         $this->loadPage();
         $spanX = $this->page->find('css', 'span.x');
         $spanY = $this->page->find('css', 'span.y');
-        
+
         $this->mink->assertSession()->statusCodeEquals(200);
-        
-        
-        assertGreaterThanOrEqual((int) $minX, $x);
-        assertLessThanOrEqual((int) $maxX, $x);
-        assertGreaterThanOrEqual((int) $minY, $y);
-        assertLessThanOrEqual((int) $maxY, $y);
+        assertNotNull($spanY, 'span class="y" not found');
+        assertNotNull($spanX, 'span class="x" not found');
+        $this->x = (int) $spanX->getText();
+        $this->y = (int) $spanY->getText();
+
+        assertGreaterThanOrEqual((int) $minX, $this->x);
+        assertLessThanOrEqual((int) $maxX, $this->x);
+        assertGreaterThanOrEqual((int) $minY, $this->y);
+        assertLessThanOrEqual((int) $maxY, $this->y);
+    }
+
+    public function assertCityIsNotAtLocations(array $locations) {
+
+        foreach ($locations as $location) {
+            $x           = $location[1];
+            $y           = $location[0];
+            $expectedKey = sprintf('Y%d/X%d', $y, $x);
+            $currentKey  = sprintf('Y%d/X%d', $this->y, $this->x);
+            assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
+        }
     }
 
     public function selectPosition($y, $x) {
