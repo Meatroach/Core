@@ -1,9 +1,11 @@
 <?php
 
-use OpenTribes\Core\Repository\City as CityRepository;
-use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Repository\Map as MapRepository;
+use Behat\Behat\Exception\PendingException;
+use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Mink;
+use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\Map as MapRepository;
+use OpenTribes\Core\Repository\User as UserRepository;
 
 /**
  * Description of CityHelper
@@ -19,7 +21,7 @@ class SilexCityHelper {
     private $sessionName;
 
     /**
-     * @var \Behat\Mink\Element\DocumentElement
+     * @var DocumentElement
      */
     private $page;
     private $x;
@@ -36,11 +38,11 @@ class SilexCityHelper {
     public function createDummyCity($name, $owner, $y, $x) {
         $cityId = $this->cityRepository->getUniqueId();
         $user   = $this->userRepository->findOneByUsername($owner);
-        if(!$user){
+        if (!$user) {
             throw new Exception("Dummy city could not be created, user not found");
         }
         $city = $this->cityRepository->create($cityId, $name, $user, $y, $x);
-        if(!$city){
+        if (!$city) {
             throw new Exception("Dummy city could not be created");
         }
         $this->cityRepository->add($city);
@@ -52,6 +54,7 @@ class SilexCityHelper {
 
     public function selectLocation($direction, $username) {
         $this->loadPage();
+
         $this->mink->getSession()->setCookie('username', $username);
         $this->page->selectFieldOption('direction', $direction);
         $this->page->pressButton('select');
@@ -90,7 +93,7 @@ class SilexCityHelper {
     }
 
     public function assertCityNotCreated() {
-        throw new Behat\Behat\Exception\PendingException;
+        throw new PendingException;
     }
 
     /**
@@ -98,23 +101,29 @@ class SilexCityHelper {
      * @param integer $x
      */
     public function assertCityExists($name, $owner, $y, $x) {
-        throw new Behat\Behat\Exception\PendingException;
+        $this->mink->assertSession()->statusCodeEquals(200);
+        
+        $this->mink->assertSession()->elementContains('css', 'span.x', $x);
+        $this->mink->assertSession()->elementContains('css', 'span.y', $y);
+        $this->mink->assertSession()->elementContains('css', 'span.owner', $owner);
+        $this->mink->assertSession()->elementContains('css', 'span.name', $name);
     }
 
     public function selectPosition($y, $x) {
-        throw new Behat\Behat\Exception\PendingException;
+        throw new PendingException;
     }
 
     public function assertCityHasBuilding($name, $level) {
-        throw new Behat\Behat\Exception\PendingException;
+        throw new PendingException;
     }
 
     public function createCityAsUser($y, $x, $username) {
-        throw new Behat\Behat\Exception\PendingException;
+        throw new PendingException;
     }
 
     public function listUsersCities($username) {
-        throw new Behat\Behat\Exception\PendingException;
+        $url = sprintf('game/city/list/%s', $username);
+        $this->mink->getSession()->visit($url);
     }
 
 }

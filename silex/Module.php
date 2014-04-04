@@ -195,53 +195,62 @@ class Module implements ServiceProviderInterface {
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
             $response    = $appResponse;
+
             if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                 $response = new JsonResponse($appResponse);
             }
             if ($request->attributes->has(RouteValue::SUB_REQUESTS)) {
                 $subRequests = $request->attributes->get(RouteValue::SUB_REQUESTS);
-                $tmpResponse = $appResponse;
-
-                foreach ($subRequests as $values) {
-                    $uri         = $values['url'];
-                    $method      = $values['method'];
-                    $param       = $values['param'];
-                    $subRequest  = Request::create($uri, $method, $param);
-                    $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-                    $content     = json_decode($subResponse->getContent());
-                    $appResponse = (object) array_merge((array) $appResponse, (array) $content);
-                }
-                $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
+                $appResponse = $this->handleSubRequests($subRequests, $appResponse, $app);
             }
             if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
-                if ($request->attributes->has(RouteValue::TEMPLATE)) {
-                    $template = $request->attributes->get(RouteValue::TEMPLATE);
-                    $body     = $app['mustache']->render($template, $appResponse);
-                    $response = new Response($body);
-                }
-
-                if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(RouteValue::SUCCESS_HANDLER)) {
-                    $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
-                    $result  = $handler($appResponse);
-                    if ($result) {
-                        $response = $result;
-                    }
-                }
-                if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
-                    $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
-                    $result  = $handler($appResponse);
-                    if ($result) {
-                        $response = $result;
-                    }
-                }
-            }
-
-            if (!$response->getExpires()) {
-                $response->setExpires(new DateTime());
+                $response = $this->createResponse($request, $appResponse, $app);
             }
 
             $event->setResponse($response);
         });
+    }
+
+    private function createResponse($request,$appResponse, $app ) {
+        if ($request->attributes->has(RouteValue::TEMPLATE)) {
+            $template = $request->attributes->get(RouteValue::TEMPLATE);
+           
+            $body     = $app['mustache']->render($template, $appResponse);
+            $response = new Response($body);
+            $response->setExpires(new DateTime());
+        }
+
+        if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(RouteValue::SUCCESS_HANDLER)) {
+            $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
+            $result  = $handler($appResponse);
+            if ($result) {
+                $response = $result;
+            }
+        }
+        if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
+            $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
+            $result  = $handler($appResponse);
+            if ($result) {
+                $response = $result;
+            }
+        }
+        return $response;
+    }
+
+    private function handleSubRequests(array $subRequests, $appResponse, $app) {
+        $tmpResponse = $appResponse;
+
+        foreach ($subRequests as $values) {
+            $uri         = $values['url'];
+            $method      = $values['method'];
+            $param       = $values['param'];
+            $subRequest  = Request::create($uri, $method, $param);
+            $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+            $content     = json_decode($subResponse->getContent());
+            $appResponse = (object) array_merge((array) $appResponse, (array) $content);
+        }
+        $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
+        return $appResponse;
     }
 
     /**
@@ -271,11 +280,6 @@ class Module implements ServiceProviderInterface {
 
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
                 ->value('username', null)
-                ->value(RouteValue::ERROR_HANDLER, function() use($app) {
-                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-
-                    return new RedirectResponse($baseUrl . 'game/start');
-                })
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
 
 
@@ -288,6 +292,7 @@ class Module implements ServiceProviderInterface {
                 })
                 ->method('POST|GET')
                 ->value(RouteValue::TEMPLATE, 'pages/game/newcity');
+
         $game->after(function() use($app) {
             $app[Repository::CITY]->sync();
         });

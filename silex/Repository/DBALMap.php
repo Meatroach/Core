@@ -84,5 +84,12 @@ class DBALMap implements MapRepository {
     public function getUniqueId() {
         return 1;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function get() {
+        return $this->map;
+    }
+    
 }

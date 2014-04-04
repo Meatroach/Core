@@ -18,7 +18,7 @@ Background:
 
 Scenario: List custom cities
     Given I'm logged in as user "BlackScorp"
-    When I visit "game/city/list"
+    When I visit "/game/city/list"
     Then I selected user "BlackScorp"
     And I should see following cities:
             | name | owner | x | y |
@@ -27,7 +27,7 @@ Scenario: List custom cities
 
 Scenario: List custom cities
     Given I'm logged in as user "BlackScorp"
-    When I visit "game/city/list/Owner1"
+    When I visit "/game/city/list/Owner1"
     Then I selected user "Owner1"
     And I should see following cities:
             | name | owner | x | y |
@@ -35,7 +35,7 @@ Scenario: List custom cities
 
 Scenario: empty city list
     Given I'm logged in as user "BlackScorp"
-    When I visit "game/city/list/Owner2"
+    When I visit "/game/city/list/Owner2"
     Then I selected user "Owner2"
     And I should see following cities:
             | name | owner | x | y |
