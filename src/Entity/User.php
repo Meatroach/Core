@@ -41,7 +41,7 @@ class User {
      * @param \string $password
      * @param \string $email
      */
-    function __construct($id, $username, $password, $email) {
+    public function __construct($id, $username, $password, $email) {
         $this->id       = (int) $id;
         $this->username = $username;
         $this->password = $password;
