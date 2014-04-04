@@ -101,12 +101,12 @@ class SilexCityHelper {
      * @param integer $x
      */
     public function assertCityExists($name, $owner, $y, $x) {
-        $this->mink->assertSession()->statusCodeEquals(200);
-        
-        $this->mink->assertSession()->elementContains('css', 'span.x', $x);
-        $this->mink->assertSession()->elementContains('css', 'span.y', $y);
-        $this->mink->assertSession()->elementContains('css', 'span.owner', $owner);
-        $this->mink->assertSession()->elementContains('css', 'span.name', $name);
+        $this->loadPage();
+        $this->page->hasContent($name);
+        $this->page->hasContent($owner);
+        $this->page->hasContent($y);
+        $this->page->hasContent($x);
+       
     }
 
     public function selectPosition($y, $x) {
@@ -122,8 +122,7 @@ class SilexCityHelper {
     }
 
     public function listUsersCities($username) {
-        $url = sprintf('game/city/list/%s', $username);
-        $this->mink->getSession()->visit($url);
+        
     }
 
 }

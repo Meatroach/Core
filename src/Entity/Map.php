@@ -10,9 +10,12 @@ namespace OpenTribes\Core\Entity;
 class Map {
 
     /**
-     * @var \string
+     * @var string
      */
     private $name;
+    /**
+     * @var integer
+     */
     private $id;
     /**
      * @var Tile[]
@@ -22,8 +25,8 @@ class Map {
     private $height  = 0;
 
     /**
-     * @param \integer $id
-     * @param \string $name
+     * @param integer $id
+     * @param string $name
      */
     public function __construct($id, $name) {
         $this->id   = $id;
@@ -31,9 +34,9 @@ class Map {
     }
 
     /**
-     * @param \OpenTribes\Core\Entity\Tile $tile
-     * @param \integer $y
-     * @param \integer $x
+     * @param Tile $tile
+     * @param integer $y
+     * @param integer $x
      */
     public function addTile(Tile $tile, $y, $x) {
         $y = (int) $y;
@@ -42,8 +45,8 @@ class Map {
     }
 
     /**
-     * @param \integer $y
-     * @param \integer $x
+     * @param integer $y
+     * @param integer $x
      * @return Tile
      */
     public function getTile($y, $x) {
@@ -54,7 +57,7 @@ class Map {
 
   
     /**
-     * @return \string
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -66,6 +69,7 @@ class Map {
     public function getTiles() {
         return $this->tiles;
     }
+    
     public function getWidth() {
         return $this->width;
     }
@@ -94,8 +98,8 @@ class Map {
     }
 
     /**
-     * @param string $y
-     * @param string $x
+     * @param integer $y
+     * @param integer $x
      */
     public function isAccessible($y, $x) {
         if ($this->getTile($y, $x)) {

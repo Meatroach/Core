@@ -172,7 +172,7 @@ class Module implements ServiceProviderInterface {
      */
     private function createRoutes(Application &$app) {
 
-        $app->get('/', function(Request $request) use($app) {
+        $app->get('/', function() use($app) {
             $response          = new stdClass();
             $response->failed  = false;
             $response->proceed = false;
