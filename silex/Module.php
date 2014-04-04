@@ -24,6 +24,7 @@ use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
 use Silex\Application;
+use Silex\ControllerCollection;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -245,7 +246,7 @@ class Module implements ServiceProviderInterface {
 
     /**
      * @param Application $app
-     * @return Application
+     * @return ControllerCollection
      */
     private function getCityRoutes(Application &$app) {
         $city = $app['controllers_factory'];
@@ -256,7 +257,7 @@ class Module implements ServiceProviderInterface {
 
     /**
      * @param Application $app
-     * @return Application
+     * @return ControllerCollection
      */
     private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
@@ -295,7 +296,7 @@ class Module implements ServiceProviderInterface {
 
     /**
      * @param Application $app
-     * @return Application
+     * @return ControllerCollection
      */
     private function getAssetsRoutes(Application &$app) {
         $assets = $app['controllers_factory'];
@@ -309,7 +310,7 @@ class Module implements ServiceProviderInterface {
     /**
      * 
      * @param Application $app
-     * @return Application
+     * @return ControllerCollection
      */
     private function getAccountRoutes(Application &$app) {
         $account = $app['controllers_factory'];

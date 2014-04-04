@@ -12,7 +12,9 @@ use Doctrine\DBAL\Connection;
  * @author BlackScorp<witalimik@web.de>
  */
 class DBALUser extends Repository implements UserRepositoryInterface {
-
+    /**
+     * @var Connection 
+     */
     private $db;
 
     /**

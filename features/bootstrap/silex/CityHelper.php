@@ -36,8 +36,13 @@ class SilexCityHelper {
     public function createDummyCity($name, $owner, $y, $x) {
         $cityId = $this->cityRepository->getUniqueId();
         $user   = $this->userRepository->findOneByUsername($owner);
-
+        if(!$user){
+            throw new Exception("Dummy city could not be created, user not found");
+        }
         $city = $this->cityRepository->create($cityId, $name, $user, $y, $x);
+        if(!$city){
+            throw new Exception("Dummy city could not be created");
+        }
         $this->cityRepository->add($city);
     }
 
