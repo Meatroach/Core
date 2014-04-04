@@ -190,7 +190,8 @@ class Module implements ServiceProviderInterface {
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
         $app->mount('/city', $this->getCityRoutes($app));
-        $app->on(KernelEvents::VIEW, function($event) use($app) {
+        $module = $this;
+        $app->on(KernelEvents::VIEW, function($event) use($app,$module) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
@@ -201,10 +202,10 @@ class Module implements ServiceProviderInterface {
             }
             if ($request->attributes->has(RouteValue::SUB_REQUESTS)) {
                 $subRequests = $request->attributes->get(RouteValue::SUB_REQUESTS);
-                $appResponse = $this->handleSubRequests($subRequests, $appResponse, $app);
+                $appResponse = $module->handleSubRequests($subRequests, $appResponse, $app);
             }
             if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
-                $response = $this->createResponse($request, $appResponse, $app);
+                $response = $module->createResponse($request, $appResponse, $app);
             }
 
             $event->setResponse($response);
