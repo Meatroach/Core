@@ -211,10 +211,10 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    private function createResponse($request,$appResponse, $app ) {
+    private function createResponse($request, $appResponse, $app) {
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
-           
+
             $body     = $app['mustache']->render($template, $appResponse);
             $response = new Response($body);
             $response->setExpires(new DateTime());
