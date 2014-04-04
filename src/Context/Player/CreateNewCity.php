@@ -28,7 +28,7 @@ class CreateNewCity {
     private $locationCalculator;
     
 
-    function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
+    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
         $this->cityRepository     = $cityRepository;
         $this->mapTilesRepository = $mapTilesRepository;
         $this->userRepository     = $userRepository;
