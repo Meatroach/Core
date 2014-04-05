@@ -11,7 +11,7 @@ class TileHelper {
 
     private $tileRepository;
 
-    function __construct(TileRepository $tileRepository) {
+    public function __construct(TileRepository $tileRepository) {
         $this->tileRepository = $tileRepository;
     }
 
