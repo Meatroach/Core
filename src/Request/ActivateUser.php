@@ -10,6 +10,7 @@ namespace OpenTribes\Core\Request;
 class ActivateUser {
     private $username;
     private $activationCode;
+    
     public function __construct($username, $activationCode) {
         $this->username       = $username;
         $this->activationCode = $activationCode;
