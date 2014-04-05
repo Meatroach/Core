@@ -56,7 +56,7 @@ class DBALMapTiles implements MapTilesRepository {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.accessible AS isAccessible', 'mt.x AS x', 'mt.y AS y')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
+        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 'mt.x AS x', 'mt.y AS y')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
     }
 
     private function load() {
