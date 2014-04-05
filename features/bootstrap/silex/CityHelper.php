@@ -8,6 +8,7 @@ use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Service\LocationCalculator;
+use PHPUnit_Framework_Assert as Test;
 /**
  * Description of CityHelper
  *
@@ -48,15 +49,15 @@ class SilexCityHelper extends CityHelper {
         $spanY = $this->page->find('css', 'span.y');
 
         $this->mink->assertSession()->statusCodeEquals(200);
-        assertNotNull($spanY, 'span class="y" not found');
-        assertNotNull($spanX, 'span class="x" not found');
+      Test::assertNotNull($spanY, 'span class="y" not found');
+      Test::assertNotNull($spanX, 'span class="x" not found');
         $this->x = (int) $spanX->getText();
         $this->y = (int) $spanY->getText();
 
-        assertGreaterThanOrEqual((int) $minX, $this->x);
-        assertLessThanOrEqual((int) $maxX, $this->x);
-        assertGreaterThanOrEqual((int) $minY, $this->y);
-        assertLessThanOrEqual((int) $maxY, $this->y);
+      Test::assertGreaterThanOrEqual((int) $minX, $this->x);
+      Test::assertLessThanOrEqual((int) $maxX, $this->x);
+      Test::assertGreaterThanOrEqual((int) $minY, $this->y);
+      Test::assertLessThanOrEqual((int) $maxY, $this->y);
     }
 
     public function assertCityIsNotAtLocations(array $locations) {
@@ -66,7 +67,7 @@ class SilexCityHelper extends CityHelper {
             $y           = $location[0];
             $expectedKey = sprintf('Y%d/X%d', $y, $x);
             $currentKey  = sprintf('Y%d/X%d', $this->y, $this->x);
-            assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
+          Test::assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
         }
     }
 

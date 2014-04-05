@@ -51,19 +51,19 @@ abstract class Repository {
         $this->added[$id] = $id;
     }
     /**
-     * @return array
+     * @return integer[]
      */
     protected function getAdded() {
         return $this->added;
     }
     /**
-     * @return array
+     * @return integer[]
      */
     protected function getModified() {
         return $this->modified;
     }
     /**
-     * @return array
+     * @return integer[]
      */
     protected function getDeleted() {
         return $this->deleted;
