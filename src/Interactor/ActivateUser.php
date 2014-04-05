@@ -53,6 +53,9 @@ class ActivateUser {
             return false;
         }
         $user->setActivationCode(null);
+        if(!$user){
+            return false;
+        }
         $this->userRepository->replace($user);
         $response->username = $user->getUsername();
         return true;

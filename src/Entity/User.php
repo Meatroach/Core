@@ -10,36 +10,36 @@ namespace OpenTribes\Core\Entity;
 class User {
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $id;
 
     /**
-     * @var \string
+     * @var string
      */
     private $username;
 
     /**
-     * @var \string
+     * @var string
      */
     private $password;
 
     /**
-     * @var \string
+     * @var string
      */
     private $email;
 
     /**
-     * @var \string
+     * @var string
      */
     private $activationCode;
 
     /**
      *
-     * @param \integer $id
-     * @param \string $username
-     * @param \string $password
-     * @param \string $email
+     * @param integer $id
+     * @param string $username
+     * @param string $password
+     * @param string $email
      */
     public function __construct($id, $username, $password, $email) {
         $this->id       = (int) $id;
@@ -49,42 +49,42 @@ class User {
     }
 
     /**
-     * @return \string|null
+     * @return string|null
      */
     public function getActivationCode() {
         return $this->activationCode;
     }
 
     /**
-     * @param \string|null $activationCode
+     * @param string|null $activationCode
      */
     public function setActivationCode($activationCode) {
         $this->activationCode = $activationCode;
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @return \string
+     * @return string
      */
     public function getUsername() {
         return $this->username;
     }
 
     /**
-     * @return \string
+     * @return string
      */
     public function getPassword() {
         return $this->password;
     }
 
     /**
-     * @return \string
+     * @return string
      */
     public function getEmail() {
         return $this->email;

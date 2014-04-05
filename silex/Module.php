@@ -210,9 +210,13 @@ class Module implements ServiceProviderInterface {
     }
 
     /**
+     * 
+     * @param Request $request
+     * @param mixed $appResponse
      * @param Application $app
+     * @return Response
      */
-    public function createResponse($request, $appResponse, $app) {
+    public function createResponse(Request $request, $appResponse, Application $app) {
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
 
@@ -294,7 +298,7 @@ class Module implements ServiceProviderInterface {
                     $response       = $cityController->listAction($request);
                     $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
                     $cityListUrl    = $baseUrl . 'game/city/list';
-     
+
                     if (!$response->failed) {
                         return new RedirectResponse($cityListUrl);
                     }

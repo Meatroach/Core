@@ -45,6 +45,9 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     private function createDummyCities() {
         $user = $this->userRepository->findOneByUsername('TestUser');
+        if(!$user){
+            throw new Exception("User not found");
+        }
         for ($y = 0; $y < 5; $y++) {
             for ($x = 0; $x < 5; $x++) {
                 $cityId = $this->cityRepository->getUniqueId();
@@ -58,6 +61,9 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     public function testFindCityByOwner() {
         $owner  = $this->userRepository->findOneByUsername('TestUser');
+        if(!$owner){
+            throw new Exception("User not found");
+        }
         $cities = $this->cityRepository->findAllByOwner($owner);
         $this->assertTrue(is_array($cities));
         foreach ($cities as $city) {

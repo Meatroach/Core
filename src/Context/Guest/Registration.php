@@ -51,7 +51,9 @@ class Registration {
         $createUserInteractor->proccess($createUserRequest, $createUserResponse);
         $activationCode = $this->activationCodeGenerator->create();
         $user           = $this->userRepository->findOneByUsername($createUserResponse->username);
-        
+        if(!$user){
+            return false;
+        }
         $user->setActivationCode($activationCode);
         $this->userRepository->add($user);
 
