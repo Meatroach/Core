@@ -41,8 +41,8 @@ class City {
      * @param integer $id
      * @param string $name
      * @param User $owner
-     * @param integer|string $y
-     * @param integer|string $x
+     * @param integer $y
+     * @param integer $x
      */
     public function __construct($id, $name, User $owner, $y, $x) {
         $this->id    = (int) $id;
