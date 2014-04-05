@@ -18,7 +18,7 @@ class CreateCity {
     /**
      * @param string $defaultCityName
      */
-    function __construct($y, $x, $username, $defaultCityName) {
+    public function __construct($y, $x, $username, $defaultCityName) {
         $this->x               = $x;
         $this->y               = $y;
         $this->username        = $username;

@@ -23,7 +23,7 @@ class Registration {
     private $passwordHasher;
     private $activationCodeGenerator;
 
-    function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
+    public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
         $this->passwordHasher          = $passwordHasher;

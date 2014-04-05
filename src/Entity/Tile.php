@@ -29,7 +29,7 @@ class Tile {
      * @param \string $name
      * @param \boolean $accessible
      */
-    function __construct($id, $name, $accessible) {
+    public function __construct($id, $name, $accessible) {
         $this->name       = $name;
         $this->accessible = (bool) $accessible;
         $this->id         = (int) $id;

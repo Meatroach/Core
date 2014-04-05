@@ -13,7 +13,7 @@ class CreateUser {
     private $password;
     private $email;
 
-    function __construct($username, $password, $email) {
+    public function __construct($username, $password, $email) {
         $this->username = $username;
         $this->password = $password;
         $this->email    = $email;

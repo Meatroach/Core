@@ -19,7 +19,7 @@ class Registration{
     /**
      * @param boolean $termsAndConditions
      */
-    function __construct($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
+    public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
         $this->username           = $username;
         $this->email              = $email;
         $this->emailConfirm       = $emailConfirm;

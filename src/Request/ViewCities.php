@@ -9,7 +9,7 @@ namespace OpenTribes\Core\Request;
  */
 class ViewCities {
    private $username;
-   function __construct($username) {
+   public function __construct($username) {
        $this->username = $username;
    }
    public function getUsername() {

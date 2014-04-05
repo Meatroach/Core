@@ -16,7 +16,7 @@ class CreateNewCity {
     /**
      * @param string $defaultCityName
      */
-    function __construct($username, $direction, $defaultCityName) {
+    public function __construct($username, $direction, $defaultCityName) {
         $this->username        = $username;
         $this->direction       = $direction;
         $this->defaultCityName = $defaultCityName;
