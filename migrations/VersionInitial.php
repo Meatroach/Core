@@ -33,14 +33,14 @@ class VersionInitial extends AbstractMigration {
         $this->table->setPrimaryKey(array("id"));
         $userTable   = $this->table;
 
-        $this->table = $schema->createTable('roles', $schema);
+        $this->table = $schema->createTable('roles');
         $this->table->addColumn('id', Type::INTEGER);
         $this->table->addColumn('name', Type::STRING, array('length' => 32));
         $this->table->addColumn('description', Type::TEXT);
         $this->table->setPrimaryKey(array("id"));
         $rolesTable  = $this->table;
 
-        $this->table = $schema->createTable('user_roles', $schema);
+        $this->table = $schema->createTable('user_roles');
         $this->table->addColumn('user_id', Type::INTEGER);
         $this->table->addColumn('role_id', Type::INTEGER);
         $this->table->setPrimaryKey(array('user_id', 'role_id'));
