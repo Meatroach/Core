@@ -6,18 +6,16 @@ use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Service\ActivationCodeGenerator;
 use OpenTribes\Core\Service\PasswordHasher;
 use OpenTribes\Core\Validator\Registration as RegistrationValidator;
+use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
 
-
-require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
-
-class SilexUserHelper {
+class SilexUserHelper extends DomainUserHelper {
 
     private $userRepository;
     private $registrationValidator;
     private $passwordHasher;
     private $activationCodeGenerator;
     private $user;
- 
+
     /**
      * @var DocumentElement
      */
@@ -26,14 +24,14 @@ class SilexUserHelper {
     private $sessionName;
     private $loggedInUsername;
 
-    public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
+    public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
         $this->passwordHasher          = $passwordHasher;
         $this->activationCodeGenerator = $activationCodeGenerator;
+        parent::__construct($userRepository, $registrationValidator, $passwordHasher, $activationCodeGenerator, $activateUserValidator);
         $this->mink                    = $mink;
         $this->sessionName             = $this->mink->getDefaultSessionName();
-
     }
 
     private function loadPage() {
@@ -72,10 +70,6 @@ class SilexUserHelper {
         $this->loadPage();
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
-    }
-
-    public function processActivateAccount($username, $activationCode) {
-        
     }
 
     public function getActivateAccountResponse() {
@@ -119,19 +113,11 @@ class SilexUserHelper {
         return $response;
     }
 
-    public function activateUser($username) {
-        $user = $this->userRepository->findOneByUsername($username);
-        $user->setActivationCode(null);
-        $this->userRepository->replace($user);
-    }
-
     public function loginAs($username) {
-       
+
         $this->mink->getSession()->setCookie('username', $username);
         $this->loggedInUsername = $username;
     }
-
-    
 
     public function getLoggedInUsername() {
         return $this->loggedInUsername;

@@ -11,13 +11,13 @@ use OpenTribes\Core\Entity\Map as MapEntity;
 interface Map {
 
     /**
-     * @param integer $id
+     * @param \integer $id
      * @return MapEntity
      */
     public function create($id, $name);
 
     /**
-     * @return integer
+     * @return \integer
      */
     public function getUniqueId();
 
@@ -43,7 +43,7 @@ interface Map {
 
 
     /**
-     * @param string $name
+     * @param \string $name
      * @return MapEntity
      */
     public function findOneByName($name);

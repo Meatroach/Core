@@ -11,8 +11,9 @@ use OpenTribes\Core\Entity\Tile as TileEntity;
 interface Tile {
 
     /**
-     * @param integer $id
-     * @param boolean $isAccessible
+     * @param \integer $id
+     * @param \string $name
+     * @param \boolean $isAccessible
      * @return TileEntity
      */
     public function create($id, $name, $isAccessible);
@@ -23,12 +24,12 @@ interface Tile {
     public function add(TileEntity $tile);
 
     /**
-     * @return integer
+     * @return \integer
      */
     public function getUniqueId();
 
     /**
-     * @return TileEntity|null
+     * @return TileEntity|\null
      */
     public function findByName($name);
 

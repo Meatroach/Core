@@ -112,13 +112,6 @@ class DBALMap extends Repository implements MapRepository {
     /**
      * {@inheritDoc}
      */
-    public function get() {
-        return $this->map;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function findOneByName($name) {
 
         foreach ($this->maps as $map) {

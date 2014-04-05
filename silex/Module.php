@@ -217,11 +217,12 @@ class Module implements ServiceProviderInterface {
      * @return Response
      */
     public function createResponse(Request $request, $appResponse, Application $app) {
+        $response = new Response();
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
 
-            $body     = $app['mustache']->render($template, $appResponse);
-            $response = new Response($body);
+            $body = $app['mustache']->render($template, $appResponse);
+            $response->setContent($body);
             $response->setExpires(new DateTime());
         }
 

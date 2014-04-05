@@ -28,24 +28,25 @@ class SilexContext extends FeatureContext {
         $this->mapRepository           = $app[Repository::MAP];
         $this->mapTilesRepository      = $app[Repository::MAP_TILES];
         $this->cityRepository          = $app[Repository::CITY];
+        $this->activateUserValidator   = $app[Validator::ACTIVATE];
         $app['session.test']           = true;
         $mink->setDefaultSessionName('browserkit');
         $this->mink                    = $mink;
 
-        $this->userHelper = new SilexUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+        $this->userHelper = new SilexUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
 
-        $this->cityHelper    = new SilexCityHelper($this->mink, $this->cityRepository, $this->mapTilesRepository,$this->userRepository,$this->locationCalculator,$this->cityBuildingsRepository,$this->buildingRepository);
+        $this->cityHelper    = new SilexCityHelper($this->mink, $this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator, $this->cityBuildingsRepository, $this->buildingRepository);
         $this->mapHelper     = new MapHelper($this->mapRepository, $this->tileRepository, $this->mapTilesRepository);
         $this->messageHelper = new SilexMessageHelper($this->mink);
     }
 
     /** @BeforeScenario */
-    public function before($event) {
+    public function before() {
         
     }
 
     /** @AfterScenario */
-    public function after($event) {
+    public function after() {
 
         $this->userRepository->flush();
         $this->cityRepository->flush();
