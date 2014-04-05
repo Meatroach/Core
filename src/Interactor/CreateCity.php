@@ -36,7 +36,7 @@ class CreateCity {
      * @param \OpenTribes\Core\Repository\MapTiles $mapTilesRepository
      * @param \OpenTribes\Core\Repository\User $userRepository
      */
-    function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository) {
+    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository) {
         $this->cityRepository = $cityRepository;
         $this->userRepository = $userRepository;
         $this->mapTilesRepository= $mapTilesRepository;
