@@ -11,6 +11,7 @@ use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
 use OpenTribes\Core\Silex\Controller\Assets;
 use OpenTribes\Core\Silex\Controller\City;
+use OpenTribes\Core\Silex\Controller\Map;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
@@ -19,6 +20,7 @@ use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
+use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
@@ -91,6 +93,9 @@ class Module implements ServiceProviderInterface {
         $app[Controller::CITY] = $app->share(function() use($app) {
             return new City($app[Repository::USER], $app[Repository::CITY], $app[Repository::MAP_TILES], $app[Service::LOCATION_CALCULATOR]);
         });
+        $app[Controller::MAP] = $app->share(function() use($app) {
+            return new Map($app[Repository::MAP_TILES], $app[Repository::CITY],$app[Service::MAP_CALCULATOR]);
+        });
     }
 
     private function createServices(Application &$app) {
@@ -103,6 +108,9 @@ class Module implements ServiceProviderInterface {
         });
         $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app) {
             return new LocationCalculator;
+        });
+        $app[Service::MAP_CALCULATOR] = $app->share(function() use($app){
+           return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
         });
     }
 
@@ -269,7 +277,7 @@ class Module implements ServiceProviderInterface {
     private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
         $game->before(function(Request $request) use($app) {
-
+           
             $cityController = $app[Controller::CITY];
             $response       = $cityController->listAction($request);
             $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
@@ -278,6 +286,11 @@ class Module implements ServiceProviderInterface {
                 return new RedirectResponse($startUrl);
             }
         });
+        $game->get('/map/{y}/{x}', Controller::MAP . ':viewAction')
+                ->value('y', null)
+                ->value('x', null)
+                ->value(RouteValue::TEMPLATE, 'pages/game/map');
+
         $game->get('/', function(Request $request) {
             $response           = new stdClass();
             $response->proceed  = false;

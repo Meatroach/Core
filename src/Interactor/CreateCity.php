@@ -73,6 +73,7 @@ class CreateCity {
         $id = $this->cityRepository->getUniqueId();
 
         $city           = $this->cityRepository->create($id, $name, $owner, $y, $x);
+        $city->setMain(true);
         $this->cityRepository->add($city);
         $response->city = new CityView($city);
         return true;

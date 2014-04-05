@@ -33,10 +33,17 @@ class City {
      * @var integer
      */
     private $y;
+
+    /**
+     * @var boolean
+     */
+    private $isMain    = false;
+
     /**
      * @var Building[]
      */
     private $buildings = array();
+
     /**
      * @param integer $id
      * @param string $name
@@ -86,15 +93,25 @@ class City {
     public function getY() {
         return $this->y;
     }
-    public function addBuilding(Building $building){
-        $this->buildings[]=$building;
-    }
-    
-    public function hasBuildings(){
-        return count($this->buildings)>0;
+
+    public function addBuilding(Building $building) {
+        $this->buildings[] = $building;
     }
 
-    public function getBuildings(){
+    public function hasBuildings() {
+        return count($this->buildings) > 0;
+    }
+
+    public function getBuildings() {
         return $this->buildings;
     }
+
+    public function isMain() {
+        return $this->isMain;
+    }
+
+    public function setMain($isMain) {
+        $this->isMain = $isMain;
+    }
+
 }

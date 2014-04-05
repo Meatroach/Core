@@ -9,5 +9,9 @@ return array(
         'helpers' => array(
             'baseUrl' => '/'
         )
+    ),
+    'map.options'=>array(
+        'width'=>900,
+        'height'=>900
     )
 );

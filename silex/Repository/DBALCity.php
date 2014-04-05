@@ -214,4 +214,15 @@ class DBALCity extends Repository implements CityInterface {
         return $this->db->exec("DELETE FROM cities");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function findMainByUsername($username) {
+        foreach($this->cities as $city){
+            if($city->getOwner()->getUsername() === $username && $city->isMain()){
+                return $city;
+            }
+        }
+    }
+
 }

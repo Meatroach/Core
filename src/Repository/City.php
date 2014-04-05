@@ -81,4 +81,10 @@ interface City {
      * @return null|integer
      */
     public function flush();
+    
+    /**
+     * @param string $username
+     * @return CityEntity
+     */
+    public function findMainByUsername($username);
 }

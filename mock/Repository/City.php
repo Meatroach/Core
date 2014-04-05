@@ -113,4 +113,15 @@ class City implements CityRepository {
         $this->cities = array();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function findMainByUsername($username) {
+        foreach ($this->cities as $city) {
+            if ($city->getOwner()->getUsername() === $username && $city->isMain()) {
+                return $city;
+            }
+        }
+    }
+
 }
