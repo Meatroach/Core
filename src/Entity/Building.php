@@ -40,7 +40,7 @@ class Building {
      * @param integer $minimumLevel
      * @param integer $maximumLevel
      */
-    function __construct($id, $name, $minimumLevel, $maximumLevel) {
+    public function __construct($id, $name, $minimumLevel, $maximumLevel) {
         $this->id           = (int) $id;
         $this->name         = $name;
         $this->minimumLevel = (int) $minimumLevel;
