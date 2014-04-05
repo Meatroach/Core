@@ -12,6 +12,7 @@ interface PasswordHasher {
      */
     public function hash($rawPassword);
     /**
+     * @param string $hash
      * @return boolean verify password 
      */
     public function verify($hash, $rawPassword);

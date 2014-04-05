@@ -35,7 +35,7 @@ class Login {
     /**
      * @param \OpenTribes\Core\Request\Login $request
      * @param \OpenTribes\Core\Response\Login $response
-     * @return \boolean
+     * @return boolean
      */
     public function process(LoginRequest $request,LoginResponse $response){
         $response->username = $request->getUsername();

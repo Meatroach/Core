@@ -30,6 +30,9 @@ class CreateCity {
         return $this->defaultCityName;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }

@@ -15,6 +15,10 @@ class ActivateUser {
         $this->username       = $username;
         $this->activationCode = $activationCode;
     }
+
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }

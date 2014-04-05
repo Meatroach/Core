@@ -12,6 +12,10 @@ class ViewCities {
    public function __construct($username) {
        $this->username = $username;
    }
+
+   /**
+    * @return string
+    */
    public function getUsername() {
        return $this->username;
    }

@@ -17,6 +17,9 @@ class Login {
         $this->password = $password;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }

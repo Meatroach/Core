@@ -25,16 +25,25 @@ abstract class Repository {
         }
     }
 
+    /**
+     * @param integer $id
+     */
     protected function markDeleted($id) {
         $this->reassign($id);
         $this->deleted[$id] = $id;
     }
 
+    /**
+     * @param integer $id
+     */
     protected function markModified($id) {
         $this->reassign($id);
         $this->modified[$id] = $id;
     }
 
+    /**
+     * @param integer $id
+     */
     protected function markAdded($id) {
         $this->reassign($id);
         $this->added[$id] = $id;
