@@ -51,7 +51,8 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         for ($y = 0; $y < 5; $y++) {
             for ($x = 0; $x < 5; $x++) {
                 $cityId = $this->cityRepository->getUniqueId();
-                $city   = $this->cityRepository->create($cityId, 'TestCity' . $y . $x, $user, $y, $x);
+                $name = sprintf('TestCity%d%d',$y,$x);
+                $city   = $this->cityRepository->create($cityId, $name, $user, $y, $x);
                 $this->cityRepository->add($city);
             }
         }
