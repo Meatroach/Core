@@ -13,17 +13,15 @@ The Game is licenced under MIT
 
 Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TODO&milestone=1&page=1&sort=created&state=open)
 
-##[Api Documentation](http://opentribes.github.io/API/)
+#[Api Documentation](http://opentribes.github.io/API/)
 
-##[Demo Site](http://ot.blackscorp.de/)
+#[Demo Site](http://ot.blackscorp.de/)
 
-##[Current Front-End Tests](http://opentribes.github.io/API/report-silex.html)
+#[Current Front-End Tests](http://opentribes.github.io/API/report-silex.html)
 
-##[Current Interactor Tests](http://opentribes.github.io/API/report.html)
+#[Current Interactor Tests](http://opentribes.github.io/API/report.html)
 
-##[Current Interactor Tests](http://opentribes.github.io/API/report.html)
-
-##[PHPUnit Testcoverage](http://opentribes.github.io/API/coverage/)
+#[PHPUnit Testcoverage](http://opentribes.github.io/API/coverage/)
 
 ##installation
 
@@ -39,13 +37,17 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 
 - create configuration
 
-`cli/index.php create-configuration develop`
+`cli/config.php create develop`
 
 - edit files in config/develop
 
 - install database
 
-`cli/index.php install-schema develop`
+`cli/migration.php migrations:migrate develop`
+
+- create dummy map
+
+`cli/config.php create-dummy-map develop`
 
 - start server
 
@@ -63,7 +65,7 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 
 - installation
 
-`make install`
+`make install-dev`
 
 - test
 
