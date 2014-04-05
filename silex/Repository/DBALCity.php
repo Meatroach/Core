@@ -50,15 +50,15 @@ class DBALCity extends Repository implements CityInterface {
                 return true;
             }
         }
-        $result       = $queryBuilder = $this->getQueryBuilder()
+        $result = $this->getQueryBuilder()
                         ->where('x = :x AND y = :y')
                         ->setParameters(array(
                             ':y' => $y,
                             ':x' => $x
                         ))->execute();
 
-        $row = $result->fetch(\PDO::FETCH_OBJ);
-       
+        $row = $result->fetch(PDO::FETCH_OBJ);
+
         return (bool) $row;
     }
 

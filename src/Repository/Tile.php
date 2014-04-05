@@ -29,6 +29,7 @@ interface Tile {
     public function getUniqueId();
 
     /**
+     * @param string $name
      * @return TileEntity|null
      */
     public function findByName($name);

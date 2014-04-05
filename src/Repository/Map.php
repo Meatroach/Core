@@ -12,6 +12,7 @@ interface Map {
 
     /**
      * @param integer $id
+     * @param string $name
      * @return MapEntity
      */
     public function create($id, $name);

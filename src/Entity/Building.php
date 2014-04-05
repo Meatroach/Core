@@ -10,27 +10,27 @@ namespace OpenTribes\Core\Entity;
 class Building {
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $id;
 
     /**
-     * @var \string
+     * @var string
      */
     private $name;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $level;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $minimumLevel;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $maximumLevel;
 

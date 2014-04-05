@@ -44,10 +44,12 @@ interface User {
      */
     public function sync();
     /**
+     * @param string $email
      * @return UserEntity|null
      */
     public function findOneByEmail($email);
     /**
+     * @param string $username
      * @return UserEntity|null
      */
     public function findOneByUsername($username);

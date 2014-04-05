@@ -22,8 +22,8 @@ interface City {
      * @param integer $id
      * @param string $name
      * @param UserEntity $owner
-     * @param interger $y
-     * @param integer $x
+     * @param interger|string $y
+     * @param integer|string $x
      * @return CityEntity
      */
     public function create($id, $name, UserEntity $owner, $y, $x);
@@ -37,8 +37,8 @@ interface City {
 
     /**
      * check if city exists at location
-     * @param integer $y
-     * @param interger $x
+     * @param integer|string $y
+     * @param interger|string $x
      * @return boolean
      */
     public function cityExistsAt($y, $x);
@@ -52,6 +52,7 @@ interface City {
     public function findByLocation($y, $x);
     
     /**
+     * @param CityEntity $city
      * @return void
      */
     public function replace(CityEntity $city);

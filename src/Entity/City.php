@@ -10,12 +10,12 @@ namespace OpenTribes\Core\Entity;
 class City {
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $id;
 
     /**
-     * @var \string
+     * @var string
      */
     private $name;
 
@@ -25,12 +25,12 @@ class City {
     private $owner;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $x;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $y;
     /**

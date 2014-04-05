@@ -10,24 +10,24 @@ namespace OpenTribes\Core\Entity;
 class Tile {
 
     /**
-     * @var \string
+     * @var string
      */
     private $name;
 
     /**
-     * @var \boolean
+     * @var boolean
      */
     private $accessible;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $id;
 
     /**
-     * @param \integer $id
-     * @param \string $name
-     * @param \boolean $accessible
+     * @param integer $id
+     * @param string $name
+     * @param boolean $accessible
      */
     public function __construct($id, $name, $accessible) {
         $this->name       = $name;
@@ -36,21 +36,21 @@ class Tile {
     }
 
     /**
-     * @return \string
+     * @return string
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @return \boolean
+     * @return boolean
      */
     public function isAccessible() {
         return $this->accessible;
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getId() {
         return $this->id;
