@@ -10,7 +10,7 @@ class MapHelper {
     private $tileRepository;
     private $mapTilesRepository;
 
-    function __construct(MapRepository $mapRepository, TileRepository $tileRepository, MapTilesRepository $mapTilesRepository) {
+    public function __construct(MapRepository $mapRepository, TileRepository $tileRepository, MapTilesRepository $mapTilesRepository) {
         $this->mapRepository  = $mapRepository;
         $this->tileRepository = $tileRepository;
         $this->mapTilesRepository = $mapTilesRepository;
