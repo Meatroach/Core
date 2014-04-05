@@ -4,8 +4,6 @@ namespace OpenTribes\Core\Repository;
 
 use OpenTribes\Core\Entity\Map as MapEntity;
 
-
-
 /**
  *
  * @author Witali
@@ -22,4 +20,14 @@ interface MapTiles {
      * @return void
      */
     public function add(MapEntity $map);
+
+    /**
+     * @return TileEntity
+     */
+    public function getDefaultTile();
+
+    /**
+     * @return TileEntity[]
+     */
+    public function findAllInArea(array $area);
 }

@@ -94,7 +94,7 @@ class Module implements ServiceProviderInterface {
             return new City($app[Repository::USER], $app[Repository::CITY], $app[Repository::MAP_TILES], $app[Service::LOCATION_CALCULATOR]);
         });
         $app[Controller::MAP] = $app->share(function() use($app) {
-            return new Map($app[Repository::MAP_TILES], $app[Repository::CITY],$app[Service::MAP_CALCULATOR]);
+            return new Map($app[Repository::MAP_TILES], $app[Repository::CITY], $app[Service::MAP_CALCULATOR]);
         });
     }
 
@@ -109,8 +109,8 @@ class Module implements ServiceProviderInterface {
         $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app) {
             return new LocationCalculator;
         });
-        $app[Service::MAP_CALCULATOR] = $app->share(function() use($app){
-           return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
+        $app[Service::MAP_CALCULATOR] = $app->share(function() use($app) {
+            return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
         });
     }
 
@@ -277,7 +277,7 @@ class Module implements ServiceProviderInterface {
     private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
         $game->before(function(Request $request) use($app) {
-           
+
             $cityController = $app[Controller::CITY];
             $response       = $cityController->listAction($request);
             $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
@@ -289,6 +289,8 @@ class Module implements ServiceProviderInterface {
         $game->get('/map/{y}/{x}', Controller::MAP . ':viewAction')
                 ->value('y', null)
                 ->value('x', null)
+                ->value('width', $app['map.options']['width'])
+                ->value('height', $app['map.options']['height'])
                 ->value(RouteValue::TEMPLATE, 'pages/game/map');
 
         $game->get('/', function(Request $request) {

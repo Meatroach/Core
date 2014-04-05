@@ -28,12 +28,15 @@ class Map {
     }
 
     public function viewAction(Request $httpRequest) {
-        $y        = $httpRequest->get('y');
-        $x        = $httpRequest->get('x');
-        $username = $httpRequest->getSession()->get('username');
-        $request  = new ViewMapRequest($y, $x, $username);
-        $response = new ViewMapResponse;
-        $context  = new ViewMapContext($this->mapTilesRepository, $this->cityRepository, $this->mapCalculator);
+        $y                = $httpRequest->get('y');
+        $x                = $httpRequest->get('x');
+        $username         = $httpRequest->getSession()->get('username');
+        
+        $width            = $httpRequest->get('width');
+        $height           = $httpRequest->get('height');
+        $request          = new ViewMapRequest($y, $x, $username, $height, $width);
+        $response         = new ViewMapResponse;
+        $context          = new ViewMapContext($this->mapTilesRepository, $this->cityRepository, $this->mapCalculator);
         $response->failed = $context->process($request, $response);
         return $response;
     }

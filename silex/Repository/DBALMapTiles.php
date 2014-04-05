@@ -27,6 +27,11 @@ class DBALMapTiles implements MapTilesRepository {
     private $map;
 
     /**
+     * @var TileEntity
+     */
+    private $defaultTile;
+
+    /**
      * @param Connection $db
      */
     public function __construct(Connection $db) {
@@ -56,7 +61,19 @@ class DBALMapTiles implements MapTilesRepository {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 'mt.x AS x', 'mt.y AS y')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
+        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 't.is_default AS isDefault', 'mt.x AS x', 'mt.y AS y', 't.width AS tileWidth', 't.height as tileHeight')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
+    }
+
+    private function loadDefaultTile() {
+        $queryBuilder      = $this->db->createQueryBuilder();
+        $result            = $queryBuilder->select('t.id', 't.name', 't.is_accessible AS isAccessible', 't.width', 't.height', 't.is_default AS isDefault')
+                        ->from('tiles', 't')
+                        ->where('is_default = 1')->execute();
+        $row               = $result->fetch(PDO::FETCH_OBJ);
+        $this->defaultTile = new TileEntity($row->id, $row->name, $row->isAccessible);
+        $this->defaultTile->setDefault($row->isDefault);
+        $this->defaultTile->setHeight($row->height);
+        $this->defaultTile->setWidth($row->width);
     }
 
     private function load() {
@@ -65,7 +82,7 @@ class DBALMapTiles implements MapTilesRepository {
         $rows   = $result->fetchAll(PDO::FETCH_OBJ);
         $tiles  = array();
         $map    = $this->map;
-    
+
 
         foreach ($rows as $row) {
 
@@ -77,11 +94,25 @@ class DBALMapTiles implements MapTilesRepository {
             $tile = isset($tiles[$row->tileId]) ? $tiles[$row->tileId] : null;
             if (!$tile) {
                 $tile                  = new TileEntity($row->tileId, $row->tileName, $row->isAccessible);
+                $tile->setDefault($row->isDefault);
+                $tile->setHeight($row->tileHeight);
+                $tile->setWidth($row->tileWidth);
                 $tiles[$tile->getId()] = $tile;
             }
             $map->addTile($tile, $row->y, $row->x);
             $this->add($map);
         }
+    }
+
+    public function getDefaultTile() {
+        if (!$this->defaultTile) {
+            $this->loadDefaultTile();
+        }
+        return $this->defaultTile;
+    }
+
+    public function findAllInArea(array $area) {
+        ;
     }
 
 }

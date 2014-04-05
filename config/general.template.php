@@ -11,7 +11,7 @@ return array(
         )
     ),
     'map.options'=>array(
-        'width'=>900,
-        'height'=>900
+        'width'=>1024,
+        'height'=>680
     )
 );

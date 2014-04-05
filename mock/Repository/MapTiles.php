@@ -30,5 +30,10 @@ class MapTiles implements MapTilesRepository {
     public function getMap() {
         return $this->map;
     }
-
+    public function getDefaultTile() {
+        ;
+    }
+    public function findAllInArea(array $area) {
+        ;
+    }
 }

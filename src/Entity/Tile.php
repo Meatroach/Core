@@ -23,7 +23,9 @@ class Tile {
      * @var integer
      */
     private $id;
-
+    private $default = false;
+    private $width;
+    private $height;
     /**
      * @param integer $id
      * @param string $name
@@ -55,5 +57,29 @@ class Tile {
     public function getId() {
         return $this->id;
     }
+
+    public function isDefault() {
+        return $this->default;
+    }
+
+    public function setDefault($default) {
+        $this->default = (bool) $default;
+    }
+    public function getWidth() {
+        return $this->width;
+    }
+
+    public function getHeight() {
+        return $this->height;
+    }
+
+    public function setWidth($width) {
+        $this->width = (int)$width;
+    }
+
+    public function setHeight($height) {
+        $this->height = (int)$height;
+    }
+
 
 }

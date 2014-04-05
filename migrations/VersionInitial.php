@@ -59,10 +59,13 @@ class VersionInitial extends AbstractMigration {
         $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
         $this->table->addColumn('is_accessible', Type::BOOLEAN);
+        $this->table->addColumn('is_default', Type::BOOLEAN);
+        $this->table->addColumn('width', Type::INTEGER, array('length' => 11, 'unsigned' => true));
+        $this->table->addColumn('height', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->setPrimaryKey(array('id'));
         $tileTable   = $this->table;
 
-        $this->table   = $schema->createTable('map_tiles');
+        $this->table = $schema->createTable('map_tiles');
         $this->table->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('y', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('map_id', Type::INTEGER, array('length' => 11));
@@ -70,7 +73,7 @@ class VersionInitial extends AbstractMigration {
         $this->table->setPrimaryKey(array('map_id', 'tile_id', 'x', 'y'));
         $this->table->addForeignKeyConstraint($mapTable, array('map_id'), array('id'), array(), 'fk_map');
         $this->table->addForeignKeyConstraint($tileTable, array('tile_id'), array('id'), array(), 'fk_tile');
-       
+
 
         $this->table = $schema->createTable('cities');
 
