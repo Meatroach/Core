@@ -26,6 +26,9 @@ class DomainUserHelper {
     private $activateAccountResponse;
     private $activateUserValidator;
     private $loginResponse;
+    /**
+     * @var boolean 
+     */
     private $interactorResult;
     private $loggedInUsername;
     public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {

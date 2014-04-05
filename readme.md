@@ -17,6 +17,14 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 
 ##[Demo Site](http://ot.blackscorp.de/)
 
+##[Current Front-End Tests](http://opentribes.github.io/API/report-silex.html)
+
+##[Current Interactor Tests](http://opentribes.github.io/API/report.html)
+
+##[Current Interactor Tests](http://opentribes.github.io/API/report.html)
+
+##[PHPUnit Testcoverage](http://opentribes.github.io/API/coverage/)
+
 ##installation
 
 - clone repository

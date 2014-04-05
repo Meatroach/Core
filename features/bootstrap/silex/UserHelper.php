@@ -33,6 +33,7 @@ class SilexUserHelper {
         $this->activationCodeGenerator = $activationCodeGenerator;
         $this->mink                    = $mink;
         $this->sessionName             = $this->mink->getDefaultSessionName();
+
     }
 
     private function loadPage() {
