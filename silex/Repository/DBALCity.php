@@ -138,7 +138,7 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUniqueId() {
         $result = $this->db->prepare("SELECT MAX(id) FROM cities");
@@ -208,7 +208,7 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function flush() {
         return $this->db->exec("DELETE FROM cities");

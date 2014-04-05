@@ -12,7 +12,9 @@ abstract class Repository {
     private $added    = array();
     private $modified = array();
     private $deleted  = array();
-
+    /**
+     * @param integer $id
+     */
     protected function reassign($id) {
         if (isset($this->added[$id])) {
             unset($this->added[$id]);
@@ -48,15 +50,21 @@ abstract class Repository {
         $this->reassign($id);
         $this->added[$id] = $id;
     }
-
+    /**
+     * @return array
+     */
     protected function getAdded() {
         return $this->added;
     }
-
+    /**
+     * @return array
+     */
     protected function getModified() {
         return $this->modified;
     }
-
+    /**
+     * @return array
+     */
     protected function getDeleted() {
         return $this->deleted;
     }
