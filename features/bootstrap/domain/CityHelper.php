@@ -33,8 +33,8 @@ class CityHelper {
     private $locationCalculator;
     private $viewCityBuildingsResponse;
     private $buildingRepository;
-    private $x = 0;
-    private $y = 0;
+    protected $x = 0;
+    protected $y = 0;
     private $viewCitiesResponse;
 
     public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {

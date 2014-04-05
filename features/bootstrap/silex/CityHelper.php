@@ -22,8 +22,7 @@ class SilexCityHelper extends CityHelper {
      * @var DocumentElement
      */
     private $page;
-    private $x;
-    private $y;
+
 
     public function __construct(Mink $mink, CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
         parent::__construct($cityRepository, $mapTilesRepository, $userRepository, $locationCalculator, $cityBuildingsRepository, $buildingRepository);

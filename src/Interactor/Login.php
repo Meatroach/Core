@@ -41,8 +41,11 @@ class Login {
         $response->username = $request->getUsername();
         $response->password = $request->getPassword();
         $user = $this->userRepository->findOneByUsername($request->getUsername());
-        if(!$user || $user->getActivationCode()) return false;
-       
+        
+        if (!$user || $user->getActivationCode()) {
+            return false;
+        }
+
         return $this->passwordHasher->verify($user->getPassword(), $request->getPassword());
         
     }

@@ -10,12 +10,6 @@ use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
 
 class SilexUserHelper extends DomainUserHelper {
 
-    private $userRepository;
-    private $registrationValidator;
-    private $passwordHasher;
-    private $activationCodeGenerator;
-    private $user;
-
     /**
      * @var DocumentElement
      */
@@ -25,13 +19,10 @@ class SilexUserHelper extends DomainUserHelper {
     private $loggedInUsername;
 
     public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
-        $this->userRepository          = $userRepository;
-        $this->registrationValidator   = $registrationValidator;
-        $this->passwordHasher          = $passwordHasher;
-        $this->activationCodeGenerator = $activationCodeGenerator;
+
         parent::__construct($userRepository, $registrationValidator, $passwordHasher, $activationCodeGenerator, $activateUserValidator);
-        $this->mink                    = $mink;
-        $this->sessionName             = $this->mink->getDefaultSessionName();
+        $this->mink        = $mink;
+        $this->sessionName = $this->mink->getDefaultSessionName();
     }
 
     private function loadPage() {
@@ -52,18 +43,6 @@ class SilexUserHelper extends DomainUserHelper {
             $this->page->checkField('termsAndConditions');
 
         $this->page->pressButton('register');
-    }
-
-    public function createDummyAccount($username, $password, $email, $activationCode = null) {
-        $userId   = $this->userRepository->getUniqueId();
-        $password = $this->passwordHasher->hash($password);
-
-        $this->user = $this->userRepository->create($userId, $username, $password, $email);
-        if ($activationCode) {
-            $this->user->setActivationCode($activationCode);
-        }
-
-        $this->userRepository->add($this->user);
     }
 
     public function assertRegistrationSucceed() {

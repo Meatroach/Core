@@ -101,10 +101,12 @@ class DomainUserHelper {
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
         $userId = $this->userRepository->getUniqueId();
+        $password = $this->passwordHasher->hash($password);
         $user   = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
             $user->setActivationCode($activationCode);
         }
+       
         $this->userRepository->add($user);
     }
 
