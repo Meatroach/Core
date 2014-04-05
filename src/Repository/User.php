@@ -11,16 +11,16 @@ use OpenTribes\Core\Entity\User as UserEntity;
 interface User {
 
     /**
-     * @param \integer $id UserId
-     * @param \string $username username
-     * @param \string $password password hash
-     * @param \string $email email adress
+     * @param integer $id UserId
+     * @param string $username username
+     * @param string $password password hash
+     * @param string $email email adress
      * @return UserEntity
      */
     public function create($id, $username, $password, $email);
 
     /**
-     * @return \integer 
+     * @return integer 
      */
     public function getUniqueId();
 
@@ -53,7 +53,7 @@ interface User {
     public function findOneByUsername($username);
 
     /**
-     * @return null|\integer
+     * @return null|integer
      */
     public function flush();
 }
