@@ -78,7 +78,7 @@ class VersionInitial extends AbstractMigration {
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
         $this->table->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('y', Type::INTEGER, array('length' => 11, 'unsigned' => true));
-        $this->table->addColumn('user_id', Type::INTEGER, array('length' => 11, 'notNull' => false));
+        $this->table->addColumn('user_id', Type::INTEGER, array('length' => 11, 'notnull' => false));
         $this->table->setPrimaryKey(array('id', 'x', 'y'));
         $this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTIOn'), 'fk_city_owner');
     }

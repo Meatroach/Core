@@ -13,15 +13,15 @@ use OpenTribes\Core\Repository\Map as MapRepository;
 class Map implements MapRepository {
 
     /**
-     * @var MapEntity
+     * @var MapEntity[]
      */
-    private $map = null;
+    private $maps = null;
 
     /**
      * {@inheritDoc}
      */
     public function add(MapEntity $map) {
-        $this->map = $map;
+        $this->maps[$map->getId()] = $map;
     }
 
     /**
@@ -49,14 +49,31 @@ class Map implements MapRepository {
      * {@inheritDoc}
      */
     public function getUniqueId() {
-        return 1;
+        $count = count($this->maps);
+        $count++;
+        return $count;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function get() {
-        return $this->map;
+    public function findOneByName($name) {
+
+        foreach ($this->maps as $map) {
+            if ($map->getName() === $name) {
+                return $map;
+            }
+        }
+    }
+
+    public function delete(MapEntity $map) {
+        if (isset($this->maps[$map->getId()])) {
+            unset($this->maps[$map->getId()]);
+        }
+    }
+
+    public function replace(MapEntity $map) {
+        $this->maps[$map->getId()] = $map;
     }
 
 }

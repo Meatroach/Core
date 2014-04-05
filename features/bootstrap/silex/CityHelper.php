@@ -54,7 +54,7 @@ class SilexCityHelper {
 
     public function selectLocation($direction, $username) {
         $this->loadPage();
-
+        
         $this->mink->getSession()->setCookie('username', $username);
         $this->page->selectFieldOption('direction', $direction);
         $this->page->pressButton('select');

@@ -29,10 +29,23 @@ interface Map {
     /**
      * @return void
      */
-    public function sync();
+    public function replace(MapEntity $map);
 
     /**
+     * @return void
+     */
+    public function delete(MapEntity $map);
+
+    /**
+     * @return void
+     */
+    public function sync();
+
+
+    /**
+     * @param string $name
      * @return MapEntity
      */
-    public function get();
+    public function findOneByName($name);
+    
 }
