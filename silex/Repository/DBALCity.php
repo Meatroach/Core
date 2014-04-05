@@ -100,7 +100,7 @@ class DBALCity extends Repository implements CityInterface {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y')
+        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y','c.is_main AS isMain')
                         ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
     }
 
@@ -167,7 +167,9 @@ class DBALCity extends Repository implements CityInterface {
 
     private function rowToEntity(stdClass $row) {
         $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
-        return $this->create($row->cityId, $row->cityName, $owner, $row->y, $row->x);
+        $city = $this->create($row->cityId, $row->cityName, $owner, $row->y, $row->x);
+        $city->setMain($row->isMain);
+        return $city;
     }
 
     private function entityToRow(CityEntity $city) {
@@ -176,7 +178,8 @@ class DBALCity extends Repository implements CityInterface {
             'name'    => $city->getName(),
             'x'       => $city->getX(),
             'y'       => $city->getY(),
-            'user_id' => $city->getOwner()->getId()
+            'user_id' => $city->getOwner()->getId(),
+            'is_main' => $city->isMain()
         );
     }
 

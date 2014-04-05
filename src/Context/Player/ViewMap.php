@@ -31,6 +31,7 @@ class ViewMap {
         $username = $request->getUsername();
         if (!$y && !$x) {
             $city = $this->cityRepository->findMainByUsername($username);
+           
             $x    = $city->getX();
             $y    = $city->getY();
         }

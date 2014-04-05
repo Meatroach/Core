@@ -111,7 +111,7 @@ class City {
     }
 
     public function setMain($isMain) {
-        $this->isMain = $isMain;
+        $this->isMain = (bool) $isMain;
     }
 
 }
