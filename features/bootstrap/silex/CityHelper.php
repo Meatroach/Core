@@ -1,22 +1,20 @@
 <?php
 
-use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Mink;
 use OpenTribes\Core\Repository\City as CityRepository;
-use OpenTribes\Core\Repository\Map as MapRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
-
+use OpenTribes\Core\Repository\Building as BuildingRepository;
+use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
+use OpenTribes\Core\Service\LocationCalculator;
 /**
  * Description of CityHelper
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class SilexCityHelper {
+class SilexCityHelper extends CityHelper {
 
-    private $cityRepository;
-    private $userRepository;
-    private $mapRepository;
     private $mink;
     private $sessionName;
 
@@ -27,25 +25,10 @@ class SilexCityHelper {
     private $x;
     private $y;
 
-    public function __construct(Mink $mink, CityRepository $cityRepository, UserRepository $userRepository, MapRepository $mapRepository) {
-        $this->cityRepository = $cityRepository;
-        $this->userRepository = $userRepository;
-        $this->mapRepository  = $mapRepository;
-        $this->mink           = $mink;
-        $this->sessionName    = $this->mink->getDefaultSessionName();
-    }
-
-    public function createDummyCity($name, $owner, $y, $x) {
-        $cityId = $this->cityRepository->getUniqueId();
-        $user   = $this->userRepository->findOneByUsername($owner);
-        if (!$user) {
-            throw new Exception("Dummy city could not be created, user not found");
-        }
-        $city = $this->cityRepository->create($cityId, $name, $user, $y, $x);
-        if (!$city) {
-            throw new Exception("Dummy city could not be created");
-        }
-        $this->cityRepository->add($city);
+    public function __construct(Mink $mink, CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
+        parent::__construct($cityRepository, $mapTilesRepository, $userRepository, $locationCalculator, $cityBuildingsRepository, $buildingRepository);
+        $this->mink        = $mink;
+        $this->sessionName = $this->mink->getDefaultSessionName();
     }
 
     private function loadPage() {
@@ -54,7 +37,7 @@ class SilexCityHelper {
 
     public function selectLocation($direction, $username) {
         $this->loadPage();
-        
+
         $this->mink->getSession()->setCookie('username', $username);
         $this->page->selectFieldOption('direction', $direction);
         $this->page->pressButton('select');
@@ -88,14 +71,6 @@ class SilexCityHelper {
         }
     }
 
-    public function assertCityCreated() {
-        $this->mink->assertSession()->statusCodeEquals(200);
-    }
-
-    public function assertCityNotCreated() {
-        throw new PendingException;
-    }
-
     /**
      * @param integer $y
      * @param integer $x
@@ -106,23 +81,8 @@ class SilexCityHelper {
         $this->page->hasContent($owner);
         $this->page->hasContent($y);
         $this->page->hasContent($x);
-       
     }
-
-    public function selectPosition($y, $x) {
-        throw new PendingException;
-    }
-
     public function assertCityHasBuilding($name, $level) {
-        throw new PendingException;
+        throw new \Behat\Behat\Exception\PendingException;
     }
-
-    public function createCityAsUser($y, $x, $username) {
-        throw new PendingException;
-    }
-
-    public function listUsersCities($username) {
-        
-    }
-
 }

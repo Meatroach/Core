@@ -34,7 +34,7 @@ class SilexContext extends FeatureContext {
 
         $this->userHelper = new SilexUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
 
-        $this->cityHelper    = new SilexCityHelper($this->mink, $this->cityRepository, $this->userRepository, $this->mapRepository, $this->locationCalculator);
+        $this->cityHelper    = new SilexCityHelper($this->mink, $this->cityRepository, $this->mapTilesRepository,$this->userRepository,$this->locationCalculator,$this->cityBuildingsRepository,$this->buildingRepository);
         $this->mapHelper     = new MapHelper($this->mapRepository, $this->tileRepository, $this->mapTilesRepository);
         $this->messageHelper = new SilexMessageHelper($this->mink);
     }

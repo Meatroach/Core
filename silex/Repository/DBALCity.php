@@ -43,14 +43,23 @@ class DBALCity extends Repository implements CityInterface {
      * {@inheritDoc}
      */
     public function cityExistsAt($y, $x) {
-        $result = $this->db->prepare("SELECT id FROM cities WHERE y = :y AND x = :x ");
-        $result->execute(array(
-            ':y' => $y,
-            ':x' => $x
-        ));
-        $column = $result->fetchColumn();
+        $y = (int) $y;
+        $x = (int) $x;
+        foreach ($this->cities as $city) {
+            if ($city->getX() === $x && $city->getY() === $y) {
+                return true;
+            }
+        }
+        $result       = $queryBuilder = $this->getQueryBuilder()
+                        ->where('x = :x AND y = :y')
+                        ->setParameters(array(
+                            ':y' => $y,
+                            ':x' => $x
+                        ))->execute();
 
-        return (bool) $column;
+        $row = $result->fetch(\PDO::FETCH_OBJ);
+       
+        return (bool) $row;
     }
 
     /**

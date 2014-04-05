@@ -31,12 +31,7 @@ class Map implements MapRepository {
         return new MapEntity($id, $name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getTile($y, $x) {
-        return $this->map->getTile($y, $x);
-    }
+
 
     /**
      * {@inheritDoc}

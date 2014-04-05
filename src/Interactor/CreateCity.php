@@ -53,9 +53,9 @@ class CreateCity {
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
         $map   = $this->mapTilesRepository->getMap();
-     
-        if(!$owner){
-            throw new \Exception("Please login");
+    
+        if(!$owner || !$map){
+           return false;
         }
         if (!$map->isValidLocation($y, $x)) {
             return false;
