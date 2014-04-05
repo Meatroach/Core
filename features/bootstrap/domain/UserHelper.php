@@ -31,7 +31,7 @@ class DomainUserHelper {
      * @var boolean 
      */
     private $interactorResult;
-    private $loggedInUsername;
+    protected $loggedInUsername;
 
     public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;

@@ -1,7 +1,5 @@
 <?php
 
-require_once 'FeatureContext.php';
-
 use Symfony\Component\HttpKernel\Client;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;

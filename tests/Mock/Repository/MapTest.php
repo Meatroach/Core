@@ -24,7 +24,6 @@ class MapTest extends \PHPUnit_Framework_TestCase {
 
         $this->mapRepository->add($map);
     }
-
     public function testFindAccessableTile() {
         $map = $this->mapRepository->findOneByName('TestMap');
         $this->assertTrue($map->isAccessible("0", "0"));

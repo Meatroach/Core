@@ -16,7 +16,7 @@ class SilexUserHelper extends DomainUserHelper {
     private $page;
     private $mink;
     private $sessionName;
-    private $loggedInUsername;
+   
 
     public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
 

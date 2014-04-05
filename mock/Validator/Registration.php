@@ -11,10 +11,10 @@ use OpenTribes\Core\Validator\Registration as AbstractRegistration;
  */
 class Registration extends AbstractRegistration {
 
-    private $object;
+    private $userObject;
 
     public function validate() {
-        $this->object = $this->getObject();
+        $this->userObject = $this->getObject();
         $this->checkUsername();
         $this->checkPassword();
         $this->checkEmail();
@@ -22,7 +22,7 @@ class Registration extends AbstractRegistration {
     }
 
     private function checkUsername() {
-        $username = $this->object->username;
+        $username = $this->userObject->username;
         if (in_array($username, array(null, false, '', array()), true)) {
             $this->attachError("Username is empty");
         }
@@ -35,14 +35,14 @@ class Registration extends AbstractRegistration {
         if ((bool) preg_match('/^[-a-z0-9_]++$/iD', $username) === false) {
             $this->attachError("Username contains invalid character");
         }
-        if (!$this->object->isUniqueUsername) {
+        if (!$this->userObject->isUniqueUsername) {
             $this->attachError("Username exists");
         }
     }
 
     private function checkPassword() {
-        $password        = $this->object->password;
-        $passwordConfirm = $this->object->passwordConfirm;
+        $password        = $this->userObject->password;
+        $passwordConfirm = $this->userObject->passwordConfirm;
         if (in_array($password, array(null, false, '', array()), true)) {
             $this->attachError("Password is empty");
         }
@@ -55,8 +55,8 @@ class Registration extends AbstractRegistration {
     }
 
     private function checkEmail() {
-        $email        = $this->object->email;
-        $emailConfirm = $this->object->emailConfirm;
+        $email        = $this->userObject->email;
+        $emailConfirm = $this->userObject->emailConfirm;
         if (in_array($email, array(null, false, '', array()), true)) {
             $this->attachError("Email is empty");
         }
@@ -66,13 +66,13 @@ class Registration extends AbstractRegistration {
         if($email !== $emailConfirm){
             $this->attachError("Email confirm not match");
         }
-        if(!$this->object->isUniqueEmail){
+        if(!$this->userObject->isUniqueEmail){
             $this->attachError("Email exists");
         }
     }
 
     private function checkTermsAndConditions() {
-        if(!$this->object->termsAndConditions){
+        if(!$this->userObject->termsAndConditions){
             $this->attachError("Terms and Conditions are not accepted");
         }
     }
