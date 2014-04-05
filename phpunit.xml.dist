@@ -13,7 +13,6 @@
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php"
 >
-
     <testsuites>
         <testsuite name="OpenTribes Test Suite">
             <directory>./tests</directory>
