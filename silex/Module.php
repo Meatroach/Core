@@ -5,18 +5,10 @@ namespace OpenTribes\Core\Silex;
 use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
-
-
 use OpenTribes\Core\Silex\Controller;
-
 use OpenTribes\Core\Silex\Repository;
-use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
-use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
-use OpenTribes\Core\Silex\Repository\DBALMapTiles as MapTilesRepository;
-use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Validator;
-
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Provider\DoctrineServiceProvider;
@@ -73,13 +65,6 @@ class Module implements ServiceProviderInterface {
             });
         }
     }
-
-
-  
-
-
-
-
 
     /**
      * @param Application $app
