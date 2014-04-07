@@ -61,6 +61,7 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     public function setUp() {
         $env                  = 'develop';
+        var_dump(__DIR__);
         $app                  = require __DIR__ . '/../../../bootstrap.php';
         $this->userRepository = new UserRepository($app['db']);
         $this->cityRepository = new CityRepository($app['db']);
