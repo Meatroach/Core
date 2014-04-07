@@ -44,10 +44,10 @@ class ViewMap {
 
 
         $center         = $this->mapCalculator->positionToPixel($y, $x);
-        $top            = $center['top'] - $request->getViewportHeight() / 2;
-        $left           = $center['left'] - $request->getViewportWidth() / 2;
+        $top            = $center['top'] - $request->getViewportHeight() / 2-64;
+        $left           = $center['left'] - $request->getViewportWidth() / 2+64;
         $response->top  = -$center['top'] + $request->getViewportHeight() / 2;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2;
+        $response->left = -$center['left'] + $request->getViewportWidth() / 2-64;
         $area           = $this->mapCalculator->getArea($top, $left);
         foreach ($area as $tile) {
             $y                 = $tile['y'];
@@ -56,7 +56,7 @@ class ViewMap {
             $left              = $position['left'];
             $top               = $position['top'];
             $response->tiles[] = array(
-                'name'   => 'default',
+                'name'   => 'gras',
                 'x'      => $x,
                 'y'      => $y,
                 'top'    => $top,
