@@ -42,10 +42,12 @@ class ViewMap {
             $y = $city->getY();
         }
 
-        $area           = $this->mapCalculator->getArea($y, $x);
-        $center         = $this->mapCalculator->getCenterPosition($y, $x);
-        $response->top  = $center['top'];
-        $response->left = $center['left'];
+     
+        $center         = $this->mapCalculator->positionToPixel($y, $x);
+      
+        $response->top  = -$center['top']+$request->getViewportHeight()/2;
+        $response->left = -$center['left']+$request->getViewportWidth()/2-64;
+          $area           = $this->mapCalculator->getArea($center['top'],$center['left']);
         foreach ($area as $tile) {
             $y                 = $tile['y'];
             $x                 = $tile['x'];

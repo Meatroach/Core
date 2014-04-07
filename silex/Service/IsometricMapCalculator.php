@@ -41,25 +41,25 @@ class IsometricMapCalculator implements MapCalculator {
         $this->tileRatio = $this->tileWidth / $this->tileHeight;
     }
 
-    public function getArea($y, $x) {
-        $position = $this->positionToPixel($y, $x);
-        $top      = $position['top'];
-        $left     = $position['left'];
+    public function getArea($top, $left) {
+     
+    
         $start    = array(
-            'y' => $top - $this->tileWidth / 2,
-            'x' => $left + $this->tileHeight
+            'x' => $left - $this->tileWidth / 2,
+            'y' => $top + $this->tileHeight
         );
         $end      = array(
             'x' => $start['x'] + $this->viewPortWidth,
             'y' => $start['y'] + $this->viewPortHeight
         );
-
+        $width = $this->width * $this->tileWidth;
+        $height = $this->height * $this->tileHeight;
         $area = array();
         for ($y = $start['y']; $y < $end['y']; $y+=$this->tileHeight / 2) {
             for ($x = $start['x']; $x < $end['x']; $x+=$this->tileWidth / 2) {
                 $row       = $this->pixelToPosition($y, $x);
-                $positionX = max(0, min($this->width, $row['x']));
-                $positionY = max(0, min($this->height, $row['y']));
+                $positionX = max(0, min($width, $row['x']));
+                $positionY = max(0, min($height, $row['y']));
                 $area[]    = array('y' => $positionY, 'x' => $positionX);
             }
         }
@@ -67,9 +67,9 @@ class IsometricMapCalculator implements MapCalculator {
     }
 
     public function pixelToPosition($top, $left) {
-        $x = ($left - $this->originX) / $this->tileRatio;
-        $x = ~~(($top + $x) / $this->tileHeight);
-        $y = ~~(($top - $x) / $this->tileHeight);
+        $newLeft = ($left - $this->originX) / $this->tileRatio;
+        $x = ~~(($top + $newLeft) / $this->tileHeight);
+        $y = ~~(($top - $newLeft) / $this->tileHeight);
         return array(
             'x' => $x,
             'y' => $y

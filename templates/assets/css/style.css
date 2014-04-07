@@ -1,3 +1,8 @@
-.tile{
-    background: green;
+.sprite{
+    background-image: url(../img/atlas.png);
+    overflow: hidden;
+    text-align: center;
+    line-height: 64px;
+    color:white;
+    font-weight: bold;
 }
