@@ -5,26 +5,18 @@ namespace OpenTribes\Core\Silex;
 use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
-use OpenTribes\Core\Mock\Service\LocationCalculator;
-use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+
+
 use OpenTribes\Core\Silex\Controller;
-use OpenTribes\Core\Silex\Controller\Account;
-use OpenTribes\Core\Silex\Controller\Assets;
-use OpenTribes\Core\Silex\Controller\City;
-use OpenTribes\Core\Silex\Controller\Map;
+
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
 use OpenTribes\Core\Silex\Repository\DBALMapTiles as MapTilesRepository;
 use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Service;
-use OpenTribes\Core\Silex\Service\CodeGenerator;
-use OpenTribes\Core\Silex\Service\PasswordHasher;
-use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
 use OpenTribes\Core\Silex\Validator;
-use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
-use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
+
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Provider\DoctrineServiceProvider;
@@ -70,10 +62,10 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createDependencies(Application &$app) {
-        $this->createRepositories($app);
-        $this->createServices($app);
-        $this->createValidators($app);
-        $this->createControllers($app);
+        Repository::create($app);
+        Service::create($app);
+        Validator::create($app);
+        Controller::create($app);
 
         if ($this->env === 'test') {
             $app['swiftmailer.transport'] = $app->share(function() {
@@ -82,68 +74,12 @@ class Module implements ServiceProviderInterface {
         }
     }
 
-    private function createControllers(Application &$app) {
-        $app[Controller::ACCOUNT] = $app->share(function() use($app) {
-            return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
-        });
-        $app[Controller::ASSETS] = $app->share(function() use($app) {
-            return new Assets($app['mustache.assets']);
-        });
 
-        $app[Controller::CITY] = $app->share(function() use($app) {
-            return new City($app[Repository::USER], $app[Repository::CITY], $app[Repository::MAP_TILES], $app[Service::LOCATION_CALCULATOR]);
-        });
-        $app[Controller::MAP] = $app->share(function() use($app) {
-            return new Map($app[Repository::MAP_TILES], $app[Repository::CITY], $app[Service::MAP_CALCULATOR]);
-        });
-    }
+  
 
-    private function createServices(Application &$app) {
 
-        $app[Service::PASSWORD_HASHER] = $app->share(function() {
-            return new PasswordHasher();
-        });
-        $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
-            return new CodeGenerator($app['activationCodeLength']);
-        });
-        $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app) {
-            return new LocationCalculator;
-        });
-        $app[Service::MAP_CALCULATOR] = $app->share(function() use($app) {
-            return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
-        });
-    }
 
-    private function createRepositories(Application &$app) {
-        $app[Repository::USER] = $app->share(function() use($app) {
-            return new UserRepository($app['db']);
-        });
-        $app[Repository::CITY] = $app->share(function() use($app) {
-            return new CityRepository($app['db']);
-        });
-        $app[Repository::MAP] = $app->share(function() use($app) {
-            return new MapRepository($app['db']);
-        });
-        $app[Repository::MAP_TILES] = $app->share(function() use($app) {
-            return new MapTilesRepository($app['db']);
-        });
-    }
 
-    private function createValidators(Application &$app) {
-        $app['validationDto.registration'] = $app->share(function() {
-            return new RegistrationValidatorDto;
-        });
-        $app['validationDto.activate'] = $app->share(function() use($app) {
-            return new ActivateUserValidatorDto;
-        });
-        $app[Validator::REGISTRATION] = $app->share(function() use($app) {
-            return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
-        });
-
-        $app[Validator::ACTIVATE] = $app->share(function() use($app) {
-            return new ActivateUserValidator($app['validationDto.activate']);
-        });
-    }
 
     /**
      * @param Application $app
