@@ -23,7 +23,7 @@ class Registration {
     private $passwordHasher;
     private $activationCodeGenerator;
 
-    function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
+    public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
         $this->passwordHasher          = $passwordHasher;
@@ -51,7 +51,9 @@ class Registration {
         $createUserInteractor->proccess($createUserRequest, $createUserResponse);
         $activationCode = $this->activationCodeGenerator->create();
         $user           = $this->userRepository->findOneByUsername($createUserResponse->username);
-        
+        if(!$user){
+            return false;
+        }
         $user->setActivationCode($activationCode);
         $this->userRepository->add($user);
 

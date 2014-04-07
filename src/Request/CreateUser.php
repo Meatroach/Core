@@ -13,12 +13,15 @@ class CreateUser {
     private $password;
     private $email;
 
-    function __construct($username, $password, $email) {
+    public function __construct($username, $password, $email) {
         $this->username = $username;
         $this->password = $password;
         $this->email    = $email;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }
@@ -27,6 +30,9 @@ class CreateUser {
         return $this->password;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail() {
         return $this->email;
     }

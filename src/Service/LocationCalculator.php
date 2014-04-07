@@ -34,6 +34,7 @@ interface LocationCalculator {
     public function setCenterPosition($y, $x);
 
     /**
+     * @param integer $countCities
      * @return void
      */
     public function setCountCities($countCities);

@@ -16,9 +16,6 @@ use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Mock\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Mock\Repository\MapTiles as MapTilesRepository;
-
-require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
-
 /**
  * Behat context class.
  */

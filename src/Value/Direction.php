@@ -44,23 +44,23 @@ class Direction {
     }
 
     public static function north() {
-        return new Direction(Direction::NORTH);
+        return new Direction(self::NORTH);
     }
 
     public static function south() {
-        return new Direction(Direction::SOUTH);
+        return new Direction(self::SOUTH);
     }
 
     public static function west() {
-        return new Direction(Direction::WEST);
+        return new Direction(self::WEST);
     }
 
     public static function east() {
-        return new Direction(Direction::EAST);
+        return new Direction(self::EAST);
     }
 
     public static function any() {
-        return new Direction(Direction::ANY);
+        return new Direction(self::ANY);
     }
 
     private function isValid($value) {

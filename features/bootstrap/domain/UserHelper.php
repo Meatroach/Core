@@ -10,12 +10,11 @@ use OpenTribes\Core\Response\Registration as RegistrationResponse;
 use OpenTribes\Core\Interactor\ActivateUser as ActivateUserInteractor;
 use OpenTribes\Core\Request\ActivateUser as ActivateUserRequest;
 use OpenTribes\Core\Response\ActivateUser as ActivateUserResponse;
-use OpenTribes\Core\Mock\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Interactor\Login as LoginInteractor;
 use OpenTribes\Core\Request\Login as LoginRequest;
 use OpenTribes\Core\Response\Login as LoginResponse;
-
-require_once 'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
+use PHPUnit_Framework_Assert as Test;
 
 class DomainUserHelper {
 
@@ -27,8 +26,13 @@ class DomainUserHelper {
     private $activateAccountResponse;
     private $activateUserValidator;
     private $loginResponse;
+
+    /**
+     * @var boolean 
+     */
     private $interactorResult;
-    private $loggedInUsername;
+    protected $loggedInUsername;
+
     public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
         $this->userRepository          = $userRepository;
         $this->registrationValidator   = $registrationValidator;
@@ -48,11 +52,11 @@ class DomainUserHelper {
     }
 
     public function assertRegistrationSucceed() {
-        assertTrue(count($this->registrationResponse->errors) === 0);
+        Test::assertTrue(count($this->registrationResponse->errors) === 0);
     }
 
     public function assertRegistrationFailed() {
-        assertTrue(count($this->registrationResponse->errors) > 0);
+        Test::assertTrue(count($this->registrationResponse->errors) > 0);
     }
 
     public function getRegistrationResponse() {
@@ -72,50 +76,55 @@ class DomainUserHelper {
 
     public function assertActivationSucceed() {
 
-        assertTrue(count($this->activateAccountResponse->errors) === 0);
+        Test::assertTrue(count($this->activateAccountResponse->errors) === 0);
     }
 
     public function assertActivationFailed() {
-        assertTrue(count($this->activateAccountResponse->errors) > 0);
+        Test::assertTrue(count($this->activateAccountResponse->errors) > 0);
     }
 
     public function processLogin($username, $password) {
-        $request             = new LoginRequest($username, $password);
-        $interactor          = new LoginInteractor($this->userRepository, $this->passwordHasher);
-        $this->loginResponse = new LoginResponse;
+        $request                = new LoginRequest($username, $password);
+        $interactor             = new LoginInteractor($this->userRepository, $this->passwordHasher);
+        $this->loginResponse    = new LoginResponse;
         $this->interactorResult = $interactor->process($request, $this->loginResponse);
     }
 
     public function assertLoginSucceed() {
-     
-        assertTrue($this->interactorResult);
+
+        Test::assertTrue($this->interactorResult);
     }
 
     public function assertLoginFailed() {
-        assertFalse($this->interactorResult);
+        Test::assertFalse($this->interactorResult);
     }
 
     public function createDummyAccount($username, $password, $email, $activationCode = null) {
         $userId = $this->userRepository->getUniqueId();
+        $password = $this->passwordHasher->hash($password);
         $user   = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
             $user->setActivationCode($activationCode);
         }
-        $this->userRepository->add($user);
        
+        $this->userRepository->add($user);
     }
 
     public function activateUser($username) {
         $user = $this->userRepository->findOneByUsername($username);
+        if (!$user) {
+            throw new Exception("could not activate user,user not found");
+        }
         $user->setActivationCode(null);
         $this->userRepository->replace($user);
     }
-    public function loginAs($username){
+
+    public function loginAs($username) {
         $this->loggedInUsername = $username;
     }
+
     public function getLoggedInUsername() {
         return $this->loggedInUsername;
     }
-
 
 }

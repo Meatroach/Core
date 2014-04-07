@@ -11,10 +11,10 @@ interface Building {
 
     /**
      * Create new building entity
-     * @param \integer $id
-     * @param \string $name
-     * @param \integer $minimumLevel
-     * @param \integer $maximumLevel
+     * @param integer $id
+     * @param string $name
+     * @param integer $minimumLevel
+     * @param integer $maximumLevel
      * @return BuildingEntity
      */
     public function create($id, $name, $minimumLevel, $maximumLevel);
@@ -31,6 +31,9 @@ interface Building {
      * @return integer
      */
     public function getUniqueId();
+    /**
+     * @return BuildingEntity[]
+     */
     public function findAll();
 
     /**

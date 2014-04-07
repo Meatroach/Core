@@ -39,6 +39,7 @@ class City {
         if (!$username) {
             $username = $defaultUsername;
         }
+     
         $request           = new ViewCitiesRequest($username);
         $interactor        = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
         $response          = new ViewCitiesResponse;

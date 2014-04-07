@@ -36,7 +36,7 @@ class CreateCity {
      * @param \OpenTribes\Core\Repository\MapTiles $mapTilesRepository
      * @param \OpenTribes\Core\Repository\User $userRepository
      */
-    function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository) {
+    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository) {
         $this->cityRepository = $cityRepository;
         $this->userRepository = $userRepository;
         $this->mapTilesRepository= $mapTilesRepository;
@@ -53,9 +53,9 @@ class CreateCity {
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
         $map   = $this->mapTilesRepository->getMap();
-     
-        if(!$owner){
-            throw new \Exception("Please login");
+    
+        if(!$owner || !$map){
+           return false;
         }
         if (!$map->isValidLocation($y, $x)) {
             return false;
@@ -73,6 +73,7 @@ class CreateCity {
         $id = $this->cityRepository->getUniqueId();
 
         $city           = $this->cityRepository->create($id, $name, $owner, $y, $x);
+        $city->setMain(true);
         $this->cityRepository->add($city);
         $response->city = new CityView($city);
         return true;

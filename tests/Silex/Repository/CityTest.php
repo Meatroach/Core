@@ -23,12 +23,18 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     private function deleteDummyUser() {
         $user = $this->userRepository->findOneByUsername('TestUser');
+        if(!$user){
+            throw new Exception("Could not delete Dummy User");
+        }
         $this->userRepository->delete($user);
         $this->userRepository->sync();
     }
 
     private function deleteDummyCities() {
         $owner  = $this->userRepository->findOneByUsername('TestUser');
+        if(!$owner){
+            throw new Exception("Could not delete Dummy Cities, owner not found");
+        }
         $cities = $this->cityRepository->findAllByOwner($owner);
 
         foreach ($cities as $city) {
@@ -39,10 +45,14 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     private function createDummyCities() {
         $user = $this->userRepository->findOneByUsername('TestUser');
+        if(!$user){
+            throw new Exception("User not found");
+        }
         for ($y = 0; $y < 5; $y++) {
             for ($x = 0; $x < 5; $x++) {
                 $cityId = $this->cityRepository->getUniqueId();
-                $city   = $this->cityRepository->create($cityId, 'TestCity' . $y . $x, $user, $y, $x);
+                $name = sprintf('TestCity%d%d',$y,$x);
+                $city   = $this->cityRepository->create($cityId, $name, $user, $y, $x);
                 $this->cityRepository->add($city);
             }
         }
@@ -52,6 +62,9 @@ class CityTest extends \PHPUnit_Framework_TestCase {
 
     public function testFindCityByOwner() {
         $owner  = $this->userRepository->findOneByUsername('TestUser');
+        if(!$owner){
+            throw new Exception("User not found");
+        }
         $cities = $this->cityRepository->findAllByOwner($owner);
         $this->assertTrue(is_array($cities));
         foreach ($cities as $city) {
@@ -60,8 +73,7 @@ class CityTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function setUp() {
-        $env                  = 'develop';
-        var_dump(__DIR__);
+        $env                  = 'test';
         $app                  = require __DIR__ . '/../../../bootstrap.php';
         $this->userRepository = new UserRepository($app['db']);
         $this->cityRepository = new CityRepository($app['db']);

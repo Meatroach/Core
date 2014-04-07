@@ -11,6 +11,7 @@ use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Controller\Account;
 use OpenTribes\Core\Silex\Controller\Assets;
 use OpenTribes\Core\Silex\Controller\City;
+use OpenTribes\Core\Silex\Controller\Map;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
@@ -19,11 +20,13 @@ use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
+use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\Silex\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\ValidationDto\ActivateUser as ActivateUserValidatorDto;
 use OpenTribes\Core\ValidationDto\Registration as RegistrationValidatorDto;
 use Silex\Application;
+use Silex\ControllerCollection;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -66,7 +69,7 @@ class Module implements ServiceProviderInterface {
         $this->createRoutes($app);
     }
 
-    private function createDependencies(&$app) {
+    private function createDependencies(Application &$app) {
         $this->createRepositories($app);
         $this->createServices($app);
         $this->createValidators($app);
@@ -79,7 +82,7 @@ class Module implements ServiceProviderInterface {
         }
     }
 
-    private function createControllers(&$app) {
+    private function createControllers(Application &$app) {
         $app[Controller::ACCOUNT] = $app->share(function() use($app) {
             return new Account($app[Repository::USER], $app[Service::PASSWORD_HASHER], $app[Validator::REGISTRATION], $app[Service::ACTIVATION_CODE_GENERATOR], $app[Validator::ACTIVATE]);
         });
@@ -90,9 +93,13 @@ class Module implements ServiceProviderInterface {
         $app[Controller::CITY] = $app->share(function() use($app) {
             return new City($app[Repository::USER], $app[Repository::CITY], $app[Repository::MAP_TILES], $app[Service::LOCATION_CALCULATOR]);
         });
+        $app[Controller::MAP] = $app->share(function() use($app) {
+            return new Map($app[Repository::MAP_TILES], $app[Repository::CITY], $app[Service::MAP_CALCULATOR]);
+        });
     }
 
-    private function createServices(&$app) {
+    private function createServices(Application &$app) {
+
         $app[Service::PASSWORD_HASHER] = $app->share(function() {
             return new PasswordHasher();
         });
@@ -102,9 +109,12 @@ class Module implements ServiceProviderInterface {
         $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app) {
             return new LocationCalculator;
         });
+        $app[Service::MAP_CALCULATOR] = $app->share(function() use($app) {
+            return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
+        });
     }
 
-    private function createRepositories(&$app) {
+    private function createRepositories(Application &$app) {
         $app[Repository::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);
         });
@@ -119,7 +129,7 @@ class Module implements ServiceProviderInterface {
         });
     }
 
-    private function createValidators(&$app) {
+    private function createValidators(Application &$app) {
         $app['validationDto.registration'] = $app->share(function() {
             return new RegistrationValidatorDto;
         });
@@ -138,7 +148,7 @@ class Module implements ServiceProviderInterface {
     /**
      * @param Application $app
      */
-    private function registerProviders(&$app) {
+    private function registerProviders(Application &$app) {
 
         $app->register(new ValidatorServiceProvider);
         $app->register(new ServiceControllerServiceProvider());
@@ -149,7 +159,10 @@ class Module implements ServiceProviderInterface {
         $app->register(new SwiftmailerServiceProvider());
     }
 
-    private function loadConfigurations(&$app) {
+    /**
+     * @param Application $app
+     */
+    private function loadConfigurations(Application &$app) {
         $files = array(
             'general.php',
             'database.php',
@@ -162,89 +175,123 @@ class Module implements ServiceProviderInterface {
         }
     }
 
-    private function createRoutes(&$app) {
+    /**
+     * @param Application $app
+     */
+    private function createRoutes(Application &$app) {
 
         $app->get('/', function() use($app) {
+            $response          = new stdClass();
+            $response->failed  = false;
+            $response->proceed = false;
+            return $response;
+        })->before(function(Request $request) use($app) {
+            if ($request->getSession()->get('username')) {
+                $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                return new RedirectResponse($baseUrl . 'game');
+            }
+        })->value(RouteValue::TEMPLATE, 'pages/landing');
 
-                    $response          = new stdClass();
-                    $response->failed  = false;
-                    $response->proceed = false;
-                    return $response;
-                })->value(RouteValue::TEMPLATE, 'pages/landing')
-                ->before(function(Request $request) use($app) {
-                    if ($request->getSession()->get('username')) {
-                        $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-                        return new RedirectResponse($baseUrl . 'game');
-                    }
-                });
-       
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
-        $app->mount('/city', $this->getCityRoutes($app));
-        $app->on(KernelEvents::VIEW, function($event) use($app) {
+        $module = $this;
+        $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
             $requestType = $event->getRequestType();
             $response    = $appResponse;
+
             if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                 $response = new JsonResponse($appResponse);
             }
             if ($request->attributes->has(RouteValue::SUB_REQUESTS)) {
                 $subRequests = $request->attributes->get(RouteValue::SUB_REQUESTS);
-                $tmpResponse = $appResponse;
-
-                foreach ($subRequests as $values) {
-                    $uri         = $values['url'];
-                    $method      = $values['method'];
-                    $param       = $values['param'];
-                    $subRequest  = Request::create($uri, $method, $param);
-                    $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-                    $content     = json_decode($subResponse->getContent());
-                    $appResponse = (object) array_merge((array) $appResponse, (array) $content);
-                }
-                $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
+                $appResponse = $module->handleSubRequests($subRequests, $appResponse, $app);
             }
             if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
-                if ($request->attributes->has(RouteValue::TEMPLATE)) {
-                    $template = $request->attributes->get(RouteValue::TEMPLATE);
-                    $body     = $app['mustache']->render($template, $appResponse);
-                    $response = new Response($body);
-                }
-
-                if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(RouteValue::SUCCESS_HANDLER)) {
-                    $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
-                    $result  = $handler($appResponse);
-                    if ($result) {
-                        $response = $result;
-                    }
-                }
-                if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
-                    $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
-                    $result  = $handler($appResponse);
-                    if ($result) {
-                        $response = $result;
-                    }
-                }
-            }
-
-            if (!$response->getExpires()) {
-                $response->setExpires(new DateTime());
+                $response = $module->createResponse($request, $appResponse, $app);
             }
 
             $event->setResponse($response);
         });
     }
 
-    private function getCityRoutes(&$app) {
-        $city = $app['controllers_factory'];
-        $city->get('/list', Controller::CITY . ':listAction')
-                ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
-        return $city;
+    /**
+     * 
+     * @param Request $request
+     * @param mixed $appResponse
+     * @param Application $app
+     * @return Response
+     */
+    public function createResponse(Request $request, $appResponse, Application $app) {
+        $response = new Response();
+        if ($request->attributes->has(RouteValue::TEMPLATE)) {
+            $template = $request->attributes->get(RouteValue::TEMPLATE);
+
+            $body = $app['mustache']->render($template, $appResponse);
+            $response->setContent($body);
+            $response->setExpires(new DateTime());
+        }
+
+        if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(RouteValue::SUCCESS_HANDLER)) {
+            $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
+            $result  = $handler($appResponse);
+            if ($result) {
+                $response = $result;
+            }
+        }
+        if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
+            $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
+            $result  = $handler($appResponse);
+            if ($result) {
+                $response = $result;
+            }
+        }
+        return $response;
     }
 
-    private function getGameRoutes(&$app) {
+    /**
+     * @param Application $app
+     */
+    public function handleSubRequests(array $subRequests, $appResponse, $app) {
+        $tmpResponse = $appResponse;
+
+        foreach ($subRequests as $values) {
+            $uri         = $values['url'];
+            $method      = $values['method'];
+            $param       = $values['param'];
+            $subRequest  = Request::create($uri, $method, $param);
+            $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+            $content     = json_decode($subResponse->getContent());
+            $appResponse = (object) array_merge((array) $appResponse, (array) $content);
+        }
+        $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
+        return $appResponse;
+    }
+
+    /**
+     * @param Application $app
+     * @return ControllerCollection
+     */
+    private function getGameRoutes(Application &$app) {
         $game = $app['controllers_factory'];
+        $game->before(function(Request $request) use($app) {
+
+            $cityController = $app[Controller::CITY];
+            $response       = $cityController->listAction($request);
+            $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
+            $startUrl       = $baseUrl . 'game/start';
+            if ($response->failed && $request->getRequestUri() !== $startUrl) {
+                return new RedirectResponse($startUrl);
+            }
+        });
+        $game->get('/map/{y}/{x}', Controller::MAP . ':viewAction')
+                ->value('y', null)
+                ->value('x', null)
+                ->value('width', $app['map.options']['width'])
+                ->value('height', $app['map.options']['height'])
+                ->value(RouteValue::TEMPLATE, 'pages/game/map');
 
         $game->get('/', function(Request $request) {
             $response           = new stdClass();
@@ -255,30 +302,37 @@ class Module implements ServiceProviderInterface {
 
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
                 ->value('username', null)
-                ->value(RouteValue::ERROR_HANDLER, function() use($app) {
-                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-
-                    return new RedirectResponse($baseUrl . 'game/start');
-                })
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
-
-
-
 
         $game->match('/start', Controller::CITY . ':newAction')
                 ->value(RouteValue::SUCCESS_HANDLER, function() use($app) {
                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     return new RedirectResponse($baseUrl . 'game/city/list');
                 })
+                ->before(function(Request $request) use($app) {
+                    $cityController = $app[Controller::CITY];
+                    $response       = $cityController->listAction($request);
+                    $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
+                    $cityListUrl    = $baseUrl . 'game/city/list';
+
+                    if (!$response->failed) {
+                        return new RedirectResponse($cityListUrl);
+                    }
+                })
                 ->method('POST|GET')
                 ->value(RouteValue::TEMPLATE, 'pages/game/newcity');
+
         $game->after(function() use($app) {
             $app[Repository::CITY]->sync();
         });
         return $game;
     }
 
-    private function getAssetsRoutes(&$app) {
+    /**
+     * @param Application $app
+     * @return ControllerCollection
+     */
+    private function getAssetsRoutes(Application &$app) {
         $assets = $app['controllers_factory'];
 
         $assets->assert('file', '.+');
@@ -287,7 +341,12 @@ class Module implements ServiceProviderInterface {
         return $assets;
     }
 
-    private function getAccountRoutes(&$app) {
+    /**
+     * 
+     * @param Application $app
+     * @return ControllerCollection
+     */
+    private function getAccountRoutes(Application &$app) {
         $account = $app['controllers_factory'];
         $account->get('/logout', function()use($app) {
             $baseUrl = $app['mustache.options']['helpers']['baseUrl'];

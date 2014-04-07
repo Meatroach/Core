@@ -11,31 +11,51 @@ use OpenTribes\Core\Repository\Tile as TileRepository;
  * @author BlackScorp<witalimik@web.de>
  */
 class Tile implements TileRepository {
+
     /**
      * @var TileEntity[] 
      */
     private $tiles;
+
+    /**
+     * {@inheritDoc}
+     */
     public function add(TileEntity $tile) {
         $this->tiles[$tile->getId()] = $tile;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function create($id, $name, $isAccessible) {
-        return new TileEntity( $id,$name, $isAccessible);
+        return new TileEntity($id, $name, $isAccessible);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getUniqueId() {
-        $countTiles =count($this->tiles);
+        $countTiles = count($this->tiles);
         $countTiles++;
         return $countTiles;
     }
+
+    /**
+     * {@inheritDoc}
+     */
     public function findByName($name) {
-        foreach($this->tiles as $tile){
-            if($tile->getName() === $name) return $tile;
+        foreach ($this->tiles as $tile) {
+            if ($tile->getName() === $name)
+                return $tile;
         }
         return null;
     }
+
+    /**
+     * {@inheritDoc}
+     */
     public function sync() {
         ;
     }
-
+    
 }

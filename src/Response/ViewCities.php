@@ -7,6 +7,6 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCities {
+class ViewCities extends Response{
     public $cities = array();
 }

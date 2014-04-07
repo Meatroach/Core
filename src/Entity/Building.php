@@ -10,37 +10,37 @@ namespace OpenTribes\Core\Entity;
 class Building {
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $id;
 
     /**
-     * @var \string
+     * @var string
      */
     private $name;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $level;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $minimumLevel;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $maximumLevel;
 
     /**
-     * @param \integer $id
-     * @param \string $name
-     * @param \integer $minimumLevel
-     * @param \integer $maximumLevel
+     * @param integer $id
+     * @param string $name
+     * @param integer $minimumLevel
+     * @param integer $maximumLevel
      */
-    function __construct($id, $name, $minimumLevel, $maximumLevel) {
+    public function __construct($id, $name, $minimumLevel, $maximumLevel) {
         $this->id           = (int) $id;
         $this->name         = $name;
         $this->minimumLevel = (int) $minimumLevel;
@@ -48,7 +48,7 @@ class Building {
     }
 
     /**
-     * @param \integer $level
+     * @param integer $level
      */
     public function setLevel($level) {
         $level = (int) $level;
@@ -58,21 +58,21 @@ class Building {
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @return \string
+     * @return string
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getLevel() {
         if (!$this->level) {
@@ -82,14 +82,14 @@ class Building {
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getMinimumLevel() {
         return $this->minimumLevel;
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getMaximumLevel() {
         return $this->maximumLevel;

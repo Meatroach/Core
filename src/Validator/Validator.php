@@ -38,5 +38,5 @@ abstract class Validator {
         return count($this->errors) === 0;
     }
 
-    abstract function validate();
+    abstract protected function validate();
 }

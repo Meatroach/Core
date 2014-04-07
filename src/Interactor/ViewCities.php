@@ -14,7 +14,8 @@ use OpenTribes\Core\View\City as CityView;
 class ViewCities {
     private $userRepository;
     private $cityRepository;
-    function __construct(UserRepository $userRepository,CityRepository $cityRepository) {
+   
+    public function __construct(UserRepository $userRepository,CityRepository $cityRepository) {
         $this->userRepository = $userRepository;
         $this->cityRepository = $cityRepository;
     }

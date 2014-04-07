@@ -28,7 +28,7 @@ class CreateNewCity {
     private $locationCalculator;
     
 
-    function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
+    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
         $this->cityRepository     = $cityRepository;
         $this->mapTilesRepository = $mapTilesRepository;
         $this->userRepository     = $userRepository;
@@ -41,7 +41,10 @@ class CreateNewCity {
         $defaultCityName = $request->getDefaultCityName();
 
         $map = $this->mapTilesRepository->getMap();
-        if(!$map) throw new \Exception ("Please create a map");
+       
+        if (!$map) {
+            throw new \Exception("Please create a map");
+        }
         $selectLocationInteractor = new SelectLocationInteractor($this->locationCalculator);
         $selectLocationRequest    = new SelectLocationRequest($direction);
         $selectLocationResponse   = new SelectLocationResponse();

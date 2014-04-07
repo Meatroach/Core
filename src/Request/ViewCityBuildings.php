@@ -12,7 +12,7 @@ class ViewCityBuildings {
     private $y;
     private $x;
 
-    function __construct($y, $x) {
+    public function __construct($y, $x) {
         $this->y = (int) $y;
         $this->x = (int) $x;
     }

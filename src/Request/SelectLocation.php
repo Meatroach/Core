@@ -9,7 +9,7 @@ namespace OpenTribes\Core\Request;
  */
 class SelectLocation {
     private $direction;
-    function __construct($direction) {
+    public function __construct($direction) {
         $this->direction = $direction;
     }
     public function getDirection() {

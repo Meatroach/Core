@@ -10,7 +10,7 @@ class MapHelper {
     private $tileRepository;
     private $mapTilesRepository;
 
-    function __construct(MapRepository $mapRepository, TileRepository $tileRepository, MapTilesRepository $mapTilesRepository) {
+    public function __construct(MapRepository $mapRepository, TileRepository $tileRepository, MapTilesRepository $mapTilesRepository) {
         $this->mapRepository  = $mapRepository;
         $this->tileRepository = $tileRepository;
         $this->mapTilesRepository = $mapTilesRepository;
@@ -23,6 +23,9 @@ class MapHelper {
         foreach ($grid as $y => $positions) {
             foreach ($positions as $x => $tileName) {
                 $tile = $this->tileRepository->findByName($tileName);
+                if(!$tile){
+                    throw new Exception(sprintf("Tile %s not exists in Repository",$tileName));
+                }
                 $map->addTile($tile, $y, $x);
                 $map->setWidth(max($x, $map->getWidth()));
                 $map->setHeight(max($y, $map->getHeight()));

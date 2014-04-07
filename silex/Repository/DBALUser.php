@@ -13,33 +13,50 @@ use Doctrine\DBAL\Connection;
  */
 class DBALUser extends Repository implements UserRepositoryInterface {
 
+    /**
+     * @var Connection 
+     */
     private $db;
 
     /**
      * @var UserEntity[]
      */
-    private $users    = array();
+    private $users = array();
 
-
+    /**
+     * @param Connection $db DBAL Connection
+     */
     public function __construct(Connection $db) {
         $this->db = $db;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function add(UserEntity $user) {
         $id               = $user->getId();
         $this->users[$id] = $user;
         parent::markAdded($id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function create($id, $username, $password, $email) {
         return new UserEntity((int) $id, $username, $password, $email);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function delete(UserEntity $user) {
         $id = $user->getId();
         parent::markDeleted($id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function findOneByEmail($email) {
         foreach ($this->users as $user) {
             if ($user->getEmail() === $email) {
@@ -60,6 +77,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         return $entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function findOneByUsername($username) {
 
         foreach ($this->users as $user) {
@@ -83,20 +103,29 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         return $entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getUniqueId() {
         $result = $this->db->prepare("SELECT MAX(id) FROM users");
         $result->execute();
         $row    = $result->fetchColumn();
         $row += count($this->users);
         $row -= count(parent::getDeleted());
-        return $row + 1;
+        return (int) ($row + 1);
     }
 
+    /**
+     * @return \Doctrine\DBAL\Query\QueryBuilder
+     */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
         return $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email', 'u.activationCode')->from('users', 'u');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function replace(UserEntity $user) {
         $id               = $user->getId();
         $this->users[$id] = $user;
@@ -119,10 +148,12 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function sync() {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->users[$id])) {
-                $user             = $this->users[$id];
                 $this->db->delete('users', array('id' => $id));
                 unset($this->users[$id]);
                 parent::reassign($id);
@@ -145,6 +176,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function flush() {
         return $this->db->exec("DELETE FROM users");
     }

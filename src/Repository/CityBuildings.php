@@ -17,6 +17,7 @@ interface CityBuildings {
     public function findByLocation($y, $x);
 
     /**
+     * @param CityEntity $city
      * @return void
      */
     public function replace(CityEntity $city);

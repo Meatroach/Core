@@ -15,7 +15,10 @@ class CreateCity {
     private $defaultCityName;
 
 
-    function __construct($y, $x, $username, $defaultCityName) {
+    /**
+     * @param string $defaultCityName
+     */
+    public function __construct($y, $x, $username, $defaultCityName) {
         $this->x               = $x;
         $this->y               = $y;
         $this->username        = $username;
@@ -27,6 +30,9 @@ class CreateCity {
         return $this->defaultCityName;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }

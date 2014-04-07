@@ -10,12 +10,12 @@ namespace OpenTribes\Core\Entity;
 class City {
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $id;
 
     /**
-     * @var \string
+     * @var string
      */
     private $name;
 
@@ -25,26 +25,33 @@ class City {
     private $owner;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $x;
 
     /**
-     * @var \integer
+     * @var integer
      */
     private $y;
+
+    /**
+     * @var boolean
+     */
+    private $isMain    = false;
+
     /**
      * @var Building[]
      */
     private $buildings = array();
+
     /**
-     * @param \integer $id
-     * @param \string $name
-     * @param \OpenTribes\Core\Entity\User $owner
-     * @param \integer $y
-     * @param \integer $x
+     * @param integer $id
+     * @param string $name
+     * @param User $owner
+     * @param integer $y
+     * @param integer $x
      */
-    function __construct($id, $name, User $owner, $y, $x) {
+    public function __construct($id, $name, User $owner, $y, $x) {
         $this->id    = (int) $id;
         $this->name  = $name;
         $this->owner = $owner;
@@ -53,14 +60,14 @@ class City {
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @return \string
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -74,26 +81,37 @@ class City {
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getX() {
         return $this->x;
     }
 
     /**
-     * @return \integer
+     * @return integer
      */
     public function getY() {
         return $this->y;
     }
-    public function addBuilding(Building $building){
-        $this->buildings[]=$building;
-    }
-    public function hasBuildings(){
-        return count($this->buildings)>0;
+
+    public function addBuilding(Building $building) {
+        $this->buildings[] = $building;
     }
 
-    public function getBuildings(){
+    public function hasBuildings() {
+        return count($this->buildings) > 0;
+    }
+
+    public function getBuildings() {
         return $this->buildings;
     }
+
+    public function isMain() {
+        return $this->isMain;
+    }
+
+    public function setMain($isMain) {
+        $this->isMain = (bool) $isMain;
+    }
+
 }
