@@ -210,8 +210,8 @@ class Module implements ServiceProviderInterface {
         $game->get('/map/{y}/{x}', Controller::MAP . ':viewAction')
                 ->value('y', null)
                 ->value('x', null)
-                ->value('width', $app['map.options']['width'])
-                ->value('height', $app['map.options']['height'])
+                ->value('width', $app['map.options']['viewportWidth'])
+                ->value('height', $app['map.options']['viewportHeight'])
                 ->value(RouteValue::TEMPLATE, 'pages/game/map');
 
         $game->get('/', function(Request $request) {

@@ -12,15 +12,15 @@ class ViewMap {
     private $y;
     private $x;
     private $username;
-    private $width;
-    private $height;
+    private $viewportWidth;
+    private $viewportHeight;
 
-    public function __construct($y, $x, $username, $height, $width) {
+    public function __construct($y, $x, $username, $viewportHeight, $viewportWidth) {
         $this->y        = $y;
         $this->x        = $x;
         $this->username = $username;
-        $this->height   = $height;
-        $this->width    = $width;
+        $this->viewportHeight = $viewportHeight;
+        $this->viewportWidth  = $viewportWidth;
     }
 
     public function getY() {
@@ -35,12 +35,12 @@ class ViewMap {
         return $this->username;
     }
 
-    public function getWidth() {
-        return $this->width;
+    public function getViewportWidth() {
+        return $this->viewportWidth;
     }
 
-    public function getHeight() {
-        return $this->height;
+    public function getViewportHeight() {
+        return $this->viewportHeight;
     }
 
 }

@@ -3,8 +3,13 @@
 <div class="container">
     <div class="panel panel-default">
        
-            <div id="viewport" class="panel-body" style="width:{{width}}px;height:{{height}}px">
+        <div id="viewport" class="panel-body" style="width:{{width}}px;height:{{height}}px">
+            <div id="map" style="position: absolute;top:{{top}}px;left{{left}}px;width:{{width}}px;height:{{height}}px">
+                {{#tiles}}
+                <div class="tile" data-x="{{x}}" data-y="{{y}}" style="position: absolute;top:{{top}}px;left{{left}}px;width:{{width}}px;height:{{height}}px"></div>
+                {{/tiles}}
             </div>
+        </div>
         
     </div>
 </div>

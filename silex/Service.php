@@ -32,7 +32,8 @@ abstract class Service {
             return new LocationCalculator;
         });
         $app[self::MAP_CALCULATOR] = $app->share(function() use($app) {
-            return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
+            $options = $app['map.options'];
+            return new IsometricMapCalculator($options['height'], $options['width'], $options['viewportHeight'], $options['viewportWidth'], $options['tileHeight'], $options['tileWidth']);
         });
     }
 

@@ -11,7 +11,11 @@ return array(
         )
     ),
     'map.options'=>array(
-        'width'=>1024,
-        'height'=>680
+        'viewportWidth'  => 1024,
+        'viewportHeight' => 680,
+        'width'          => 100,
+        'height'         => 100,
+        'tileHeight'     => 64,
+        'tileWidth'      => 128
     )
 );

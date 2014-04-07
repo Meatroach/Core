@@ -27,21 +27,41 @@ class ViewMap {
     }
 
     public function process(ViewMapRequest $request, ViewMapResponse $response) {
-        $y                = $request->getY();
-        $x                = $request->getX();
-        $username         = $request->getUsername();
-        $response->width  = $request->getWidth();
-        $response->height = $request->getHeight();
-        $defaultTile      = $this->mapTilesRepository->getDefaultTile();
+        $y        = $request->getY();
+        $x        = $request->getX();
+        $username = $request->getUsername();
+        $this->mapCalculator->setViewport($request->getViewportHeight(), $request->getViewportWidth());
+
+        $response->width  = $request->getViewportWidth();
+        $response->height = $request->getViewportHeight();
+
         if (!$y && !$x) {
             $city = $this->cityRepository->findMainByUsername($username);
 
             $x = $city->getX();
             $y = $city->getY();
         }
-        $this->mapCalculator->setTileHeight($defaultTile->getHeight());
-        $this->mapCalculator->setTileWidth($defaultTile->getWidth());
-        $area = $this->mapCalculator->getArea($y, $x);
+
+        $area           = $this->mapCalculator->getArea($y, $x);
+        $center         = $this->mapCalculator->getCenterPosition($y, $x);
+        $response->top  = $center['top'];
+        $response->left = $center['left'];
+        foreach ($area as $tile) {
+            $y                 = $tile['y'];
+            $x                 = $tile['x'];
+            $position          = $this->mapCalculator->positionToPixel($y, $x);
+            $left              = $position['left'];
+            $top               = $position['top'];
+            $response->tiles[] = array(
+                'name'   => 'default',
+                'x'    => $x,
+                'y'    => $y,
+                'top'  => $top,
+                'left'   => $left,
+                'width'  => 128,
+                'height' => 64
+            );
+        }
     }
 
 }

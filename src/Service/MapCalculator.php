@@ -13,10 +13,13 @@ namespace OpenTribes\Core\Service;
  * @author BlackScorp<witalimik@web.de>
  */
 interface MapCalculator {
-public function getArea($centerY,$centerX);
-public function setTileWidth($width);
-public function setTileHeight($height);
 
-public function positionToPixel($y,$x);
-public function pixelToPosition($top,$left);
+    public function getArea($y, $x);
+    public function setViewport($height, $width);
+
+    public function positionToPixel($y, $x);
+
+    public function pixelToPosition($top, $left);
+
+    public function getCenterPosition($y, $x);
 }
