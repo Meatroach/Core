@@ -22,16 +22,16 @@ abstract class Service {
 
     public static function create(Application &$app) {
 
-        $app[Service::PASSWORD_HASHER] = $app->share(function() {
+        $app[self::PASSWORD_HASHER] = $app->share(function() {
             return new PasswordHasher();
         });
-        $app[Service::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
+        $app[self::ACTIVATION_CODE_GENERATOR] = $app->share(function() use($app) {
             return new CodeGenerator($app['activationCodeLength']);
         });
-        $app[Service::LOCATION_CALCULATOR] = $app->share(function() use($app) {
+        $app[self::LOCATION_CALCULATOR] = $app->share(function() use($app) {
             return new LocationCalculator;
         });
-        $app[Service::MAP_CALCULATOR] = $app->share(function() use($app) {
+        $app[self::MAP_CALCULATOR] = $app->share(function() use($app) {
             return new IsometricMapCalculator($app['map.options']['height'], $app['map.options']['width']);
         });
     }

@@ -25,11 +25,11 @@ abstract class Validator {
         $app['validationDto.activate'] = $app->share(function() use($app) {
             return new ActivateUserValidatorDto;
         });
-        $app[Validator::REGISTRATION] = $app->share(function() use($app) {
+        $app[self::REGISTRATION] = $app->share(function() use($app) {
             return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
         });
 
-        $app[Validator::ACTIVATE] = $app->share(function() use($app) {
+        $app[self::ACTIVATE] = $app->share(function() use($app) {
             return new ActivateUserValidator($app['validationDto.activate']);
         });
     }

@@ -21,16 +21,16 @@ abstract class Repository {
     const MAP_TILES = 'repository.core.mapTiles';
 
     public static function create(Application &$app) {
-        $app[Repository::USER] = $app->share(function() use($app) {
+        $app[self::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);
         });
-        $app[Repository::CITY] = $app->share(function() use($app) {
+        $app[self::CITY] = $app->share(function() use($app) {
             return new CityRepository($app['db']);
         });
-        $app[Repository::MAP] = $app->share(function() use($app) {
+        $app[self::MAP] = $app->share(function() use($app) {
             return new MapRepository($app['db']);
         });
-        $app[Repository::MAP_TILES] = $app->share(function() use($app) {
+        $app[self::MAP_TILES] = $app->share(function() use($app) {
             return new MapTilesRepository($app['db']);
         });
     }
