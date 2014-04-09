@@ -6,6 +6,7 @@ use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
 use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Silex\Application;
 
 /**
@@ -19,6 +20,7 @@ abstract class Service {
     const ACTIVATION_CODE_GENERATOR = 'service.core.activationCodeGenerator';
     const LOCATION_CALCULATOR       = 'service.core.locationCalculator';
     const MAP_CALCULATOR            = 'service.core.mapCalculator';
+    const SESSION_STORE             = 'service.core.sessionStore';
 
     public static function create(Application &$app) {
 
@@ -34,6 +36,9 @@ abstract class Service {
         $app[self::MAP_CALCULATOR] = $app->share(function() use($app) {
             $options = $app['map.options'];
             return new IsometricMapCalculator($options['height'], $options['width'], $options['viewportHeight'], $options['viewportWidth'], $options['tileHeight'], $options['tileWidth']);
+        });
+        $app[self::SESSION_STORE] = $app->share(function() use($app) {
+            return new Session();
         });
     }
 
