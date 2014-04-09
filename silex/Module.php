@@ -109,7 +109,7 @@ class Module implements ServiceProviderInterface {
             if ($request->getMethod() !== 'GET') {
                 $token = $request->headers->get('csrf-token');
                 
-                if ($token !== $app['security']->getToken()) {
+                if (!$app[Service::CSRF_TOKEN_HASHER]->verifyToken($token)) {
                     $event->setResponse(new Response('Access denied, invalid token', 500));
                 }
             }
@@ -184,7 +184,8 @@ class Module implements ServiceProviderInterface {
             }
         }
         
-        $response->headers->set('csrf-token', $app['security']->getToken());            
+        $token = $app[Service::CSRF_TOKEN_HASHER]->getToken();
+        $response->headers->set('csrf-token', $token);            
         return $response;
     }
 
