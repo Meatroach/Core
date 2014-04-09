@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Silex\Provider\SecurityServiceProvider;
 
 /**
  * Description of Module
@@ -78,6 +79,7 @@ class Module implements ServiceProviderInterface {
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
+        $app->register(new SecurityServiceProvider());
     }
 
     /**
@@ -100,6 +102,18 @@ class Module implements ServiceProviderInterface {
      * @param Application $app
      */
     private function createRoutes(Application &$app) {
+
+        $app->on(KernelEvents::REQUEST, function($event) use($app) {
+            $request = $event->getRequest();
+            
+            if ($request->getMethod() !== 'GET') {
+                $token = $request->headers->get('csrf-token');
+                
+                if ($token !== $app['security']->getToken()) {
+                    $event->setResponse(new Response('Access denied, invalid token', 500));
+                }
+            }
+        });
 
         $app->get('/', function() use($app) {
             $response          = new stdClass();
@@ -169,6 +183,8 @@ class Module implements ServiceProviderInterface {
                 $response = $result;
             }
         }
+        
+        $response->headers->set('csrf-token', $app['security']->getToken());            
         return $response;
     }
 
