@@ -7,7 +7,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenTribes\Core\Silex\Enviroment as Env;
 $app = new Application;
-$app->boot();
 
 $app->before(function(Request $request) use($env,$app){
     if($env === Env::TEST && $request->cookies->has('username')){
