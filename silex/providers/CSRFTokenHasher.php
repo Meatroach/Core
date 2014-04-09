@@ -1,17 +1,16 @@
 <?php
 namespace Opentribes\Core\Silex\providers;
 
-use OpenTribes\Core\Service\PasswordHasher as PasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class CSRFTokenHasher implements PasswordHasherInterface {
+class CSRFTokenHasher {
     private $session;
     
     public function __construct(Session $session) {
         $this->session = &$session;
     }
     
-    public function hash($rawPassword) {
+    public function getToken() {
         $token = $this->session->getId();
         if (function_exists('password_hash')) {
             return password_hash($token , PASSWORD_DEFAULT);
@@ -24,7 +23,7 @@ class CSRFTokenHasher implements PasswordHasherInterface {
         return $hash;
     }
     
-    public function verify($hash, $rawPassword) {
+    public function verifyToken($expected) {
         $token = $this->session->getId();
         if (function_exists('password_verify')) {
             return password_verify($expectedToken, $token );
