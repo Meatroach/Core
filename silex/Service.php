@@ -7,6 +7,7 @@ use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
 use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Opentribes\Core\Silex\providers\CSRFTokenHasher;
 use Silex\Application;
 
 /**
@@ -21,6 +22,7 @@ abstract class Service {
     const LOCATION_CALCULATOR       = 'service.core.locationCalculator';
     const MAP_CALCULATOR            = 'service.core.mapCalculator';
     const SESSION_STORE             = 'service.core.sessionStore';
+    const CSRF_TOKEN_HASHER         = 'service.core.csrfHasher';
 
     public static function create(Application &$app) {
 
@@ -37,8 +39,11 @@ abstract class Service {
             $options = $app['map.options'];
             return new IsometricMapCalculator($options['height'], $options['width'], $options['viewportHeight'], $options['viewportWidth'], $options['tileHeight'], $options['tileWidth']);
         });
-        $app[self::SESSION_STORE] = $app->share(function() use($app) {
+        $app[self::SESSION_STORE] = $app->share(function() {
             return new Session();
+        });
+        $app[self::CSRF_TOKEN_HASHER] = $app->share(function() use($app) {
+            return new CSRFTokenHasher($app[self::SESSION_STORE]);
         });
     }
 
