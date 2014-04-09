@@ -289,8 +289,9 @@ class Module implements ServiceProviderInterface {
                         'method' => 'GET',
                         'param'  => array())
         ));
-        $account->get('/registration_successfull', function() {
-            return '';
+        $account->get('/registration_successfull', function() use($app) {
+            $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+            return new RedirectResponse($baseUrl);
         })->value(RouteValue::TEMPLATE, 'pages/registration_successfull');
 
         $account->match('/create', Controller::ACCOUNT . ':createAction')
