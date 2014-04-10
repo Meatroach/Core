@@ -12,6 +12,11 @@
 
 .sprite {display:inline-block; overflow:hidden; background-repeat: no-repeat;background-image:url(atlas.png);}
 
-.forrest {width:128px; height:64px; background-position: -0px -128px}
-.gras{width:128px; height:64px; background-position: -0px -64px}
-.sea {width:128px; height:64px; background-position: -0px -0px}
+
+.gras{background-position: -0px -0px}
+.sea { background-position: -128px -0px}
+.forrest { background-position: -256px -0px}
+.hill { background-position: -384px -0px}
+.city1{
+    background-position: 0px -128px;
+}

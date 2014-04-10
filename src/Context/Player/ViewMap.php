@@ -34,37 +34,69 @@ class ViewMap {
 
         $response->width  = $request->getViewportWidth();
         $response->height = $request->getViewportHeight();
-
+        $defaultTile      = $this->mapTilesRepository->getDefaultTile();
+        $city             = $this->cityRepository->findMainByUsername($username);
+        $step             = 1;
         if (!$y && !$x) {
-            $city = $this->cityRepository->findMainByUsername($username);
+
 
             $x = $city->getX();
             $y = $city->getY();
         }
 
+        $response->downX  = $x + $step;
+        $response->downY  = $y + $step;
+        $response->upX    = $x + $step;
+        $response->upY    = $y + $step;
+        $response->rightX = $x - $step;
+        $response->rightY = $y + $step;
+        $response->leftX  = $x + $step;
+        $response->leftY  = $y - $step;
+        $center           = $this->mapCalculator->positionToPixel($y, $x);
 
-        $center         = $this->mapCalculator->positionToPixel($y, $x);
-        $top            = $center['top'] - $request->getViewportHeight() / 2-64;
-        $left           = $center['left'] - $request->getViewportWidth() / 2+64;
-        $response->top  = -$center['top'] + $request->getViewportHeight() / 2;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2-64;
+        $top            = $center['top'] - $request->getViewportHeight() / 2;
+        $left           = $center['left'] - $request->getViewportWidth() / 2;
+        $response->top  = -$center['top'] + $request->getViewportHeight() / 2 ;
+        $response->left = -$center['left'] + $request->getViewportWidth() / 2 ;
         $area           = $this->mapCalculator->getArea($top, $left);
+
+        $position = $this->mapCalculator->positionToPixel($city->getY(), $city->getX());
+
+        $response->cities[] = array(
+            'name'  => $city->getName(),
+            'owner' => $city->getOwner()->getUsername(),
+            'x'     => $city->getX(),
+            'y'     => $city->getY(),
+            'top'   => $position['top'],
+            'left'  => $position['left']
+        );
+        mt_srand(1234);
+        $tilenames          = array(
+            'gras',
+            'sea',
+            'forrest',
+            'hill'
+        );
+        $tiles              = array();
         foreach ($area as $tile) {
-            $y                 = $tile['y'];
-            $x                 = $tile['x'];
-            $position          = $this->mapCalculator->positionToPixel($y, $x);
-            $left              = $position['left'];
-            $top               = $position['top'];
-            $response->tiles[] = array(
-                'name'   => 'gras',
+            $y           = $tile['y'];
+            $x           = $tile['x'];
+            $position    = $this->mapCalculator->positionToPixel($y, $x);
+            $left        = $position['left'];
+            $top         = $position['top'];
+            $key         = sprintf("%d-%d", $y, $x);
+            $tiles[$key] = array(
+                'name'   => $tilenames[mt_rand(0, count($tilenames) - 1)],
                 'x'      => $x,
                 'y'      => $y,
                 'top'    => $top,
                 'left'   => $left,
-                'width'  => 128,
-                'height' => 64
+                'width'  => $defaultTile->getWidth(),
+                'height' => $defaultTile->getHeight()
             );
         }
+
+        $response->tiles = array_values($tiles);
     }
 
 }
