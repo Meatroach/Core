@@ -113,6 +113,8 @@ class Module implements ServiceProviderInterface {
             }
         });
 
+        $app['mustache.options']['helpers']['csrf-token'] = $app[Service::CSRF_TOKEN_HASHER]->getToken();
+
         $app->get('/', function() use($app) {
             $response          = new stdClass();
             $response->failed  = false;
@@ -182,8 +184,6 @@ class Module implements ServiceProviderInterface {
             }
         }
         
-        $token = $app[Service::CSRF_TOKEN_HASHER]->getToken();
-        $response->headers->set('csrf-token', $token);            
         return $response;
     }
 
