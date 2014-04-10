@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Silex\Provider\SecurityServiceProvider;
+use Silex\Provider\SessionServiceProvider
 
 /**
  * Description of Module
@@ -80,7 +80,7 @@ class Module implements ServiceProviderInterface {
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
         $app->register(new SecurityServiceProvider());
-        $app->register(new \Silex\Provider\SessionServiceProvider());
+        $app->register(new SessionServiceProvider());
     }
 
     /**
