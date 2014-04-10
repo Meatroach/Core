@@ -15,6 +15,7 @@
             {{/failed}}
             {{/proceed}}
             <form role="form" action="account/create" method="POST">
+                <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" name="username" class="form-control" id="username" value="{{username}}" placeholder="Username">

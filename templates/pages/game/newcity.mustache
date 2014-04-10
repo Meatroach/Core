@@ -5,6 +5,7 @@
         <div class="panel-body">
             Select direction for new city
             <form method="POST" action="game/start">
+                <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
                 {{#directions}}
                 <input type="radio" name="direction" {{#selected}}checked="checked"{{/selected}} value="{{name}}"> {{name}}<br/>
                 {{/directions}}
