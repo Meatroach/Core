@@ -103,23 +103,18 @@ class Module implements ServiceProviderInterface {
 
         $app->on(KernelEvents::REQUEST, function($event) use($app) {
             $request         = $event->getRequest();
+            $session         = $request->getSession();
             $token           = $request->get('csrfToken');
-            $realToken       = $request->getSession()->get('csrfToken');
+            $defaultToken    = $app[Service::PASSWORD_HASHER]->hash($session->getId());
+            $realToken       = $session->get('csrfToken', $defaultToken);
             $isNotGETRequest = $request->getMethod() !== 'GET';
             $isValidToken    = $realToken === $token;
-           
+
             if ($isNotGETRequest && !$isValidToken) {
                 $event->setResponse(new Response('Access denied, invalid token', 500));
             }
+            $session->set('csrfToken', $realToken);
         });
-
-        $app->before(function(Request $request) use($app) {
-            $session      = $request->getSession();
-            $defaultToken = $app[Service::PASSWORD_HASHER]->hash($session->getId());
-            $token        = $session->get('csrfToken', $defaultToken);
-            $session->set('csrfToken', $token);
-        });
-
 
         $app->get('/', function() use($app) {
             $response          = new stdClass();
@@ -155,9 +150,8 @@ class Module implements ServiceProviderInterface {
                 $appResponse = $module->handleSubRequests($subRequests, $appResponse, $app);
             }
             if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
-              
                 $appResponse->csrfToken = $request->getSession()->get('csrfToken');
-                $response = $module->createResponse($request, $appResponse, $app);
+                $response               = $module->createResponse($request, $appResponse, $app);
             }
 
             $event->setResponse($response);
@@ -175,7 +169,7 @@ class Module implements ServiceProviderInterface {
         $response = new Response();
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
-       
+
             $body = $app['mustache']->render($template, $appResponse);
             $response->setContent($body);
             $response->setExpires(new DateTime());
