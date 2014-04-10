@@ -78,7 +78,6 @@ class Module implements ServiceProviderInterface {
         $app->register(new MustacheServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->register(new SwiftmailerServiceProvider());
-        $app->register(new SecurityServiceProvider());
     }
 
     /**
