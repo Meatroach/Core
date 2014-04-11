@@ -44,10 +44,10 @@ class ViewMap {
             $y = $city->getY();
         }
 
-        $response->downX  = $x + $step;
-        $response->downY  = $y + $step;
-        $response->upX    = $x - $step;
-        $response->upY    = $y - $step;
+        $response->downX  = $x - $step;
+        $response->downY  = $y - $step;
+        $response->upX    = $x + $step;
+        $response->upY    = $y + $step;
         $response->rightX = $x - $step;
         $response->rightY = $y + $step;
         $response->leftX  = $x + $step;
