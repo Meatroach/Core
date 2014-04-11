@@ -13,9 +13,12 @@ class Tile {
     public $name;
     public $top;
     public $left;
+    public $x;
+    public $y;
     public function __construct(TileEntity $tileEntity) {
         $this->width = $tileEntity->getWidth();
         $this->height = $tileEntity->getHeight();
         $this->name = $tileEntity->getName();
+        
     }
 }

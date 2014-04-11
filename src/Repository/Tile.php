@@ -33,6 +33,7 @@ interface Tile {
      * @return TileEntity|null
      */
     public function findByName($name);
+    public function findById($id);
 
     /**
      * @return void

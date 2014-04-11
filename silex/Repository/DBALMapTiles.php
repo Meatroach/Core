@@ -61,7 +61,7 @@ class DBALMapTiles implements MapTilesRepository {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 't.is_default AS isDefault', 'mt.x AS x', 'mt.y AS y', 't.width AS tileWidth', 't.height as tileHeight')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
+        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 't.is_default AS isDefault', 'mt.x AS x', 'mt.y AS y', 't.width AS tileWidth', 't.height as tileHeight', '(mt.y||"-"||mt.x) AS location')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
     }
 
     private function loadDefaultTile() {
@@ -76,15 +76,11 @@ class DBALMapTiles implements MapTilesRepository {
         $this->defaultTile->setWidth($row->width);
     }
 
-    private function load() {
-
-        $result = $this->getQueryBuilder()->execute();
-        $rows   = $result->fetchAll(PDO::FETCH_OBJ);
-        $tiles  = array();
-        $map    = $this->map;
-
-
+    private function rowsToEntities(array $rows) {
+        $tiles = array();
+        $map   = $this->map;
         foreach ($rows as $row) {
+
 
             if (!$map) {
                 $map = new MapEntity($row->mapId, $row->mapName);
@@ -104,6 +100,13 @@ class DBALMapTiles implements MapTilesRepository {
         }
     }
 
+    private function load() {
+
+        $result = $this->getQueryBuilder()->execute();
+        $rows   = $result->fetchAll(PDO::FETCH_OBJ);
+        $this->rowsToEntities($rows);
+    }
+
     public function getDefaultTile() {
         if (!$this->defaultTile) {
             $this->loadDefaultTile();
@@ -112,7 +115,31 @@ class DBALMapTiles implements MapTilesRepository {
     }
 
     public function findAllInArea(array $area) {
-        ;
+
+        $result = $this->getQueryBuilder()->where('location IN (\'' . implode("','", array_keys($area)) . '\') ');
+
+        $statement = $result->execute();
+        $rows      = $statement->fetchAll(PDO::FETCH_OBJ);
+        $this->rowsToEntities($rows);
+        return $this->map;
+    }
+
+    public function sync() {
+        $mapTiles = $this->map->getTiles();
+        foreach ($mapTiles as $y => $rows) {
+            foreach ($rows as $x => $tile) {
+                if ($tile->isDefault()) {
+                    continue;
+                }
+                $data = array(
+                    'map_id'  => $this->map->getId(),
+                    'tile_id' => $tile->getId(),
+                    'x'       => $x,
+                    'y'       => $y
+                );
+                $this->db->insert('map_tiles', $data);
+            }
+        }
     }
 
 }

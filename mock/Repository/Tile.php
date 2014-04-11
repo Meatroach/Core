@@ -50,7 +50,13 @@ class Tile implements TileRepository {
         }
         return null;
     }
-
+  public function findById($id) {
+        foreach($this->tiles as $tile){
+            if($tile->getId() === $id){
+                return $tile;
+            }
+        }
+    }
     /**
      * {@inheritDoc}
      */
