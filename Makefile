@@ -18,6 +18,7 @@ install-dev:
 	touch storage/ot.db
 	cli/config.php create develop
 	cli/migration.php migrations:migrate develop
+	cli/config.php create-dummy-map develop
 
 install-production:
 	composer self-update
