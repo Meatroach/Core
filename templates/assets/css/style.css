@@ -2,7 +2,7 @@
     background-image: url(../img/tilemap.png);
     overflow: hidden;
     text-align: center;
-
+    line-height: 178px;
     color:white;
     font-weight: bold;
     width:128px;

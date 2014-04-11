@@ -43,7 +43,7 @@ class ViewMap {
             $x = $city->getX();
             $y = $city->getY();
         }
-
+      
         $response->downX  = $x + $step;
         $response->downY  = $y + $step;
         $response->upX    = $x + $step;
@@ -56,12 +56,12 @@ class ViewMap {
 
         $top            = $center['top'] - $request->getViewportHeight() / 2;
         $left           = $center['left'] - $request->getViewportWidth() / 2;
-        $response->top  = -$center['top'] + $request->getViewportHeight() / 2 ;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2 ;
+        $response->top  = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight()/2;
+        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth()/4;
         $area           = $this->mapCalculator->getArea($top, $left);
 
         $position = $this->mapCalculator->positionToPixel($city->getY(), $city->getX());
-
+        /*
         $response->cities[] = array(
             'name'  => $city->getName(),
             'owner' => $city->getOwner()->getUsername(),
@@ -69,7 +69,7 @@ class ViewMap {
             'y'     => $city->getY(),
             'top'   => $position['top'],
             'left'  => $position['left']
-        );
+        );*/
         mt_srand(1234);
         $tilenames          = array(
             'gras',

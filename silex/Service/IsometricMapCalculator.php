@@ -46,11 +46,11 @@ class IsometricMapCalculator implements MapCalculator {
 
         $start  = array(
             'x' => $left - $this->tileWidth / 2,
-            'y' => $top + $this->tileHeight
+            'y' => $top + $this->tileHeight /2
         );
         $end    = array(
-            'x' => $start['x'] + $this->viewPortWidth,
-            'y' => $start['y'] + $this->viewPortHeight
+            'x' => $start['x'] + $this->viewPortWidth + $this->tileWidth,
+            'y' => $start['y'] + $this->viewPortHeight + $this->tileHeight/2
         );
         $width  = $this->width * $this->tileWidth;
         $height = $this->height * $this->tileHeight;
