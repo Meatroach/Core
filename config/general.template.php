@@ -15,7 +15,7 @@ return array(
         'viewportHeight' => 680,
         'width'          => 100,
         'height'         => 100,
-        'tileHeight'     => 64,
+        'tileHeight'     => 74,
         'tileWidth'      => 128
     )
 );
