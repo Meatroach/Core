@@ -100,7 +100,7 @@ class DBALCity extends Repository implements CityInterface {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y', 'c.is_main AS isMain', '(c.y||"-"||c.x) AS location')
+        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y', 'c.is_main AS isMain')
                         ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
     }
 
@@ -229,9 +229,16 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     public function findAllInArea(array $area) {
-        $result = $this->getQueryBuilder()->where('location IN (\'' . implode("','", array_keys($area)) . '\')')->execute();
+        $where    = 'CONCAT(y,"-",x)';
+        $params   = $this->db->getParams();
+        $isSQLite = $params['driver'] === 'pdo_sqlite';
+
+        if ($isSQLite) {
+            $where = '(y||"-"||x)';
+        }
+        $result = $this->getQueryBuilder()->where($where . ' IN (\'' . implode("','", array_keys($area)) . '\')')->execute();
         $rows   = $result->fetchAll(PDO::FETCH_OBJ);
-        $found = array();
+        $found  = array();
         if (count($rows) < 0) {
             return $found;
         }

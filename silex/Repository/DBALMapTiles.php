@@ -61,7 +61,7 @@ class DBALMapTiles implements MapTilesRepository {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 't.is_default AS isDefault', 'mt.x AS x', 'mt.y AS y', 't.width AS tileWidth', 't.height as tileHeight', '(mt.y||"-"||mt.x) AS location')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
+        return $queryBuilder->select('m.id AS mapId', 'm.name AS mapName', 'm.width as mapWidth', 'm.height AS mapHeight', 't.id AS tileId', 't.name AS tileName', 't.is_accessible AS isAccessible', 't.is_default AS isDefault', 'mt.x AS x', 'mt.y AS y', 't.width AS tileWidth', 't.height as tileHeight')->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.id=mt.map_id')->leftJoin('mt', 'tiles', 't', 'mt.tile_id=t.id');
     }
 
     private function loadDefaultTile() {
@@ -115,8 +115,15 @@ class DBALMapTiles implements MapTilesRepository {
     }
 
     public function findAllInArea(array $area) {
+        $where    = 'CONCAT(y,"-",x)';
+        $params   = $this->db->getParams();
+        $isSQLite = $params['driver'] === 'pdo_sqlite';
 
-        $result = $this->getQueryBuilder()->where('location IN (\'' . implode("','", array_keys($area)) . '\') ');
+        if ($isSQLite) {
+            $where = '(y||"-"||x)';
+        }
+        $result = $this->getQueryBuilder()
+                ->where($where . ' IN (\'' . implode("','", array_keys($area)) . '\') ');
 
         $statement = $result->execute();
         $rows      = $statement->fetchAll(PDO::FETCH_OBJ);
