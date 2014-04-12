@@ -2,9 +2,9 @@
     background-image: url(../img/tilemap.png);
     overflow: hidden;
     text-align: center;
-    line-height: 178px;
+
     color:white;
-    font-weight: bold;
+
     width:128px;
     height:128px;
     margin-top:-54px;
@@ -26,4 +26,19 @@
 }
 .map-arrow:hover{
     text-decoration: none;
+}
+.sprite.city a{
+    display: block;
+    position: absolute;
+    bottom: 0;
+}
+.sprite.city > div.info{
+    display: none;
+    position: absolute;
+    bottom: 0;
+    color:black;
+
+}
+.sprite.city:hover > div.info{
+    display:block;
 }

@@ -123,5 +123,7 @@ class City implements CityRepository {
             }
         }
     }
-
+    public function findAllInArea(array $area) {
+        ;
+    }
 }

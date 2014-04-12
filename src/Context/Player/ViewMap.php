@@ -8,6 +8,7 @@ use OpenTribes\Core\Request\ViewMap as ViewMapRequest;
 use OpenTribes\Core\Response\ViewMap as ViewMapResponse;
 use OpenTribes\Core\Service\MapCalculator;
 use OpenTribes\Core\View\Tile as TileView;
+use OpenTribes\Core\View\City as CityView;
 
 /**
  * Description of ViewMap
@@ -38,8 +39,6 @@ class ViewMap {
         $city             = $this->cityRepository->findMainByUsername($username);
         $step             = 1;
         if (!$y && !$x) {
-
-
             $x = $city->getX();
             $y = $city->getY();
         }
@@ -61,35 +60,43 @@ class ViewMap {
         $area           = $this->mapCalculator->getArea($top, $left);
 
         $position = $this->mapCalculator->positionToPixel($city->getY(), $city->getX());
+        $cities   = $this->cityRepository->findAllInArea($area);
 
-        $response->cities[] = array(
-            'name'  => $city->getName(),
-            'owner' => $city->getOwner()->getUsername(),
-            'x'     => $city->getX(),
-            'y'     => $city->getY(),
-            'top'   => $position['top'],
-            'left'  => $position['left']
-        );
-
-        $map       = $this->mapTilesRepository->findAllInArea($area);
-        $tiles     = $map->getTiles();
-        $tileViews = array();
-        foreach ($tiles as $y => $rows) {
-            foreach ($rows as $x => $tile) {
-                $position       = $this->mapCalculator->positionToPixel($y, $x);
-                $left           = $position['left'];
-                $top            = $position['top'];
-                $tileView       = new TileView($tile);
-                $tileView->top  = $top;
-                $tileView->x    = $x;
-                $tileView->y    = $y;
-                $tileView->left = $left;
-                $tileViews[]    = $tileView;
-            }
+        foreach ($cities as $city) {
+            $y                  = $city->getY();
+            $x                  = $city->getX();
+            $position           = $this->mapCalculator->positionToPixel($y, $x);
+            $left               = $position['left'];
+            $top                = $position['top'];
+            $cityView           = new CityView($city);
+            $cityView->top      = $top;
+            $cityView->left     = $left;
+            $cityView->height   = $defaultTile->getHeight();
+            $cityView->width    = $defaultTile->getWidth();
+            $cityView->z        = $y + $x * 2;
+            $cityView->level  = 1;
+            $response->cities[] = $cityView;
         }
 
-
-        $response->tiles = ($tileViews);
+        $map = $this->mapTilesRepository->findAllInArea($area);
+        foreach ($area as $location) {
+            $x    = $location['x'];
+            $y    = $location['y'];
+            $tile = $map->getTile($y, $x);
+            if (!$tile) {
+                $tile = $defaultTile;
+            }
+            $position          = $this->mapCalculator->positionToPixel($y, $x);
+            $left              = $position['left'];
+            $top               = $position['top'];
+            $tileView          = new TileView($tile);
+            $tileView->top     = $top;
+            $tileView->x       = $x;
+            $tileView->y       = $y;
+            $tileView->z       = $y + $x;
+            $tileView->left    = $left;
+            $response->tiles[] = $tileView;
+        }
     }
 
 }

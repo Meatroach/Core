@@ -12,6 +12,12 @@ class City {
     public $name;
     public $x;
     public $y;
+    public $width;
+    public $height;
+    public $top;
+    public $left;
+    public $level;
+    public $z;
     public $owner;
     public function __construct(CityEntity $city) {
         $this->id = $city->getId();

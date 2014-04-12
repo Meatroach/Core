@@ -87,4 +87,6 @@ interface City {
      * @return CityEntity
      */
     public function findMainByUsername($username);
+    
+    public function findAllInArea(array $area);
 }
