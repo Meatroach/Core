@@ -43,20 +43,20 @@ class ViewMap {
             $y = $city->getY();
         }
 
-        $response->downX  = $x - $step;
-        $response->downY  = $y - $step;
-        $response->upX    = $x + $step;
-        $response->upY    = $y + $step;
-        $response->rightX = $x - $step;
-        $response->rightY = $y + $step;
-        $response->leftX  = $x + $step;
-        $response->leftY  = $y - $step;
+        $response->downX  = $x + $step;
+        $response->downY  = $y + $step;
+        $response->upX    = $x - $step;
+        $response->upY    = $y - $step;
+        $response->rightX = $x + $step;
+        $response->rightY = $y - $step;
+        $response->leftX  = $x - $step;
+        $response->leftY  = $y + $step;
         $center           = $this->mapCalculator->positionToPixel($y, $x);
 
         $top            = $center['top'] - $request->getViewportHeight() / 2;
         $left           = $center['left'] - $request->getViewportWidth() / 2;
         $response->top  = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight() / 2;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() / 4;
+        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() /4;
         $area           = $this->mapCalculator->getArea($top, $left);
 
         $position = $this->mapCalculator->positionToPixel($city->getY(), $city->getX());

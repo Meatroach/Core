@@ -83,6 +83,7 @@ class IsometricMapCalculator implements MapCalculator {
     }
 
     public function positionToPixel($y, $x) {
+     
         $left = ~~(($x - $y) * $this->tileWidth / 2 + $this->originX);
         $top  = ~~(($x + $y) * $this->tileHeight / 2);
         return array(
