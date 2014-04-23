@@ -9,4 +9,6 @@ namespace OpenTribes\Core\Response;
  */
 class ViewCities extends Response{
     public $cities = array();
+    public $proceed = true;
+    public $failed = false;
 }
