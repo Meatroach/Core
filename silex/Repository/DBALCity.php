@@ -162,7 +162,10 @@ class DBALCity extends Repository implements CityInterface {
      * {@inheritDoc}
      */
     public function countAll() {
-        return count($this->cities);
+        $result = $this->db->prepare("SELECT COUNT(id) FROM cities");
+        $result->execute();
+        $row    = $result->fetchColumn();
+        return (int) $row;
     }
 
     private function rowToEntity(stdClass $row) {
