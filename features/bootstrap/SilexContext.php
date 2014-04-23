@@ -19,7 +19,7 @@ class SilexContext extends FeatureContext {
         ));
         $this->userRepository        = $app[Repository::USER];
         $this->registrationValidator = $app[Validator::REGISTRATION];
-
+        
         $this->passwordHasher          = $app[Service::PASSWORD_HASHER];
         $this->activationCodeGenerator = $app[Service::ACTIVATION_CODE_GENERATOR];
         $this->locationCalculator      = $app[Service::LOCATION_CALCULATOR];
@@ -40,7 +40,7 @@ class SilexContext extends FeatureContext {
 
     /** @BeforeScenario */
     public function before() {
-        
+      
     }
 
     /** @AfterScenario */
