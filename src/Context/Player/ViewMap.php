@@ -56,7 +56,7 @@ class ViewMap {
         $top            = $center['top'] - $request->getViewportHeight() / 2;
         $left           = $center['left'] - $request->getViewportWidth() / 2;
         $response->top  = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight() / 2;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() /4;
+        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() /2;
         $area           = $this->mapCalculator->getArea($top, $left);
 
         $position = $this->mapCalculator->positionToPixel($city->getY(), $city->getX());

@@ -16,6 +16,7 @@ use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Mock\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Mock\Repository\MapTiles as MapTilesRepository;
+
 /**
  * Behat context class.
  */
@@ -209,7 +210,6 @@ class FeatureContext extends BehatContext {
             $password = $row['password'];
             $this->userHelper->processLogin($username, $password);
         }
-       
     }
 
     /**
@@ -399,6 +399,13 @@ class FeatureContext extends BehatContext {
      */
     public function iSelectedUser($username) {
         $this->cityHelper->listUsersCities($username);
+    }
+
+    /**
+     * @Given /^I should see following city informations$/
+     */
+    public function iShouldSeeFollowingCityInformations(TableNode $table) {
+        throw new PendingException();
     }
 
 }

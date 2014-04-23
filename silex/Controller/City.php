@@ -73,6 +73,9 @@ class City {
         $response->directions = $directions;
         return $response;
     }
+    public function listAction(Request $request){
+        
+    }
 
     public function after() {
         $this->cityRepository->sync();
