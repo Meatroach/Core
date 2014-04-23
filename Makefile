@@ -7,6 +7,7 @@ install-test:
 	composer self-update
 	composer install --no-progress
 	mkdir storage
+	mkdir cache
 	touch storage/ot.db
 	cli/config.php create
 	cli/migration.php migrations:migrate --no-interaction
@@ -15,6 +16,7 @@ install-dev:
 	composer self-update
 	composer install --no-progress
 	mkdir storage
+	mkdir cache
 	touch storage/ot.db
 	cli/config.php create develop
 	cli/migration.php migrations:migrate develop

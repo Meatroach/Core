@@ -21,7 +21,8 @@ class VersionInitial extends AbstractMigration {
 
 
         $this->table = $schema->createTable('users');
-        $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
+
+        $this->table->addColumn('id', Type::INTEGER, array('length' => 11, 'autoincrement' => true));
         $this->table->addColumn('username', Type::STRING, array('length' => 254));
         $this->table->addColumn('password', Type::STRING, array('length' => 254));
         $this->table->addColumn('logins', Type::INTEGER, array('length' => 10, 'unsigned' => true, 'default' => 0));
@@ -34,7 +35,7 @@ class VersionInitial extends AbstractMigration {
         $userTable   = $this->table;
 
         $this->table = $schema->createTable('roles');
-        $this->table->addColumn('id', Type::INTEGER);
+        $this->table->addColumn('id', Type::INTEGER, array('autoincrement' => true));
         $this->table->addColumn('name', Type::STRING, array('length' => 32));
         $this->table->addColumn('description', Type::TEXT);
         $this->table->setPrimaryKey(array("id"));
@@ -48,7 +49,7 @@ class VersionInitial extends AbstractMigration {
         $this->table->addForeignKeyConstraint($rolesTable, array('role_id'), array('id'), array(), 'fk_role');
 
         $this->table = $schema->createTable('maps');
-        $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
+        $this->table->addColumn('id', Type::INTEGER, array('length' => 11, 'autoincrement' => true));
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
         $this->table->addColumn('width', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('height', Type::INTEGER, array('length' => 11, 'unsigned' => true));
@@ -56,7 +57,7 @@ class VersionInitial extends AbstractMigration {
         $mapTable    = $this->table;
 
         $this->table = $schema->createTable('tiles');
-        $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
+        $this->table->addColumn('id', Type::INTEGER, array('length' => 11, 'autoincrement' => true));
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
         $this->table->addColumn('is_accessible', Type::BOOLEAN);
         $this->table->addColumn('is_default', Type::BOOLEAN);
@@ -77,7 +78,7 @@ class VersionInitial extends AbstractMigration {
 
         $this->table = $schema->createTable('cities');
 
-        $this->table->addColumn('id', Type::INTEGER, array('length' => 11));
+        $this->table->addColumn('id', Type::INTEGER, array('length' => 11, 'autoincrement' => true));
         $this->table->addColumn('name', Type::STRING, array('length' => 254));
         $this->table->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('y', Type::INTEGER, array('length' => 11, 'unsigned' => true));

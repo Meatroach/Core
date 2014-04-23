@@ -17,7 +17,7 @@
         "source": "https://github.com/Opentribes/Core"
     },
     "require": {
-        "php": ">=5.3",
+        "php" : ">=5.3",
         "silex/silex": "~1.1",
         "igorw/config-service-provider": "~1.1",
         "doctrine/dbal" : "~2.4",

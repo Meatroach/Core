@@ -6,6 +6,7 @@ return array(
     'mustache.assets' => array(realpath(__DIR__ . '/../templates/assets')),
     'activationCodeLength' => 8,
     'mustache.options'     => array(
+        'cache'   => realpath(__DIR__ . '/../cache'),
         'helpers' => array(
             'baseUrl' => '/'
         )
