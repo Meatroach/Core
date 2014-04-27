@@ -5,7 +5,7 @@ namespace OpenTribes\Core\Context\Player;
 use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
-use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsResponse;
+use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
 use OpenTribes\Core\View\CityBuilding as CityBuildingView;
 
 /**
@@ -23,7 +23,7 @@ class ViewCity {
         $this->buildingRepository      = $buildingRepository;
     }
 
-    public function process(ViewCityRequest $request, ViewCityBuildingsResponse $response) {
+    public function process(ViewCityRequest $request, ViewCityResponse $response) {
         $city = $this->cityBuildingsRepository->findByLocation($request->getY(), $request->getX());
         $this->response = $response;
         if (!$city) {
@@ -36,7 +36,7 @@ class ViewCity {
         }else{
             $this->viewInformations($y, $x);
         }
-
+        $response->isCustomCity = $isCustomCity;
      
         return true;
     }
