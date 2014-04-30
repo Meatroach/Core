@@ -165,7 +165,8 @@ class DBALCity extends Repository implements CityInterface {
         $result = $this->db->prepare("SELECT COUNT(id) FROM cities");
         $result->execute();
         $row    = $result->fetchColumn();
-     
+        $row += count($this->cities);
+        $row -= count(parent::getDeleted());
         return (int) $row;
     }
 
