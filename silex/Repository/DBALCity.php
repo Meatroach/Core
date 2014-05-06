@@ -255,4 +255,16 @@ class DBALCity extends Repository implements CityInterface {
         return $found;
     }
 
+    public function getLastCreatedCity() {
+        $result = $this->getQueryBuilder()
+                        ->orderBy('c.id', 'DESC')->execute();
+        $row    = $result->fetch(PDO::FETCH_OBJ);
+        if (!$row) {
+            return null;
+        }
+        $entity = $this->rowToEntity($row);
+        $this->replace($entity);
+        return $entity;
+    }
+
 }

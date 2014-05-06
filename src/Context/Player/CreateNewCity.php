@@ -50,11 +50,17 @@ class CreateNewCity {
         $selectLocationResponse   = new SelectLocationResponse();
         $createCityInteractor     = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository);
         $createCityResponse       = new CreateCityResponse();
-        $this->locationCalculator->setCenterPosition($map->getCenterY(), $map->getCenterX());
+        $this->locationCalculator->setOriginPosition($map->getCenterY(), $map->getCenterX());
+        $lastCity = $this->cityRepository->getLastCreatedCity();
+        if($lastCity){
+            $this->locationCalculator->setOriginPosition($lastCity->getY(), $lastCity->getX());
+        }
+        
         $this->locationCalculator->setCountCities($this->cityRepository->countAll());
         $i = 0;
         do {
             $i++;
+          
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
             $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);
             $cityNotCreated    = !$createCityInteractor->process($createCityRequest, $createCityResponse);

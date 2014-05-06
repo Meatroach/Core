@@ -126,4 +126,7 @@ class City implements CityRepository {
     public function findAllInArea(array $area) {
         ;
     }
+    public function getLastCreatedCity() {
+        return end($this->cities);
+    }
 }
