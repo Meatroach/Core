@@ -14,11 +14,11 @@ class LocationCalculator implements LocationCalculatorInterface {
 
     private $x           = 0;
     private $y           = 0;
-    private $originX;
-    private $originY;
+    private $originX     = 0;
+    private $originY     = 0;
     private $countCities = 0;
-    private $margin = 0;
-  
+    private $margin      = 1;
+
     public function setOriginPosition($y,$x){
         $this->originX = $x;
         $this->originY = $y;

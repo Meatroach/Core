@@ -28,7 +28,8 @@ class ViewCity {
         if (!$city) {
             return false;
         }
-        
+        $x            = $request->getX();
+        $y            = $request->getY();
         $isCustomCity = $city->getOwner()->getUsername() === $request->getUsername();
         if ($isCustomCity) {
             $this->viewBuildings($y, $x);
