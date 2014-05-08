@@ -1,8 +1,8 @@
-@ListBuildings
-Feature: List Buildings
-In order to create buildings,
-as registered player,
-I have to list my buildings
+@ViewCity
+Feature: View City
+In Order to take actions,
+as registered user,
+i have to view a city
 
 Background:
       Given following Buildings:
@@ -31,7 +31,7 @@ Background:
             | City1 | BlackScorp | 0 | 0 |
             | City2 | TestUser | 1 | 1 |
 
-Scenario: List my buildings
+Scenario: View my city
     Given I'm logged in as user "BlackScorp"
     When I visit "game/city/0/0"
     Then I selected the city at y=0 and x=0
@@ -52,3 +52,11 @@ Scenario: List my buildings
         | Warehouse | 1 | 
         | Hiding place | 0 | 
         | Wall | 0 | 
+
+Scenario: View others city
+    Given I'm logged in as user "BlackScorp"
+    When I visit "game/city/1/1"
+    Then I selected the city at y=1 and x=1
+    And I should see following city informations
+        | city | owner | y | x |
+        | City1 | TestUser1 | 1 | 1 |

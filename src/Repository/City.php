@@ -89,4 +89,5 @@ interface City {
     public function findMainByUsername($username);
     
     public function findAllInArea(array $area);
+    public function getLastCreatedCity();
 }

@@ -165,7 +165,8 @@ class DBALCity extends Repository implements CityInterface {
         $result = $this->db->prepare("SELECT COUNT(id) FROM cities");
         $result->execute();
         $row    = $result->fetchColumn();
-     
+        $row += count($this->cities);
+        $row -= count(parent::getDeleted());
         return (int) $row;
     }
 
@@ -252,6 +253,18 @@ class DBALCity extends Repository implements CityInterface {
             $this->replace($entity);
         }
         return $found;
+    }
+
+    public function getLastCreatedCity() {
+        $result = $this->getQueryBuilder()
+                        ->orderBy('c.id', 'DESC')->execute();
+        $row    = $result->fetch(PDO::FETCH_OBJ);
+        if (!$row) {
+            return null;
+        }
+        $entity = $this->rowToEntity($row);
+        $this->replace($entity);
+        return $entity;
     }
 
 }

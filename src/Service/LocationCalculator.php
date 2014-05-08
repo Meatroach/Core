@@ -31,7 +31,7 @@ interface LocationCalculator {
      *
      * @return void
      */
-    public function setCenterPosition($y, $x);
+    public function setOriginPosition($y, $x);
 
     /**
      * @param integer $countCities

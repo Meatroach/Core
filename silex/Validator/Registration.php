@@ -51,8 +51,8 @@ class Registration extends AbstractRegistrationValidator {
 
         $result = $this->validator->validateValue((array) $object, $constraint);
         if ($result instanceof ConstraintViolationList) {
-            foreach ($result->getIterator() as $contrainViloation) {
-                $this->attachError($contrainViloation->getMessage());
+            foreach ($result->getIterator() as $contraintViolation) {
+                $this->attachError($contraintViolation->getMessage());
             }
         }
     }

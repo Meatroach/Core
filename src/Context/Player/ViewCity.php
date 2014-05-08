@@ -4,8 +4,8 @@ namespace OpenTribes\Core\Context\Player;
 
 use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
-use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
-use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsResponse;
+use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
+use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
 use OpenTribes\Core\View\CityBuilding as CityBuildingView;
 
 /**
@@ -13,39 +13,40 @@ use OpenTribes\Core\View\CityBuilding as CityBuildingView;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCityBuildings {
+class ViewCity {
 
     private $cityBuildingsRepository;
     private $buildingRepository;
-
+    private $response;
     public function __construct(CityBuildingsRepository $cityRepository, BuildingRepository $buildingRepository) {
         $this->cityBuildingsRepository = $cityRepository;
         $this->buildingRepository      = $buildingRepository;
     }
 
-    public function process(ViewCityBuildingsRequest $request, ViewCityBuildingsResponse $response) {
+    public function process(ViewCityRequest $request, ViewCityResponse $response) {
         $city = $this->cityBuildingsRepository->findByLocation($request->getY(), $request->getX());
+        $this->response = $response;
         if (!$city) {
             return false;
         }
-        if (!$city->hasBuildings()) {
-            $this->createBuildings($city);
+        
+        $isCustomCity = $city->getOwner()->getUsername() === $request->getUsername();
+        if ($isCustomCity) {
+            $this->viewBuildings($y, $x);
+        }else{
+            $this->viewInformations($y, $x);
         }
-
-        foreach ($city->getBuildings() as $building) {
-            $response->buildings[] = new CityBuildingView($building);
-        }
-        return false;
+        $response->isCustomCity = $isCustomCity;
+     
+        return true;
     }
 
-    /**
-     * @param \OpenTribes\Core\Entity\City $city
-     */
-    private function createBuildings($city) {
-        $buildings = $this->buildingRepository->findAll();
-        foreach ($buildings as $building) {
-            $city->addBuilding($building);
-        }
+    private function viewBuildings($y, $x) {
+        
+    }
+
+    private function viewInformations($y, $x) {
+        
     }
 
 }
