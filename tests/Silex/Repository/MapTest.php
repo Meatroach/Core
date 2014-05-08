@@ -2,7 +2,6 @@
 
 namespace OpenTribes\Core\Test\Silex\Repository;
 
-use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
 use OpenTribes\Core\Silex\Repository;
 
 /**

@@ -31,6 +31,9 @@ class ViewMap {
         return $this->x;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername() {
         return $this->username;
     }

@@ -15,6 +15,10 @@ namespace OpenTribes\Core\Service;
 interface MapCalculator {
 
     public function getArea($y, $x);
+
+    /**
+     * @return void
+     */
     public function setViewport($height, $width);
 
     public function positionToPixel($y, $x);

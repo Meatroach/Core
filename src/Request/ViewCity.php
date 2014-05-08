@@ -23,10 +23,16 @@ class ViewCity {
         return $this->username;
     }
 
+    /**
+     * @return integer
+     */
     public function getY() {
         return $this->y;
     }
 
+    /**
+     * @return integer
+     */
     public function getX() {
         return $this->x;
     }

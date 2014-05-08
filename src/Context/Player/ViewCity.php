@@ -6,7 +6,6 @@ use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
 use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
-use OpenTribes\Core\View\CityBuilding as CityBuildingView;
 
 /**
  * Description of ViewBuildings
