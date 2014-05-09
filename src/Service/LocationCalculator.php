@@ -38,4 +38,6 @@ interface LocationCalculator {
      * @return void
      */
     public function setCountCities($countCities);
+
+    public function setMargin($margin);
 }

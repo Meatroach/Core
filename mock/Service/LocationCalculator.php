@@ -26,7 +26,9 @@ class LocationCalculator implements LocationCalculatorInterface {
     public function setCountCities($countCities){
         $this->countCities = $countCities;
     }
-  
+    public function setMargin($margin) {
+        $this->margin = $margin;
+    }
 
     public function calculate(Direction $direction) {
 
