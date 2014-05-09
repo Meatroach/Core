@@ -40,21 +40,21 @@ class LocationCalculator implements LocationCalculatorInterface {
             $direction = $square % 4;
         }
         if ($direction === Direction::NORTH) {
-            $x = -$this->margin;
-            $y = -$this->margin;
+            $x = -1;
+            $y = -1;
         }
         if ($direction === Direction::EAST) {
-            $x = $this->margin;
-            $y = -$this->margin;
+            $x = 1;
+            $y = -1;
         }
         if ($direction === Direction::SOUTH) {
 
-            $x = $this->margin;
-            $y = $this->margin;
+            $x = 1;
+            $y = 1;
         }
         if ($direction === Direction::WEST) {
-            $x = -$this->margin;
-            $y = $this->margin;
+            $x = -1;
+            $y = 1;
         }
         $x             = $this->originX +$x;
         $y             = $this->originY +$y;
