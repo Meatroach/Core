@@ -14,11 +14,11 @@ class LocationCalculator implements LocationCalculatorInterface {
 
     private $x           = 0;
     private $y           = 0;
-    private $originX;
-    private $originY;
+    private $originX     = 0;
+    private $originY     = 0;
     private $countCities = 0;
-    private $margin = 0;
-  
+    private $margin      = 1;
+
     public function setOriginPosition($y,$x){
         $this->originX = $x;
         $this->originY = $y;
@@ -26,7 +26,9 @@ class LocationCalculator implements LocationCalculatorInterface {
     public function setCountCities($countCities){
         $this->countCities = $countCities;
     }
-  
+    public function setMargin($margin) {
+        $this->margin = $margin;
+    }
 
     public function calculate(Direction $direction) {
 
@@ -38,28 +40,28 @@ class LocationCalculator implements LocationCalculatorInterface {
             $direction = $square % 4;
         }
         if ($direction === Direction::NORTH) {
-            $x = -$this->margin;
-            $y = -$this->margin;
+            $x = -1;
+            $y = -1;
         }
         if ($direction === Direction::EAST) {
-            $x = $this->margin;
-            $y = -$this->margin;
+            $x = 1;
+            $y = -1;
         }
         if ($direction === Direction::SOUTH) {
 
-            $x = $this->margin;
-            $y = $this->margin;
+            $x = 1;
+            $y = 1;
         }
         if ($direction === Direction::WEST) {
-            $x = -$this->margin;
-            $y = $this->margin;
+            $x = -1;
+            $y = 1;
         }
         $x             = $this->originX +$x;
         $y             = $this->originY +$y;
-        $minX          = $x - 1;
-        $maxX          = $x + 1;
-        $minY          = $y - 1;
-        $maxY          = $y + 1;
+        $minX    = $x - $this->margin;
+        $maxX    = $x + $this->margin;
+        $minY    = $y - $this->margin;
+        $maxY    = $y + $this->margin;
         $x  = mt_rand($minX, $maxX);
         $y =  mt_rand($minY, $maxY);
         $this->x       = $x;

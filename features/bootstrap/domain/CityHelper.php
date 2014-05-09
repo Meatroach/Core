@@ -11,9 +11,9 @@ use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
 use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
-use OpenTribes\Core\Context\Player\ViewCityBuildings as ViewCityBuildingsInteractor;
-use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
-use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsResponse;
+use OpenTribes\Core\Context\Player\ViewCity as ViewCityInteractor;
+use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
+use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
 use OpenTribes\Core\Interactor\ViewCities as ViewCitiesInteractor;
 use OpenTribes\Core\Response\ViewCities as ViewCitiesResponse;
 use OpenTribes\Core\Request\ViewCities as ViewCitiesRequest;
@@ -99,14 +99,16 @@ class CityHelper {
         $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
         $response   = new CreateNewCityResponse;
         $interactor->process($request, $response);
+        Test::assertNotNull($response->city);
         $this->x    = $response->city->x;
         $this->y    = $response->city->y;
     }
 
-    public function selectPosition($y, $x) {
-        $request                         = new ViewCity($y, $x);
-        $interactor                      = new ViewCityBuildingsInteractor($this->cityBuildingsRepository, $this->buildingRepository);
-        $this->viewCityBuildingsResponse = new ViewCityBuildingsResponse;
+    public function selectPosition($y, $x, $username) {
+
+        $request                         = new ViewCityRequest($username, $y, $x);
+        $interactor                      = new ViewCityInteractor($this->cityBuildingsRepository, $this->buildingRepository);
+        $this->viewCityBuildingsResponse = new ViewCityResponse;
         $this->interactorResult          = $interactor->process($request, $this->viewCityBuildingsResponse);
     }
 

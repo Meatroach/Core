@@ -16,6 +16,7 @@ use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Mock\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Mock\Repository\MapTiles as MapTilesRepository;
+use Behat\Behat\Exception\PendingException;
 
 /**
  * Behat context class.
@@ -94,7 +95,7 @@ class FeatureContext extends BehatContext {
      * @Given /^I\'m not registered user$/
      */
     public function iMNotRegisteredUser() {
-        
+        return true;
     }
 
     /**
@@ -138,7 +139,7 @@ class FeatureContext extends BehatContext {
      * @Given /^I\'am not logged in$/
      */
     public function iAmNotLoggedIn() {
-        
+        return true;
     }
 
     /**
@@ -158,6 +159,8 @@ class FeatureContext extends BehatContext {
     public function iVisit($url) {
         if ($this->mink) {
             $this->mink->getSession()->visit($url);
+        } else {
+            return true;
         }
     }
 
@@ -167,6 +170,8 @@ class FeatureContext extends BehatContext {
     public function iShouldGetErrorpage($code) {
         if ($this->mink) {
             $this->mink->assertSession()->statusCodeEquals($code);
+        } else {
+            return true;
         }
     }
 
@@ -176,6 +181,8 @@ class FeatureContext extends BehatContext {
     public function iAmOnSite($uri) {
         if ($this->mink) {
             $this->mink->getSession()->visit($uri);
+        } else {
+            return true;
         }
     }
 
@@ -378,7 +385,7 @@ class FeatureContext extends BehatContext {
      * @Then /^I selected the city at y=(\d+) and x=(\d+)$/
      */
     public function iSelectedTheCityAtYAndX($y, $x) {
-        $this->cityHelper->selectPosition($y, $x);
+        $this->cityHelper->selectPosition($y, $x, $this->userHelper->getLoggedInUsername());
     }
 
     /**
