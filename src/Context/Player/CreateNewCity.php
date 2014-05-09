@@ -60,11 +60,12 @@ class CreateNewCity {
         $i = 0;
         do {
             $i++;
-            $this->locationCalculator->setMargin($i);
+            $margin            = ~~($i / 5) + 1;
+            $this->locationCalculator->setMargin($margin);
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
             $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);
             $cityNotCreated    = !$createCityInteractor->process($createCityRequest, $createCityResponse);
-          
+           
         } while ($cityNotCreated);
 
         $response->city = $createCityResponse->city;

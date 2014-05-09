@@ -58,10 +58,10 @@ class LocationCalculator implements LocationCalculatorInterface {
         }
         $x             = $this->originX +$x;
         $y             = $this->originY +$y;
-        $minX          = $x - 1;
-        $maxX          = $x + 1;
-        $minY          = $y - 1;
-        $maxY          = $y + 1;
+        $minX    = $x - $this->margin;
+        $maxX    = $x + $this->margin;
+        $minY    = $y - $this->margin;
+        $maxY    = $y + $this->margin;
         $x  = mt_rand($minX, $maxX);
         $y =  mt_rand($minY, $maxY);
         $this->x       = $x;

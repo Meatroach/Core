@@ -25,7 +25,8 @@ class SelectLocation {
      * @param \OpenTribes\Core\Response\SelectLocation $response
      */
     public function process(SelectLocationRequest $request,SelectLocationResponse $response){
-        $direction = new Direction($request->getDirection());
+        $direction   = new Direction($request->getDirection());
+ 
         $this->locationCalculator->calculate($direction);
         $response->x = $this->locationCalculator->getX();
         $response->y = $this->locationCalculator->getY();
