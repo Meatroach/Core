@@ -104,8 +104,7 @@ class CityHelper {
     }
 
     public function selectPosition($y, $x) {
-       
-        $request                         = new ViewCityBuildingsRequest($y, $x);
+        $request                         = new ViewCity($y, $x);
         $interactor                      = new ViewCityBuildingsInteractor($this->cityBuildingsRepository, $this->buildingRepository);
         $this->viewCityBuildingsResponse = new ViewCityBuildingsResponse;
         $this->interactorResult          = $interactor->process($request, $this->viewCityBuildingsResponse);
