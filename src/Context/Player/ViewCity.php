@@ -6,6 +6,9 @@ use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
 use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
+use OpenTribes\Core\Interactor\ViewCityBuildings as ViewCityBuildingsInteractor;
+use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
+use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsReponse;
 
 /**
  * Description of ViewBuildings
@@ -16,6 +19,10 @@ class ViewCity {
 
     private $cityBuildingsRepository;
     private $buildingRepository;
+
+    /**
+     * @var ViewCityResponse
+     */
     private $response;
     public function __construct(CityBuildingsRepository $cityRepository, BuildingRepository $buildingRepository) {
         $this->cityBuildingsRepository = $cityRepository;
@@ -42,7 +49,11 @@ class ViewCity {
     }
 
     private function viewBuildings($y, $x) {
-        
+        $request    = new ViewCityBuildingsRequest($y, $x);
+        $response   = new ViewCityBuildingsReponse;
+        $interactor       = new ViewCityBuildingsInteractor($this->cityBuildingsRepository, $this->buildingRepository);
+        $response->failed = $interactor->process($request, $response);
+        $this->response->buildings = $response->buildings;
     }
 
     private function viewInformations($y, $x) {
