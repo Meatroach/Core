@@ -48,6 +48,7 @@ class SilexContext extends FeatureContext {
 
         $this->userRepository->flush();
         $this->cityRepository->flush();
+        $this->cityRepository->flush();
     }
 
 }
