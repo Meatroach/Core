@@ -18,7 +18,7 @@ class Map {
      */
     private $id;
     /**
-     * @var Tile[]
+     * @var Tile[][]
      */
     private $tiles = array(array());
     private $width   = 0;
@@ -64,7 +64,7 @@ class Map {
     }
 
     /**
-     * @return Tile[]
+     * @return Tile[][]
      */
     public function getTiles() {
         return $this->tiles;

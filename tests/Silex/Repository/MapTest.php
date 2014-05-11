@@ -80,6 +80,7 @@ class MapTest extends \PHPUnit_Framework_TestCase {
     private function createDummyCity() {
 
         $owner  = $this->userRepository->findOneByUsername('Test');
+        if(!$owner) throw new Exception ('User not exists');
         $cityId = $this->cityRepository->getUniqueId();
         $city   = $this->cityRepository->create($cityId, 'Test 1', $owner, 50, 50);
         $this->cityRepository->add($city);

@@ -57,7 +57,7 @@ class ViewCity {
     }
 
     private function viewInformations($y, $x) {
-        
+        return array($y,$x);
     }
 
 }
