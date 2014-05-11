@@ -60,3 +60,4 @@ config/*
 !config/*.template.php
 storage
 cache/*
+/nbproject
