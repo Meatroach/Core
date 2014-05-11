@@ -27,7 +27,7 @@ interface MapTiles {
     public function getDefaultTile();
 
     /**
-     * @return TileEntity[]
+     * @return MapEntity
      */
     public function findAllInArea(array $area);
 }

@@ -17,7 +17,11 @@ class DBALTile extends Repository implements TileRepository {
      * @var TileEntity[]
      */
     private $tiles = array();
-
+    /**
+     *
+     * @var \Doctrine\DBAL\Connection 
+     */
+    private $db;
     /**
      * @param Connection $db DBAL Connection
      */

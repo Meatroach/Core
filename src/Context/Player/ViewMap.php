@@ -59,7 +59,7 @@ class ViewMap {
         $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() /2;
         $area           = $this->mapCalculator->getArea($top, $left);
 
-        $position = $this->mapCalculator->positionToPixel($city->getY(), $city->getX());
+      
         $cities   = $this->cityRepository->findAllInArea($area);
 
         foreach ($cities as $city) {
@@ -97,6 +97,7 @@ class ViewMap {
             $tileView->left    = $left;
             $response->tiles[] = $tileView;
         }
+        return true;
     }
 
 }

@@ -54,9 +54,11 @@ class IsometricMapCalculator implements MapCalculator {
         );
         $width  = $this->width * $this->tileWidth;
         $height = $this->height * $this->tileHeight;
+        $halfTileWidth = $this->tileWidth/2;
+        $halfTileHeight = $this->tileHeight/2;
         $area   = array();
-        for ($y = $start['y']; $y <= $end['y']; $y+=$this->tileHeight / 2) {
-            for ($x = $start['x']; $x <= $end['x']; $x+=$this->tileWidth / 2) {
+        for ($y = $start['y']; $y <= $end['y']; $y+=$halfTileHeight) {
+            for ($x = $start['x']; $x <= $end['x']; $x+=$halfTileWidth) {
                 $row        = $this->pixelToPosition($y, $x);
                 $positionX  = max(0, min($width, $row['x']));
                 $positionY  = max(0, min($height, $row['y']));
