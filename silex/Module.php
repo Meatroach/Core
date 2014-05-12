@@ -135,6 +135,7 @@ class Module implements ServiceProviderInterface {
               $session = $request->getSession();
             if ($session->get('username')) {
                 $app[Controller::ACCOUNT]->updateLastAction($session->get('username'));
+                 $app[Controller::ACCOUNT]->after();
             }
         });
         $app->mount('/assets', $this->getAssetsRoutes($app));
