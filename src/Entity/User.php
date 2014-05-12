@@ -33,17 +33,17 @@ class User {
      * @var string
      */
     private $activationCode;
-    
+
     /**
      * @var \DateTime
      */
-    private $registered;
-    
+    private $registrationDate;
+
     /**
      * @var \DateTime
      */
     private $lastAction;
-    
+
     /**
      * @var \DateTime
      */
@@ -59,14 +59,11 @@ class User {
      * @param \DateTime $lastAction
      * @param \DateTime $lastLogin
      */
-    public function __construct($id, $username, $password, $email, \DateTime $registered, \DateTime $lastAction, \DateTime $lastLogin) {
-        $this->id         = (int) $id;
-        $this->username   = $username;
-        $this->password   = $password;
-        $this->email      = $email;
-        $this->registered = $registered;
-        $this->lastAction = $lastAction;
-        $this->lastLogin  = $lastLogin;
+    public function __construct($id, $username, $password, $email) {
+        $this->id       = (int) $id;
+        $this->username = $username;
+        $this->password = $password;
+        $this->email    = $email;
     }
 
     /**
@@ -110,17 +107,29 @@ class User {
     public function getEmail() {
         return $this->email;
     }
-    
+
     public function getRegistrationDate() {
-        return $this->registered;
+        return $this->registrationDate;
     }
-    
+
     public function getLastLogin() {
         return $this->lastLogin;
     }
-    
+
     public function getLastAction() {
-        return $this->getLastAction;
+        return $this->lastAction;
+    }
+
+    public function setRegistrationDate(\DateTime $registrationDate) {
+        $this->registrationDate = $registrationDate;
+    }
+
+    public function setLastAction(\DateTime $lastAction) {
+        $this->lastAction = $lastAction;
+    }
+
+    public function setLastLogin(\DateTime $lastLogin) {
+        $this->lastLogin = $lastLogin;
     }
 
 }

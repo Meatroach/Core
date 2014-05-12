@@ -17,7 +17,7 @@ interface User {
      * @param string $email email adress
      * @return UserEntity
      */
-    public function create($id, $username, $password, $email, \DateTime $registrationDate, \DateTime $lastLogin, \DateTime $lastAction);
+    public function create($id, $username, $password, $email);
 
     /**
      * @return integer 

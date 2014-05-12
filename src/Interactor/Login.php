@@ -45,7 +45,7 @@ class Login {
         if (!$user || $user->getActivationCode()) {
             return false;
         }
-
+        $user->setLastLogin($request->getDatetime());
         return $this->passwordHasher->verify($user->getPassword(), $request->getPassword());
         
     }

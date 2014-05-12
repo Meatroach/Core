@@ -40,8 +40,8 @@ class CreateUser {
     public function proccess(CreateUserRequest $request,CreateUserResponse $response){
         $userId = $this->userRepository->getUniqueId();
         $password = $this->passwordHasher->hash($request->getPassword());
-        $now = new \DateTime('now');
-        $user = $this->userRepository->create($userId, $request->getUsername(), $password, $request->getEmail(), $now, $now, $now);
+        $user = $this->userRepository->create($userId, $request->getUsername(), $password, $request->getEmail());
+        $user->setRegistrationDate($request->getDatetime());
         $this->userRepository->add($user);
         $response->username = $user->getUsername();
         return true;

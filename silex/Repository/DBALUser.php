@@ -42,9 +42,8 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     /**
      * {@inheritDoc}
      */
-    public function create($id, $username, $password, $email, \DateTime $registrationDate, \DateTime $lastLogin, \DateTime $lastAction) {
-        $now = new \DateTime('now');
-        return new UserEntity((int) $id, $username, $password, $email, $registrationDate, $lastLogin, $lastAction);
+    public function create($id, $username, $password, $email) {
+        return new UserEntity((int) $id, $username, $password, $email);
     }
 
     /**
@@ -121,7 +120,7 @@ class DBALUser extends Repository implements UserRepositoryInterface {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email', 'u.activationCode')->from('users', 'u');
+        return $queryBuilder->select('u.id', 'u.username', 'u.password', 'u.email', 'u.activationCode','u.lastLogin','u.registered','u.lastAction')->from('users', 'u');
     }
 
     /**
@@ -134,24 +133,46 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     private function rowToEntity($row) {
-        $lastLogin = new \DateTime($row->lastLogin);
-        $registered = new \DateTime($row->registered);
-        $lastAction = new \DateTime($row->lastAction);
-        $user = $this->create($row->id, $row->username, $row->password, $row->email, $registered, $lastLogin, $lastAction);
+        $lastLogin  = \DateTime::createFromFormat(\DateTime::ATOM, $row->lastLogin);
+        $registrationDate = \DateTime::createFromFormat(\DateTime::ATOM, $row->registered);
+        $lastAction = \DateTime::createFromFormat(\DateTime::ATOM, $row->lastAction);
+        $user       = $this->create($row->id, $row->username, $row->password, $row->email);
+        if($lastAction){
+           $user->setLastAction($lastAction); 
+        }
+        if($lastLogin){
+             $user->setLastLogin($lastLogin);
+        }
+        if($registrationDate){
+            $user->setRegistrationDate($registrationDate);
+        }
+       
         $user->setActivationCode($row->activationCode);
         return $user;
     }
 
     private function entityToRow(UserEntity $user) {
+        $lastAction       = null;
+        $lastLogin        = null;
+        $registrationDate = null;
+        if ($user->getRegistrationDate() instanceof \DateTime) {
+            $registrationDate = $user->getRegistrationDate()->format(\DateTime::ATOM);
+        }
+        if ($user->getLastLogin() instanceof \DateTime) {
+            $lastLogin = $user->getLastLogin()->format(\DateTime::ATOM);
+        }
+        if ($user->getLastAction() instanceof \DateTime) {
+            $lastAction = $user->getLastAction()->format(\DateTime::ATOM);
+        }
         return array(
             'id'             => $user->getId(),
             'username'       => $user->getUsername(),
             'email'          => $user->getEmail(),
             'password'       => $user->getPassword(),
             'activationCode' => $user->getActivationCode(),
-            'registered'     => $user->getRegistrationDate()->format('Y-m-d H:i:s'),
-            'lastAction'     => $user->getLastAction()->format('Y-m-d H:i:s'),
-            'lastLogin'      => $user->getLastLogin()->format('Y-m-d H:i:s')
+            'registered'     => $registrationDate,
+            'lastAction'     => $lastAction,
+            'lastLogin'      => $lastLogin
         );
     }
 

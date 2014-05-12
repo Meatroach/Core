@@ -12,11 +12,12 @@ class CreateUser {
     private $username;
     private $password;
     private $email;
-
+    private $datetime;
     public function __construct($username, $password, $email) {
         $this->username = $username;
         $this->password = $password;
         $this->email    = $email;
+        $this->datetime = new \DateTime;
     }
 
     /**
@@ -36,5 +37,14 @@ class CreateUser {
     public function getEmail() {
         return $this->email;
     }
+    public function getDatetime() {
+        return $this->datetime;
+    }
+
+    public function setDatetime(\DateTime $datetime) {
+        $this->datetime = $datetime;
+    }
+
+
 
 }
