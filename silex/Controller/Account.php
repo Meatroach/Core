@@ -5,13 +5,16 @@ namespace OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Context\Guest\Registration as RegistrationContext;
 use OpenTribes\Core\Interactor\ActivateUser as ActivateUserInteractor;
 use OpenTribes\Core\Interactor\Login as LoginInteractor;
+use OpenTribes\Core\Interactor\UpdateLastAction as UpdateLastActionInteractor;
 use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Request\ActivateUser as ActivateUserRequest;
 use OpenTribes\Core\Request\Login as LoginRequest;
 use OpenTribes\Core\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Request\UpdateLastAction as UpdateLastActionRequest;
 use OpenTribes\Core\Response\ActivateUser as ActivateUserResponse;
 use OpenTribes\Core\Response\Login as LoginResponse;
 use OpenTribes\Core\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Response\UpdateLastAction as UpdateLastActionResponse;
 use OpenTribes\Core\Service\ActivationCodeGenerator;
 use OpenTribes\Core\Service\PasswordHasher;
 use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
@@ -79,6 +82,15 @@ class Account {
         return $response;
     }
   
+    public function updateLastAction( $username){
+    
+        $request = new UpdateLastActionRequest($username);
+        $response = new UpdateLastActionResponse();
+        $interactor = new UpdateLastActionInteractor($this->userRepository);
+        $response->proceed = true;
+        $response->failed != $interactor->process($request, $response);
+        return $response;
+    }
 
     public function after(){
         $this->userRepository->sync();

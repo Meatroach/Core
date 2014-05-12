@@ -131,7 +131,12 @@ class Module implements ServiceProviderInterface {
                 return new RedirectResponse($baseUrl . 'game');
             }
         })->value(RouteValue::TEMPLATE, 'pages/landing');
-
+        $app->after(function(Request $request) use($app) {
+              $session = $request->getSession();
+            if ($session->get('username')) {
+                $app[Controller::ACCOUNT]->updateLastAction($session->get('username'));
+            }
+        });
         $app->mount('/assets', $this->getAssetsRoutes($app));
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
