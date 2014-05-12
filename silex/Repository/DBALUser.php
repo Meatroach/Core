@@ -42,8 +42,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     /**
      * {@inheritDoc}
      */
-    public function create($id, $username, $password, $email) {
-        return new UserEntity((int) $id, $username, $password, $email);
+    public function create($id, $username, $password, $email, \DateTime $registrationDate, \DateTime $lastLogin, \DateTime $lastAction) {
+        $now = new \DateTime('now');
+        return new UserEntity((int) $id, $username, $password, $email, $registrationDate, $lastLogin, $lastAction);
     }
 
     /**
@@ -133,7 +134,10 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     private function rowToEntity($row) {
-        $user = $this->create($row->id, $row->username, $row->password, $row->email);
+        $lastLogin = new \DateTime($row->lastLogin);
+        $registered = new \DateTime($row->registered);
+        $lastAction = new \DateTime($row->lastAction);
+        $user = $this->create($row->id, $row->username, $row->password, $row->email, $registered, $lastLogin, $lastAction);
         $user->setActivationCode($row->activationCode);
         return $user;
     }
@@ -144,7 +148,10 @@ class DBALUser extends Repository implements UserRepositoryInterface {
             'username'       => $user->getUsername(),
             'email'          => $user->getEmail(),
             'password'       => $user->getPassword(),
-            'activationCode' => $user->getActivationCode()
+            'activationCode' => $user->getActivationCode(),
+            'registered'     => $user->getRegistrationDate()->format('Y-m-d H:i:s'),
+            'lastAction'     => $user->getLastAction()->format('Y-m-d H:i:s'),
+            'lastLogin'      => $user->getLastLogin()->format('Y-m-d H:i:s')
         );
     }
 

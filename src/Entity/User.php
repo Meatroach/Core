@@ -33,6 +33,21 @@ class User {
      * @var string
      */
     private $activationCode;
+    
+    /**
+     * @var \DateTime
+     */
+    private $registered;
+    
+    /**
+     * @var \DateTime
+     */
+    private $lastAction;
+    
+    /**
+     * @var \DateTime
+     */
+    private $lastLogin;
 
     /**
      *
@@ -40,12 +55,18 @@ class User {
      * @param string $username
      * @param string $password
      * @param string $email
+     * @param \DateTime $registered
+     * @param \DateTime $lastAction
+     * @param \DateTime $lastLogin
      */
-    public function __construct($id, $username, $password, $email) {
-        $this->id       = (int) $id;
-        $this->username = $username;
-        $this->password = $password;
-        $this->email    = $email;
+    public function __construct($id, $username, $password, $email, \DateTime $registered, \DateTime $lastAction, \DateTime $lastLogin) {
+        $this->id         = (int) $id;
+        $this->username   = $username;
+        $this->password   = $password;
+        $this->email      = $email;
+        $this->registered = $registered;
+        $this->lastAction = $lastAction;
+        $this->lastLogin  = $lastLogin;
     }
 
     /**
@@ -88,6 +109,18 @@ class User {
      */
     public function getEmail() {
         return $this->email;
+    }
+    
+    public function getRegistrationDate() {
+        return $this->registered;
+    }
+    
+    public function getLastLogin() {
+        return $this->lastLogin;
+    }
+    
+    public function getLastAction() {
+        return $this->getLastAction;
     }
 
 }
