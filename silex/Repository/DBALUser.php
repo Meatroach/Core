@@ -43,7 +43,8 @@ class DBALUser extends Repository implements UserRepositoryInterface {
      * {@inheritDoc}
      */
     public function create($id, $username, $password, $email) {
-        return new UserEntity((int) $id, $username, $password, $email);
+        $now = new \DateTime('now');
+        return new UserEntity((int) $id, $username, $password, $email, $now, $now, $now);
     }
 
     /**
