@@ -134,7 +134,10 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     private function rowToEntity($row) {
-        $user = $this->create($row->id, $row->username, $row->password, $row->email, $row->registered, $row->lastLogin, $row->lastAction);
+        $lastLogin = new \DateTime($row->lastLogin);
+        $registered = new \DateTime($row->registered);
+        $lastAction = new \DateTime($row->lastAction);
+        $user = $this->create($row->id, $row->username, $row->password, $row->email, $registered, $lastLogin, $lastAction);
         $user->setActivationCode($row->activationCode);
         return $user;
     }
@@ -146,9 +149,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
             'email'          => $user->getEmail(),
             'password'       => $user->getPassword(),
             'activationCode' => $user->getActivationCode(),
-            'registered'     => $user->getRegistrationDate(),
-            'lastAction'     => $user->getLastAction(),
-            'lastLogin'      => $user->getLastLogin()
+            'registered'     => $user->getRegistrationDate()->format('Y-m-d H:i:s'),
+            'lastAction'     => $user->getLastAction()->format('Y-m-d H:i:s'),
+            'lastLogin'      => $user->getLastLogin()->format('Y-m-d H:i:s')
         );
     }
 
