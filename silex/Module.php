@@ -225,6 +225,9 @@ class Module implements ServiceProviderInterface {
             $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
             $startUrl       = $baseUrl . 'game/start';
             if ($response->failed && $request->getRequestUri() !== $startUrl) {
+                if (!$app['session']->has('username')) {
+                    return new RedirectResponse($app['mustache.options']['helpers']['baseUrl']);
+                }
                 return new RedirectResponse($startUrl);
             }
         });
