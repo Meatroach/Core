@@ -133,9 +133,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     private function rowToEntity($row) {
-        $lastLogin  = \DateTime::createFromFormat(\DateTime::ATOM, $row->lastLogin);
-        $registrationDate = \DateTime::createFromFormat(\DateTime::ATOM, $row->registered);
-        $lastAction = \DateTime::createFromFormat(\DateTime::ATOM, $row->lastAction);
+        $lastLogin  = \DateTime::createFromFormat(\DateTime::W3C, $row->lastLogin);
+        $registrationDate = \DateTime::createFromFormat(\DateTime::W3C, $row->registered);
+        $lastAction = \DateTime::createFromFormat(\DateTime::W3C, $row->lastAction);
         $user       = $this->create($row->id, $row->username, $row->password, $row->email);
         if($lastAction){
            $user->setLastAction($lastAction); 
