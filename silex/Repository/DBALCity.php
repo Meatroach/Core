@@ -192,13 +192,12 @@ class DBALCity extends Repository implements CityInterface {
      * {@inheritDoc}
      */
     public function sync() {
-        foreach (parent::getDeleted() as $id) {
-            if (isset($this->cities[$id])) {
-                $this->db->delete('cities', array('id' => $id));
-                unset($this->cities[$id]);
-                parent::reassign($id);
-            }
-        }
+        $this->syncDeleted();
+        $this->syncAdded();
+        $this->syncModified();
+    }
+    
+    private function syncAdded() {
         foreach (parent::getAdded() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
@@ -206,6 +205,19 @@ class DBALCity extends Repository implements CityInterface {
                 parent::reassign($id);
             }
         }
+    }
+    
+    private function syncDeleted() {
+        foreach (parent::getDeleted() as $id) {
+            if (isset($this->cities[$id])) {
+                $this->db->delete('cities', array('id' => $id));
+                unset($this->cities[$id]);
+                parent::reassign($id);
+            }
+        }
+    }
+    
+    private function syncModified() {
         foreach (parent::getModified() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
