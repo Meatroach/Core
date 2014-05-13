@@ -156,13 +156,13 @@ class DBALUser extends Repository implements UserRepositoryInterface {
         $lastLogin        = null;
         $registrationDate = null;
         if ($user->getRegistrationDate() instanceof \DateTime) {
-            $registrationDate = $user->getRegistrationDate()->format(\DateTime::ATOM);
+            $registrationDate = $user->getRegistrationDate()->format(\DateTime::W3C);
         }
         if ($user->getLastLogin() instanceof \DateTime) {
-            $lastLogin = $user->getLastLogin()->format(\DateTime::ATOM);
+            $lastLogin = $user->getLastLogin()->format(\DateTime::W3C);
         }
         if ($user->getLastAction() instanceof \DateTime) {
-            $lastAction = $user->getLastAction()->format(\DateTime::ATOM);
+            $lastAction = $user->getLastAction()->format(\DateTime::W3C);
         }
         return array(
             'id'             => $user->getId(),
