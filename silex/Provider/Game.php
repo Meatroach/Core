@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use OpenTribes\Core\Silex\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use OpenTribes\Core\Silex\RouteValue;
+use OpenTribes\Core\Silex\Repository;
 
 class Game implements ControllerProviderInterface
 {
