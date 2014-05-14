@@ -8,7 +8,8 @@ namespace OpenTribes\Core\Request;
 class UpdateLastAction {
    private $datetime;
    private $username;
-   function __construct($username) {
+   
+   public function __construct($username) {
        $this->username = $username;
        $this->datetime = new \DateTime;
    }
