@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Opentribes\Core\Silex\Provider\Assets as AssetsController;
+use OpenTribes\Core\Silex\Provider\Assets as AssetsController;
 
 /**
  * Description of Module
