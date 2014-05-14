@@ -1,5 +1,5 @@
 <?php
-namespace Opentribes\Core\Silex\Provider;
+namespace OpenTribes\Core\Silex\Provider;
 
 use Silex\ControllerProviderInterface;
 use Silex\Application;
