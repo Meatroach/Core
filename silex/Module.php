@@ -102,7 +102,7 @@ class Module implements ServiceProviderInterface {
      * @param Application $app
      * @return void
      */
-    private function setupRoutes(Application &$app) {
+    protected function setupRoutes(Application &$app) {
         $app->on(KernelEvents::REQUEST, function($event) use($app) {
             $request         = $event->getRequest();
             $session         = $request->getSession();
