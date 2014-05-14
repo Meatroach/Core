@@ -52,7 +52,7 @@ class Module implements ServiceProviderInterface {
         $this->registerProviders($app);
         $this->loadConfigurations($app);
         $this->createDependencies($app);
-        $this->createRoutes($app);
+        $this->setupRoutes($app);
     }
 
     private function createDependencies(Application &$app) {
@@ -100,9 +100,9 @@ class Module implements ServiceProviderInterface {
 
     /**
      * @param Application $app
+     * @return void
      */
-    private function createRoutes(Application &$app) {
-
+    private function setupRoutes(Application &$app) {
         $app->on(KernelEvents::REQUEST, function($event) use($app) {
             $request         = $event->getRequest();
             $session         = $request->getSession();
@@ -140,9 +140,9 @@ class Module implements ServiceProviderInterface {
                  $app[Controller::ACCOUNT]->after();
             }
         });
-        $app->mount('/assets', new AssetsController());
-        $app->mount('/account', new AccountRoutes());
-        $app->mount('/game', $this->getGameRoutes($app));
+        
+        $this->attachRoutesOnContainer($app);
+        
         $module = $this;
         $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
             $appResponse = $event->getControllerResult();
@@ -164,6 +164,15 @@ class Module implements ServiceProviderInterface {
 
             $event->setResponse($response);
         });
+    }
+
+    /**
+     * @param Application $app
+     */
+    protected function attachRoutesOnContainer(Application &$app) {
+        $app->mount('/assets', new AssetsController());
+        $app->mount('/account', new AccountRoutes());
+        $app->mount('/game', $this->getGameRoutes($app));
     }
 
     /**
