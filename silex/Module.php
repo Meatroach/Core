@@ -101,6 +101,15 @@ class Module implements ServiceProviderInterface {
 
     /**
      * @param Application $app
+     */
+    protected function attachRoutesOnContainer(Application &$app) {
+        $app->mount('/assets', new AssetsController());
+        $app->mount('/account', new AccountController());
+        $app->mount('/game', new GameController());
+    }
+
+    /**
+     * @param Application $app
      * @return void
      */
     protected function setupRoutes(Application &$app) {
@@ -165,15 +174,6 @@ class Module implements ServiceProviderInterface {
 
             $event->setResponse($response);
         });
-    }
-
-    /**
-     * @param Application $app
-     */
-    protected function attachRoutesOnContainer(Application &$app) {
-        $app->mount('/assets', new AssetsController());
-        $app->mount('/account', new AccountRoutes());
-        $app->mount('/game', new GameRoutes());
     }
 
     /**
