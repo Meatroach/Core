@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Opentribes\Core\Silex\Provider\Assets as AssetsController;
 
 /**
  * Description of Module
@@ -138,7 +139,7 @@ class Module implements ServiceProviderInterface {
                  $app[Controller::ACCOUNT]->after();
             }
         });
-        $app->mount('/assets', $this->getAssetsRoutes($app));
+        $app->mount('/assets', new AssetsController());
         $app->mount('/account', $this->getAccountRoutes($app));
         $app->mount('/game', $this->getGameRoutes($app));
         $module = $this;
