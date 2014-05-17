@@ -13,6 +13,10 @@ class UpdateLastAction {
        $this->username = $username;
        $this->datetime = new \DateTime;
    }
+
+   /**
+    * @return string
+    */
    public function getUsername() {
        return $this->username;
    }

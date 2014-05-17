@@ -32,7 +32,7 @@ class ViewCityInformation {
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getY()
     {

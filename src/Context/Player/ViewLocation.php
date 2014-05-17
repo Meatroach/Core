@@ -52,6 +52,10 @@ class ViewLocation {
         return true;
     }
 
+    /**
+     * @param integer $y
+     * @param integer $x
+     */
     private function viewBuildings($y, $x) {
         $request    = new ViewCityBuildingsRequest($y, $x);
         $response   = new ViewCityBuildingsReponse;
@@ -60,6 +64,10 @@ class ViewLocation {
         $this->response->buildings = $response->buildings;
     }
 
+    /**
+     * @param integer $y
+     * @param integer $x
+     */
     private function viewInformations($y, $x) {
         $request = new ViewCityInformationRequest($y,$x);
         $response = new ViewCityInformationResponse();

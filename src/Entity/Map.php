@@ -100,6 +100,7 @@ class Map {
     /**
      * @param integer $y
      * @param integer $x
+     * @return boolean
      */
     public function isAccessible($y, $x) {
         if ($this->getTile($y, $x)) {

@@ -55,9 +55,6 @@ class User {
      * @param string $username
      * @param string $password
      * @param string $email
-     * @param \DateTime $registered
-     * @param \DateTime $lastAction
-     * @param \DateTime $lastLogin
      */
     public function __construct($id, $username, $password, $email) {
         $this->id       = (int) $id;

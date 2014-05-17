@@ -16,7 +16,6 @@ use OpenTribes\Core\Mock\Repository\City as CityRepository;
 use OpenTribes\Core\Mock\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Mock\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Mock\Repository\MapTiles as MapTilesRepository;
-use Behat\Behat\Exception\PendingException;
 
 /**
  * Behat context class.
