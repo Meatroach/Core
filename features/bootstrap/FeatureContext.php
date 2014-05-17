@@ -412,7 +412,13 @@ class FeatureContext extends BehatContext {
      * @Given /^I should see following city informations$/
      */
     public function iShouldSeeFollowingCityInformations(TableNode $table) {
-        throw new PendingException();
+        foreach($table->getHash() as $row){
+            $city = $row['city'];
+            $owner = $row['owner'];
+            $y = $row['y'];
+            $x = $row['x'];
+            $this->cityHelper->assertCity($city,$owner,$y,$x);
+        }
     }
 
 }

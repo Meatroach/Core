@@ -85,4 +85,7 @@ class SilexCityHelper extends CityHelper {
     public function assertCityHasBuilding($name, $level) {
         throw new \Behat\Behat\Exception\PendingException;
     }
+    public function assertCity($name,$owner,$y,$x){
+        throw new \Behat\Behat\Exception\PendingException;
+    }
 }

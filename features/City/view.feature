@@ -59,4 +59,4 @@ Scenario: View others city
     Then I selected the city at y=1 and x=1
     And I should see following city informations
         | city | owner | y | x |
-        | City1 | TestUser1 | 1 | 1 |
+        | City2 | TestUser | 1 | 1 |

@@ -31,7 +31,10 @@ class CityHelper {
      */
     private $interactorResult;
     private $locationCalculator;
-    private $viewCityBuildingsResponse;
+    /**
+     * @var ViewLocationResponse
+     */
+    private $viewLocationResponse;
     private $buildingRepository;
     protected $x = 0;
     protected $y = 0;
@@ -107,13 +110,13 @@ class CityHelper {
     public function selectPosition($y, $x, $username) {
 
         $request                         = new ViewLocationRequest($username, $y, $x);
-        $interactor                      = new ViewLocationInteractor($this->cityBuildingsRepository, $this->buildingRepository);
-        $this->viewCityBuildingsResponse = new ViewLocationResponse;
-        $this->interactorResult          = $interactor->process($request, $this->viewCityBuildingsResponse);
+        $interactor                      = new ViewLocationInteractor($this->cityRepository,$this->cityBuildingsRepository, $this->buildingRepository);
+        $this->viewLocationResponse = new ViewLocationResponse;
+        $this->interactorResult          = $interactor->process($request, $this->viewLocationResponse);
     }
 
     public function assertCityHasBuilding($name, $level) {
-        $buildings = $this->viewCityBuildingsResponse->buildings;
+        $buildings = $this->viewLocationResponse->buildings;
         $found     = null;
         foreach ($buildings as $building) {
             if ($building->name === $name) {
@@ -154,5 +157,12 @@ class CityHelper {
         Test::assertSame($found->y, $y);
         Test::assertSame($found->x, $x);
     }
-
+    public function assertCity($name,$owner,$y,$x){
+        $city = $this->viewLocationResponse->city;
+        Test::assertNotNull($city);
+        Test::assertAttributeSame($name,'name',$city);
+        Test::assertAttributeSame($owner,'owner',$city);
+        Test::assertAttributeSame((int)$y,'y',$city);
+        Test::assertAttributeSame((int)$x,'x',$city);
+    }
 }

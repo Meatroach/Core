@@ -1,12 +1,15 @@
 <?php
 
 namespace OpenTribes\Core\Context\Player;
-
+use OpenTribes\Core\Repository\City as CityRepository;
 use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Request\ViewLocation as ViewLocationRequest;
+use OpenTribes\Core\Request\ViewCityInformation as ViewCityInformationRequest;
 use OpenTribes\Core\Response\ViewLocation as ViewLocationResponse;
+use OpenTribes\Core\Response\ViewCityInformation as ViewCityInformationResponse;
 use OpenTribes\Core\Interactor\ViewCityBuildings as ViewCityBuildingsInteractor;
+use OpenTribes\Core\Interactor\ViewCityInformation as ViewCityInformationInteractor;
 use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
 use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsReponse;
 
@@ -19,13 +22,14 @@ class ViewLocation {
 
     private $cityBuildingsRepository;
     private $buildingRepository;
-
+    private $cityRepository;
     /**
-     * @var ViewCityResponse
+     * @var ViewLocationResponse
      */
     private $response;
-    public function __construct(CityBuildingsRepository $cityRepository, BuildingRepository $buildingRepository) {
-        $this->cityBuildingsRepository = $cityRepository;
+    public function __construct(CityRepository $cityRepository,CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository) {
+        $this->cityBuildingsRepository = $cityBuildingsRepository;
+        $this->cityRepository = $cityRepository;
         $this->buildingRepository      = $buildingRepository;
     }
 
@@ -57,7 +61,12 @@ class ViewLocation {
     }
 
     private function viewInformations($y, $x) {
-        return array($y,$x);
+        $request = new ViewCityInformationRequest($y,$x);
+        $response = new ViewCityInformationResponse();
+        $interactor = new ViewCityInformationInteractor($this->cityRepository);
+        $response->failed = $interactor->process($request,$response);
+        $this->response->city = $response->city;
+
     }
 
 }

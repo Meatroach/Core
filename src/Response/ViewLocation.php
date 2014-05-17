@@ -10,4 +10,5 @@ namespace OpenTribes\Core\Response;
 class ViewLocation extends Response{
     public $isCustomCity = false;
     public $buildings = array();
+    public $city = null;
 }
