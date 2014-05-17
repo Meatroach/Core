@@ -61,4 +61,4 @@ config/*
 storage
 cache/*
 /nbproject
-.idea/*
+/.idea/*
