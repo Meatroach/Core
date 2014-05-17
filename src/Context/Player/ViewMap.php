@@ -36,7 +36,7 @@ class ViewMap {
         $response->width  = $request->getViewportWidth();
         $response->height = $request->getViewportHeight();
         $defaultTile      = $this->mapTilesRepository->getDefaultTile();
-        $city             = $this->cityRepository->findMainByUsername($username);
+        $city             = $this->cityRepository->findSelectedByUsername($username);
         $step             = 1;
         if (!$y && !$x) {
             $x = $city->getX();

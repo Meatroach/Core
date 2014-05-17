@@ -86,7 +86,7 @@ interface City {
      * @param string $username
      * @return CityEntity
      */
-    public function findMainByUsername($username);
+    public function findSelectedByUsername($username);
     
     public function findAllInArea(array $area);
     public function getLastCreatedCity();

@@ -27,10 +27,11 @@
 .map-arrow:hover{
     text-decoration: none;
 }
-.sprite.city a{
+.sprite.city > .city-info{
     display: block;
     position: absolute;
     bottom: 0;
+    cursor: pointer;
 }
 .sprite.city > div.info{
     display: none;
@@ -39,6 +40,7 @@
     color:black;
 
 }
+
 .sprite.city:hover > div.info{
     display:block;
 }

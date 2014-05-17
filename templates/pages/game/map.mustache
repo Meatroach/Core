@@ -17,21 +17,18 @@
 
 
                     <div id="map" style="position: absolute;top:{{top}}px;left:{{left}}px;width:{{width}}px;height:{{height}}px">
-                        <a name="map" style="text-decoration:none;">
+
                         {{#tiles}}
                         <div class="sprite {{name}}" data-x="{{x}}" data-y="{{y}}" style="position: absolute;top:{{top}}px;left:{{left}}px;z-index: {{z}}"></div>
                         {{/tiles}}
 
                         {{#cities}}
-                        <div class="sprite city city{{level}}" data-x="{{x}}" data-y="{{y}}" style="position: absolute;top:{{top}}px;left:{{left}}px;z-index:{{z}}">
-                            <a style="width:{{width}}px;height:{{height}}px" href="city/view/{{y}}/{{x}}"></a>
-                            <div class="info panel panel-default" style="width:{{width}}px;height:{{height}}px">
-                                <b>{{name}} ({{y}}/{{x}})</b>
-                                Owner:{{owner}}
-                            </div>
+
+                        <div  class="sprite city city{{level}}" data-x="{{x}}" data-y="{{y}}" style="position: absolute;top:{{top}}px;left:{{left}}px;z-index:{{z}}">
+                          <div class="city-info"  data-toggle="popover" data-placement="top" data-content="{{>pages/game/cityinfo}}" style="width:{{width}}px;height:{{height}}px"></div>
                         </div>
                         {{/cities}}
-                        </a>
+
                     </div>
 
 
