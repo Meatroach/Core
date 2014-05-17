@@ -118,7 +118,7 @@ class City implements CityRepository {
      */
     public function findMainByUsername($username) {
         foreach ($this->cities as $city) {
-            if ($city->getOwner()->getUsername() === $username && $city->isMain()) {
+            if ($city->getOwner()->getUsername() === $username && $city->isSelected()) {
                 return $city;
             }
         }

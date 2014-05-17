@@ -37,7 +37,7 @@ class City {
     /**
      * @var boolean
      */
-    private $isMain    = false;
+    private $isSelected    = false;
 
     /**
      * @var Building[]
@@ -106,12 +106,12 @@ class City {
         return $this->buildings;
     }
 
-    public function isMain() {
-        return $this->isMain;
+    public function isSelected() {
+        return $this->isSelected;
     }
 
-    public function setMain($isMain) {
-        $this->isMain = (bool) $isMain;
+    public function setSelected($selected) {
+        $this->isSelected = (bool) $selected;
     }
 
 }

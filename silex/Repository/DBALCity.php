@@ -100,7 +100,7 @@ class DBALCity extends Repository implements CityInterface {
      */
     private function getQueryBuilder() {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y', 'c.is_main AS isMain')
+        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y', 'c.is_selected AS isSelected')
                         ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
     }
 
@@ -173,7 +173,7 @@ class DBALCity extends Repository implements CityInterface {
     private function rowToEntity(stdClass $row) {
         $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
         $city  = $this->create($row->cityId, $row->cityName, $owner, $row->y, $row->x);
-        $city->setMain($row->isMain);
+        $city->setSelected($row->isSelected);
         return $city;
     }
 
@@ -184,7 +184,7 @@ class DBALCity extends Repository implements CityInterface {
             'x'       => $city->getX(),
             'y'       => $city->getY(),
             'user_id' => $city->getOwner()->getId(),
-            'is_main' => $city->isMain()
+            'is_selected' => $city->isSelected()
         );
     }
 
@@ -239,7 +239,7 @@ class DBALCity extends Repository implements CityInterface {
      */
     public function findMainByUsername($username) {
         foreach ($this->cities as $city) {
-            if ($city->getOwner()->getUsername() === $username && $city->isMain()) {
+            if ($city->getOwner()->getUsername() === $username && $city->isSelected()) {
                 return $city;
             }
         }

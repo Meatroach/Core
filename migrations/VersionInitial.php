@@ -83,9 +83,9 @@ class VersionInitial extends AbstractMigration {
         $this->table->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('y', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('user_id', Type::INTEGER, array('length' => 11, 'notnull' => false));
-        $this->table->addColumn('is_main', Type::BOOLEAN);
+        $this->table->addColumn('is_selected', Type::BOOLEAN);
         $this->table->setPrimaryKey(array('id', 'x', 'y'));
-        $this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTIOn'), 'fk_city_owner');
+        $this->table->addForeignKeyConstraint($userTable, array('user_id'), array('id'), array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTION'), 'fk_city_owner');
     }
 
     public function down(Schema $schema) {
