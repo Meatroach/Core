@@ -47,6 +47,7 @@ class ActivateUser {
             $response->errors = $this->activateUserValidator->getErrors();
             return false;
         }
+
         $object->codeIsValid = $request->getActivationCode() === $user->getActivationCode();
         if (!$this->activateUserValidator->isValid()) {
             $response->errors = $this->activateUserValidator->getErrors();

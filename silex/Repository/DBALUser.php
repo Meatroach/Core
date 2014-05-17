@@ -22,7 +22,7 @@ class DBALUser extends Repository implements UserRepositoryInterface {
      * @var UserEntity[]
      */
     private $users = array();
-
+    private $dateFormat = 'Y-m-d H:i:s';
     /**
      * @param Connection $db DBAL Connection
      */
@@ -133,9 +133,9 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     private function rowToEntity($row) {
-        $lastLogin  = \DateTime::createFromFormat(\DateTime::W3C, $row->lastLogin);
-        $registrationDate = \DateTime::createFromFormat(\DateTime::W3C, $row->registered);
-        $lastAction = \DateTime::createFromFormat(\DateTime::W3C, $row->lastAction);
+        $lastLogin  = \DateTime::createFromFormat($this->dateFormat, $row->lastLogin);
+        $registrationDate = \DateTime::createFromFormat($this->dateFormat, $row->registered);
+        $lastAction = \DateTime::createFromFormat($this->dateFormat, $row->lastAction);
         $user       = $this->create($row->id, $row->username, $row->password, $row->email);
         if($lastAction){
            $user->setLastAction($lastAction); 
@@ -152,28 +152,26 @@ class DBALUser extends Repository implements UserRepositoryInterface {
     }
 
     private function entityToRow(UserEntity $user) {
-        $lastAction       = null;
-        $lastLogin        = null;
-        $registrationDate = null;
-        if ($user->getRegistrationDate() instanceof \DateTime) {
-            $registrationDate = $user->getRegistrationDate()->format(\DateTime::W3C);
-        }
-        if ($user->getLastLogin() instanceof \DateTime) {
-            $lastLogin = $user->getLastLogin()->format(\DateTime::W3C);
-        }
-        if ($user->getLastAction() instanceof \DateTime) {
-            $lastAction = $user->getLastAction()->format(\DateTime::W3C);
-        }
-        return array(
+
+
+        $data =  array(
             'id'             => $user->getId(),
             'username'       => $user->getUsername(),
             'email'          => $user->getEmail(),
             'password'       => $user->getPassword(),
-            'activationCode' => $user->getActivationCode(),
-            'registered'     => $registrationDate,
-            'lastAction'     => $lastAction,
-            'lastLogin'      => $lastLogin
+            'activationCode' => $user->getActivationCode()
         );
+        if ($user->getRegistrationDate() instanceof \DateTime) {
+            $data['registered'] =  $user->getRegistrationDate()->format($this->dateFormat);
+        }
+        if ($user->getLastLogin() instanceof \DateTime) {
+            $data['lastLogin'] =  $user->getLastLogin()->format($this->dateFormat);
+
+        }
+        if ($user->getLastAction() instanceof \DateTime) {
+            $data['lastAction'] =  $user->getLastAction()->format($this->dateFormat);
+        }
+        return $data;
     }
 
     /**

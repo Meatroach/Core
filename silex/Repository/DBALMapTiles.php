@@ -133,6 +133,8 @@ class DBALMapTiles implements MapTilesRepository {
 
     public function sync() {
         $mapTiles = $this->map->getTiles();
+        $sql = "INSERT INTO map_tiles(map_id,tile_id,x,y) VALUES (:map_id,:tile_id,:x,:y)";
+        $statement = $this->db->prepare($sql);
         foreach ($mapTiles as $y => $rows) {
             foreach ($rows as $x => $tile) {
                 if ($tile->isDefault()) {
@@ -144,7 +146,8 @@ class DBALMapTiles implements MapTilesRepository {
                     'x'       => $x,
                     'y'       => $y
                 );
-                $this->db->insert('map_tiles', $data);
+
+              $statement->execute($data);
             }
         }
     }
