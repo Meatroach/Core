@@ -4,8 +4,8 @@ namespace OpenTribes\Core\Context\Player;
 
 use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
-use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
-use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
+use OpenTribes\Core\Request\ViewLocation as ViewLocationRequest;
+use OpenTribes\Core\Response\ViewLocation as ViewLocationResponse;
 use OpenTribes\Core\Interactor\ViewCityBuildings as ViewCityBuildingsInteractor;
 use OpenTribes\Core\Request\ViewCityBuildings as ViewCityBuildingsRequest;
 use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsReponse;
@@ -15,7 +15,7 @@ use OpenTribes\Core\Response\ViewCityBuildings as ViewCityBuildingsReponse;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCity {
+class ViewLocation {
 
     private $cityBuildingsRepository;
     private $buildingRepository;
@@ -29,7 +29,7 @@ class ViewCity {
         $this->buildingRepository      = $buildingRepository;
     }
 
-    public function process(ViewCityRequest $request, ViewCityResponse $response) {
+    public function process(ViewLocationRequest $request, ViewLocationResponse $response) {
         $city = $this->cityBuildingsRepository->findByLocation($request->getY(), $request->getX());
         $this->response = $response;
         if (!$city) {

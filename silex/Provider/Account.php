@@ -5,6 +5,7 @@ use Silex\ControllerProviderInterface;
 use Silex\Application;
 use OpenTribes\Core\Silex\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use OpenTribes\Core\Silex\RouteValue;
 use Swift_Message;
 
@@ -34,8 +35,9 @@ class Account implements ControllerProviderInterface
                         'param'  => array())
         ));
         $account->get('/registration_successfull', function() use($app) {
-         //   $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-        //    return new RedirectResponse($baseUrl);
+            $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+          $response = new Response();
+
             $class= new \stdClass();
             $class->proceed = true;
             $class->failed = false;

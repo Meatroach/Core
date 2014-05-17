@@ -7,7 +7,7 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCity {
+class ViewLocation {
 
     private $username;
     private $y;

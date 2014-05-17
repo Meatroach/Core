@@ -11,9 +11,9 @@ use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
 use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
-use OpenTribes\Core\Context\Player\ViewCity as ViewCityInteractor;
-use OpenTribes\Core\Request\ViewCity as ViewCityRequest;
-use OpenTribes\Core\Response\ViewCity as ViewCityResponse;
+use OpenTribes\Core\Context\Player\ViewLocation as ViewLocationInteractor;
+use OpenTribes\Core\Request\ViewLocation as ViewLocationRequest;
+use OpenTribes\Core\Response\ViewLocation as ViewLocationResponse;
 use OpenTribes\Core\Interactor\ViewCities as ViewCitiesInteractor;
 use OpenTribes\Core\Response\ViewCities as ViewCitiesResponse;
 use OpenTribes\Core\Request\ViewCities as ViewCitiesRequest;
@@ -106,9 +106,9 @@ class CityHelper {
 
     public function selectPosition($y, $x, $username) {
 
-        $request                         = new ViewCityRequest($username, $y, $x);
-        $interactor                      = new ViewCityInteractor($this->cityBuildingsRepository, $this->buildingRepository);
-        $this->viewCityBuildingsResponse = new ViewCityResponse;
+        $request                         = new ViewLocationRequest($username, $y, $x);
+        $interactor                      = new ViewLocationInteractor($this->cityBuildingsRepository, $this->buildingRepository);
+        $this->viewCityBuildingsResponse = new ViewLocationResponse;
         $this->interactorResult          = $interactor->process($request, $this->viewCityBuildingsResponse);
     }
 
