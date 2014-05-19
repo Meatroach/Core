@@ -21,7 +21,6 @@ interface City {
      * Create new city entity
      * @param integer $id
      * @param string $name
-     * @param UserEntity $owner
      * @param interger $y
      * @param integer $x
      * @return CityEntity
