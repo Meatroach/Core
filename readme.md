@@ -72,4 +72,3 @@ Current [TODO](https://github.com/Opentribes/Core/issues?direction=asc&labels=TO
 - test
 
 `make full-test`
-
