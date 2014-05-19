@@ -15,7 +15,8 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $user = $this->userRepository->create($userId, 'TestUser', '123456', 'test@test.de');
                 
         $cityId = $this->cityRepository->getUniqueId();
-        $city = $this->cityRepository->create($cityId, 'TestCity', $user, 0, 0);
+        $city = $this->cityRepository->create($cityId, 'TestCity', 0, 0);
+        $city->setOwner($user);
         $this->cityRepository->add($city);
     }
     public function testCityExistsAtLocation(){

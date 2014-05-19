@@ -82,7 +82,8 @@ class MapTest extends \PHPUnit_Framework_TestCase {
         $owner  = $this->userRepository->findOneByUsername('Test');
         if(!$owner) throw new Exception ('User not exists');
         $cityId = $this->cityRepository->getUniqueId();
-        $city   = $this->cityRepository->create($cityId, 'Test 1', $owner, 50, 50);
+        $city   = $this->cityRepository->create($cityId, 'Test 1', 50, 50);
+        $city->setOwner($owner);
         $this->cityRepository->add($city);
     }
 
