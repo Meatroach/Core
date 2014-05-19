@@ -47,7 +47,6 @@ class City {
     /**
      * @param integer $id
      * @param string $name
-     * @param User $owner
      * @param integer $y
      * @param integer $x
      */
