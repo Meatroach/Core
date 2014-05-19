@@ -77,6 +77,10 @@ class Account implements ControllerProviderInterface
         $account->get('/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value(RouteValue::TEMPLATE, 'pages/activation');
 
+        $account->get('/login', function() use($app) {
+            return $app->redirect($app['mustache.options']['helpers']['baseUrl']); 
+        });
+
         $account->after(function() use($app) {
 
             return $app[Controller::ACCOUNT]->after();
