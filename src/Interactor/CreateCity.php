@@ -72,7 +72,8 @@ class CreateCity {
 
         $id = $this->cityRepository->getUniqueId();
 
-        $city           = $this->cityRepository->create($id, $name, $owner, $y, $x);
+        $city           = $this->cityRepository->create($id, $name, $y, $x);
+        $city->setOwner($owner);
         $city->setSelected(true);
         $this->cityRepository->add($city);
         $response->city = new CityView($city);

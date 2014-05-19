@@ -55,7 +55,8 @@ class CityHelper {
         if (!$user) {
             throw new Exception("Dummy city could not be created, user not found");
         }
-        $city = $this->cityRepository->create($cityId, $name, $user, $y, $x);
+        $city = $this->cityRepository->create($cityId, $name, $y, $x);
+        $city->setOwner($user);
         $this->cityRepository->add($city);
     }
 

@@ -53,6 +53,7 @@ $console->register('create-dummy-map')
             $tile->setWidth($mapOptions['tileWidth']);
             $tile->setHeight($mapOptions['tileHeight']);
             $tile->setDefault(true);
+
             $tileRepository->add($tile);
             $tiles   = array('forrest', 'hill', 'sea');
             $tileIds = array();

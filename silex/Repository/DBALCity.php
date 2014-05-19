@@ -65,8 +65,8 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, UserEntity $owner, $y, $x) {
-        return new CityEntity($id, $name, $owner, $y, $x);
+    public function create($id, $name, $y, $x) {
+        return new CityEntity($id, $name, $y, $x);
     }
 
     /**
@@ -172,7 +172,8 @@ class DBALCity extends Repository implements CityInterface {
 
     private function rowToEntity(stdClass $row) {
         $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
-        $city  = $this->create($row->cityId, $row->cityName, $owner, $row->y, $row->x);
+        $city  = $this->create($row->cityId, $row->cityName, $row->y, $row->x);
+        $city->setOwner($owner);
         $city->setSelected($row->isSelected);
         return $city;
     }

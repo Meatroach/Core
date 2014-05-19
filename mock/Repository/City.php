@@ -28,8 +28,8 @@ class City implements CityRepository {
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, UserEntity $owner, $y, $x) {
-        return new CityEntity($id, $name, $owner, $y, $x);
+    public function create($id, $name,  $y, $x) {
+        return new CityEntity($id, $name, $y, $x);
     }
 
     /**

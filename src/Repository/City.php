@@ -26,7 +26,7 @@ interface City {
      * @param integer $x
      * @return CityEntity
      */
-    public function create($id, $name, UserEntity $owner, $y, $x);
+    public function create($id, $name, $y, $x);
 
     /**
      * Add city entity into repository
