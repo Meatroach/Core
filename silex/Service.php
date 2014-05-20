@@ -14,7 +14,7 @@ use Silex\Application;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Service {
+ class Service {
 
     const PASSWORD_HASHER           = 'service.core.passwordHasher';
     const ACTIVATION_CODE_GENERATOR = 'service.core.activationCodeGenerator';
@@ -22,8 +22,12 @@ abstract class Service {
     const MAP_CALCULATOR            = 'service.core.mapCalculator';
     const CSRF_TOKEN_HASHER         = 'service.core.csrfHasher';
 
-    public static function create(Application &$app) {
-
+    private $app;
+    public function __construct(Application $app){
+        $this->app =$app;
+    }
+    public function create() {
+        $app = $this->app;
         $app[self::PASSWORD_HASHER] = $app->share(function() {
             return new PasswordHasher();
         });

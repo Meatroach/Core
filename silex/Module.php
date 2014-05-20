@@ -54,8 +54,10 @@ class Module implements ServiceProviderInterface {
 
     private function createDependencies(Application &$app) {
         Repository::create($app);
-        Service::create($app);
+        $service = new Service($app);
         $validator = new Validator($app);
+
+        $service->create();
         $validator->create();
 
         Controller::create($app);
