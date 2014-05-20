@@ -53,10 +53,10 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createDependencies(Application &$app) {
-        Repository::create($app);
+        $repository = new Repository($app);
         $service = new Service($app);
         $validator = new Validator($app);
-
+        $repository->create();
         $service->create();
         $validator->create();
 
@@ -155,7 +155,7 @@ class Module implements ServiceProviderInterface {
         
         $module = $this;
         $app->on(KernelEvents::EXCEPTION,function($event){
-            var_dump($event);
+
         });
         $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
             $appResponse = $event->getControllerResult();

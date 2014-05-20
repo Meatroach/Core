@@ -37,11 +37,11 @@ class Account implements ControllerProviderInterface
         $account->get('/registration_successfull', function() use($app) {
           /*  $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
           $response = new Response();
-
+*/
             $class= new \stdClass();
             $class->proceed = true;
             $class->failed = false;
-            return $class;*/
+            return $class;
         })->value(RouteValue::TEMPLATE, 'pages/registration_successfull');
 
         $account->match('/create', Controller::ACCOUNT . ':createAction')

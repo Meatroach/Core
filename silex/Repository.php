@@ -14,14 +14,19 @@ use Silex\Application;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Repository {
+ class Repository {
 
     const USER      = 'repository.core.user';
     const CITY      = 'repository.core.city';
     const MAP       = 'repository.core.map';
     const MAP_TILES = 'repository.core.mapTiles';
     const TILE = 'repository.core.tile';
-    public static function create(Application &$app) {
+     private $app;
+     public function __construct(Application $app){
+         $this->app =$app;
+     }
+    public  function create() {
+        $app = $this->app;
         $app[self::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);
         });
