@@ -13,12 +13,15 @@ you have to specify the direction
            | Sea |  |
            | Hill |  |
         And a map "default" with following tiles:
-         |   y/x   |   0   |   1   |   2   |   3   |   4   |
-         |  0   | Grass | Grass | Grass | Grass | Grass |
-         |  1   | Grass | Forrest | Grass | Grass | Grass |
-         |  2   | Grass | Grass | Grass | Grass | Grass |
-         |  3   | Grass | Sea | Grass | Grass | Grass |
-         |  4   | Grass | Grass | Grass | Grass | Grass |
+         |   y/x   |   0   |   1   |   2   |   3   |   4   |  5 |  6 | 7 |
+         |  0   | Grass | Grass | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  1   | Grass | Forrest | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  2   | Grass | Grass | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  3   | Grass | Sea | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  4   | Grass | Grass | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  5   | Grass | Grass | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  6   | Grass | Grass | Grass | Grass | Grass | Grass | Grass | Grass |
+         |  7   | Grass | Grass | Grass | Grass | Grass | Grass | Grass | Grass |
         And following users:
             | username | password | email |
             | BlackScorp | 123456 | test@test.de |
@@ -46,9 +49,9 @@ Scenario Outline: Specify direction
 
 Examples:
     | location | minX | maxX | minY | maxY |
-    | north | 0 | 2 | 0 | 2 |
-    | east | 2 | 4 | 0 | 2 |
-    | south | 2 | 4 | 2 | 4 |
-    | west | 0 | 2 | 2 | 4 |
-    | any | 0 | 4 | 0 | 4 |
+    | north | 0 | 3 | 0 | 3 |
+    | east | 3 | 7 | 0 | 3 |
+    | south | 3 | 7 | 3 | 7 |
+    | west | 0 | 3 | 3 | 7 |
+    | any | 0 | 7 | 0 | 7 |
 
