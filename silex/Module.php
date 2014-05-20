@@ -56,11 +56,11 @@ class Module implements ServiceProviderInterface {
         $repository = new Repository($app);
         $service = new Service($app);
         $validator = new Validator($app);
+        $controller = new Controller($app);
         $repository->create();
         $service->create();
         $validator->create();
-
-        Controller::create($app);
+        $controller->create();
 
         if ($this->env === 'test') {
             $app['swiftmailer.transport'] = $app->share(function() {

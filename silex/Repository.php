@@ -2,6 +2,8 @@
 
 namespace OpenTribes\Core\Silex;
 
+use OpenTribes\Core\Mock\Repository\Building;
+use OpenTribes\Core\Mock\Repository\CityBuildings;
 use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
 use OpenTribes\Core\Silex\Repository\DBALMapTiles as MapTilesRepository;
@@ -21,6 +23,8 @@ use Silex\Application;
     const MAP       = 'repository.core.map';
     const MAP_TILES = 'repository.core.mapTiles';
     const TILE = 'repository.core.tile';
+     const BUILDING ='repository.core.building';
+     const CITY_BUILDINGS = 'repository.core.cityBuildings';
      private $app;
      public function __construct(Application $app){
          $this->app =$app;
@@ -41,6 +45,12 @@ use Silex\Application;
         });
         $app[self::TILE] = $app->share(function() use($app){
             return new TileRepository($app['db']);
+        });
+        $app[self::BUILDING] = $app->share(function() {
+           return new Building();
+        });
+        $app[self::CITY_BUILDINGS] = $app->share(function() use($app){
+           return new CityBuildings($app[self::CITY]);
         });
     }
 

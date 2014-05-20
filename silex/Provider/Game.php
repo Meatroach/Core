@@ -41,7 +41,7 @@ class Game implements ControllerProviderInterface
             $response->username = $request->getSession()->get('username');
             return $response;
         })->value(RouteValue::TEMPLATE, 'pages/game/landing');
-
+        $game->get('game/city/{y}/{x}',Controller::CITY.':locationAction');
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
                 ->value('username', null)
                 ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
