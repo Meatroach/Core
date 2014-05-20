@@ -55,7 +55,9 @@ class Module implements ServiceProviderInterface {
     private function createDependencies(Application &$app) {
         Repository::create($app);
         Service::create($app);
-        Validator::create($app);
+        $validator = new Validator($app);
+        $validator->create();
+
         Controller::create($app);
 
         if ($this->env === 'test') {
@@ -150,6 +152,9 @@ class Module implements ServiceProviderInterface {
         $this->attachRoutesOnContainer($app);
         
         $module = $this;
+        $app->on(KernelEvents::EXCEPTION,function($event){
+            var_dump($event);
+        });
         $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();
