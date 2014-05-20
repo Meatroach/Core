@@ -50,7 +50,7 @@ use Silex\Application;
            return new Building();
         });
         $app[self::CITY_BUILDINGS] = $app->share(function() use($app){
-           return new CityBuildings($app[self::CITY]);
+           return new CityBuildings($app[Repository::CITY]);
         });
     }
 
