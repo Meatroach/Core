@@ -25,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use OpenTribes\Core\Silex\Provider\Assets as AssetsController;
-use OpenTribes\Core\Silex\Provider\Account as AccountController;
-use OpenTribes\Core\Silex\Provider\Game as GameController;
+use OpenTribes\Core\Silex\Provider\Assets as AssetsProvider;
+use OpenTribes\Core\Silex\Provider\Account as AccountProvider;
+use OpenTribes\Core\Silex\Provider\Game as GameProvider;
 
 /**
  * Description of Module
@@ -101,9 +101,9 @@ class Module implements ServiceProviderInterface {
      * @param Application $app
      */
     protected function attachRoutesOnContainer(Application &$app) {
-        $app->mount('/assets', new AssetsController());
-        $app->mount('/account', new AccountController());
-        $app->mount('/game', new GameController());
+        $app->mount('/assets', new AssetsProvider());
+        $app->mount('/account', new AccountProvider());
+        $app->mount('/game', new GameProvider());
     }
 
     /**
