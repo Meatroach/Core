@@ -25,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use OpenTribes\Core\Silex\Provider\Assets as AssetsController;
-use OpenTribes\Core\Silex\Provider\Account as AccountController;
-use OpenTribes\Core\Silex\Provider\Game as GameController;
+use OpenTribes\Core\Silex\Provider\Assets as AssetsProvider;
+use OpenTribes\Core\Silex\Provider\Account as AccountProvider;
+use OpenTribes\Core\Silex\Provider\Game as GameProvider;
 
 /**
  * Description of Module
@@ -53,10 +53,14 @@ class Module implements ServiceProviderInterface {
     }
 
     private function createDependencies(Application &$app) {
-        Repository::create($app);
-        Service::create($app);
-        Validator::create($app);
-        Controller::create($app);
+        $repository = new Repository($app);
+        $service = new Service($app);
+        $validator = new Validator($app);
+        $controller = new Controller($app);
+        $repository->create();
+        $service->create();
+        $validator->create();
+        $controller->create();
 
         if ($this->env === 'test') {
             $app['swiftmailer.transport'] = $app->share(function() {
@@ -99,9 +103,9 @@ class Module implements ServiceProviderInterface {
      * @param Application $app
      */
     protected function attachRoutesOnContainer(Application &$app) {
-        $app->mount('/assets', new AssetsController());
-        $app->mount('/account', new AccountController());
-        $app->mount('/game', new GameController());
+        $app->mount('/assets', new AssetsProvider());
+        $app->mount('/account', new AccountProvider());
+        $app->mount('/game', new GameProvider());
     }
 
     /**
@@ -150,6 +154,9 @@ class Module implements ServiceProviderInterface {
         $this->attachRoutesOnContainer($app);
         
         $module = $this;
+        $app->on(KernelEvents::EXCEPTION,function($event){
+
+        });
         $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
             $appResponse = $event->getControllerResult();
             $request     = $event->getRequest();

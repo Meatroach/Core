@@ -35,9 +35,9 @@ class Account implements ControllerProviderInterface
                         'param'  => array())
         ));
         $account->get('/registration_successfull', function() use($app) {
-            $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+          /*  $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
           $response = new Response();
-
+*/
             $class= new \stdClass();
             $class->proceed = true;
             $class->failed = false;
@@ -76,6 +76,10 @@ class Account implements ControllerProviderInterface
 
         $account->get('/activate/{username}/{activationKey}', Controller::ACCOUNT . ':activateAction')
                 ->value(RouteValue::TEMPLATE, 'pages/activation');
+
+        $account->get('/login', function() use($app) {
+            return $app->redirect($app['mustache.options']['helpers']['baseUrl']); 
+        });
 
         $account->after(function() use($app) {
 

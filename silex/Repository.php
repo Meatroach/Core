@@ -2,6 +2,8 @@
 
 namespace OpenTribes\Core\Silex;
 
+use OpenTribes\Core\Mock\Repository\Building;
+use OpenTribes\Core\Mock\Repository\CityBuildings;
 use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
 use OpenTribes\Core\Silex\Repository\DBALMap as MapRepository;
 use OpenTribes\Core\Silex\Repository\DBALMapTiles as MapTilesRepository;
@@ -14,14 +16,21 @@ use Silex\Application;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Repository {
+ class Repository {
 
     const USER      = 'repository.core.user';
     const CITY      = 'repository.core.city';
     const MAP       = 'repository.core.map';
     const MAP_TILES = 'repository.core.mapTiles';
     const TILE = 'repository.core.tile';
-    public static function create(Application &$app) {
+     const BUILDING ='repository.core.building';
+     const CITY_BUILDINGS = 'repository.core.cityBuildings';
+     private $app;
+     public function __construct(Application $app){
+         $this->app =$app;
+     }
+    public  function create() {
+        $app = $this->app;
         $app[self::USER] = $app->share(function() use($app) {
             return new UserRepository($app['db']);
         });
@@ -36,6 +45,12 @@ abstract class Repository {
         });
         $app[self::TILE] = $app->share(function() use($app){
             return new TileRepository($app['db']);
+        });
+        $app[self::BUILDING] = $app->share(function() {
+           return new Building();
+        });
+        $app[self::CITY_BUILDINGS] = $app->share(function() use($app){
+           return new CityBuildings($app[Repository::CITY]);
         });
     }
 

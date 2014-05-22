@@ -47,16 +47,22 @@ class City {
     /**
      * @param integer $id
      * @param string $name
-     * @param User $owner
      * @param integer $y
      * @param integer $x
      */
-    public function __construct($id, $name, User $owner, $y, $x) {
+    public function __construct($id, $name, $y, $x) {
         $this->id    = (int) $id;
         $this->name  = $name;
-        $this->owner = $owner;
         $this->x     = (int) $x;
         $this->y     = (int) $y;
+    }
+
+    /**
+     * @param \OpenTribes\Core\Entity\User $owner
+     */
+    public function setOwner(User $owner)
+    {
+        $this->owner = $owner;
     }
 
     /**

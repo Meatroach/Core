@@ -13,12 +13,16 @@ use Silex\Application;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Validator {
+class Validator {
 
     const ACTIVATE     = 'validator.core.activate';
     const REGISTRATION = 'validator.core.registration';
-
-    public static function create(Application &$app) {
+    private $app;
+    public function __construct(Application $app){
+        $this->app =$app;
+    }
+    public function create() {
+        $app =$this->app;
         $app['validationDto.registration'] = $app->share(function() {
             return new RegistrationValidatorDto;
         });
