@@ -11,7 +11,6 @@ install-test:
 	touch storage/ot.db
 	cli/config.php create
 	cli/migration.php migrations:migrate --no-interaction
-	cli/config.php create-dummy-map
 
 install-dev:
 	composer self-update

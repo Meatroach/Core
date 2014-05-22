@@ -18,7 +18,11 @@ class LocationCalculator implements LocationCalculatorInterface {
     private $originY     = 0;
     private $countCities = 0;
     private $margin      = 1;
-
+    private $seed;
+    public function __construct(){
+        $this->seed = 1400403506;
+        mt_srand($this->seed);
+    }
     public function setOriginPosition($y,$x){
         $this->originX = $x;
         $this->originY = $y;
@@ -32,8 +36,7 @@ class LocationCalculator implements LocationCalculatorInterface {
 
     public function calculate(Direction $direction) {
 
-        $x         = 0;
-        $y         = 0;
+
         $direction = $direction->getValue();
         if ($direction === Direction::ANY) {
             $square    = ceil(sqrt(4 * $this->countCities));
@@ -56,17 +59,17 @@ class LocationCalculator implements LocationCalculatorInterface {
             $x = -1;
             $y = 1;
         }
-        $x             = $this->originX +$x;
+        $x             = $this->originX +$x ;
         $y             = $this->originY +$y;
-        $minX    = $x - $this->margin;
-        $maxX    = $x + $this->margin;
-        $minY    = $y - $this->margin;
-        $maxY    = $y + $this->margin;
+        $minX    = $x - 1;
+        $maxX    = $x + 1;
+        $minY    = $y - 1;
+        $maxY    = $y + 1;
         $x  = mt_rand($minX, $maxX);
         $y =  mt_rand($minY, $maxY);
+
         $this->x       = $x;
         $this->y       = $y;
-        
     }
 
     public function getX() {
