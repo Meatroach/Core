@@ -18,11 +18,7 @@ class LocationCalculator implements LocationCalculatorInterface {
     private $originY     = 0;
     private $countCities = 0;
     private $margin      = 1;
-    private $seed;
-    public function __construct(){
-        $this->seed = 1400403506;
-        mt_srand($this->seed);
-    }
+
     public function setOriginPosition($y,$x){
         $this->originX = $x;
         $this->originY = $y;
@@ -59,8 +55,9 @@ class LocationCalculator implements LocationCalculatorInterface {
             $x = -1;
             $y = 1;
         }
-        $x             = $this->originX +$x ;
-        $y             = $this->originY +$y;
+        $x             = $this->originX +($x*$this->margin);
+        $y             = $this->originY +($y*$this->margin);
+
         $minX    = $x - 1;
         $maxX    = $x + 1;
         $minY    = $y - 1;

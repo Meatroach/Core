@@ -29,7 +29,7 @@ you have to specify the direction
             | Owner2 | 123456 | owner2@test.de |
         And following cities:
             | name | owner | y | x |
-            | City1 | Owner1 | 2 | 2 |
+            | City1 | Owner1 | 3 | 3 |
 
 
 Scenario Outline: Specify direction
@@ -42,7 +42,7 @@ Scenario Outline: Specify direction
         | <minX> | <maxX> | <minY> | <maxY> |
     But not at following locations:
         | y | x |
-        | 2 | 2 |
+        | 3 | 3 |
         | 1 | 1 |
         | 3 | 1 |
 

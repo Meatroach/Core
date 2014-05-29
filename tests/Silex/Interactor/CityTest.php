@@ -31,7 +31,7 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $this->userRepository     = $app[Repository::USER];
         $this->locationCalculator = $app[Service::LOCATION_CALCULATOR];
         $this->createDummyUser();
-        $this->createDummyMap($app['map.options']);
+      //  $this->createDummyMap($app['map.options']);
     }
 
     private function createDummyUser() {
@@ -76,6 +76,7 @@ class CityTest extends \PHPUnit_Framework_TestCase {
                 }
             }
         }
+
         $mapTileRepository->add($map);
     }
     public function testCreateRandomUniqueCities() {

@@ -127,6 +127,9 @@ class City implements CityRepository {
         ;
     }
     public function getLastCreatedCity() {
-        return end($this->cities);
+
+        $lastCity =  end($this->cities);
+
+        return $lastCity ;
     }
 }
