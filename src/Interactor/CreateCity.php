@@ -48,13 +48,13 @@ class CreateCity {
      * @return boolean
      */
     public function process(CreateCityRequest $request, CreateCityResponse $response) {
-        $owner = $this->userRepository->findOneByUsername($request->getUsername());
+        $username = $request->getUsername();
         $x     = $request->getX();
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
         $map   = $this->mapTilesRepository->getMap();
-    
-        if(!$owner || !$map){
+
+        if(!$map){
            return false;
         }
         if (!$map->isValidLocation($y, $x)) {
@@ -73,8 +73,11 @@ class CreateCity {
         $id = $this->cityRepository->getUniqueId();
 
         $city           = $this->cityRepository->create($id, $name, $y, $x);
-        $city->setOwner($owner);
-        $city->setSelected(true);
+        if($username){
+            $owner = $this->userRepository->findOneByUsername($username);
+            $city->setOwner($owner);
+            $city->setSelected(true);
+        }
         $this->cityRepository->add($city);
         $response->city = new CityView($city);
         return true;

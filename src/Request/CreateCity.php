@@ -18,12 +18,19 @@ class CreateCity {
     /**
      * @param string $defaultCityName
      */
-    public function __construct($y, $x, $username, $defaultCityName) {
+    public function __construct($y, $x, $defaultCityName) {
         $this->x               = $x;
         $this->y               = $y;
-        $this->username        = $username;
         $this->defaultCityName = $defaultCityName;
 
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
     }
 
     public function getDefaultCityName() {

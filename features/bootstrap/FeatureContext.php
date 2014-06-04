@@ -71,6 +71,7 @@ class FeatureContext extends BehatContext {
         $this->messageHelper           = new MessageHelper();
         $this->cityHelper              = new CityHelper($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator, $this->cityBuildingsRepository, $this->buildingRepository);
         $this->buildingHelper          = new BuildingHelper($this->buildingRepository);
+
     }
 
     /**

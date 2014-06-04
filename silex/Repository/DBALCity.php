@@ -171,22 +171,30 @@ class DBALCity extends Repository implements CityInterface {
     }
 
     private function rowToEntity(stdClass $row) {
-        $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
+
+
         $city  = $this->create($row->cityId, $row->cityName, $row->y, $row->x);
-        $city->setOwner($owner);
-        $city->setSelected($row->isSelected);
+        if($row->userId){
+            $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
+            $city->setOwner($owner);
+            $city->setSelected($row->isSelected);
+        }
+
         return $city;
     }
 
     private function entityToRow(CityEntity $city) {
-        return array(
+        $array = array(
             'id'      => $city->getId(),
             'name'    => $city->getName(),
             'x'       => $city->getX(),
             'y'       => $city->getY(),
-            'user_id' => $city->getOwner()->getId(),
             'is_selected' => $city->isSelected()
         );
+        if($city->getOwner()){
+            $array['user_id'] = $city->getOwner()->getId();
+        }
+        return $array;
     }
 
     /**
@@ -256,6 +264,8 @@ class DBALCity extends Repository implements CityInterface {
             $where = '(y||"-"||x)';
         }
         $result = $this->getQueryBuilder()->where($where . ' IN (\'' . implode("','", array_keys($area)) . '\')')->execute();
+
+
         $rows   = $result->fetchAll(PDO::FETCH_OBJ);
         $found  = array();
         if (count($rows) < 0) {

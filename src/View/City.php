@@ -24,6 +24,9 @@ class City {
         $this->name = $city->getName();
         $this->x = $city->getX();
         $this->y = $city->getY();
-        $this->owner = $city->getOwner()->getUsername();
+        if($city->getOwner()){
+            $this->owner = $city->getOwner()->getUsername();
+        }
+
     }
 }

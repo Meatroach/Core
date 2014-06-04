@@ -6,7 +6,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use OpenTribes\Core\Silex\Repository;
-
+use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Context\Player\CreateNewCity as CreateNewCityInteractor;
+use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
+use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
+use OpenTribes\Core\Value\Direction;
 $console = new Application;
 $console->register('create')
         ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
@@ -83,4 +87,29 @@ $console->register('create-dummy-map')
             $tileRepository->sync();
             $mapTileRepository->sync();
         });
+$console->register('create-dummy-cities')
+    ->addArgument('cities', InputArgument::OPTIONAL, 'amount of cities', 20)
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
+    ->setCode(function(InputInterface $input){
+        $env               = $input->getArgument('env');
+        $app               = require __DIR__ . '/../bootstrap.php';
+        $maxCities = $input->getArgument('cities');
+        $cityRepository = $app[Repository::CITY];
+        $mapTilesRepository = $app[Repository::MAP_TILES];
+        $userRepository = $app[Repository::USER];
+        $locationCalculator = $app[Service::LOCATION_CALCULATOR];
+
+        $interactor = new CreateNewCityInteractor($cityRepository, $mapTilesRepository, $userRepository, $locationCalculator);
+        $response   = new CreateNewCityResponse;
+        $failed = 0;
+        for ($i = 0; $i < $maxCities; $i++) {
+            $request          = new CreateNewCityRequest(null, Direction::ANY, 'TestCity ' . $i);
+            $response->failed = $interactor->process($request, $response);
+            if($response->failed){
+                $failed++;
+            }
+        }
+        echo "created ".($maxCities-$failed)." cities";
+        $cityRepository->sync();
+    });
 $console->run();
