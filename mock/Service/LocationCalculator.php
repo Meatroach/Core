@@ -14,59 +14,35 @@ class LocationCalculator implements LocationCalculatorInterface {
 
     private $x           = 0;
     private $y           = 0;
-    private $originX     = 0;
-    private $originY     = 0;
+    private $centerX     = 0;
+    private $centerY     = 0;
     private $countCities = 0;
-    private $margin      = 1;
 
-    public function setOriginPosition($y,$x){
-        $this->originX = $x;
-        $this->originY = $y;
+
+    public function setCenterPosition($y,$x){
+        $this->centerX = $x;
+        $this->centerY = $y;
     }
     public function setCountCities($countCities){
         $this->countCities = $countCities;
     }
-    public function setMargin($margin) {
-        $this->margin = $margin;
-    }
+
 
     public function calculate(Direction $direction) {
-
-
         $direction = $direction->getValue();
         if ($direction === Direction::ANY) {
-            $square    = ceil(sqrt(4 * $this->countCities));
-            $direction = $square % 4;
+            $direction = $this->countCities % 4;
         }
-        if ($direction === Direction::NORTH) {
-            $x = -1;
-            $y = -1;
-        }
-        if ($direction === Direction::EAST) {
-            $x = 1;
-            $y = -1;
-        }
-        if ($direction === Direction::SOUTH) {
+        $degree = mt_rand($direction*90,($direction+1)*90);
 
-            $x = 1;
-            $y = 1;
-        }
-        if ($direction === Direction::WEST) {
-            $x = -1;
-            $y = 1;
-        }
-        $x             = $this->originX +($x*$this->margin);
-        $y             = $this->originY +($y*$this->margin);
-
-        $minX    = $x - 1;
-        $maxX    = $x + 1;
-        $minY    = $y - 1;
-        $maxY    = $y + 1;
-        $x  = mt_rand($minX, $maxX);
-        $y =  mt_rand($minY, $maxY);
-
-        $this->x       = $x;
-        $this->y       = $y;
+        $phi = deg2rad($degree);
+        $radius = pow($phi,2);
+        var_dump($direction);
+        $x = ~~($radius*cos($phi))+$this->centerX;
+        $y = ~~($radius*sin($phi))+$this->centerY;
+        var_dump($x,$y);
+        $this->x = $x;
+        $this->y = $y;
     }
 
     public function getX() {

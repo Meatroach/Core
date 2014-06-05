@@ -8,7 +8,8 @@ use OpenTribes\Core\Service\PasswordHasher;
 use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
 
-class SilexUserHelper extends DomainUserHelper {
+class SilexUserHelper extends DomainUserHelper
+{
 
     /**
      * @var DocumentElement
@@ -16,23 +17,26 @@ class SilexUserHelper extends DomainUserHelper {
     private $page;
     private $mink;
     private $sessionName;
-   
 
-    public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator) {
+
+    public function __construct(Mink $mink, UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator)
+    {
 
         parent::__construct($userRepository, $registrationValidator, $passwordHasher, $activationCodeGenerator, $activateUserValidator);
-        $this->mink        = $mink;
+        $this->mink = $mink;
         $this->sessionName = $this->mink->getDefaultSessionName();
     }
 
-    private function loadPage() {
+    private function loadPage()
+    {
         $this->page = $this->mink->getSession($this->sessionName)->getPage();
     }
 
     /**
      * @param boolean $termsAndConditions
      */
-    public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
+    public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions)
+    {
         $this->loadPage();
         $this->page->fillField('username', $username);
         $this->page->fillField('email', $email);
@@ -45,60 +49,71 @@ class SilexUserHelper extends DomainUserHelper {
         $this->page->pressButton('register');
     }
 
-    public function assertRegistrationSucceed() {
+    public function assertRegistrationSucceed()
+    {
         $this->loadPage();
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
     }
 
-    public function getActivateAccountResponse() {
-        $response         = new stdClass;
+    public function getActivateAccountResponse()
+    {
+        $response = new stdClass;
         $response->errors = array();
         return $response;
     }
 
-    public function processLogin($username, $password) {
+    public function processLogin($username, $password)
+    {
         $this->loadPage();
         $this->page->fillField('username', $username);
         $this->page->fillField('password', $password);
         $this->page->pressButton('login');
     }
 
-    public function assertLoginSucceed() {
+    public function assertLoginSucceed()
+    {
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
     }
 
-    public function assertLoginFailed() {
+    public function assertLoginFailed()
+    {
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
-    public function assertActivationSucceed() {
+    public function assertActivationSucceed()
+    {
         $this->mink->assertSession()->statusCodeEquals(200);
         $this->mink->assertSession()->elementNotExists('css', '.alert-danger');
     }
 
-    public function assertActivationFailed() {
+    public function assertActivationFailed()
+    {
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
-    public function assertRegistrationFailed() {
+    public function assertRegistrationFailed()
+    {
         $this->mink->assertSession()->elementExists('css', '.alert-danger');
     }
 
-    public function getRegistrationResponse() {
-        $response         = new stdClass();
+    public function getRegistrationResponse()
+    {
+        $response = new stdClass();
         $response->errors = array();
         return $response;
     }
 
-    public function loginAs($username) {
+    public function loginAs($username)
+    {
 
         $this->mink->getSession()->setCookie('username', $username);
         $this->loggedInUsername = $username;
     }
 
-    public function getLoggedInUsername() {
+    public function getLoggedInUsername()
+    {
         return $this->loggedInUsername;
     }
 
