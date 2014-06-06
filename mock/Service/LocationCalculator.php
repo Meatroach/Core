@@ -15,15 +15,15 @@ class LocationCalculator implements LocationCalculatorInterface
 
     private $x = 0;
     private $y = 0;
-    private $originX = 0;
-    private $originY = 0;
+    private $centerX = 0;
+    private $centerY = 0;
     private $countCities = 0;
-    private $margin = 1;
 
-    public function setOriginPosition($y, $x)
+
+    public function setCenterPosition($y, $x)
     {
-        $this->originX = $x;
-        $this->originY = $y;
+        $this->centerX = $x;
+        $this->centerY = $y;
     }
 
     public function setCountCities($countCities)
@@ -31,10 +31,6 @@ class LocationCalculator implements LocationCalculatorInterface
         $this->countCities = $countCities;
     }
 
-    public function setMargin($margin)
-    {
-        $this->margin = $margin;
-    }
 
     public function calculate(Direction $direction)
     {
@@ -42,35 +38,18 @@ class LocationCalculator implements LocationCalculatorInterface
 
         $direction = $direction->getValue();
         if ($direction === Direction::ANY) {
-            $square    = ceil(sqrt(4 * $this->countCities));
-            $direction = $square % 4;
+            $direction = $this->countCities % 4;
         }
-        if ($direction === Direction::NORTH) {
-            $x = -1;
-            $y = -1;
-        }
-        if ($direction === Direction::EAST) {
-            $x = 1;
-            $y = -1;
-        }
-        if ($direction === Direction::SOUTH) {
 
-            $x = 1;
-            $y = 1;
-        }
-        if ($direction === Direction::WEST) {
-            $x = -1;
-            $y = 1;
-        }
-        $x = $this->originX + ($x * $this->margin);
-        $y = $this->originY + ($y * $this->margin);
+        $angleStart = $direction*90;
+        $angleEnd = ($direction+1)*90;
+        $randomAngle = mt_rand($angleStart,$angleEnd);
+        var_dump($angleStart,$angleEnd,$direction);
+        $phi = deg2rad($randomAngle);
+        $radius = -max(5,min($this->countCities,200));
+        $x = $this->centerX + ~~($radius * cos($phi));
+        $y = $this->centerY + ~~($radius * sin($phi));
 
-        $minX = $x - 1;
-        $maxX = $x + 1;
-        $minY = $y - 1;
-        $maxY = $y + 1;
-        $x    = mt_rand($minX, $maxX);
-        $y    = mt_rand($minY, $maxY);
 
         $this->x = $x;
         $this->y = $y;
