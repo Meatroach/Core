@@ -6,10 +6,11 @@ use OpenTribes\Core\Entity\City as CityEntity;
 use OpenTribes\Core\Entity\User as UserEntity;
 
 /**
- * City Repository 
+ * City Repository
  * @author BlackScorp<witalimik@web.de>
  */
-interface City {
+interface City
+{
 
     /**
      * get unique ID to create new entity
@@ -49,12 +50,13 @@ interface City {
      * @return CityEntity|null
      */
     public function findByLocation($y, $x);
-    
+
     /**
      * @param CityEntity $city
      * @return void
      */
     public function replace(CityEntity $city);
+
     /**
      * @param UserEntity $owner City Owner
      * @return CityEntity[]
@@ -80,13 +82,14 @@ interface City {
      * @return null|integer
      */
     public function flush();
-    
+
     /**
      * @param string $username
      * @return CityEntity
      */
     public function findSelectedByUsername($username);
-    
+
     public function findAllInArea(array $area);
+
     public function getLastCreatedCity();
 }

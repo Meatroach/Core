@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'subjects'  => array(
+    'subjects'            => array(
         'registration' => 'Welcome to OpenTribes'
     ),
-    'fromMails' => array(
+    'fromMails'           => array(
         'registration' => 'noreply@domain.tld'
     ),
     'swiftmailer.options' => array(
@@ -14,4 +14,5 @@ return array(
         'password'   => 'password',
         'encryption' => null,
         'auth_mode'  => null
-        ));
+    )
+);

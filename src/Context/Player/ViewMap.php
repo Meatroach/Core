@@ -2,32 +2,38 @@
 
 namespace OpenTribes\Core\Context\Player;
 
-use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Request\ViewMap as ViewMapRequest;
 use OpenTribes\Core\Response\ViewMap as ViewMapResponse;
 use OpenTribes\Core\Service\MapCalculator;
-use OpenTribes\Core\View\Tile as TileView;
 use OpenTribes\Core\View\City as CityView;
+use OpenTribes\Core\View\Tile as TileView;
 
 /**
  * Description of ViewMap
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewMap {
+class ViewMap
+{
 
     private $mapTilesRepository;
     private $cityRepository;
     private $mapCalculator;
 
-    public function __construct(MapTilesRepository $mapTilesRepository, CityRepository $cityRepository, MapCalculator $mapCalculator) {
+    public function __construct(
+        MapTilesRepository $mapTilesRepository,
+        CityRepository $cityRepository,
+        MapCalculator $mapCalculator
+    ) {
         $this->mapTilesRepository = $mapTilesRepository;
         $this->cityRepository     = $cityRepository;
         $this->mapCalculator      = $mapCalculator;
     }
 
-    public function process(ViewMapRequest $request, ViewMapResponse $response) {
+    public function process(ViewMapRequest $request, ViewMapResponse $response)
+    {
         $y        = $request->getY();
         $x        = $request->getX();
         $username = $request->getUsername();
@@ -56,11 +62,11 @@ class ViewMap {
         $top            = $center['top'] - $request->getViewportHeight() / 2;
         $left           = $center['left'] - $request->getViewportWidth() / 2;
         $response->top  = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight() / 2;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() /2;
+        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() / 2;
         $area           = $this->mapCalculator->getArea($top, $left);
 
-      
-        $cities   = $this->cityRepository->findAllInArea($area);
+
+        $cities = $this->cityRepository->findAllInArea($area);
 
         foreach ($cities as $city) {
             $y                  = $city->getY();
@@ -74,7 +80,7 @@ class ViewMap {
             $cityView->height   = $defaultTile->getHeight();
             $cityView->width    = $defaultTile->getWidth();
             $cityView->z        = $y + $x * 2;
-            $cityView->level  = 1;
+            $cityView->level    = 1;
             $response->cities[] = $cityView;
         }
 

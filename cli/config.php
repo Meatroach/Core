@@ -2,15 +2,16 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use OpenTribes\Core\Silex\Repository;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use OpenTribes\Core\Silex\Repository;
 
 $console = new Application;
 $console->register('create')
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
-        ->setCode(function(InputInterface $input) {
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
+    ->setCode(
+        function (InputInterface $input) {
             $env     = $input->getArgument('env');
             $path    = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
@@ -29,11 +30,13 @@ $console->register('create')
                 $newContent = "<?php \n return " . var_export($content, true) . ";";
                 file_put_contents($realFile, $newContent);
             }
-        });
+        }
+    );
 
 $console->register('create-dummy-map')
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
-        ->setCode(function(InputInterface $input) {
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
+    ->setCode(
+        function (InputInterface $input) {
             $env               = $input->getArgument('env');
             $app               = require __DIR__ . '/../bootstrap.php';
             $mapOptions        = $app['map.options'];
@@ -48,8 +51,8 @@ $console->register('create-dummy-map')
             $mapRepository->add($map);
 
 
-            $tileId  = $tileRepository->getUniqueId();
-            $tile    = $tileRepository->create($tileId, 'gras', true);
+            $tileId = $tileRepository->getUniqueId();
+            $tile   = $tileRepository->create($tileId, 'gras', true);
             $tile->setWidth($mapOptions['tileWidth']);
             $tile->setHeight($mapOptions['tileHeight']);
             $tile->setDefault(true);
@@ -58,8 +61,8 @@ $console->register('create-dummy-map')
             $tiles   = array('forrest', 'hill', 'sea');
             $tileIds = array();
             foreach ($tiles as $tileName) {
-                $tileId           = $tileRepository->getUniqueId();
-                $tile             = $tileRepository->create($tileId, $tileName, false);
+                $tileId = $tileRepository->getUniqueId();
+                $tile   = $tileRepository->create($tileId, $tileName, false);
                 $tile->setWidth($mapOptions['tileWidth']);
                 $tile->setHeight($mapOptions['tileHeight']);
                 $tileRepository->add($tile);
@@ -82,5 +85,6 @@ $console->register('create-dummy-map')
             $mapRepository->sync();
             $tileRepository->sync();
             $mapTileRepository->sync();
-        });
+        }
+    );
 $console->run();

@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class CreateNewCity {
+class CreateNewCity
+{
     private $username;
     private $direction;
     private $defaultCityName;
@@ -16,23 +17,28 @@ class CreateNewCity {
     /**
      * @param string $defaultCityName
      */
-    public function __construct($username, $direction, $defaultCityName) {
+    public function __construct($username, $direction, $defaultCityName)
+    {
         $this->username        = $username;
         $this->direction       = $direction;
         $this->defaultCityName = $defaultCityName;
 
     }
-    public function getUsername() {
+
+    public function getUsername()
+    {
         return $this->username;
     }
 
-    public function getDirection() {
+    public function getDirection()
+    {
         return $this->direction;
     }
 
-    public function getDefaultCityName() {
+    public function getDefaultCityName()
+    {
         return $this->defaultCityName;
     }
- 
+
 
 }

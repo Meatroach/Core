@@ -15,7 +15,8 @@ use stdClass;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class DBALCity extends Repository implements CityInterface {
+class DBALCity extends Repository implements CityInterface
+{
 
     /**
      * @var CityEntity[]
@@ -26,14 +27,16 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * @param Connection $db
      */
-    public function __construct(Connection $db) {
+    public function __construct(Connection $db)
+    {
         $this->db = $db;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function add(CityEntity $city) {
+    public function add(CityEntity $city)
+    {
         $id                = $city->getId();
         $this->cities[$id] = $city;
         parent::markAdded($id);
@@ -42,37 +45,42 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritDoc}
      */
-    public function cityExistsAt($y, $x) {
-        $y = (int) $y;
-        $x = (int) $x;
+    public function cityExistsAt($y, $x)
+    {
+        $y = (int)$y;
+        $x = (int)$x;
         foreach ($this->cities as $city) {
             if ($city->getX() === $x && $city->getY() === $y) {
                 return true;
             }
         }
         $result = $this->getQueryBuilder()
-                        ->where('x = :x AND y = :y')
-                        ->setParameters(array(
-                            ':y' => $y,
-                            ':x' => $x
-                        ))->execute();
+            ->where('x = :x AND y = :y')
+            ->setParameters(
+                array(
+                    ':y' => $y,
+                    ':x' => $x
+                )
+            )->execute();
 
         $row = $result->fetch(PDO::FETCH_OBJ);
 
-        return (bool) $row;
+        return (bool)$row;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, $y, $x) {
+    public function create($id, $name, $y, $x)
+    {
         return new CityEntity($id, $name, $y, $x);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findAllByOwner(UserEntity $owner) {
+    public function findAllByOwner(UserEntity $owner)
+    {
         $found = array();
         foreach ($this->cities as $city) {
             if ($city->getOwner() === $owner) {
@@ -81,8 +89,8 @@ class DBALCity extends Repository implements CityInterface {
         }
 
         $result = $this->getQueryBuilder()
-                        ->where('user_id = :user_id')
-                        ->setParameter(':user_id', $owner->getId())->execute();
+            ->where('user_id = :user_id')
+            ->setParameter(':user_id', $owner->getId())->execute();
         $rows   = $result->fetchAll(PDO::FETCH_OBJ);
         if (count($rows) < 0) {
             return $found;
@@ -98,28 +106,42 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * @return QueryBuilder
      */
-    private function getQueryBuilder() {
+    private function getQueryBuilder()
+    {
         $queryBuilder = $this->db->createQueryBuilder();
-        return $queryBuilder->select('u.id AS userId', 'u.username', 'u.password', 'u.email', 'c.id AS cityId', 'c.name AS cityName', 'c.x', 'c.y', 'c.is_selected AS isSelected')
-                        ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
+        return $queryBuilder->select(
+            'u.id AS userId',
+            'u.username',
+            'u.password',
+            'u.email',
+            'c.id AS cityId',
+            'c.name AS cityName',
+            'c.x',
+            'c.y',
+            'c.is_selected AS isSelected'
+        )
+            ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.id=c.user_id');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findByLocation($y, $x) {
+    public function findByLocation($y, $x)
+    {
         foreach ($this->cities as $city) {
             if ($city->getX() === $x && $city->getY() === $y) {
                 return $city;
             }
         }
         $result = $this->getQueryBuilder()
-                        ->where('x = :x')
-                        ->where('y = :y')
-                        ->setParameters(array(
-                            ':y' => $y,
-                            ':x' => $x
-                        ))->execute();
+            ->where('x = :x')
+            ->where('y = :y')
+            ->setParameters(
+                array(
+                    ':y' => $y,
+                    ':x' => $x
+                )
+            )->execute();
         $row    = $result->fetch(PDO::FETCH_OBJ);
         if (!$row) {
             return null;
@@ -132,7 +154,8 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritDoc}
      */
-    public function delete(CityEntity $city) {
+    public function delete(CityEntity $city)
+    {
         $id = $city->getId();
         parent::markDeleted($id);
     }
@@ -140,19 +163,21 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritdoc}
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         $result = $this->db->prepare("SELECT MAX(id) FROM cities");
         $result->execute();
-        $row    = $result->fetchColumn();
+        $row = $result->fetchColumn();
         $row += count($this->cities);
         $row -= count(parent::getDeleted());
-        return (int) ($row + 1);
+        return (int)($row + 1);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function replace(CityEntity $city) {
+    public function replace(CityEntity $city)
+    {
         $id                = $city->getId();
         $this->cities[$id] = $city;
         parent::markModified($id);
@@ -161,16 +186,18 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritDoc}
      */
-    public function countAll() {
+    public function countAll()
+    {
         $result = $this->db->prepare("SELECT COUNT(id) FROM cities");
         $result->execute();
-        $row    = $result->fetchColumn();
+        $row = $result->fetchColumn();
         $row += count($this->cities);
         $row -= count(parent::getDeleted());
-        return (int) $row;
+        return (int)$row;
     }
 
-    private function rowToEntity(stdClass $row) {
+    private function rowToEntity(stdClass $row)
+    {
         $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
         $city  = $this->create($row->cityId, $row->cityName, $row->y, $row->x);
         $city->setOwner($owner);
@@ -178,13 +205,14 @@ class DBALCity extends Repository implements CityInterface {
         return $city;
     }
 
-    private function entityToRow(CityEntity $city) {
+    private function entityToRow(CityEntity $city)
+    {
         return array(
-            'id'      => $city->getId(),
-            'name'    => $city->getName(),
-            'x'       => $city->getX(),
-            'y'       => $city->getY(),
-            'user_id' => $city->getOwner()->getId(),
+            'id'          => $city->getId(),
+            'name'        => $city->getName(),
+            'x'           => $city->getX(),
+            'y'           => $city->getY(),
+            'user_id'     => $city->getOwner()->getId(),
             'is_selected' => $city->isSelected()
         );
     }
@@ -192,13 +220,15 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritDoc}
      */
-    public function sync() {
+    public function sync()
+    {
         $this->syncDeleted();
         $this->syncAdded();
         $this->syncModified();
     }
-    
-    private function syncAdded() {
+
+    private function syncAdded()
+    {
         foreach (parent::getAdded() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
@@ -207,8 +237,9 @@ class DBALCity extends Repository implements CityInterface {
             }
         }
     }
-    
-    private function syncDeleted() {
+
+    private function syncDeleted()
+    {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->cities[$id])) {
                 $this->db->delete('cities', array('id' => $id));
@@ -217,8 +248,9 @@ class DBALCity extends Repository implements CityInterface {
             }
         }
     }
-    
-    private function syncModified() {
+
+    private function syncModified()
+    {
         foreach (parent::getModified() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
@@ -231,14 +263,16 @@ class DBALCity extends Repository implements CityInterface {
     /**
      * {@inheritDoc}
      */
-    public function flush() {
+    public function flush()
+    {
         return $this->db->exec("DELETE FROM cities");
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findSelectedByUsername($username) {
+    public function findSelectedByUsername($username)
+    {
         foreach ($this->cities as $city) {
             if ($city->getOwner()->getUsername() === $username && $city->isSelected()) {
                 return $city;
@@ -247,7 +281,8 @@ class DBALCity extends Repository implements CityInterface {
 
     }
 
-    public function findAllInArea(array $area) {
+    public function findAllInArea(array $area)
+    {
         $where    = 'CONCAT(y,"-",x)';
         $params   = $this->db->getParams();
         $isSQLite = $params['driver'] === 'pdo_sqlite';
@@ -255,7 +290,9 @@ class DBALCity extends Repository implements CityInterface {
         if ($isSQLite) {
             $where = '(y||"-"||x)';
         }
-        $result = $this->getQueryBuilder()->where($where . ' IN (\'' . implode("','", array_keys($area)) . '\')')->execute();
+        $result = $this->getQueryBuilder()->where(
+            $where . ' IN (\'' . implode("','", array_keys($area)) . '\')'
+        )->execute();
         $rows   = $result->fetchAll(PDO::FETCH_OBJ);
         $found  = array();
         if (count($rows) < 0) {
@@ -269,9 +306,10 @@ class DBALCity extends Repository implements CityInterface {
         return $found;
     }
 
-    public function getLastCreatedCity() {
+    public function getLastCreatedCity()
+    {
         $result = $this->getQueryBuilder()
-                        ->orderBy('c.id', 'DESC')->execute();
+            ->orderBy('c.id', 'DESC')->execute();
         $row    = $result->fetch(PDO::FETCH_OBJ);
         if (!$row) {
             return null;

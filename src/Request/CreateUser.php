@@ -7,13 +7,16 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class CreateUser {
+class CreateUser
+{
 
     private $username;
     private $password;
     private $email;
     private $datetime;
-    public function __construct($username, $password, $email) {
+
+    public function __construct($username, $password, $email)
+    {
         $this->username = $username;
         $this->password = $password;
         $this->email    = $email;
@@ -23,28 +26,33 @@ class CreateUser {
     /**
      * @return string
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
     /**
      * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
-    public function getDatetime() {
+
+    public function getDatetime()
+    {
         return $this->datetime;
     }
 
-    public function setDatetime(\DateTime $datetime) {
+    public function setDatetime(\DateTime $datetime)
+    {
         $this->datetime = $datetime;
     }
-
 
 
 }

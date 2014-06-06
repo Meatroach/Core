@@ -1,46 +1,50 @@
-.sprite{
+.sprite {
     background-image: url(../img/tilemap.png);
     overflow: hidden;
     text-align: center;
 
-    color:white;
+    color: white;
 
-    width:128px;
-    height:128px;
-    margin-top:-54px;
+    width: 128px;
+    height: 128px;
+    margin-top: -54px;
     background-repeat: no-repeat;
 }
 
-#viewport{
+#viewport {
     overflow: hidden;
     position: relative;
     margin: auto;
     padding: 0;
-    border:1px solid black;
+    border: 1px solid black;
 }
-.map-arrow{
+
+.map-arrow {
 
     font-size: 3em;
     cursor: pointer;
 
 }
-.map-arrow:hover{
+
+.map-arrow:hover {
     text-decoration: none;
 }
-.sprite.city > .city-info{
+
+.sprite.city > .city-info {
     display: block;
     position: absolute;
     bottom: 0;
     cursor: pointer;
 }
-.sprite.city > div.info{
+
+.sprite.city > div.info {
     display: none;
     position: absolute;
     bottom: 0;
-    color:black;
+    color: black;
 
 }
 
-.sprite.city:hover > div.info{
-    display:block;
+.sprite.city:hover > div.info {
+    display: block;
 }

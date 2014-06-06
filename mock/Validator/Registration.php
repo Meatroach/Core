@@ -9,11 +9,13 @@ use OpenTribes\Core\Validator\Registration as AbstractRegistration;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration extends AbstractRegistration {
+class Registration extends AbstractRegistration
+{
 
     private $userObject;
 
-    public function validate() {
+    public function validate()
+    {
         $this->userObject = $this->getObject();
         $this->checkUsername();
         $this->checkPassword();
@@ -21,7 +23,8 @@ class Registration extends AbstractRegistration {
         $this->checkTermsAndConditions();
     }
 
-    private function checkUsername() {
+    private function checkUsername()
+    {
         $username = $this->userObject->username;
         if (in_array($username, array(null, false, '', array()), true)) {
             $this->attachError("Username is empty");
@@ -32,7 +35,7 @@ class Registration extends AbstractRegistration {
         if (strlen($username) > 24) {
             $this->attachError("Username is too long");
         }
-        if ((bool) preg_match('/^[-a-z0-9_]++$/iD', $username) === false) {
+        if ((bool)preg_match('/^[-a-z0-9_]++$/iD', $username) === false) {
             $this->attachError("Username contains invalid character");
         }
         if (!$this->userObject->isUniqueUsername) {
@@ -40,7 +43,8 @@ class Registration extends AbstractRegistration {
         }
     }
 
-    private function checkPassword() {
+    private function checkPassword()
+    {
         $password        = $this->userObject->password;
         $passwordConfirm = $this->userObject->passwordConfirm;
         if (in_array($password, array(null, false, '', array()), true)) {
@@ -54,7 +58,8 @@ class Registration extends AbstractRegistration {
         }
     }
 
-    private function checkEmail() {
+    private function checkEmail()
+    {
         $email        = $this->userObject->email;
         $emailConfirm = $this->userObject->emailConfirm;
         if (in_array($email, array(null, false, '', array()), true)) {
@@ -63,16 +68,17 @@ class Registration extends AbstractRegistration {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->attachError("Email is invalid");
         }
-        if($email !== $emailConfirm){
+        if ($email !== $emailConfirm) {
             $this->attachError("Email confirm not match");
         }
-        if(!$this->userObject->isUniqueEmail){
+        if (!$this->userObject->isUniqueEmail) {
             $this->attachError("Email exists");
         }
     }
 
-    private function checkTermsAndConditions() {
-        if(!$this->userObject->termsAndConditions){
+    private function checkTermsAndConditions()
+    {
+        if (!$this->userObject->termsAndConditions) {
             $this->attachError("Terms and Conditions are not accepted");
         }
     }

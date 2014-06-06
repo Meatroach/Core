@@ -10,27 +10,34 @@ use OpenTribes\Core\Value\Direction;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class LocationCalculator implements LocationCalculatorInterface {
+class LocationCalculator implements LocationCalculatorInterface
+{
 
-    private $x           = 0;
-    private $y           = 0;
-    private $originX     = 0;
-    private $originY     = 0;
+    private $x = 0;
+    private $y = 0;
+    private $originX = 0;
+    private $originY = 0;
     private $countCities = 0;
-    private $margin      = 1;
+    private $margin = 1;
 
-    public function setOriginPosition($y,$x){
+    public function setOriginPosition($y, $x)
+    {
         $this->originX = $x;
         $this->originY = $y;
     }
-    public function setCountCities($countCities){
+
+    public function setCountCities($countCities)
+    {
         $this->countCities = $countCities;
     }
-    public function setMargin($margin) {
+
+    public function setMargin($margin)
+    {
         $this->margin = $margin;
     }
 
-    public function calculate(Direction $direction) {
+    public function calculate(Direction $direction)
+    {
 
 
         $direction = $direction->getValue();
@@ -55,25 +62,27 @@ class LocationCalculator implements LocationCalculatorInterface {
             $x = -1;
             $y = 1;
         }
-        $x             = $this->originX +($x*$this->margin);
-        $y             = $this->originY +($y*$this->margin);
+        $x = $this->originX + ($x * $this->margin);
+        $y = $this->originY + ($y * $this->margin);
 
-        $minX    = $x - 1;
-        $maxX    = $x + 1;
-        $minY    = $y - 1;
-        $maxY    = $y + 1;
-        $x  = mt_rand($minX, $maxX);
-        $y =  mt_rand($minY, $maxY);
+        $minX = $x - 1;
+        $maxX = $x + 1;
+        $minY = $y - 1;
+        $maxY = $y + 1;
+        $x    = mt_rand($minX, $maxX);
+        $y    = mt_rand($minY, $maxY);
 
-        $this->x       = $x;
-        $this->y       = $y;
+        $this->x = $x;
+        $this->y = $y;
     }
 
-    public function getX() {
+    public function getX()
+    {
         return $this->x;
     }
 
-    public function getY() {
+    public function getY()
+    {
         return $this->y;
     }
 

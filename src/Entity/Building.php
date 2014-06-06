@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Entity;
  *
  * @author Witali
  */
-class Building {
+class Building
+{
 
     /**
      * @var integer
@@ -40,18 +41,20 @@ class Building {
      * @param integer $minimumLevel
      * @param integer $maximumLevel
      */
-    public function __construct($id, $name, $minimumLevel, $maximumLevel) {
-        $this->id           = (int) $id;
+    public function __construct($id, $name, $minimumLevel, $maximumLevel)
+    {
+        $this->id           = (int)$id;
         $this->name         = $name;
-        $this->minimumLevel = (int) $minimumLevel;
-        $this->maximumLevel = (int) $maximumLevel;
+        $this->minimumLevel = (int)$minimumLevel;
+        $this->maximumLevel = (int)$maximumLevel;
     }
 
     /**
      * @param integer $level
      */
-    public function setLevel($level) {
-        $level = (int) $level;
+    public function setLevel($level)
+    {
+        $level = (int)$level;
         if ($level <= $this->maximumLevel && $level >= $this->minimumLevel) {
             $this->level = $level;
         }
@@ -60,21 +63,24 @@ class Building {
     /**
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return integer
      */
-    public function getLevel() {
+    public function getLevel()
+    {
         if (!$this->level) {
             return $this->minimumLevel;
         }
@@ -84,14 +90,16 @@ class Building {
     /**
      * @return integer
      */
-    public function getMinimumLevel() {
+    public function getMinimumLevel()
+    {
         return $this->minimumLevel;
     }
 
     /**
      * @return integer
      */
-    public function getMaximumLevel() {
+    public function getMaximumLevel()
+    {
         return $this->maximumLevel;
     }
 

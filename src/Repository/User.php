@@ -8,7 +8,8 @@ use OpenTribes\Core\Entity\User as UserEntity;
  *
  * @author BlackScorpx
  */
-interface User {
+interface User
+{
 
     /**
      * @param integer $id UserId
@@ -20,7 +21,7 @@ interface User {
     public function create($id, $username, $password, $email);
 
     /**
-     * @return integer 
+     * @return integer
      */
     public function getUniqueId();
 
@@ -38,16 +39,19 @@ interface User {
      * @return void
      */
     public function delete(UserEntity $user);
+
     /**
      * Sync Repository with Entity Source
      * @return void
      */
     public function sync();
+
     /**
      * @param string $email
      * @return UserEntity|null
      */
     public function findOneByEmail($email);
+
     /**
      * @param string $username
      * @return UserEntity|null

@@ -10,13 +10,29 @@
 
 */
 
-.sprite {display:inline-block; overflow:hidden; background-repeat: no-repeat;background-image:url(atlas.png);}
+.sprite {
+    display: inline-block;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-image: url(atlas.png);
+}
 
+.gras {
+    background-position: -0px -0px
+}
 
-.gras{background-position: -0px -0px}
-.sea { background-position: -128px -0px}
-.forrest { background-position: -256px -0px}
-.hill { background-position: -384px -0px}
-.city1{
+.sea {
+    background-position: -128px -0px
+}
+
+.forrest {
+    background-position: -256px -0px
+}
+
+.hill {
+    background-position: -384px -0px
+}
+
+.city1 {
     background-position: 0px -128px;
 }

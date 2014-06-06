@@ -7,7 +7,8 @@ namespace OpenTribes\Core\ValidationDto;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration {
+class Registration
+{
     public $username;
     public $password;
     public $passwordConfirm;

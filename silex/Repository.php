@@ -16,42 +16,61 @@ use Silex\Application;
  *
  * @author BlackScorp<witalimik@web.de>
  */
- class Repository {
+class Repository
+{
 
-    const USER      = 'repository.core.user';
-    const CITY      = 'repository.core.city';
-    const MAP       = 'repository.core.map';
-    const MAP_TILES = 'repository.core.mapTiles';
-    const TILE = 'repository.core.tile';
-     const BUILDING ='repository.core.building';
-     const CITY_BUILDINGS = 'repository.core.cityBuildings';
-     private $app;
-     public function __construct(Application $app){
-         $this->app =$app;
-     }
-    public  function create() {
-        $app = $this->app;
-        $app[self::USER] = $app->share(function() use($app) {
-            return new UserRepository($app['db']);
-        });
-        $app[self::CITY] = $app->share(function() use($app) {
-            return new CityRepository($app['db']);
-        });
-        $app[self::MAP] = $app->share(function() use($app) {
-            return new MapRepository($app['db']);
-        });
-        $app[self::MAP_TILES] = $app->share(function() use($app) {
-            return new MapTilesRepository($app['db']);
-        });
-        $app[self::TILE] = $app->share(function() use($app){
-            return new TileRepository($app['db']);
-        });
-        $app[self::BUILDING] = $app->share(function() {
-           return new Building();
-        });
-        $app[self::CITY_BUILDINGS] = $app->share(function() use($app){
-           return new CityBuildings($app[Repository::CITY]);
-        });
+    const USER           = 'repository.core.user';
+    const CITY           = 'repository.core.city';
+    const MAP            = 'repository.core.map';
+    const MAP_TILES      = 'repository.core.mapTiles';
+    const TILE           = 'repository.core.tile';
+    const BUILDING       = 'repository.core.building';
+    const CITY_BUILDINGS = 'repository.core.cityBuildings';
+    private $app;
+
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
+    public function create()
+    {
+        $app                       = $this->app;
+        $app[self::USER]           = $app->share(
+            function () use ($app) {
+                return new UserRepository($app['db']);
+            }
+        );
+        $app[self::CITY]           = $app->share(
+            function () use ($app) {
+                return new CityRepository($app['db']);
+            }
+        );
+        $app[self::MAP]            = $app->share(
+            function () use ($app) {
+                return new MapRepository($app['db']);
+            }
+        );
+        $app[self::MAP_TILES]      = $app->share(
+            function () use ($app) {
+                return new MapTilesRepository($app['db']);
+            }
+        );
+        $app[self::TILE]           = $app->share(
+            function () use ($app) {
+                return new TileRepository($app['db']);
+            }
+        );
+        $app[self::BUILDING]       = $app->share(
+            function () {
+                return new Building();
+            }
+        );
+        $app[self::CITY_BUILDINGS] = $app->share(
+            function () use ($app) {
+                return new CityBuildings($app[Repository::CITY]);
+            }
+        );
     }
 
 }

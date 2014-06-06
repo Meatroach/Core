@@ -8,7 +8,8 @@ use OpenTribes\Core\Value\Direction;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface LocationCalculator {
+interface LocationCalculator
+{
 
     /**
      * @return void

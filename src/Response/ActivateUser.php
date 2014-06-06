@@ -7,6 +7,7 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ActivateUser extends Response {
+class ActivateUser extends Response
+{
     public $username;
 }

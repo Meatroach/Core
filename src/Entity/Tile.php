@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Entity;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Tile {
+class Tile
+{
 
     /**
      * @var string
@@ -26,58 +27,70 @@ class Tile {
     private $default = false;
     private $width;
     private $height;
+
     /**
      * @param integer $id
      * @param string $name
      * @param boolean $accessible
      */
-    public function __construct($id, $name, $accessible) {
+    public function __construct($id, $name, $accessible)
+    {
         $this->name       = $name;
-        $this->accessible = (bool) $accessible;
-        $this->id         = (int) $id;
+        $this->accessible = (bool)$accessible;
+        $this->id         = (int)$id;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return boolean
      */
-    public function isAccessible() {
+    public function isAccessible()
+    {
         return $this->accessible;
     }
 
     /**
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function isDefault() {
+    public function isDefault()
+    {
         return $this->default;
     }
 
-    public function setDefault($default) {
-        $this->default = (bool) $default;
+    public function setDefault($default)
+    {
+        $this->default = (bool)$default;
     }
-    public function getWidth() {
+
+    public function getWidth()
+    {
         return $this->width;
     }
 
-    public function getHeight() {
+    public function getHeight()
+    {
         return $this->height;
     }
 
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $this->width = (int)$width;
     }
 
-    public function setHeight($height) {
+    public function setHeight($height)
+    {
         $this->height = (int)$height;
     }
 

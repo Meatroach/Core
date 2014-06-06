@@ -10,31 +10,35 @@ use OpenTribes\Core\Repository\Tile as TileRepository;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Tile implements TileRepository {
+class Tile implements TileRepository
+{
 
     /**
-     * @var TileEntity[] 
+     * @var TileEntity[]
      */
     private $tiles;
 
     /**
      * {@inheritDoc}
      */
-    public function add(TileEntity $tile) {
+    public function add(TileEntity $tile)
+    {
         $this->tiles[$tile->getId()] = $tile;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, $isAccessible) {
+    public function create($id, $name, $isAccessible)
+    {
         return new TileEntity($id, $name, $isAccessible);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         $countTiles = count($this->tiles);
         $countTiles++;
         return $countTiles;
@@ -43,25 +47,31 @@ class Tile implements TileRepository {
     /**
      * {@inheritDoc}
      */
-    public function findByName($name) {
+    public function findByName($name)
+    {
         foreach ($this->tiles as $tile) {
-            if ($tile->getName() === $name)
+            if ($tile->getName() === $name) {
                 return $tile;
+            }
         }
         return null;
     }
-  public function findById($id) {
-        foreach($this->tiles as $tile){
-            if($tile->getId() === $id){
+
+    public function findById($id)
+    {
+        foreach ($this->tiles as $tile) {
+            if ($tile->getId() === $id) {
                 return $tile;
             }
         }
     }
+
     /**
      * {@inheritDoc}
      */
-    public function sync() {
+    public function sync()
+    {
         ;
     }
-    
+
 }

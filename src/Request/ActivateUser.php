@@ -7,11 +7,13 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ActivateUser {
+class ActivateUser
+{
     private $username;
     private $activationCode;
-   
-    public function __construct($username, $activationCode) {
+
+    public function __construct($username, $activationCode)
+    {
         $this->username       = $username;
         $this->activationCode = $activationCode;
     }
@@ -19,13 +21,16 @@ class ActivateUser {
     /**
      * @return string
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
+
     /**
      * @return string|null
      */
-    public function getActivationCode() {
+    public function getActivationCode()
+    {
         return $this->activationCode;
     }
 

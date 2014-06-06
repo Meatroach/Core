@@ -6,7 +6,8 @@ namespace OpenTribes\Core\Service;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface ActivationCodeGenerator {
+interface ActivationCodeGenerator
+{
 
     /**
      * @return string

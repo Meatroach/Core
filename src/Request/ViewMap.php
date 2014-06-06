@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewMap {
+class ViewMap
+{
 
     private $y;
     private $x;
@@ -15,34 +16,40 @@ class ViewMap {
     private $viewportWidth;
     private $viewportHeight;
 
-    public function __construct($y, $x, $username, $viewportHeight, $viewportWidth) {
-        $this->y        = $y;
-        $this->x        = $x;
-        $this->username = $username;
+    public function __construct($y, $x, $username, $viewportHeight, $viewportWidth)
+    {
+        $this->y              = $y;
+        $this->x              = $x;
+        $this->username       = $username;
         $this->viewportHeight = $viewportHeight;
         $this->viewportWidth  = $viewportWidth;
     }
 
-    public function getY() {
+    public function getY()
+    {
         return $this->y;
     }
 
-    public function getX() {
+    public function getX()
+    {
         return $this->x;
     }
 
     /**
      * @return string
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
 
-    public function getViewportWidth() {
+    public function getViewportWidth()
+    {
         return $this->viewportWidth;
     }
 
-    public function getViewportHeight() {
+    public function getViewportHeight()
+    {
         return $this->viewportHeight;
     }
 

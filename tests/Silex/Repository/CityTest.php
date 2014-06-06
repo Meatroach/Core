@@ -10,29 +10,33 @@ use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
  *
  * @author Witali
  */
-class CityTest extends \PHPUnit_Framework_TestCase {
+class CityTest extends \PHPUnit_Framework_TestCase
+{
 
     private $userRepository;
     private $cityRepository;
 
-    private function createDummyUser() {
+    private function createDummyUser()
+    {
         $user = $this->userRepository->create(1, 'TestUser', '123456', 'test@test.de');
         $this->userRepository->add($user);
         $this->userRepository->sync();
     }
 
-    private function deleteDummyUser() {
+    private function deleteDummyUser()
+    {
         $user = $this->userRepository->findOneByUsername('TestUser');
-        if(!$user){
+        if (!$user) {
             throw new Exception("Could not delete Dummy User");
         }
         $this->userRepository->delete($user);
         $this->userRepository->sync();
     }
 
-    private function deleteDummyCities() {
-        $owner  = $this->userRepository->findOneByUsername('TestUser');
-        if(!$owner){
+    private function deleteDummyCities()
+    {
+        $owner = $this->userRepository->findOneByUsername('TestUser');
+        if (!$owner) {
             throw new Exception("Could not delete Dummy Cities, owner not found");
         }
         $cities = $this->cityRepository->findAllByOwner($owner);
@@ -43,15 +47,16 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $this->cityRepository->sync();
     }
 
-    private function createDummyCities() {
+    private function createDummyCities()
+    {
         $user = $this->userRepository->findOneByUsername('TestUser');
-        if(!$user){
+        if (!$user) {
             throw new Exception("User not found");
         }
         for ($y = 0; $y < 5; $y++) {
             for ($x = 0; $x < 5; $x++) {
                 $cityId = $this->cityRepository->getUniqueId();
-                $name = sprintf('TestCity%d%d',$y,$x);
+                $name   = sprintf('TestCity%d%d', $y, $x);
                 $city   = $this->cityRepository->create($cityId, $name, $y, $x);
                 $city->setOwner($user);
                 $this->cityRepository->add($city);
@@ -61,9 +66,10 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $this->cityRepository->sync();
     }
 
-    public function testFindCityByOwner() {
-        $owner  = $this->userRepository->findOneByUsername('TestUser');
-        if(!$owner){
+    public function testFindCityByOwner()
+    {
+        $owner = $this->userRepository->findOneByUsername('TestUser');
+        if (!$owner) {
             throw new Exception("User not found");
         }
         $cities = $this->cityRepository->findAllByOwner($owner);
@@ -73,7 +79,8 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         $env                  = 'test';
         $app                  = require __DIR__ . '/../../../bootstrap.php';
         $this->userRepository = new UserRepository($app['db']);
@@ -82,12 +89,14 @@ class CityTest extends \PHPUnit_Framework_TestCase {
         $this->createDummyCities();
     }
 
-    public function testCityIsCreated() {
+    public function testCityIsCreated()
+    {
         $city = $this->cityRepository->findByLocation(1, 1);
         $this->assertInstanceOf('\OpenTribes\Core\Entity\City', $city);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->deleteDummyCities();
         $this->deleteDummyUser();
     }

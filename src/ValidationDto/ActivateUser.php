@@ -7,6 +7,7 @@ namespace OpenTribes\Core\ValidationDto;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ActivateUser {
+class ActivateUser
+{
     public $codeIsValid = false;
 }

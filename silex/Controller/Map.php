@@ -2,36 +2,42 @@
 
 namespace OpenTribes\Core\Silex\Controller;
 
-use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
-use OpenTribes\Core\Repository\City as CityRepository;
-use Symfony\Component\HttpFoundation\Request;
-use OpenTribes\Core\Service\MapCalculator;
 use OpenTribes\Core\Context\Player\ViewMap as ViewMapContext;
+use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Request\ViewMap as ViewMapRequest;
 use OpenTribes\Core\Response\ViewMap as ViewMapResponse;
+use OpenTribes\Core\Service\MapCalculator;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Description of Map
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Map {
+class Map
+{
 
     private $mapTilesRepository;
     private $cityRepository;
     private $mapCalculator;
 
-    public function __construct(MapTilesRepository $mapTilesRepository, CityRepository $cityRepository, MapCalculator $mapCalculator) {
+    public function __construct(
+        MapTilesRepository $mapTilesRepository,
+        CityRepository $cityRepository,
+        MapCalculator $mapCalculator
+    ) {
         $this->mapTilesRepository = $mapTilesRepository;
         $this->cityRepository     = $cityRepository;
         $this->mapCalculator      = $mapCalculator;
     }
 
-    public function viewAction(Request $httpRequest) {
-        $y                = $httpRequest->get('y');
-        $x                = $httpRequest->get('x');
-        $username         = $httpRequest->getSession()->get('username');
-        
+    public function viewAction(Request $httpRequest)
+    {
+        $y        = $httpRequest->get('y');
+        $x        = $httpRequest->get('x');
+        $username = $httpRequest->getSession()->get('username');
+
         $width            = $httpRequest->get('width');
         $height           = $httpRequest->get('height');
         $request          = new ViewMapRequest($y, $x, $username, $height, $width);

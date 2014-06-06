@@ -7,15 +7,18 @@ namespace OpenTribes\Core\Silex\Repository;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Repository {
+abstract class Repository
+{
 
-    private $added    = array();
+    private $added = array();
     private $modified = array();
-    private $deleted  = array();
+    private $deleted = array();
+
     /**
      * @param integer $id
      */
-    protected function reassign($id) {
+    protected function reassign($id)
+    {
         if (isset($this->added[$id])) {
             unset($this->added[$id]);
         }
@@ -30,7 +33,8 @@ abstract class Repository {
     /**
      * @param integer $id
      */
-    protected function markDeleted($id) {
+    protected function markDeleted($id)
+    {
         $this->reassign($id);
         $this->deleted[$id] = $id;
     }
@@ -38,7 +42,8 @@ abstract class Repository {
     /**
      * @param integer $id
      */
-    protected function markModified($id) {
+    protected function markModified($id)
+    {
         $this->reassign($id);
         $this->modified[$id] = $id;
     }
@@ -46,26 +51,33 @@ abstract class Repository {
     /**
      * @param integer $id
      */
-    protected function markAdded($id) {
+    protected function markAdded($id)
+    {
         $this->reassign($id);
         $this->added[$id] = $id;
     }
+
     /**
      * @return integer[]
      */
-    protected function getAdded() {
+    protected function getAdded()
+    {
         return $this->added;
     }
+
     /**
      * @return integer[]
      */
-    protected function getModified() {
+    protected function getModified()
+    {
         return $this->modified;
     }
+
     /**
      * @return integer[]
      */
-    protected function getDeleted() {
+    protected function getDeleted()
+    {
         return $this->deleted;
     }
 

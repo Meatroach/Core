@@ -1,9 +1,9 @@
 <?php
 namespace OpenTribes\Core\Silex\Provider;
 
-use Silex\ControllerProviderInterface;
-use Silex\Application;
 use Opentribes\Core\Silex\Controller;
+use Silex\Application;
+use Silex\ControllerProviderInterface;
 
 class Assets implements ControllerProviderInterface
 {

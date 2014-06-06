@@ -1,16 +1,18 @@
 <?php
 
-use Symfony\Component\HttpKernel\Client;
+use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Behat\Mink\Driver\BrowserKitDriver;
-use OpenTribes\Core\Silex\Validator;
-use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Repository;
+use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Silex\Validator;
+use Symfony\Component\HttpKernel\Client;
 
-class SilexContext extends FeatureContext {
+class SilexContext extends FeatureContext
+{
 
-    public function __construct(array $parameters) {
+    public function __construct(array $parameters)
+    {
         parent::__construct($parameters);
         $env                         = 'test';
         $app                         = require __DIR__ . '/../../bootstrap.php';
@@ -19,7 +21,7 @@ class SilexContext extends FeatureContext {
         ));
         $this->userRepository        = $app[Repository::USER];
         $this->registrationValidator = $app[Validator::REGISTRATION];
-        
+
         $this->passwordHasher          = $app[Service::PASSWORD_HASHER];
         $this->activationCodeGenerator = $app[Service::ACTIVATION_CODE_GENERATOR];
         $this->locationCalculator      = $app[Service::LOCATION_CALCULATOR];
@@ -29,7 +31,7 @@ class SilexContext extends FeatureContext {
         $this->activateUserValidator   = $app[Validator::ACTIVATE];
         $app['session.test']           = true;
         $mink->setDefaultSessionName('browserkit');
-        $this->mink                    = $mink;
+        $this->mink = $mink;
 
         $this->userHelper = new SilexUserHelper($this->mink, $this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator, $this->activateUserValidator);
 
@@ -39,12 +41,14 @@ class SilexContext extends FeatureContext {
     }
 
     /** @BeforeScenario */
-    public function before() {
-      
+    public function before()
+    {
+
     }
 
     /** @AfterScenario */
-    public function after() {
+    public function after()
+    {
 
         $this->userRepository->flush();
         $this->cityRepository->flush();

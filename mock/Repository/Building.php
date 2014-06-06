@@ -10,28 +10,32 @@ use OpenTribes\Core\Repository\Building as BuildingRepository;
  *
  * @author Witali
  */
-class Building implements BuildingRepository {
+class Building implements BuildingRepository
+{
 
     private $buildings = array();
 
     /**
      * {@inheritDoc}
      */
-    public function add(BuildingEntity $building) {
+    public function add(BuildingEntity $building)
+    {
         $this->buildings[$building->getId()] = $building;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, $minimumLevel, $maximumLevel) {
+    public function create($id, $name, $minimumLevel, $maximumLevel)
+    {
         return new BuildingEntity($id, $name, $minimumLevel, $maximumLevel);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         $countBuilding = count($this->buildings);
         $countBuilding++;
         return $countBuilding;
@@ -40,14 +44,16 @@ class Building implements BuildingRepository {
     /**
      * {@inheritDoc}
      */
-    public function findAll() {
+    public function findAll()
+    {
         return $this->buildings;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function sync() {
+    public function sync()
+    {
         ;
     }
 

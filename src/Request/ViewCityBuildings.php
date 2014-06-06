@@ -7,29 +7,33 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCityBuildings {
+class ViewCityBuildings
+{
 
     private $y;
     private $x;
 
-    public function __construct($y, $x) {
+    public function __construct($y, $x)
+    {
 
-        $this->y        = $y;
-        $this->x        = $x;
+        $this->y = $y;
+        $this->x = $x;
     }
 
 
     /**
      * @return integer
      */
-    public function getY() {
+    public function getY()
+    {
         return $this->y;
     }
 
     /**
      * @return integer
      */
-    public function getX() {
+    public function getX()
+    {
         return $this->x;
     }
 

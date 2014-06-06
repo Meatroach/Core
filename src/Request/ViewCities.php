@@ -7,18 +7,22 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCities {
-   private $username;
-   public function __construct($username) {
-       $this->username = $username;
-   }
+class ViewCities
+{
+    private $username;
 
-   /**
-    * @return string
-    */
-   public function getUsername() {
-       return $this->username;
-   }
+    public function __construct($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
 
 }

@@ -13,6 +13,7 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp
  */
-class UpdateLastAction extends Response{
+class UpdateLastAction extends Response
+{
     public $lastAction;
 }

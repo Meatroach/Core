@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Login extends Response{
+class Login extends Response
+{
     public $username;
     public $password;
 }

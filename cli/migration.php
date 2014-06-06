@@ -27,34 +27,31 @@ $app = require __DIR__ . '/../bootstrap.php';
 $console = new Application;
 
 
-
-
 $helperSet = new HelperSet(array(
     new ConnectionHelper($app['db']),
     new DialogHelper()
-        ));
+));
 
 
 $console->setHelperSet($helperSet);
 
 
 $console->add(new MigrateCommand())
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 $console->add(new GenerateCommand())
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 $console->add(new StatusCommand())
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 $console->add(new VersionCommand())
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 $console->add(new ExecuteCommand())
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 $console->add(new DiffCommand())
-        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
-
+    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test');
 
 
 $console->run();

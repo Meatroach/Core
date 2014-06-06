@@ -17,11 +17,11 @@
         "source": "https://github.com/Opentribes/Core"
     },
     "require": {
-        "php" : ">=5.3",
+        "php": ">=5.3",
         "silex/silex": "~1.1",
         "igorw/config-service-provider": "~1.1",
-        "doctrine/dbal" : "~2.4",
-        "doctrine/migrations" : "~1.0@dev",
+        "doctrine/dbal": "~2.4",
+        "doctrine/migrations": "~1.0@dev",
         "mustache/silex-provider": "~1.0",
         "swiftmailer/swiftmailer": "~5.1",
         "symfony/validator": "~2.4",
@@ -30,8 +30,8 @@
     "require-dev": {
         "behat/behat": "~2.5",
         "behat/mink": "~1.5",
-        "phpunit/phpunit" : "~3.7",
-        "phpunit/php-code-coverage" : "~1.2",
+        "phpunit/phpunit": "~3.7",
+        "phpunit/php-code-coverage": "~1.2",
         "behat/mink-browserkit-driver": "~1.1"
     },
     "config": {
@@ -39,10 +39,10 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenTribes\\Core\\" : "src/",
-            "OpenTribes\\Core\\Migrations\\" : "migrations/",
-            "OpenTribes\\Core\\Mock\\" : "mock/",
-            "OpenTribes\\Core\\Test\\" : "tests/",
+            "OpenTribes\\Core\\": "src/",
+            "OpenTribes\\Core\\Migrations\\": "migrations/",
+            "OpenTribes\\Core\\Mock\\": "mock/",
+            "OpenTribes\\Core\\Test\\": "tests/",
             "OpenTribes\\Core\\Silex\\": "silex/"
         }
     }

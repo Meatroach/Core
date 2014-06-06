@@ -1,9 +1,9 @@
 <?php
 
 return array(
-    'debug'         => true,
-    'mustache.path' => realpath(__DIR__ . '/../templates'),
-    'mustache.assets' => array(realpath(__DIR__ . '/../templates/assets')),
+    'debug'                => true,
+    'mustache.path'        => realpath(__DIR__ . '/../templates'),
+    'mustache.assets'      => array(realpath(__DIR__ . '/../templates/assets')),
     'activationCodeLength' => 8,
     'mustache.options'     => array(
         'cache'   => realpath(__DIR__ . '/../cache'),
@@ -11,7 +11,7 @@ return array(
             'baseUrl' => '/'
         )
     ),
-    'map.options'=>array(
+    'map.options'          => array(
         'viewportWidth'  => 1024,
         'viewportHeight' => 680,
         'width'          => 100,

@@ -9,9 +9,11 @@ use OpenTribes\Core\Service\PasswordHasher as PasswordHasherInterface;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class PasswordHasher implements PasswordHasherInterface {
+class PasswordHasher implements PasswordHasherInterface
+{
 
-    public function hash($rawPassword) {
+    public function hash($rawPassword)
+    {
         if (function_exists('password_hash')) {
             return password_hash($rawPassword, PASSWORD_BCRYPT);
         }
@@ -22,7 +24,8 @@ class PasswordHasher implements PasswordHasherInterface {
         return $hash;
     }
 
-    public function verify($hash, $rawPassword) {
+    public function verify($hash, $rawPassword)
+    {
         if (function_exists('password_verify')) {
             return password_verify($rawPassword, $hash);
         }

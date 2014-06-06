@@ -11,31 +11,35 @@ use OpenTribes\Core\Repository\City as CityRepository;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class City implements CityRepository {
+class City implements CityRepository
+{
 
     /**
-     * @var CityEntity[] 
+     * @var CityEntity[]
      */
     private $cities = array();
 
     /**
      * {@inheritDoc}
      */
-    public function add(CityEntity $city) {
+    public function add(CityEntity $city)
+    {
         $this->cities[$city->getId()] = $city;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name,  $y, $x) {
+    public function create($id, $name, $y, $x)
+    {
         return new CityEntity($id, $name, $y, $x);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         $countCities = count($this->cities);
         $countCities++;
         return $countCities;
@@ -44,15 +48,17 @@ class City implements CityRepository {
     /**
      * {@inheritDoc}
      */
-    public function cityExistsAt($y, $x) {
+    public function cityExistsAt($y, $x)
+    {
 
-        return (bool) $this->findByLocation($y, $x);
+        return (bool)$this->findByLocation($y, $x);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findAllByOwner(UserEntity $owner) {
+    public function findAllByOwner(UserEntity $owner)
+    {
         $found = array();
         foreach ($this->cities as $city) {
             if ($city->getOwner() === $owner) {
@@ -65,9 +71,10 @@ class City implements CityRepository {
     /**
      * {@inheritDoc}
      */
-    public function findByLocation($y, $x) {
-        $y = (int) $y;
-        $x = (int) $x;
+    public function findByLocation($y, $x)
+    {
+        $y = (int)$y;
+        $x = (int)$x;
         foreach ($this->cities as $city) {
 
             if ($city->getX() === $x && $city->getY() === $y) {
@@ -81,55 +88,65 @@ class City implements CityRepository {
     /**
      * {@inheritDoc}
      */
-    public function replace(CityEntity $city) {
+    public function replace(CityEntity $city)
+    {
         $this->cities[$city->getId()] = $city;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function countAll() {
+    public function countAll()
+    {
         return count($this->cities);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function sync() {
+    public function sync()
+    {
         ;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function delete(CityEntity $city) {
+    public function delete(CityEntity $city)
+    {
         unset($this->cities[$city->getId()]);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function flush() {
+    public function flush()
+    {
         $this->cities = array();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findSelectedByUsername($username) {
+    public function findSelectedByUsername($username)
+    {
         foreach ($this->cities as $city) {
             if ($city->getOwner()->getUsername() === $username && $city->isSelected()) {
                 return $city;
             }
         }
     }
-    public function findAllInArea(array $area) {
+
+    public function findAllInArea(array $area)
+    {
         ;
     }
-    public function getLastCreatedCity() {
 
-        $lastCity =  end($this->cities);
+    public function getLastCreatedCity()
+    {
 
-        return $lastCity ;
+        $lastCity = end($this->cities);
+
+        return $lastCity;
     }
 }

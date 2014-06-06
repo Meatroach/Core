@@ -7,34 +7,44 @@ namespace OpenTribes\Core\Validator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Validator {
+abstract class Validator
+{
 
     private $errors = array();
     private $object = null;
-    public function isValid() {
+
+    public function isValid()
+    {
         $this->validate();
         return $this->hasNoErrors();
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 
-    protected function attachError($error, $key = null) {
+    protected function attachError($error, $key = null)
+    {
         if ($key) {
             $this->errors[$key] = $error;
         } else {
             $this->errors[] = $error;
         }
     }
-    protected function setObject($object){
-        $this->object = $object;          
+
+    protected function setObject($object)
+    {
+        $this->object = $object;
     }
-    public function getObject(){
+
+    public function getObject()
+    {
         return $this->object;
     }
 
-    public function hasNoErrors() {
+    public function hasNoErrors()
+    {
         return count($this->errors) === 0;
     }
 

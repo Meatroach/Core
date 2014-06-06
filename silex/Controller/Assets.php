@@ -11,13 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Assets {
+class Assets
+{
 
-    const CSS = 'text/css';
-    const PNG = 'image/png';
-    const JPG = 'image/jpg';
+    const CSS  = 'text/css';
+    const PNG  = 'image/png';
+    const JPG  = 'image/jpg';
     const JPEG = 'image/jpg';
-    const JS = 'application/javascript';
+    const JS   = 'application/javascript';
     const JSON = 'application/json';
 
     private $contentTypes = array(
@@ -30,19 +31,21 @@ class Assets {
     );
     private $paths = array();
 
-    public function __construct(array $paths) {
+    public function __construct(array $paths)
+    {
         $this->paths = $paths;
     }
 
-    public function load(Request $request,$type, $file) {
+    public function load(Request $request, $type, $file)
+    {
 
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
-        
+
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
-     
+
         $response = new BinaryFileResponse($file);
         $response->setAutoEtag();
         $response->setAutoLastModified();
@@ -56,7 +59,8 @@ class Assets {
     /**
      * @param string $extension
      */
-    private function getContentTypByExtension($extension) {
+    private function getContentTypByExtension($extension)
+    {
         return isset($this->contentTypes[$extension]) ? $this->contentTypes[$extension] : '';
     }
 

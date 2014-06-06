@@ -7,21 +7,24 @@ use OpenTribes\Core\Repository\Tile as TileRepository;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class TileHelper {
+class TileHelper
+{
 
     private $tileRepository;
 
-    public function __construct(TileRepository $tileRepository) {
+    public function __construct(TileRepository $tileRepository)
+    {
         $this->tileRepository = $tileRepository;
     }
 
     /**
      * @param boolean $isAccessible
      */
-    public function createDummyTile($name,$isAccessible){
-        $id = $this->tileRepository->getUniqueId();
+    public function createDummyTile($name, $isAccessible)
+    {
+        $id   = $this->tileRepository->getUniqueId();
         $tile = $this->tileRepository->create($id, $name, $isAccessible);
         $this->tileRepository->add($tile);
-    
+
     }
 }
