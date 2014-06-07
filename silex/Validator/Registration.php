@@ -12,16 +12,19 @@ use Symfony\Component\Validator\Validator;
  * Description of RegistrationValidator
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration extends AbstractRegistrationValidator {
+class Registration extends AbstractRegistrationValidator
+{
 
     private $validator;
 
-    public function __construct(RegistrationValidatorDto $object, Validator $validator) {
+    public function __construct(RegistrationValidatorDto $object, Validator $validator)
+    {
         parent::__construct($object);
         $this->validator = $validator;
     }
 
-    public function validate() {
+    public function validate()
+    {
         $object = $this->getObject();
 
         $constraint = new Assert\Collection(array(
@@ -30,8 +33,16 @@ class Registration extends AbstractRegistrationValidator {
             'termsAndConditions' => new Assert\True(array('message' => 'Terms and Conditions are not accepted')),
             'username'           => array(
                 new Assert\NotBlank(array('message' => 'Username is empty')),
-                new Assert\Length(array('min' => 3, 'max' => 20, 'minMessage' => 'Username is too short', 'maxMessage' => 'Username is too long')),
-                new Assert\Regex(array('pattern' => '/^[-a-z0-9_]++$/iD', 'message' => 'Username contains invalid character'))
+                new Assert\Length(array(
+                    'min'        => 3,
+                    'max'        => 20,
+                    'minMessage' => 'Username is too short',
+                    'maxMessage' => 'Username is too long'
+                )),
+                new Assert\Regex(array(
+                    'pattern' => '/^[-a-z0-9_]++$/iD',
+                    'message' => 'Username contains invalid character'
+                ))
             ),
             'email'              => array(
                 new Assert\NotBlank(array('message' => 'Email is empty')),
@@ -49,7 +60,7 @@ class Registration extends AbstractRegistrationValidator {
             )
         ));
 
-        $result = $this->validator->validateValue((array) $object, $constraint);
+        $result = $this->validator->validateValue((array)$object, $constraint);
         if ($result instanceof ConstraintViolationList) {
             foreach ($result->getIterator() as $contraintViolation) {
                 $this->attachError($contraintViolation->getMessage());

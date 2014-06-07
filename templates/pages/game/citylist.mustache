@@ -5,26 +5,25 @@
         <div class="panel-body">
 
 
-
             <div class="row">
                 <div class="col-md-12">
 
                     <table class="table table-bordered table-hover">
                         <thead>
-                            <tr>
-                                <td>Owner</td>
-                                <td>CityName</td>
-                                <td>Position(Y/X)</td>
-                            </tr>
+                        <tr>
+                            <td>Owner</td>
+                            <td>CityName</td>
+                            <td>Position(Y/X)</td>
+                        </tr>
                         </thead>
                         <tbody>
-                            {{#cities}}
-                            <tr>
-                                <td>{{owner}}</td>
-                                <td>{{name}}</td>
-                                <td><span class="y">{{y}}</span>/<span class="x">{{x}}</span></td>
-                            </tr>
-                            {{/cities}}
+                        {{#cities}}
+                        <tr>
+                            <td>{{owner}}</td>
+                            <td>{{name}}</td>
+                            <td><span class="y">{{y}}</span>/<span class="x">{{x}}</span></td>
+                        </tr>
+                        {{/cities}}
                         </tbody>
                     </table>
 

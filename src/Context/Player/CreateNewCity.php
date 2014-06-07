@@ -2,17 +2,17 @@
 
 namespace OpenTribes\Core\Context\Player;
 
-use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
-use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
 use OpenTribes\Core\Interactor\CreateCity as CreateCityInteractor;
-use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
-use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Interactor\SelectLocation as SelectLocationInteractor;
-use OpenTribes\Core\Response\SelectLocation as SelectLocationResponse;
-use OpenTribes\Core\Request\SelectLocation as SelectLocationRequest;
 use OpenTribes\Core\Repository\City as CityRepository;
 use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
+use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
+use OpenTribes\Core\Request\SelectLocation as SelectLocationRequest;
+use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
+use OpenTribes\Core\Response\CreateNewCity as CreateNewCityResponse;
+use OpenTribes\Core\Response\SelectLocation as SelectLocationResponse;
 use OpenTribes\Core\Service\LocationCalculator;
 
 /**
@@ -20,28 +20,35 @@ use OpenTribes\Core\Service\LocationCalculator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class CreateNewCity {
+class CreateNewCity
+{
 
     private $cityRepository;
     private $mapTilesRepository;
     private $userRepository;
     private $locationCalculator;
-    
 
-    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator) {
+
+    public function __construct(
+        CityRepository $cityRepository,
+        MapTilesRepository $mapTilesRepository,
+        UserRepository $userRepository,
+        LocationCalculator $locationCalculator
+    ) {
         $this->cityRepository     = $cityRepository;
         $this->mapTilesRepository = $mapTilesRepository;
         $this->userRepository     = $userRepository;
         $this->locationCalculator = $locationCalculator;
     }
 
-    public function process(CreateNewCityRequest $request, CreateNewCityResponse $response) {
+    public function process(CreateNewCityRequest $request, CreateNewCityResponse $response)
+    {
         $direction       = $request->getDirection();
         $username        = $request->getUsername();
         $defaultCityName = $request->getDefaultCityName();
 
         $map = $this->mapTilesRepository->getMap();
-       
+
         if (!$map) {
             throw new \Exception("Please create a map");
         }
@@ -52,17 +59,16 @@ class CreateNewCity {
         $createCityResponse       = new CreateCityResponse();
         $this->locationCalculator->setCenterPosition($map->getCenterY(), $map->getCenterX());
 
-        
+
         $this->locationCalculator->setCountCities($this->cityRepository->countAll());
         $i = 0;
         do {
             $i++;
 
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
-            $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $defaultCityName);
-            $createCityRequest->setUsername($username);
+            $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);
             $cityNotCreated    = !$createCityInteractor->process($createCityRequest, $createCityResponse);
-            if($i > 10){
+            if ($i > 10) {
                 return false;
             }
         } while ($cityNotCreated);

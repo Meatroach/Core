@@ -2,12 +2,15 @@
 
 
 namespace OpenTribes\Core\Repository;
+
 use OpenTribes\Core\Entity\Building as BuildingEntity;
+
 /**
  * Building Repository
  * @author Witali
  */
-interface Building {
+interface Building
+{
 
     /**
      * Create new building entity
@@ -31,6 +34,7 @@ interface Building {
      * @return integer
      */
     public function getUniqueId();
+
     /**
      * @return BuildingEntity[]
      */

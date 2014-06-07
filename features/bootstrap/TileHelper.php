@@ -22,7 +22,7 @@ class TileHelper
      */
     public function createDummyTile($name, $isAccessible)
     {
-        $id = $this->tileRepository->getUniqueId();
+        $id   = $this->tileRepository->getUniqueId();
         $tile = $this->tileRepository->create($id, $name, $isAccessible);
         $this->tileRepository->add($tile);
 

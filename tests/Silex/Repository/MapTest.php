@@ -39,13 +39,13 @@ class MapTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $env = 'test';
-        $app = require __DIR__ . '/../../../bootstrap.php';
-        $this->mapRepository = $app[Repository::MAP];
+        $env                  = 'test';
+        $app                  = require __DIR__ . '/../../../bootstrap.php';
+        $this->mapRepository  = $app[Repository::MAP];
         $this->cityRepository = $app[Repository::CITY];
         $this->userRepository = $app[Repository::USER];
         $this->tileRepository = $app[Repository::TILE];
-        $this->mapOptions = $app['map.options'];
+        $this->mapOptions     = $app['map.options'];
         $this->createDummyMap();
         $this->createDummyUser();
         $this->createDummyCity();
@@ -55,7 +55,7 @@ class MapTest extends \PHPUnit_Framework_TestCase
     private function createDummyMap()
     {
         $mapId = $this->mapRepository->getUniqueId();
-        $map = $this->mapRepository->create($mapId, 'Dummy');
+        $map   = $this->mapRepository->create($mapId, 'Dummy');
         $map->setWidth($this->mapOptions['width']);
         $map->setHeight($this->mapOptions['height']);
         $this->mapRepository->add($map);
@@ -63,13 +63,13 @@ class MapTest extends \PHPUnit_Framework_TestCase
 
     private function createDummyTiles()
     {
-        $map = $this->mapRepository->findOneByName('Dummy');
+        $map    = $this->mapRepository->findOneByName('Dummy');
         $tileId = $this->tileRepository->getUniqueId();
-        $tile = $this->tileRepository->create($tileId, 'Accessible', true);
+        $tile   = $this->tileRepository->create($tileId, 'Accessible', true);
         $map->addTile($tile, 51, 50);
         $this->tileRepository->add($tile);
         $tileId = $this->tileRepository->getUniqueId();
-        $tile = $this->tileRepository->create($tileId, 'NotAccessible', false);
+        $tile   = $this->tileRepository->create($tileId, 'NotAccessible', false);
         $map->addTile($tile, 50, 51);
         $this->tileRepository->add($tile);
 
@@ -78,7 +78,7 @@ class MapTest extends \PHPUnit_Framework_TestCase
     private function createDummyUser()
     {
         $userId = $this->userRepository->getUniqueId();
-        $user = $this->userRepository->create($userId, 'Test', '1234', 'test@test.de');
+        $user   = $this->userRepository->create($userId, 'Test', '1234', 'test@test.de');
         $this->userRepository->add($user);
     }
 
@@ -86,9 +86,11 @@ class MapTest extends \PHPUnit_Framework_TestCase
     {
 
         $owner = $this->userRepository->findOneByUsername('Test');
-        if (!$owner) throw new Exception ('User not exists');
+        if (!$owner) {
+            throw new Exception ('User not exists');
+        }
         $cityId = $this->cityRepository->getUniqueId();
-        $city = $this->cityRepository->create($cityId, 'Test 1', 50, 50);
+        $city   = $this->cityRepository->create($cityId, 'Test 1', 50, 50);
         $city->setOwner($owner);
         $this->cityRepository->add($city);
     }

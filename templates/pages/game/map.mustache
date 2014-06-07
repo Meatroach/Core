@@ -8,24 +8,33 @@
 
             <div class="row">
                 <div class="col-md-1"></div>
-                <div class="col-md-10" style="text-align: center"><a href="game/map/{{upY}}/{{upX}}#map" class="map-arrow glyphicon glyphicon-chevron-up"></a></div>
+                <div class="col-md-10" style="text-align: center"><a href="game/map/{{upY}}/{{upX}}#map"
+                                                                     class="map-arrow glyphicon glyphicon-chevron-up"></a>
+                </div>
                 <div class="col-md-1"></div>
             </div>
             <div class="row" style="height:{{height}}px">
-                <div class="col-md-1" style="line-height:{{height}}px"> <a  href="game/map/{{leftY}}/{{leftX}}#map" class="map-arrow glyphicon glyphicon-chevron-left"></a></div>
+                <div class="col-md-1" style="line-height:{{height}}px"><a href="game/map/{{leftY}}/{{leftX}}#map"
+                                                                          class="map-arrow glyphicon glyphicon-chevron-left"></a>
+                </div>
                 <div id="viewport" class="col-md-10" style="height:100%">
 
 
-                    <div id="map" style="position: absolute;top:{{top}}px;left:{{left}}px;width:{{width}}px;height:{{height}}px">
+                    <div id="map"
+                         style="position: absolute;top:{{top}}px;left:{{left}}px;width:{{width}}px;height:{{height}}px">
 
                         {{#tiles}}
-                        <div class="sprite {{name}}" data-x="{{x}}" data-y="{{y}}" style="position: absolute;top:{{top}}px;left:{{left}}px;z-index: {{z}}"></div>
+                        <div class="sprite {{name}}" data-x="{{x}}" data-y="{{y}}"
+                             style="position: absolute;top:{{top}}px;left:{{left}}px;z-index: {{z}}"></div>
                         {{/tiles}}
 
                         {{#cities}}
 
-                        <div  class="sprite city city{{level}}" data-x="{{x}}" data-y="{{y}}" style="position: absolute;top:{{top}}px;left:{{left}}px;z-index:{{z}}">
-                          <div class="city-info"  data-toggle="popover" data-placement="top" data-content="{{>pages/game/cityinfo}}" style="width:{{width}}px;height:{{height}}px"></div>
+                        <div class="sprite city city{{level}}" data-x="{{x}}" data-y="{{y}}"
+                             style="position: absolute;top:{{top}}px;left:{{left}}px;z-index:{{z}}">
+                            <div class="city-info" data-toggle="popover" data-placement="top"
+                                 data-content="{{>pages/game/cityinfo}}"
+                                 style="width:{{width}}px;height:{{height}}px"></div>
                         </div>
                         {{/cities}}
 
@@ -33,11 +42,15 @@
 
 
                 </div>
-                <div class="col-md-1" style="line-height:{{height}}px"><a href="game/map/{{rightY}}/{{rightX}}#map" class="map-arrow glyphicon glyphicon-chevron-right"></a></div>
+                <div class="col-md-1" style="line-height:{{height}}px"><a href="game/map/{{rightY}}/{{rightX}}#map"
+                                                                          class="map-arrow glyphicon glyphicon-chevron-right"></a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-1"></div>
-                <div class="col-md-10"  style="text-align: center"><a href="game/map/{{downY}}/{{downX}}#map" class="map-arrow glyphicon glyphicon-chevron-down"></a></div>
+                <div class="col-md-10" style="text-align: center"><a href="game/map/{{downY}}/{{downX}}#map"
+                                                                     class="map-arrow glyphicon glyphicon-chevron-down"></a>
+                </div>
                 <div class="col-md-1"></div>
             </div>
 

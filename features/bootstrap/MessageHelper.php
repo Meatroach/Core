@@ -12,7 +12,10 @@ class MessageHelper
 
     public function hasMessage($expectedMessage)
     {
-        Test::assertTrue(in_array($expectedMessage, $this->messages), sprintf('"%s" Message not found', $expectedMessage));
+        Test::assertTrue(
+            in_array($expectedMessage, $this->messages),
+            sprintf('"%s" Message not found', $expectedMessage)
+        );
 
     }
 

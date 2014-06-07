@@ -56,8 +56,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
         for ($y = 0; $y < 5; $y++) {
             for ($x = 0; $x < 5; $x++) {
                 $cityId = $this->cityRepository->getUniqueId();
-                $name = sprintf('TestCity%d%d', $y, $x);
-                $city = $this->cityRepository->create($cityId, $name, $y, $x);
+                $name   = sprintf('TestCity%d%d', $y, $x);
+                $city   = $this->cityRepository->create($cityId, $name, $y, $x);
                 $city->setOwner($user);
                 $this->cityRepository->add($city);
             }
@@ -81,8 +81,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $env = 'test';
-        $app = require __DIR__ . '/../../../bootstrap.php';
+        $env                  = 'test';
+        $app                  = require __DIR__ . '/../../../bootstrap.php';
         $this->userRepository = new UserRepository($app['db']);
         $this->cityRepository = new CityRepository($app['db']);
         $this->createDummyUser();

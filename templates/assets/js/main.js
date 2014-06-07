@@ -1,8 +1,7 @@
-
-$(function(){
+$(function () {
     var options = {
-        'html':true,
-        'container':'body'
+        'html': true,
+        'container': 'body'
     }
     $('.city-info').popover(options);
 

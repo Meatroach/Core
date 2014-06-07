@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Entity;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Map {
+class Map
+{
 
     /**
      * @var string
@@ -21,14 +22,15 @@ class Map {
      * @var Tile[][]
      */
     private $tiles = array(array());
-    private $width   = 0;
-    private $height  = 0;
+    private $width = 0;
+    private $height = 0;
 
     /**
      * @param integer $id
      * @param string $name
      */
-    public function __construct($id, $name) {
+    public function __construct($id, $name)
+    {
         $this->id   = $id;
         $this->name = $name;
     }
@@ -38,9 +40,10 @@ class Map {
      * @param integer $y
      * @param integer $x
      */
-    public function addTile(Tile $tile, $y, $x) {
-        $y = (int) $y;
-        $x = (int) $x;
+    public function addTile(Tile $tile, $y, $x)
+    {
+        $y                   = (int)$y;
+        $x                   = (int)$x;
         $this->tiles[$y][$x] = $tile;
     }
 
@@ -49,51 +52,62 @@ class Map {
      * @param integer $x
      * @return Tile
      */
-    public function getTile($y, $x) {
-        $y = (int) $y;
-        $x = (int) $x;
+    public function getTile($y, $x)
+    {
+        $y = (int)$y;
+        $x = (int)$x;
         return isset($this->tiles[$y][$x]) ? $this->tiles[$y][$x] : null;
     }
 
-  
+
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return Tile[][]
      */
-    public function getTiles() {
+    public function getTiles()
+    {
         return $this->tiles;
     }
-    
-    public function getWidth() {
+
+    public function getWidth()
+    {
         return $this->width;
     }
 
-    public function getHeight() {
+    public function getHeight()
+    {
         return $this->height;
     }
 
-    public function setWidth($width) {
-        $this->width = (int) $width;
+    public function setWidth($width)
+    {
+        $this->width = (int)$width;
     }
 
-    public function setHeight($height) {
-        $this->height = (int) $height;
+    public function setHeight($height)
+    {
+        $this->height = (int)$height;
     }
 
-    public function getCenterX() {
+    public function getCenterX()
+    {
         return ~~($this->getWidth() / 2);
     }
 
-    public function getCenterY() {
+    public function getCenterY()
+    {
         return ~~($this->getHeight() / 2);
     }
-    public function isValidLocation($y, $x) {
+
+    public function isValidLocation($y, $x)
+    {
         return $x > 0 && $y > 0 && $x <= $this->getWidth() && $y <= $this->getHeight();
     }
 
@@ -102,13 +116,16 @@ class Map {
      * @param integer $x
      * @return boolean
      */
-    public function isAccessible($y, $x) {
+    public function isAccessible($y, $x)
+    {
         if ($this->getTile($y, $x)) {
             return $this->getTile($y, $x)->isAccessible();
         }
         return true;
     }
-    public function getId() {
+
+    public function getId()
+    {
         return $this->id;
     }
 

@@ -6,6 +6,9 @@ use DateTime;
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Silex\Controller;
+use OpenTribes\Core\Silex\Provider\Account as AccountProvider;
+use OpenTribes\Core\Silex\Provider\Assets as AssetsProvider;
+use OpenTribes\Core\Silex\Provider\Game as GameProvider;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Validator;
@@ -25,26 +28,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use OpenTribes\Core\Silex\Provider\Assets as AssetsProvider;
-use OpenTribes\Core\Silex\Provider\Account as AccountProvider;
-use OpenTribes\Core\Silex\Provider\Game as GameProvider;
 
 /**
  * Description of Module
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Module implements ServiceProviderInterface {
+class Module implements ServiceProviderInterface
+{
 
     private $env;
 
-    public function __construct($enviroment) {
+    public function __construct($enviroment)
+    {
         $this->env = $enviroment;
     }
 
-    public function boot(Application $app) {}
+    public function boot(Application $app)
+    {
+    }
 
-    public function register(Application $app) {
+    public function register(Application $app)
+    {
 
         $this->registerProviders($app);
         $this->loadConfigurations($app);
@@ -52,10 +57,11 @@ class Module implements ServiceProviderInterface {
         $this->setupRoutes($app);
     }
 
-    private function createDependencies(Application &$app) {
+    private function createDependencies(Application &$app)
+    {
         $repository = new Repository($app);
-        $service = new Service($app);
-        $validator = new Validator($app);
+        $service    = new Service($app);
+        $validator  = new Validator($app);
         $controller = new Controller($app);
         $repository->create();
         $service->create();
@@ -63,16 +69,19 @@ class Module implements ServiceProviderInterface {
         $controller->create();
 
         if ($this->env === 'test') {
-            $app['swiftmailer.transport'] = $app->share(function() {
-                return new Swift_NullTransport();
-            });
+            $app['swiftmailer.transport'] = $app->share(
+                function () {
+                    return new Swift_NullTransport();
+                }
+            );
         }
     }
 
     /**
      * @param Application $app
      */
-    private function registerProviders(Application &$app) {
+    private function registerProviders(Application &$app)
+    {
 
         $app->register(new ValidatorServiceProvider);
         $app->register(new ServiceControllerServiceProvider());
@@ -86,7 +95,8 @@ class Module implements ServiceProviderInterface {
     /**
      * @param Application $app
      */
-    private function loadConfigurations(Application &$app) {
+    private function loadConfigurations(Application &$app)
+    {
         $files = array(
             'general.php',
             'database.php',
@@ -102,7 +112,8 @@ class Module implements ServiceProviderInterface {
     /**
      * @param Application $app
      */
-    protected function attachRoutesOnContainer(Application &$app) {
+    protected function attachRoutesOnContainer(Application &$app)
+    {
         $app->mount('/assets', new AssetsProvider());
         $app->mount('/account', new AccountProvider());
         $app->mount('/game', new GameProvider());
@@ -112,81 +123,99 @@ class Module implements ServiceProviderInterface {
      * @param Application $app
      * @return void
      */
-    protected function setupRoutes(Application &$app) {
-        $app->on(KernelEvents::REQUEST, function($event) use($app) {
-            $request         = $event->getRequest();
-            $session         = $request->getSession();
-            $token           = $request->get('csrfToken');
-            $defaultToken    = $app[Service::PASSWORD_HASHER]->hash($session->getId());
-            $realToken       = $session->get('csrfToken', $defaultToken);
-            $isNotGETRequest = $request->getMethod() !== 'GET';
-            $isValidToken    = $realToken === $token;
+    protected function setupRoutes(Application &$app)
+    {
+        $app->on(
+            KernelEvents::REQUEST,
+            function ($event) use ($app) {
+                $request         = $event->getRequest();
+                $session         = $request->getSession();
+                $token           = $request->get('csrfToken');
+                $defaultToken    = $app[Service::PASSWORD_HASHER]->hash($session->getId());
+                $realToken       = $session->get('csrfToken', $defaultToken);
+                $isNotGETRequest = $request->getMethod() !== 'GET';
+                $isValidToken    = $realToken === $token;
 
-            if ($isNotGETRequest && !$isValidToken) {
-                $event->setResponse(new Response('Access denied, invalid token', 500));
+                if ($isNotGETRequest && !$isValidToken) {
+                    $event->setResponse(new Response('Access denied, invalid token', 500));
+                }
+                $session->set('csrfToken', $realToken);
             }
-            $session->set('csrfToken', $realToken);
-        });
+        );
 
-        $app->get('/', function() use($app) {
-            $response          = new stdClass();
-            $response->failed  = false;
-            $response->proceed = false;
-            return $response;
-        })->before(function(Request $request) use($app) {
-            $session = $request->getSession();
-            if (!$session) {
-                return '';
+        $app->get(
+            '/',
+            function () use ($app) {
+                $response          = new stdClass();
+                $response->failed  = false;
+                $response->proceed = false;
+                return $response;
             }
-            if ($session->get('username')) {
-                $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
-                return new RedirectResponse($baseUrl . 'game');
+        )->before(
+                function (Request $request) use ($app) {
+                    $session = $request->getSession();
+                    if (!$session) {
+                        return '';
+                    }
+                    if ($session->get('username')) {
+                        $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                        return new RedirectResponse($baseUrl . 'game');
+                    }
+                }
+            )->value(RouteValue::TEMPLATE, 'pages/landing');
+        $app->after(
+            function (Request $request) use ($app) {
+                $session = $request->getSession();
+                if ($session->get('username')) {
+                    $app[Controller::ACCOUNT]->updateLastAction($session->get('username'));
+                    $app[Controller::ACCOUNT]->after();
+                }
             }
-        })->value(RouteValue::TEMPLATE, 'pages/landing');
-        $app->after(function(Request $request) use($app) {
-              $session = $request->getSession();
-            if ($session->get('username')) {
-                $app[Controller::ACCOUNT]->updateLastAction($session->get('username'));
-                 $app[Controller::ACCOUNT]->after();
-            }
-        });
-        
+        );
+
         $this->attachRoutesOnContainer($app);
-        
+
         $module = $this;
-        $app->on(KernelEvents::EXCEPTION,function($event){
+        $app->on(
+            KernelEvents::EXCEPTION,
+            function ($event) {
 
-        });
-        $app->on(KernelEvents::VIEW, function($event) use($app, $module) {
-            $appResponse = $event->getControllerResult();
-            $request     = $event->getRequest();
-            $requestType = $event->getRequestType();
-            $response    = $appResponse;
+            }
+        );
+        $app->on(
+            KernelEvents::VIEW,
+            function ($event) use ($app, $module) {
+                $appResponse = $event->getControllerResult();
+                $request     = $event->getRequest();
+                $requestType = $event->getRequestType();
+                $response    = $appResponse;
 
-            if ($requestType === HttpKernelInterface::SUB_REQUEST) {
-                $response = new JsonResponse($appResponse);
-            }
-            if ($request->attributes->has(RouteValue::SUB_REQUESTS)) {
-                $subRequests = $request->attributes->get(RouteValue::SUB_REQUESTS);
-                $appResponse = $module->handleSubRequests($subRequests, $appResponse, $app);
-            }
-            if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
-                $appResponse->csrfToken = $request->getSession()->get('csrfToken');
-                $response               = $module->createResponse($request, $appResponse, $app);
-            }
+                if ($requestType === HttpKernelInterface::SUB_REQUEST) {
+                    $response = new JsonResponse($appResponse);
+                }
+                if ($request->attributes->has(RouteValue::SUB_REQUESTS)) {
+                    $subRequests = $request->attributes->get(RouteValue::SUB_REQUESTS);
+                    $appResponse = $module->handleSubRequests($subRequests, $appResponse, $app);
+                }
+                if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
+                    $appResponse->csrfToken = $request->getSession()->get('csrfToken');
+                    $response               = $module->createResponse($request, $appResponse, $app);
+                }
 
-            $event->setResponse($response);
-        });
+                $event->setResponse($response);
+            }
+        );
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param mixed $appResponse
      * @param Application $app
      * @return Response
      */
-    public function createResponse(Request $request, $appResponse, Application $app) {
+    public function createResponse(Request $request, $appResponse, Application $app)
+    {
         $response = new Response();
         if ($request->attributes->has(RouteValue::TEMPLATE)) {
             $template = $request->attributes->get(RouteValue::TEMPLATE);
@@ -196,14 +225,29 @@ class Module implements ServiceProviderInterface {
             $response->setExpires(new DateTime());
         }
 
-        if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(RouteValue::SUCCESS_HANDLER)) {
+        if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(
+                RouteValue::SUCCESS_HANDLER
+            )
+        ) {
+            /**
+             * @var string $handler
+             */
             $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
             $result  = $handler($appResponse);
             if ($result) {
                 $response = $result;
             }
         }
-        if (is_object($appResponse) && $appResponse->proceed && $appResponse->failed && $request->attributes->has(RouteValue::ERROR_HANDLER)) {
+        if (is_object($appResponse) &&
+            $appResponse->proceed &&
+            $appResponse->failed &&
+            $request->attributes->has(
+                RouteValue::ERROR_HANDLER
+            )
+        ) {
+            /**
+             * @var string $handler
+             */
             $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
             $result  = $handler($appResponse);
             if ($result) {
@@ -217,7 +261,8 @@ class Module implements ServiceProviderInterface {
     /**
      * @param Application $app
      */
-    public function handleSubRequests(array $subRequests, $appResponse, $app) {
+    public function handleSubRequests(array $subRequests, $appResponse, $app)
+    {
         $tmpResponse = $appResponse;
 
         foreach ($subRequests as $values) {
@@ -227,9 +272,9 @@ class Module implements ServiceProviderInterface {
             $subRequest  = Request::create($uri, $method, $param);
             $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
             $content     = json_decode($subResponse->getContent());
-            $appResponse = (object) array_merge((array) $appResponse, (array) $content);
+            $appResponse = (object)array_merge((array)$appResponse, (array)$content);
         }
-        $appResponse = (object) array_merge((array) $appResponse, (array) $tmpResponse);
+        $appResponse = (object)array_merge((array)$appResponse, (array)$tmpResponse);
         return $appResponse;
     }
 }

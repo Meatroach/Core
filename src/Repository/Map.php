@@ -8,7 +8,8 @@ use OpenTribes\Core\Entity\Map as MapEntity;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface Map {
+interface Map
+{
 
     /**
      * @param integer $id
@@ -48,5 +49,5 @@ interface Map {
      * @return MapEntity
      */
     public function findOneByName($name);
-    
+
 }

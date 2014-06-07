@@ -9,7 +9,8 @@ use OpenTribes\Core\Service\MapCalculator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class IsometricMapCalculator implements MapCalculator {
+class IsometricMapCalculator implements MapCalculator
+{
 
     private $width;
     private $height;
@@ -21,7 +22,8 @@ class IsometricMapCalculator implements MapCalculator {
     private $originY;
     private $tileRatio;
 
-    public function __construct($height, $width, $viewPortHeight, $viewPortWidth, $tileHeight, $tileWidth) {
+    public function __construct($height, $width, $viewPortHeight, $viewPortWidth, $tileHeight, $tileWidth)
+    {
         $this->width          = $width;
         $this->height         = $height;
         $this->viewPortHeight = $viewPortHeight;
@@ -32,33 +34,36 @@ class IsometricMapCalculator implements MapCalculator {
         $this->calculateTileRatio();
     }
 
-    private function calculateOrigin() {
+    private function calculateOrigin()
+    {
         $this->originX = $this->height * $this->tileWidth / 2;
         $this->originY = 0;
     }
 
-    private function calculateTileRatio() {
+    private function calculateTileRatio()
+    {
         $this->tileRatio = $this->tileWidth / $this->tileHeight;
     }
 
-    public function getArea($top, $left) {
+    public function getArea($top, $left)
+    {
 
 
-        $start  = array(
+        $start          = array(
             'x' => $left - $this->tileWidth / 2,
-            'y' => $top + $this->tileHeight /2
+            'y' => $top + $this->tileHeight / 2
         );
-        $end    = array(
+        $end            = array(
             'x' => $start['x'] + $this->viewPortWidth + $this->tileWidth,
-            'y' => $start['y'] + $this->viewPortHeight + $this->tileHeight/2
+            'y' => $start['y'] + $this->viewPortHeight + $this->tileHeight / 2
         );
-        $width  = $this->width * $this->tileWidth;
-        $height = $this->height * $this->tileHeight;
-        $halfTileWidth = $this->tileWidth/2;
-        $halfTileHeight = $this->tileHeight/2;
-        $area   = array();
-        for ($y = $start['y']; $y <= $end['y']; $y+=$halfTileHeight) {
-            for ($x = $start['x']; $x <= $end['x']; $x+=$halfTileWidth) {
+        $width          = $this->width * $this->tileWidth;
+        $height         = $this->height * $this->tileHeight;
+        $halfTileWidth  = $this->tileWidth / 2;
+        $halfTileHeight = $this->tileHeight / 2;
+        $area           = array();
+        for ($y = $start['y']; $y <= $end['y']; $y += $halfTileHeight) {
+            for ($x = $start['x']; $x <= $end['x']; $x += $halfTileWidth) {
                 $row        = $this->pixelToPosition($y, $x);
                 $positionX  = max(0, min($width, $row['x']));
                 $positionY  = max(0, min($height, $row['y']));
@@ -69,7 +74,8 @@ class IsometricMapCalculator implements MapCalculator {
         return $area;
     }
 
-    public function pixelToPosition($top, $left) {
+    public function pixelToPosition($top, $left)
+    {
         $newLeft = ($left - $this->originX) / $this->tileRatio;
         $x       = ~~(($top + $newLeft) / $this->tileHeight);
         $y       = ~~(($top - $newLeft) / $this->tileHeight);
@@ -79,13 +85,15 @@ class IsometricMapCalculator implements MapCalculator {
         );
     }
 
-    public function setViewport($height, $width) {
+    public function setViewport($height, $width)
+    {
         $this->viewPortWidth  = $width;
         $this->viewPortHeight = $height;
     }
 
-    public function positionToPixel($y, $x) {
-     
+    public function positionToPixel($y, $x)
+    {
+
         $left = ~~(($x - $y) * ($this->tileWidth / 2) + $this->originX);
         $top  = ~~(($x + $y) * ($this->tileHeight / 2));
         return array(
@@ -94,7 +102,8 @@ class IsometricMapCalculator implements MapCalculator {
         );
     }
 
-    public function getCenterPosition($y, $x) {
+    public function getCenterPosition($y, $x)
+    {
         $position = $this->positionToPixel($y, $x);
         $left     = $position['left'];
         $top      = $position['top'];

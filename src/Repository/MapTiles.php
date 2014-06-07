@@ -8,7 +8,8 @@ use OpenTribes\Core\Entity\Map as MapEntity;
  *
  * @author Witali
  */
-interface MapTiles {
+interface MapTiles
+{
 
     /**
      * @return MapEntity

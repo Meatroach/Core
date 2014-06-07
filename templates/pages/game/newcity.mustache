@@ -7,7 +7,8 @@
             <form method="POST" action="game/start">
                 <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
                 {{#directions}}
-                <input type="radio" name="direction" {{#selected}}checked="checked"{{/selected}} value="{{name}}"> {{name}}<br/>
+                <input type="radio" name="direction" {{#selected}}checked="checked"{{/selected}} value="{{name}}">
+                {{name}}<br/>
                 {{/directions}}
                 <button class="btn btn-default" type="submit" name="select">Start Game</button>
             </form>

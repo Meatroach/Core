@@ -7,12 +7,17 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class SelectLocation {
+class SelectLocation
+{
     private $direction;
-    public function __construct($direction) {
+
+    public function __construct($direction)
+    {
         $this->direction = $direction;
     }
-    public function getDirection() {
+
+    public function getDirection()
+    {
         return $this->direction;
     }
 

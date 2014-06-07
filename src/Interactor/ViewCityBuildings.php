@@ -13,17 +13,20 @@ use OpenTribes\Core\View\CityBuilding as CityBuildingView;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewCityBuildings {
+class ViewCityBuildings
+{
 
     private $cityBuildingsRepository;
     private $buildingRepository;
-    
-    public function __construct(CityBuildingsRepository $cityRepository, BuildingRepository $buildingRepository) {
+
+    public function __construct(CityBuildingsRepository $cityRepository, BuildingRepository $buildingRepository)
+    {
         $this->cityBuildingsRepository = $cityRepository;
         $this->buildingRepository      = $buildingRepository;
     }
 
-    public function process(ViewCityBuildingsRequest $request, ViewCityBuildingsResponse $response) {
+    public function process(ViewCityBuildingsRequest $request, ViewCityBuildingsResponse $response)
+    {
         $city = $this->cityBuildingsRepository->findByLocation($request->getY(), $request->getX());
         if (!$city) {
             return false;
@@ -41,7 +44,8 @@ class ViewCityBuildings {
     /**
      * @param \OpenTribes\Core\Entity\City $city
      */
-    private function createBuildings($city) {
+    private function createBuildings($city)
+    {
         $buildings = $this->buildingRepository->findAll();
         foreach ($buildings as $building) {
             $city->addBuilding($building);

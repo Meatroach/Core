@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Entity;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class City {
+class City
+{
 
     /**
      * @var integer
@@ -37,7 +38,7 @@ class City {
     /**
      * @var boolean
      */
-    private $isSelected    = false;
+    private $isSelected = false;
 
     /**
      * @var Building[]
@@ -50,11 +51,12 @@ class City {
      * @param integer $y
      * @param integer $x
      */
-    public function __construct($id, $name, $y, $x) {
-        $this->id    = (int) $id;
-        $this->name  = $name;
-        $this->x     = (int) $x;
-        $this->y     = (int) $y;
+    public function __construct($id, $name, $y, $x)
+    {
+        $this->id   = (int)$id;
+        $this->name = $name;
+        $this->x    = (int)$x;
+        $this->y    = (int)$y;
     }
 
     /**
@@ -68,56 +70,66 @@ class City {
     /**
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return User
      */
-    public function getOwner() {
+    public function getOwner()
+    {
         return $this->owner;
     }
 
     /**
      * @return integer
      */
-    public function getX() {
+    public function getX()
+    {
         return $this->x;
     }
 
     /**
      * @return integer
      */
-    public function getY() {
+    public function getY()
+    {
         return $this->y;
     }
 
-    public function addBuilding(Building $building) {
+    public function addBuilding(Building $building)
+    {
         $this->buildings[] = $building;
     }
 
-    public function hasBuildings() {
+    public function hasBuildings()
+    {
         return count($this->buildings) > 0;
     }
 
-    public function getBuildings() {
+    public function getBuildings()
+    {
         return $this->buildings;
     }
 
-    public function isSelected() {
+    public function isSelected()
+    {
         return $this->isSelected;
     }
 
-    public function setSelected($selected) {
-        $this->isSelected = (bool) $selected;
+    public function setSelected($selected)
+    {
+        $this->isSelected = (bool)$selected;
     }
 
 }

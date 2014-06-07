@@ -2,11 +2,11 @@
 
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Mink;
+use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Repository\Building as BuildingRepository;
-use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Service\LocationCalculator;
 use PHPUnit_Framework_Assert as Test;
 
@@ -27,10 +27,24 @@ class SilexCityHelper extends CityHelper
     private $page;
 
 
-    public function __construct(Mink $mink, CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator, CityBuildingsRepository $cityBuildingsRepository, BuildingRepository $buildingRepository)
-    {
-        parent::__construct($cityRepository, $mapTilesRepository, $userRepository, $locationCalculator, $cityBuildingsRepository, $buildingRepository);
-        $this->mink = $mink;
+    public function __construct(
+        Mink $mink,
+        CityRepository $cityRepository,
+        MapTilesRepository $mapTilesRepository,
+        UserRepository $userRepository,
+        LocationCalculator $locationCalculator,
+        CityBuildingsRepository $cityBuildingsRepository,
+        BuildingRepository $buildingRepository
+    ) {
+        parent::__construct(
+            $cityRepository,
+            $mapTilesRepository,
+            $userRepository,
+            $locationCalculator,
+            $cityBuildingsRepository,
+            $buildingRepository
+        );
+        $this->mink        = $mink;
         $this->sessionName = $this->mink->getDefaultSessionName();
     }
 
@@ -70,10 +84,10 @@ class SilexCityHelper extends CityHelper
     {
 
         foreach ($locations as $location) {
-            $x = $location[1];
-            $y = $location[0];
+            $x           = $location[1];
+            $y           = $location[0];
             $expectedKey = sprintf('Y%d/X%d', $y, $x);
-            $currentKey = sprintf('Y%d/X%d', $this->y, $this->x);
+            $currentKey  = sprintf('Y%d/X%d', $this->y, $this->x);
             Test::assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
         }
     }

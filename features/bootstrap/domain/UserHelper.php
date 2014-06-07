@@ -1,19 +1,19 @@
 <?php
 
-use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Validator\Registration as RegistrationValidator;
-use OpenTribes\Core\Service\PasswordHasher;
-use OpenTribes\Core\Service\ActivationCodeGenerator;
 use OpenTribes\Core\Context\Guest\Registration as RegistrationContext;
-use OpenTribes\Core\Request\Registration as RegistrationRequest;
-use OpenTribes\Core\Response\Registration as RegistrationResponse;
 use OpenTribes\Core\Interactor\ActivateUser as ActivateUserInteractor;
-use OpenTribes\Core\Request\ActivateUser as ActivateUserRequest;
-use OpenTribes\Core\Response\ActivateUser as ActivateUserResponse;
-use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
 use OpenTribes\Core\Interactor\Login as LoginInteractor;
+use OpenTribes\Core\Repository\User as UserRepository;
+use OpenTribes\Core\Request\ActivateUser as ActivateUserRequest;
 use OpenTribes\Core\Request\Login as LoginRequest;
+use OpenTribes\Core\Request\Registration as RegistrationRequest;
+use OpenTribes\Core\Response\ActivateUser as ActivateUserResponse;
 use OpenTribes\Core\Response\Login as LoginResponse;
+use OpenTribes\Core\Response\Registration as RegistrationResponse;
+use OpenTribes\Core\Service\ActivationCodeGenerator;
+use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
+use OpenTribes\Core\Validator\Registration as RegistrationValidator;
 use PHPUnit_Framework_Assert as Test;
 
 class DomainUserHelper
@@ -34,22 +34,33 @@ class DomainUserHelper
     private $interactorResult;
     protected $loggedInUsername;
 
-    public function __construct(UserRepository $userRepository, RegistrationValidator $registrationValidator, PasswordHasher $passwordHasher, ActivationCodeGenerator $activationCodeGenerator, ActivateUserValidator $activateUserValidator)
-    {
-        $this->userRepository = $userRepository;
-        $this->registrationValidator = $registrationValidator;
-        $this->passwordHasher = $passwordHasher;
+    public function __construct(
+        UserRepository $userRepository,
+        RegistrationValidator $registrationValidator,
+        PasswordHasher $passwordHasher,
+        ActivationCodeGenerator $activationCodeGenerator,
+        ActivateUserValidator $activateUserValidator
+    ) {
+        $this->userRepository          = $userRepository;
+        $this->registrationValidator   = $registrationValidator;
+        $this->passwordHasher          = $passwordHasher;
         $this->activationCodeGenerator = $activationCodeGenerator;
-        $this->activateUserValidator = $activateUserValidator;
+        $this->activateUserValidator   = $activateUserValidator;
     }
 
     /**
      * @param boolean $termsAndConditions
      */
-    public function processRegistration($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions)
-    {
-        $request = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $interaction = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+    public function processRegistration(
+        $username,
+        $email,
+        $emailConfirm,
+        $password,
+        $passwordConfirm,
+        $termsAndConditions
+    ) {
+        $request                    = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
+        $interaction                = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
         $this->registrationResponse = new RegistrationResponse;
         return $interaction->process($request, $this->registrationResponse);
     }
@@ -71,8 +82,8 @@ class DomainUserHelper
 
     public function processActivateAccount($username, $activationCode)
     {
-        $request = new ActivateUserRequest($username, $activationCode);
-        $interactor = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $request                       = new ActivateUserRequest($username, $activationCode);
+        $interactor                    = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
         $this->activateAccountResponse = new ActivateUserResponse;
         return $interactor->process($request, $this->activateAccountResponse);
     }
@@ -95,9 +106,9 @@ class DomainUserHelper
 
     public function processLogin($username, $password)
     {
-        $request = new LoginRequest($username, $password);
-        $interactor = new LoginInteractor($this->userRepository, $this->passwordHasher);
-        $this->loginResponse = new LoginResponse;
+        $request                = new LoginRequest($username, $password);
+        $interactor             = new LoginInteractor($this->userRepository, $this->passwordHasher);
+        $this->loginResponse    = new LoginResponse;
         $this->interactorResult = $interactor->process($request, $this->loginResponse);
     }
 
@@ -114,9 +125,9 @@ class DomainUserHelper
 
     public function createDummyAccount($username, $password, $email, $activationCode = null)
     {
-        $userId = $this->userRepository->getUniqueId();
+        $userId   = $this->userRepository->getUniqueId();
         $password = $this->passwordHasher->hash($password);
-        $user = $this->userRepository->create($userId, $username, $password, $email);
+        $user     = $this->userRepository->create($userId, $username, $password, $email);
         if ($activationCode) {
             $user->setActivationCode($activationCode);
         }

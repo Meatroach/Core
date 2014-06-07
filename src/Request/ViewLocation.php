@@ -7,33 +7,38 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewLocation {
+class ViewLocation
+{
 
     private $username;
     private $y;
     private $x;
 
-    public function __construct($username, $y, $x) {
+    public function __construct($username, $y, $x)
+    {
         $this->username = $username;
         $this->y        = $y;
         $this->x        = $x;
     }
 
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
 
     /**
      * @return integer
      */
-    public function getY() {
+    public function getY()
+    {
         return $this->y;
     }
 
     /**
      * @return integer
      */
-    public function getX() {
+    public function getX()
+    {
         return $this->x;
     }
 

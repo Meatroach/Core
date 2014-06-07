@@ -8,7 +8,8 @@ use OpenTribes\Core\Entity\City as CityEntity;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface CityBuildings {
+interface CityBuildings
+{
     /**
      * @param integer $y
      * @param integer $x

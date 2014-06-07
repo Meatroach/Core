@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewLocation extends Response{
+class ViewLocation extends Response
+{
     public $isCustomCity = false;
     public $buildings = array();
     public $city = null;

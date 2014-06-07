@@ -12,7 +12,8 @@ namespace OpenTribes\Core\Service;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface MapCalculator {
+interface MapCalculator
+{
 
     public function getArea($y, $x);
 

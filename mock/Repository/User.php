@@ -10,20 +10,22 @@ use OpenTribes\Core\Repository\User as UserRepository;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class User implements UserRepository {
+class User implements UserRepository
+{
 
     /**
-     * @var UserEntity[] 
+     * @var UserEntity[]
      */
-    private $users    = array();
-    private $added    = array();
+    private $users = array();
+    private $added = array();
     private $modified = array();
-    private $deleted  = array();
+    private $deleted = array();
 
     /**
      * {@inheritDoc}
      */
-    public function add(UserEntity $user) {
+    public function add(UserEntity $user)
+    {
         $this->users[$user->getId()] = $user;
         $this->added[$user->getId()] = $user->getId();
     }
@@ -31,14 +33,16 @@ class User implements UserRepository {
     /**
      * {@inheritDoc}
      */
-    public function create($id, $username, $password, $email) {
+    public function create($id, $username, $password, $email)
+    {
         return new UserEntity($id, $username, $password, $email);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function delete(UserEntity $user) {
+    public function delete(UserEntity $user)
+    {
         unset($this->users[$user->getId()]);
         $this->deleted[$user->getId()] = $user->getId();
     }
@@ -46,7 +50,8 @@ class User implements UserRepository {
     /**
      * {@inheritDoc}
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         $amountOfUsers = count($this->users);
         return ++$amountOfUsers;
     }
@@ -54,7 +59,8 @@ class User implements UserRepository {
     /**
      * {@inheritDoc}
      */
-    public function replace(UserEntity $user) {
+    public function replace(UserEntity $user)
+    {
         $this->users[$user->getId()]    = $user;
         $this->modified[$user->getId()] = $user->getId();
     }
@@ -62,17 +68,20 @@ class User implements UserRepository {
     /**
      * {@inheritDoc}
      */
-    public function sync() {
-        
+    public function sync()
+    {
+
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findOneByEmail($email) {
+    public function findOneByEmail($email)
+    {
         foreach ($this->users as $user) {
-            if ($user->getEmail() === $email)
+            if ($user->getEmail() === $email) {
                 return $user;
+            }
         }
         return null;
     }
@@ -80,10 +89,12 @@ class User implements UserRepository {
     /**
      * {@inheritDoc}
      */
-    public function findOneByUsername($username) {
+    public function findOneByUsername($username)
+    {
         foreach ($this->users as $user) {
-            if ($user->getUsername() === $username)
+            if ($user->getUsername() === $username) {
                 return $user;
+            }
         }
         return null;
     }
@@ -91,7 +102,8 @@ class User implements UserRepository {
     /**
      * {@inheritDoc}
      */
-    public function flush() {
+    public function flush()
+    {
         $this->users = array();
     }
 

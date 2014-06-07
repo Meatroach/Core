@@ -10,46 +10,58 @@ use OpenTribes\Core\Value\Direction;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class LocationCalculator implements LocationCalculatorInterface {
+class LocationCalculator implements LocationCalculatorInterface
+{
 
-    private $x           = 0;
-    private $y           = 0;
-    private $centerX     = 0;
-    private $centerY     = 0;
+    private $x = 0;
+    private $y = 0;
+    private $centerX = 0;
+    private $centerY = 0;
     private $countCities = 0;
 
 
-    public function setCenterPosition($y,$x){
+    public function setCenterPosition($y, $x)
+    {
         $this->centerX = $x;
         $this->centerY = $y;
     }
-    public function setCountCities($countCities){
+
+    public function setCountCities($countCities)
+    {
         $this->countCities = $countCities;
     }
 
 
-    public function calculate(Direction $direction) {
+    public function calculate(Direction $direction)
+    {
+
+
         $direction = $direction->getValue();
         if ($direction === Direction::ANY) {
             $direction = $this->countCities % 4;
         }
-        $degree = mt_rand($direction*90,($direction+1)*90);
 
-        $phi = deg2rad($degree);
-        $radius = pow($phi,2);
-        var_dump($direction);
-        $x = ~~($radius*cos($phi))+$this->centerX;
-        $y = ~~($radius*sin($phi))+$this->centerY;
-        var_dump($x,$y);
+        $angleStart = $direction*90;
+        $angleEnd = ($direction+1)*90;
+        $randomAngle = mt_rand($angleStart,$angleEnd);
+        var_dump($angleStart,$angleEnd,$direction);
+        $phi = deg2rad($randomAngle);
+        $radius = -max(5,min($this->countCities,200));
+        $x = $this->centerX + ~~($radius * cos($phi));
+        $y = $this->centerY + ~~($radius * sin($phi));
+
+
         $this->x = $x;
         $this->y = $y;
     }
 
-    public function getX() {
+    public function getX()
+    {
         return $this->x;
     }
 
-    public function getY() {
+    public function getY()
+    {
         return $this->y;
     }
 

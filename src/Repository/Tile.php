@@ -8,7 +8,8 @@ use OpenTribes\Core\Entity\Tile as TileEntity;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface Tile {
+interface Tile
+{
 
     /**
      * @param integer $id
@@ -43,6 +44,6 @@ interface Tile {
      * @return void
      */
     public function sync();
-    
- 
+
+
 }

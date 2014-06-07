@@ -10,7 +10,8 @@ use OpenTribes\Core\Repository\Map as MapRepository;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Map implements MapRepository {
+class Map implements MapRepository
+{
 
     /**
      * @var MapEntity[]
@@ -20,30 +21,33 @@ class Map implements MapRepository {
     /**
      * {@inheritDoc}
      */
-    public function add(MapEntity $map) {
+    public function add(MapEntity $map)
+    {
         $this->maps[$map->getId()] = $map;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name) {
+    public function create($id, $name)
+    {
         return new MapEntity($id, $name);
     }
-
 
 
     /**
      * {@inheritDoc}
      */
-    public function sync() {
+    public function sync()
+    {
         ;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getUniqueId() {
+    public function getUniqueId()
+    {
         $count = count($this->maps);
         $count++;
         return $count;
@@ -52,7 +56,8 @@ class Map implements MapRepository {
     /**
      * {@inheritDoc}
      */
-    public function findOneByName($name) {
+    public function findOneByName($name)
+    {
 
         foreach ($this->maps as $map) {
             if ($map->getName() === $name) {
@@ -61,13 +66,15 @@ class Map implements MapRepository {
         }
     }
 
-    public function delete(MapEntity $map) {
+    public function delete(MapEntity $map)
+    {
         if (isset($this->maps[$map->getId()])) {
             unset($this->maps[$map->getId()]);
         }
     }
 
-    public function replace(MapEntity $map) {
+    public function replace(MapEntity $map)
+    {
         $this->maps[$map->getId()] = $map;
     }
 

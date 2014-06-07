@@ -3,8 +3,8 @@
 namespace OpenTribes\Core\Interactor;
 
 use OpenTribes\Core\Repository\City as CityRepository;
-use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
+use OpenTribes\Core\Repository\User as UserRepository;
 use OpenTribes\Core\Request\CreateCity as CreateCityRequest;
 use OpenTribes\Core\Response\CreateCity as CreateCityResponse;
 use OpenTribes\Core\View\City as CityView;
@@ -14,7 +14,8 @@ use OpenTribes\Core\View\City as CityView;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class CreateCity {
+class CreateCity
+{
 
     /**
      * @var CityRepository
@@ -36,10 +37,14 @@ class CreateCity {
      * @param \OpenTribes\Core\Repository\MapTiles $mapTilesRepository
      * @param \OpenTribes\Core\Repository\User $userRepository
      */
-    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository) {
+    public function __construct(
+        CityRepository $cityRepository,
+        MapTilesRepository $mapTilesRepository,
+        UserRepository $userRepository
+    ) {
         $this->cityRepository = $cityRepository;
         $this->userRepository = $userRepository;
-        $this->mapTilesRepository= $mapTilesRepository;
+        $this->mapTilesRepository = $mapTilesRepository;
     }
 
     /**
@@ -47,24 +52,25 @@ class CreateCity {
      * @param \OpenTribes\Core\Response\CreateCity $response
      * @return boolean
      */
-    public function process(CreateCityRequest $request, CreateCityResponse $response) {
-        $username = $request->getUsername();
+    public function process(CreateCityRequest $request, CreateCityResponse $response)
+    {
+        $owner = $this->userRepository->findOneByUsername($request->getUsername());
         $x     = $request->getX();
         $y     = $request->getY();
         $name  = $request->getDefaultCityName();
         $map   = $this->mapTilesRepository->getMap();
 
-        if(!$map){
-           return false;
+        if (!$owner || !$map) {
+            return false;
         }
         if (!$map->isValidLocation($y, $x)) {
             return false;
         }
-      
+
         if (!$map->isAccessible($y, $x)) {
             return false;
         }
-       
+
         if ($this->cityRepository->cityExistsAt($y, $x)) {
             return false;
         }
@@ -72,12 +78,9 @@ class CreateCity {
 
         $id = $this->cityRepository->getUniqueId();
 
-        $city           = $this->cityRepository->create($id, $name, $y, $x);
-        if($username){
-            $owner = $this->userRepository->findOneByUsername($username);
-            $city->setOwner($owner);
-            $city->setSelected(true);
-        }
+        $city = $this->cityRepository->create($id, $name, $y, $x);
+        $city->setOwner($owner);
+        $city->setSelected(true);
         $this->cityRepository->add($city);
         $response->city = new CityView($city);
         return true;

@@ -7,6 +7,7 @@ namespace OpenTribes\Core\Validator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-abstract class Login {
-   
+abstract class Login
+{
+
 }

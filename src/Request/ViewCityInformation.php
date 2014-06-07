@@ -3,7 +3,8 @@
 namespace OpenTribes\Core\Request;
 
 
-class ViewCityInformation {
+class ViewCityInformation
+{
     /**
      * @var integer
      */

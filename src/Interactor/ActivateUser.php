@@ -12,7 +12,8 @@ use OpenTribes\Core\Validator\ActivateUser as ActivateUserValidator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ActivateUser {
+class ActivateUser
+{
 
     /**
      * @var UserRepository
@@ -28,7 +29,8 @@ class ActivateUser {
      * @param \OpenTribes\Core\Repository\User $userRepository
      * @param \OpenTribes\Core\Validator\ActivateUser $activateUserValidator
      */
-    public function __construct(UserRepository $userRepository, ActivateUserValidator $activateUserValidator) {
+    public function __construct(UserRepository $userRepository, ActivateUserValidator $activateUserValidator)
+    {
         $this->userRepository        = $userRepository;
         $this->activateUserValidator = $activateUserValidator;
     }
@@ -39,7 +41,8 @@ class ActivateUser {
      * @param \OpenTribes\Core\Response\ActivateUser $response
      * @return boolean
      */
-    public function process(ActivateUserRequest $request, ActivateUserResponse $response) {
+    public function process(ActivateUserRequest $request, ActivateUserResponse $response)
+    {
         $object = $this->activateUserValidator->getObject();
         $user   = $this->userRepository->findOneByUsername($request->getUsername());
 
@@ -54,7 +57,7 @@ class ActivateUser {
             return false;
         }
         $user->setActivationCode(null);
-        if(!$user){
+        if (!$user) {
             return false;
         }
         $this->userRepository->replace($user);

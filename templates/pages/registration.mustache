@@ -16,29 +16,36 @@
             {{/proceed}}
             <form role="form" action="account/create" method="POST">
                 <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
+
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" name="username" class="form-control" id="username" value="{{username}}" placeholder="Username">
+                    <input type="text" name="username" class="form-control" id="username" value="{{username}}"
+                           placeholder="Username">
                 </div>
                 <div class="form-group">
                     <label for="email">Email address</label>
-                    <input type="text" name="email" class="form-control" id="email" value="{{email}}" placeholder="Email address">
+                    <input type="text" name="email" class="form-control" id="email" value="{{email}}"
+                           placeholder="Email address">
                 </div>
                 <div class="form-group">
                     <label for="emailConfirm">Confirm Email address</label>
-                    <input type="text" name="emailConfirm" class="form-control" value="{{emailConfirm}}" id="emailConfirm" placeholder="Confirm Email address">
+                    <input type="text" name="emailConfirm" class="form-control" value="{{emailConfirm}}"
+                           id="emailConfirm" placeholder="Confirm Email address">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" class="form-control" value="{{password}}" id="password" placeholder="Password">
+                    <input type="password" name="password" class="form-control" value="{{password}}" id="password"
+                           placeholder="Password">
                 </div>
                 <div class="form-group">
                     <label for="passwordConfirm">Confirm Password</label>
-                    <input type="password" name="passwordConfirm" class="form-control" value="{{passwordConfirm}}" id="passwordConfirm" placeholder="Confirm Password">
+                    <input type="password" name="passwordConfirm" class="form-control" value="{{passwordConfirm}}"
+                           id="passwordConfirm" placeholder="Confirm Password">
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="termsAndConditions"{{#termsAndConditions}}checked="checked"{{/termsAndConditions}}> Accept Terms and Conditions
+                        <input type="checkbox" name="termsAndConditions"{{#termsAndConditions}}checked="checked"{{/termsAndConditions}}>
+                        Accept Terms and Conditions
                     </label>
                 </div>
                 <button type="submit" name="register" class="btn btn-default">Register</button>

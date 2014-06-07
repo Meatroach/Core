@@ -9,9 +9,11 @@ use OpenTribes\Core\Service\ActivationCodeGenerator;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class TestGenerator implements ActivationCodeGenerator {
+class TestGenerator implements ActivationCodeGenerator
+{
 
-    public function create() {
+    public function create()
+    {
         return 'test';
     }
 

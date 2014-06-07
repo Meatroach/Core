@@ -10,9 +10,11 @@ use OpenTribes\Core\ValidationDto\Registration as RegistrationDto;
  * @author BlackScorp<witalimik@web.de>
  * @method \OpenTribes\Core\ValidationDto\Registration getObject() Returns validation object
  */
-abstract class Registration extends Validator {
+abstract class Registration extends Validator
+{
 
-    public function __construct(RegistrationDto $object) {
+    public function __construct(RegistrationDto $object)
+    {
         $this->setObject($object);
     }
 

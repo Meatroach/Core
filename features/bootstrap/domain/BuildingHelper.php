@@ -19,7 +19,7 @@ class BuildingHelper
     public function createDummyBuilding($name, $minimumLevel, $maximumLevel)
     {
         $buildingId = $this->buildingRepository->getUniqueId();
-        $building = $this->buildingRepository->create($buildingId, $name, $minimumLevel, $maximumLevel);
+        $building   = $this->buildingRepository->create($buildingId, $name, $minimumLevel, $maximumLevel);
         $this->buildingRepository->add($building);
     }
 }

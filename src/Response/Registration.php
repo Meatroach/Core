@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration extends Response{
+class Registration extends Response
+{
     public $username;
     public $email;
     public $emailConfirm;

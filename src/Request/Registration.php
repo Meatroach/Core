@@ -7,19 +7,21 @@ namespace OpenTribes\Core\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration{
+class Registration
+{
 
-    private $username           = '';
-    private $email              = '';
-    private $emailConfirm       = '';
-    private $password           = '';
-    private $passwordConfirm    = '';
+    private $username = '';
+    private $email = '';
+    private $emailConfirm = '';
+    private $password = '';
+    private $passwordConfirm = '';
     private $termsAndConditions = '';
 
     /**
      * @param boolean $termsAndConditions
      */
-    public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions) {
+    public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions)
+    {
         $this->username           = $username;
         $this->email              = $email;
         $this->emailConfirm       = $emailConfirm;
@@ -28,27 +30,33 @@ class Registration{
         $this->termsAndConditions = $termsAndConditions;
     }
 
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getEmailConfirm() {
+    public function getEmailConfirm()
+    {
         return $this->emailConfirm;
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
-    public function getPasswordConfirm() {
+    public function getPasswordConfirm()
+    {
         return $this->passwordConfirm;
     }
 
-    public function getTermsAndConditions() {
+    public function getTermsAndConditions()
+    {
         return $this->termsAndConditions;
     }
 

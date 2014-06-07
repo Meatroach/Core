@@ -7,7 +7,8 @@ namespace OpenTribes\Core\Response;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class ViewMap extends Response{
+class ViewMap extends Response
+{
     public $tiles;
     public $cities;
     public $width;
@@ -22,5 +23,5 @@ class ViewMap extends Response{
     public $leftY;
     public $rightX;
     public $rightY;
-   
+
 }

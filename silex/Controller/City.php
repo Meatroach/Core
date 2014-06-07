@@ -3,13 +3,13 @@
 namespace OpenTribes\Core\Silex\Controller;
 
 use OpenTribes\Core\Context\Player\CreateNewCity as CreateNewCityInteractor;
-use OpenTribes\Core\Interactor\ViewCities as ViewCitiesInteractor;
 use OpenTribes\Core\Context\Player\ViewLocation as ViewLocationInteractor;
+use OpenTribes\Core\Interactor\ViewCities as ViewCitiesInteractor;
+use OpenTribes\Core\Repository\Building as BuildingRepository;
 use OpenTribes\Core\Repository\City as CityRepository;
+use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Repository\MapTiles as MapTilesRepository;
 use OpenTribes\Core\Repository\User as UserRepository;
-use OpenTribes\Core\Repository\Building as BuildingRepository;
-use OpenTribes\Core\Repository\CityBuildings as CityBuildingsRepository;
 use OpenTribes\Core\Request\CreateNewCity as CreateNewCityRequest;
 use OpenTribes\Core\Request\ViewCities as ViewCitiesRequest;
 use OpenTribes\Core\Request\ViewLocation as ViewLocationRequest;
@@ -24,7 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class City {
+class City
+{
 
     private $cityRepository;
     private $userRepository;
@@ -32,35 +33,45 @@ class City {
     private $locationCalculator;
     private $buildingRepository;
     private $cityBuildingRepository;
-    public function __construct(UserRepository $userRepository, CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, LocationCalculator $locationCalculator,BuildingRepository $buildingRepository,CityBuildingsRepository $cityBuildingRepository) {
-        $this->cityRepository     = $cityRepository;
-        $this->userRepository     = $userRepository;
-        $this->mapTilesRepository = $mapTilesRepository;
-        $this->locationCalculator = $locationCalculator;
+
+    public function __construct(
+        UserRepository $userRepository,
+        CityRepository $cityRepository,
+        MapTilesRepository $mapTilesRepository,
+        LocationCalculator $locationCalculator,
+        BuildingRepository $buildingRepository,
+        CityBuildingsRepository $cityBuildingRepository
+    ) {
+        $this->cityRepository         = $cityRepository;
+        $this->userRepository         = $userRepository;
+        $this->mapTilesRepository     = $mapTilesRepository;
+        $this->locationCalculator     = $locationCalculator;
         $this->cityBuildingRepository = $cityBuildingRepository;
-        $this->buildingRepository = $buildingRepository;
+        $this->buildingRepository     = $buildingRepository;
         $this->cityBuildingRepository = $cityBuildingRepository;
     }
 
-    public function listAction(Request $httpRequest) {
+    public function listAction(Request $httpRequest)
+    {
         $defaultUsername = $httpRequest->getSession()->get('username');
         $username        = $httpRequest->get('username');
         if (!$username) {
             $username = $defaultUsername;
         }
-     
-        $request           = new ViewCitiesRequest($username);
-        $interactor        = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
-        $response          = new ViewCitiesResponse;
-     
+
+        $request    = new ViewCitiesRequest($username);
+        $interactor = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
+        $response   = new ViewCitiesResponse;
+
         $response->proceed = true;
         $response->failed  = !$interactor->process($request, $response);
         return $response;
     }
 
-    public function newAction(Request $httpRequest) {
-        $username        = $httpRequest->getSession()->get('username');
-        $direction       = $httpRequest->get('direction', 'any');
+    public function newAction(Request $httpRequest)
+    {
+        $username  = $httpRequest->getSession()->get('username');
+        $direction = $httpRequest->get('direction', 'any');
         //Has to be in config
         $defaultCityName = sprintf('%s\'s City', $username);
         $directions      = array(
@@ -82,19 +93,22 @@ class City {
         $response->directions = $directions;
         return $response;
     }
-   
-    public function locationAction(Request $httpRequest){
-        $username = $httpRequest->getSession()->get('username');
-        $x = $httpRequest->get('x');
-        $y = $httpRequest->get('y');
-        $request = new ViewLocationRequest($username,$y,$x);
-        $interactor = new ViewLocationInteractor($this->cityRepository,$this->cityBuildingsRepository,$this->buildingsRepository);
-        $response = new ViewLocationResponse();
 
-        $response->failed = !$interactor->process($request,$response);
+    public function locationAction(Request $httpRequest)
+    {
+        $username   = $httpRequest->getSession()->get('username');
+        $x          = $httpRequest->get('x');
+        $y          = $httpRequest->get('y');
+        $request    = new ViewLocationRequest($username, $y, $x);
+        $interactor = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingsRepository, $this->buildingsRepository);
+        $response   = new ViewLocationResponse();
+
+        $response->failed = !$interactor->process($request, $response);
         return $response;
     }
-    public function after() {
+
+    public function after()
+    {
         $this->cityRepository->sync();
     }
 
