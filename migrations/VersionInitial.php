@@ -10,16 +10,14 @@ use Doctrine\DBAL\Types\Type;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class VersionInitial extends AbstractMigration
-{
+class VersionInitial extends AbstractMigration {
 
     /**
      * @var Table
      */
     private $table;
 
-    public function up(Schema $schema)
-    {
+    public function up(Schema $schema) {
 
 
         $this->table = $schema->createTable('users');
@@ -41,7 +39,7 @@ class VersionInitial extends AbstractMigration
         $this->table->addColumn('name', Type::STRING, array('length' => 32));
         $this->table->addColumn('description', Type::TEXT);
         $this->table->setPrimaryKey(array("id"));
-        $rolesTable = $this->table;
+        $rolesTable  = $this->table;
 
         $this->table = $schema->createTable('user_roles');
         $this->table->addColumn('user_id', Type::INTEGER);
@@ -56,7 +54,7 @@ class VersionInitial extends AbstractMigration
         $this->table->addColumn('width', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('height', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->setPrimaryKey(array('id'));
-        $mapTable = $this->table;
+        $mapTable    = $this->table;
 
         $this->table = $schema->createTable('tiles');
         $this->table->addColumn('id', Type::INTEGER, array('length' => 11, 'autoincrement' => true));
@@ -66,7 +64,7 @@ class VersionInitial extends AbstractMigration
         $this->table->addColumn('width', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->addColumn('height', Type::INTEGER, array('length' => 11, 'unsigned' => true));
         $this->table->setPrimaryKey(array('id'));
-        $tileTable = $this->table;
+        $tileTable   = $this->table;
 
         $this->table = $schema->createTable('map_tiles');
         $this->table->addColumn('x', Type::INTEGER, array('length' => 11, 'unsigned' => true));
@@ -88,16 +86,17 @@ class VersionInitial extends AbstractMigration
         $this->table->addColumn('is_selected', Type::BOOLEAN);
         $this->table->setPrimaryKey(array('id', 'x', 'y'));
         $this->table->addForeignKeyConstraint(
-            $userTable,
-            array('user_id'),
-            array('id'),
-            array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTION'),
-            'fk_city_owner'
+                $userTable, array('user_id'), array('id'), array('onDelete' => 'SET NULL', 'onUpdate' => 'NO ACTION'), 'fk_city_owner'
         );
+
+        $this->table = $schema->createTable('buildings');
+        $this->table->addColumn('id', Type::INTEGER, array('length' => 11, 'autoincrement' => true));
+        $this->table->addColumn('name', Type::STRING, array('length' => 254));
+        $this->table->addColumn('min_level', Type::INTEGER, array('length' => 11, 'unsigned' => true));
+        $this->table->addColumn('max_level', Type::INTEGER, array('length' => 11, 'unsigned' => true));
     }
 
-    public function down(Schema $schema)
-    {
+    public function down(Schema $schema) {
         $schema->dropTable('user_roles');
         $schema->dropTable('users');
         $schema->dropTable('roles');
@@ -105,6 +104,7 @@ class VersionInitial extends AbstractMigration
         $schema->dropTable('tiles');
         $schema->dropTable('map_tiles');
         $schema->dropTable('cities');
+        $schema->dropTable('buildings');
     }
 
 }

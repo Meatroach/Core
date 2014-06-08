@@ -12,6 +12,8 @@ filter:
         - config/
         - templates/
         - cli/
+        - tests/
+        - features/
 
 tools:
     php_mess_detector: true
