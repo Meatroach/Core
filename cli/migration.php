@@ -15,7 +15,7 @@ use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputArgument;
 
-$env = 'test';
+$env = Env::TEST;
 
 $argument = end($argv);
 if (in_array($argument, Env::all())) {
