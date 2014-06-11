@@ -2,7 +2,10 @@ full-test:
 	bin/phpunit tests/
 	bin/behat -f progress --no-snippets
 	bin/behat -p silex -f progress --no-snippets
-
+full-test-windows:
+	bin/phpunit.bat tests/
+	bin/behat.bat -f progress --no-snippets
+	bin/behat.bat -p silex -f progress --no-snippets
 install-test:
 	composer self-update
 	composer install --no-progress

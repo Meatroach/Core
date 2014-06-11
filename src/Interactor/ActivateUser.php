@@ -27,12 +27,12 @@ class ActivateUser
 
     /**
      * @param \OpenTribes\Core\Repository\User $userRepository
-     * @param \OpenTribes\Core\Validator\ActivateUser $activateUserValidator
+     * @param \OpenTribes\Core\Validator\ActivateUser $userValidator
      */
-    public function __construct(UserRepository $userRepository, ActivateUserValidator $activateUserValidator)
+    public function __construct(UserRepository $userRepository, ActivateUserValidator $userValidator)
     {
         $this->userRepository        = $userRepository;
-        $this->activateUserValidator = $activateUserValidator;
+        $this->activateUserValidator = $userValidator;
     }
 
     /**
@@ -64,5 +64,4 @@ class ActivateUser
         $response->username = $user->getUsername();
         return true;
     }
-
 }

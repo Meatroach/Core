@@ -28,62 +28,58 @@ class CreateCity
     private $userRepository;
 
     /**
-     * @var MapRepository
+     * @var MapTilesRepository
      */
     private $mapTilesRepository;
 
     /**
-     * @param \OpenTribes\Core\Repository\City $cityRepository
-     * @param \OpenTribes\Core\Repository\MapTiles $mapTilesRepository
-     * @param \OpenTribes\Core\Repository\User $userRepository
+     * @param CityRepository $cityRepository
+     * @param MapTilesRepository $mapTilesRepository
+     * @param UserRepository $userRepository
      */
-    public function __construct(
-        CityRepository $cityRepository,
-        MapTilesRepository $mapTilesRepository,
-        UserRepository $userRepository
-    ) {
-        $this->cityRepository = $cityRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository)
+    {
+        $this->cityRepository     = $cityRepository;
+        $this->userRepository     = $userRepository;
         $this->mapTilesRepository = $mapTilesRepository;
     }
 
     /**
-     * @param \OpenTribes\Core\Request\CreateCity $request
-     * @param \OpenTribes\Core\Response\CreateCity $response
+     * @param CreateCityRequest $request
+     * @param CreateCityResponse $response
      * @return boolean
      */
     public function process(CreateCityRequest $request, CreateCityResponse $response)
     {
-        $owner = $this->userRepository->findOneByUsername($request->getUsername());
-        $x     = $request->getX();
-        $y     = $request->getY();
-        $name  = $request->getDefaultCityName();
-        $map   = $this->mapTilesRepository->getMap();
+        $owner     = $this->userRepository->findOneByUsername($request->getUsername());
+        $positionX = $request->getX();
+        $positionY = $request->getY();
+        $name      = $request->getDefaultCityName();
+        $map       = $this->mapTilesRepository->getMap();
 
         if (!$owner || !$map) {
             return false;
         }
-        if (!$map->isValidLocation($y, $x)) {
+        if (!$map->isValidLocation($positionY, $positionX)) {
             return false;
         }
 
-        if (!$map->isAccessible($y, $x)) {
+        if (!$map->isAccessible($positionY, $positionX)) {
             return false;
         }
 
-        if ($this->cityRepository->cityExistsAt($y, $x)) {
+        if ($this->cityRepository->cityExistsAt($positionY, $positionX)) {
             return false;
         }
 
 
-        $id = $this->cityRepository->getUniqueId();
+        $cityId = $this->cityRepository->getUniqueId();
 
-        $city = $this->cityRepository->create($id, $name, $y, $x);
+        $city           = $this->cityRepository->create($cityId, $name, $positionY, $positionX);
         $city->setOwner($owner);
         $city->setSelected(true);
         $this->cityRepository->add($city);
         $response->city = new CityView($city);
         return true;
     }
-
 }
