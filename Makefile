@@ -14,6 +14,7 @@ install-test:
 	mkdir storage
 	mkdir cache
 	touch storage/ot.db
+	chmod a=rwx -R cli/ config/
 	cli/config.php create
 	cli/migration.php migrations:migrate --no-interaction
 
