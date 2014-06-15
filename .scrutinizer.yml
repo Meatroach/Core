@@ -2,8 +2,8 @@ before_commands:
     - 'composer install --no-progress'
     - 'mkdir storage/'
     - 'touch storage/ot.db'
-    - 'cli/config.php create'
-    - 'cli/migration.php migrations:migrate --no-interaction'
+    - 'php cli/config.php create'
+    - 'php cli/migration.php migrations:migrate --no-interaction'
     
 filter:
     excluded_paths:
