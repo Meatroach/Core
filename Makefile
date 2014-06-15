@@ -15,8 +15,8 @@ install-test:
 	mkdir cache
 	touch storage/ot.db
 	chmod a=rwx -R cli/ config/
-	cli/config.php create
-	cli/migration.php migrations:migrate --no-interaction
+	php cli/config.php create
+	php cli/migration.php migrations:migrate --no-interaction
 
 install-dev:
 	composer self-update
@@ -24,13 +24,13 @@ install-dev:
 	mkdir storage
 	mkdir cache
 	touch storage/ot.db
-	cli/config.php create develop
-	cli/migration.php migrations:migrate develop
-	cli/config.php create-dummy-map develop
+	php cli/config.php create develop
+	php cli/migration.php migrations:migrate develop
+	php cli/config.php create-dummy-map develop
 
 install-production:
 	composer self-update
 	composer install --no-progress
-	cli/config.php create production
-	cli/migration.php migrations:migrate --no-interaction production
+	php cli/config.php create production
+	php cli/migration.php migrations:migrate --no-interaction production
 
