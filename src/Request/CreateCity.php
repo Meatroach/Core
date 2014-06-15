@@ -18,6 +18,8 @@ class CreateCity
 
     /**
      * @param string $defaultCityName
+     * @param integer $y
+     * @param integer $x
      */
     public function __construct($y, $x, $username, $defaultCityName)
     {

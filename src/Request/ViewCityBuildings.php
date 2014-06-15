@@ -13,6 +13,10 @@ class ViewCityBuildings
     private $y;
     private $x;
 
+    /**
+     * @param integer $y
+     * @param integer $x
+     */
     public function __construct($y, $x)
     {
 

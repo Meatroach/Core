@@ -15,8 +15,8 @@ class ViewCityInformation
     private $x;
 
     /**
-     * @param $x integer
-     * @param $y interger
+     * @param integer $x integer
+     * @param integer $y interger
      */
     public function __construct($y, $x)
     {
