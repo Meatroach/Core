@@ -44,17 +44,17 @@ class LocationCalculator implements LocationCalculatorInterface
         $angleStart = $direction*90;
         $angleEnd = ($direction+1)*90-1;
         $randomAngle = mt_rand($angleStart,$angleEnd);
-      /*  if ($drawn === (int) (2 * M_PI * $radius)) {
+        if ($drawn === (int) (2 * M_PI * $radius)) {
             ++$radius;
             $drawn = 0;
         }
-        ++$drawn;*/
+        ++$drawn;
 
         $phi = deg2rad($randomAngle);
         $radius = $this->countCities+1;
         $x = $this->centerX + ~~($radius * cos($phi));
         $y = $this->centerY + ~~($radius * sin($phi));
-        var_dump($angleStart,$angleEnd,$direction,$x,$y);
+     
 
         $this->x = $x;
         $this->y = $y;

@@ -2,15 +2,16 @@
 
 namespace OpenTribes\Core\Test\Silex\Repository;
 
-use OpenTribes\Core\Silex\Repository\DBALCity as CityRepository;
-use OpenTribes\Core\Silex\Repository\DBALUser as UserRepository;
+use Exception;
+use OpenTribes\Core\Silex\Repository;
+use PHPUnit_Framework_TestCase;
 
 /**
  * Description of CityTest
  *
  * @author Witali
  */
-class CityTest extends \PHPUnit_Framework_TestCase
+class CityTest extends PHPUnit_Framework_TestCase
 {
 
     private $userRepository;
@@ -83,8 +84,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
     {
         $env                  = 'test';
         $app                  = require __DIR__ . '/../../../bootstrap.php';
-        $this->userRepository = new UserRepository($app['db']);
-        $this->cityRepository = new CityRepository($app['db']);
+        $this->userRepository = $app[Repository::USER];
+        $this->cityRepository = $app[Repository::CITY];
         $this->createDummyUser();
         $this->createDummyCities();
     }
