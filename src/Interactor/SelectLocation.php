@@ -36,6 +36,7 @@ class SelectLocation
         $this->locationCalculator->calculate($direction);
         $response->x = $this->locationCalculator->getX();
         $response->y = $this->locationCalculator->getY();
-
+        $response->proceed = true;
+        $response->failed = false;
     }
 }

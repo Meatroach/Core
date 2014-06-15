@@ -19,9 +19,10 @@ class CityTest extends PHPUnit_Framework_TestCase
 
     private function createDummyUser()
     {
-        $user = $this->userRepository->create(1, 'TestUser', '123456', 'test@test.de');
+        $userId = $this->userRepository->getUniqueId();
+        $user = $this->userRepository->create($userId, 'TestUser', '123456', 'test@test.de');
         $this->userRepository->add($user);
-        $this->userRepository->sync();
+       
     }
 
     private function deleteDummyUser()
@@ -31,7 +32,7 @@ class CityTest extends PHPUnit_Framework_TestCase
             throw new Exception("Could not delete Dummy User");
         }
         $this->userRepository->delete($user);
-        $this->userRepository->sync();
+ 
     }
 
     private function deleteDummyCities()
@@ -45,7 +46,7 @@ class CityTest extends PHPUnit_Framework_TestCase
         foreach ($cities as $city) {
             $this->cityRepository->delete($city);
         }
-        $this->cityRepository->sync();
+     
     }
 
     private function createDummyCities()
@@ -64,7 +65,7 @@ class CityTest extends PHPUnit_Framework_TestCase
             }
         }
 
-        $this->cityRepository->sync();
+     
     }
 
     public function testFindCityByOwner()
@@ -90,7 +91,7 @@ class CityTest extends PHPUnit_Framework_TestCase
         $this->createDummyCities();
     }
 
-    public function testCityIsCreated()
+    public function testFindCityByLocation()
     {
         $city = $this->cityRepository->findByLocation(1, 1);
         $this->assertInstanceOf('\OpenTribes\Core\Entity\City', $city);

@@ -28,13 +28,10 @@ class CreateNewCity
     private $userRepository;
     private $locationCalculator;
 
-
     public function __construct(
-        CityRepository $cityRepository,
-        MapTilesRepository $mapTilesRepository,
-        UserRepository $userRepository,
-        LocationCalculator $locationCalculator
-    ) {
+    CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator
+    )
+    {
         $this->cityRepository     = $cityRepository;
         $this->mapTilesRepository = $mapTilesRepository;
         $this->userRepository     = $userRepository;
@@ -43,38 +40,40 @@ class CreateNewCity
 
     public function process(CreateNewCityRequest $request, CreateNewCityResponse $response)
     {
-        $direction       = $request->getDirection();
-        $username        = $request->getUsername();
-        $defaultCityName = $request->getDefaultCityName();
-
-        $map = $this->mapTilesRepository->getMap();
+        $direction         = $request->getDirection();
+        $username          = $request->getUsername();
+        $defaultCityName   = $request->getDefaultCityName();
+        $response->proceed = true;
+        $map               = $this->mapTilesRepository->getMap();
 
         if (!$map) {
             throw new \Exception("Please create a map");
         }
+
+
+        $this->locationCalculator->setCenterPosition($map->getCenterY(), $map->getCenterX());
+        $this->locationCalculator->setCountCities($this->cityRepository->countAll());
         $selectLocationInteractor = new SelectLocationInteractor($this->locationCalculator);
         $selectLocationRequest    = new SelectLocationRequest($direction);
         $selectLocationResponse   = new SelectLocationResponse();
-        $createCityInteractor     = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository);
-        $createCityResponse       = new CreateCityResponse();
-        $this->locationCalculator->setCenterPosition($map->getCenterY(), $map->getCenterX());
 
-
-        $this->locationCalculator->setCountCities($this->cityRepository->countAll());
-        $i = 0;
+        $createCityInteractor = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository);
+        $createCityResponse   = new CreateCityResponse();
+        $i                    = 0;
         do {
-            $i++;
-
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
-            $createCityRequest = new CreateCityRequest($selectLocationResponse->y, $selectLocationResponse->x, $username, $defaultCityName);
-            $cityNotCreated    = !$createCityInteractor->process($createCityRequest, $createCityResponse);
+            $x                 = $selectLocationResponse->x;
+            $y                 = $selectLocationResponse->y;
+            $createCityRequest = new CreateCityRequest($y, $x, $username, $defaultCityName);
+            $cityIsCreated     = $createCityInteractor->process($createCityRequest, $createCityResponse);
+
+            $i++;
             if ($i > 10) {
                 return false;
             }
-        } while ($cityNotCreated);
+        } while (!$cityIsCreated);
 
-        $response->city = $createCityResponse->city;
-        return true;
+        $response->failed = $createCityResponse->failed;
+        $response->city   = $createCityResponse->city;
     }
-
 }

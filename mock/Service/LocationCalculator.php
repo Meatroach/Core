@@ -45,6 +45,7 @@ class LocationCalculator implements LocationCalculatorInterface
 
 
         $radius = $this->calculateRadius();
+  
         $phi    = deg2rad($randomAngle);
 
         $x = $this->centerX + ~~($radius * cos($phi));
@@ -57,15 +58,18 @@ class LocationCalculator implements LocationCalculatorInterface
 
     private function calculateRadius()
     {
-        $radius = 0;
+        $radius = 1;
         $drawn  = 0;
-        for ($city = 0; $city >= $this->countCities; $city++) {
+       
+        for ($city = 0; $city <= $this->countCities; $city++) {
             if ($drawn === (int) (2 * M_PI * $radius)) {
                 ++$radius;
                 $drawn = 0;
             }
             ++$drawn;
+          
         }
+        
         return $radius;
     }
 

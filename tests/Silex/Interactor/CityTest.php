@@ -16,6 +16,7 @@ class CityTest extends \PHPUnit_Framework_TestCase
     private $mapTilesRepository;
     private $tileRepository;
     private $mapRepository;
+
     /**
      * @var \OpenTribes\Core\Silex\Repository\DBALUser;
      */
@@ -38,7 +39,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
 
     private function createDummyUser()
     {
-        $user = $this->userRepository->create(1, 'Test', '123456', 'test@test.de');
+        $userId = $this->userRepository->getUniqueId();
+        $user   = $this->userRepository->create($userId, 'Test', '123456', 'test@test.de');
         $this->userRepository->add($user);
     }
 
@@ -54,8 +56,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
         $mapRepository->add($map);
 
 
-        $tileId = $tileRepository->getUniqueId();
-        $tile   = $tileRepository->create($tileId, 'gras', true);
+        $tileId  = $tileRepository->getUniqueId();
+        $tile    = $tileRepository->create($tileId, 'gras', true);
         $tile->setWidth($mapOptions['tileWidth']);
         $tile->setHeight($mapOptions['tileHeight']);
         $tile->setDefault(true);
@@ -63,8 +65,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
         $tiles   = array('forrest', 'hill', 'sea');
         $tileIds = array();
         foreach ($tiles as $tileName) {
-            $tileId = $tileRepository->getUniqueId();
-            $tile   = $tileRepository->create($tileId, $tileName, false);
+            $tileId           = $tileRepository->getUniqueId();
+            $tile             = $tileRepository->create($tileId, $tileName, false);
             $tile->setWidth($mapOptions['tileWidth']);
             $tile->setHeight($mapOptions['tileHeight']);
             $tileRepository->add($tile);
@@ -73,41 +75,57 @@ class CityTest extends \PHPUnit_Framework_TestCase
 
         for ($y = 0; $y <= $mapOptions['height']; $y++) {
             for ($x = 0; $x <= $mapOptions['width']; $x++) {
-                $rand = rand(0, 100);
-                if ($rand > 80) {
-                    $randomTileId = $tileIds[array_rand($tileIds)];
-                    $tile         = $tileRepository->findById($randomTileId);
-                    $map->addTile($tile, $y, $x);
+                $rand = mt_rand(0, 100);
+                if ($rand < 80) {
+                    continue;
                 }
+
+                $randomTileId = $tileIds[array_rand($tileIds)];
+                $tile         = $tileRepository->findById($randomTileId);
+                $map->addTile($tile, $y, $x);
             }
         }
 
         $mapTileRepository->add($map);
     }
 
+    private function createCity($name, $direction, $cityName)
+    {
+        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
+        $response   = new CreateNewCityResponse;
+        $request    = new CreateNewCityRequest($name, $direction, $cityName);
+        $interactor->process($request, $response);
+        return $response;
+    }
+
+    public function testCreateNewCityInteractor()
+    {
+        $response = $this->createCity('Test', Direction::ANY, 'TestCity');
+        $this->assertFalse($response->failed);
+    }
+
     public function testCreateRandomUniqueCities()
     {
 
 
-        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
-        $response   = new CreateNewCityResponse;
-        $locations  = array();
+
+        $locations = array();
         for ($i = 0; $i < 20; $i++) {
-            $request          = new CreateNewCityRequest('Test', Direction::ANY, 'TestCity ' . $i);
-            $response->failed = $interactor->process($request, $response);
-            $y                = $response->city->y;
-            $x                = $response->city->x;
-            $key              = sprintf('%d-%d', $y, $x);
-            $this->assertFalse(isset($locations[$key]), sprintf('City at location Y:%d X:%d already exists', $y, $x));
+            $response        = $this->createCity('Test', Direction::ANY, 'TestCity');
+            $this->assertFalse($response->failed);
+              
+            $this->assertNotNull($response->city, "City not exists");
+            $y               = $response->city->y;
+            $x               = $response->city->x;
+            $key             = sprintf('%d-%d', $y, $x);
+            $cityExists      = isset($locations[$key]);
+            $this->assertFalse($cityExists, sprintf('City at location Y:%d X:%d already exists', $y, $x));
             $locations[$key] = array(
                 'x' => $x,
                 'y' => $y,
                 'i' => $i
             );
-
-            $this->assertNotNull($response->city);
         }
-
+   
     }
-
 }

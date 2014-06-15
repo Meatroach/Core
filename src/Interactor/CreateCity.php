@@ -56,7 +56,8 @@ class CreateCity
         $positionY = $request->getY();
         $name      = $request->getDefaultCityName();
         $map       = $this->mapTilesRepository->getMap();
-
+        $response->failed = true;
+        $response->proceed = true;
         if (!$owner || !$map) {
             return false;
         }
@@ -72,7 +73,7 @@ class CreateCity
             return false;
         }
 
-
+        $response->failed = false;
         $cityId = $this->cityRepository->getUniqueId();
 
         $city           = $this->cityRepository->create($cityId, $name, $positionY, $positionX);

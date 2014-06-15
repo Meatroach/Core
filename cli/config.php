@@ -9,9 +9,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 $console = new Application;
 $console->register('create')
-    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
-    ->setCode(
-        function (InputInterface $input) {
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
+        ->setCode(
+                function (InputInterface $input) {
             $env     = $input->getArgument('env');
             $path    = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
@@ -31,12 +31,12 @@ $console->register('create')
                 file_put_contents($realFile, $newContent);
             }
         }
-    );
+);
 
 $console->register('create-dummy-map')
-    ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
-    ->setCode(
-        function (InputInterface $input) {
+        ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
+        ->setCode(
+                function (InputInterface $input) {
             $env               = $input->getArgument('env');
             $app               = require __DIR__ . '/../bootstrap.php';
             $mapOptions        = $app['map.options'];
@@ -61,8 +61,8 @@ $console->register('create-dummy-map')
             $tiles   = array('forrest', 'hill', 'sea');
             $tileIds = array();
             foreach ($tiles as $tileName) {
-                $tileId = $tileRepository->getUniqueId();
-                $tile   = $tileRepository->create($tileId, $tileName, false);
+                $tileId           = $tileRepository->getUniqueId();
+                $tile             = $tileRepository->create($tileId, $tileName, false);
                 $tile->setWidth($mapOptions['tileWidth']);
                 $tile->setHeight($mapOptions['tileHeight']);
                 $tileRepository->add($tile);
@@ -72,11 +72,13 @@ $console->register('create-dummy-map')
             for ($y = 0; $y <= $mapOptions['height']; $y++) {
                 for ($x = 0; $x <= $mapOptions['width']; $x++) {
                     $rand = rand(0, 100);
-                    if ($rand > 80) {
-                        $randomTileId = $tileIds[array_rand($tileIds)];
-                        $tile         = $tileRepository->findById($randomTileId);
-                        $map->addTile($tile, $y, $x);
+                    if ($rand < 80) {
+                        continue;
                     }
+
+                    $randomTileId = $tileIds[array_rand($tileIds)];
+                    $tile         = $tileRepository->findById($randomTileId);
+                    $map->addTile($tile, $y, $x);
                 }
             }
             $mapTileRepository->add($map);
@@ -86,5 +88,5 @@ $console->register('create-dummy-map')
             $tileRepository->sync();
             $mapTileRepository->sync();
         }
-    );
+);
 $console->run();
