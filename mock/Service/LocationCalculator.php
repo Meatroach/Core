@@ -13,12 +13,11 @@ use OpenTribes\Core\Value\Direction;
 class LocationCalculator implements LocationCalculatorInterface
 {
 
-    private $x = 0;
-    private $y = 0;
-    private $centerX = 0;
-    private $centerY = 0;
+    private $x           = 0;
+    private $y           = 0;
+    private $centerX     = 0;
+    private $centerY     = 0;
     private $countCities = 0;
-
 
     public function setCenterPosition($y, $x)
     {
@@ -31,7 +30,6 @@ class LocationCalculator implements LocationCalculatorInterface
         $this->countCities = $countCities;
     }
 
-
     public function calculate(Direction $direction)
     {
 
@@ -41,23 +39,34 @@ class LocationCalculator implements LocationCalculatorInterface
             $direction = $this->countCities % 4;
         }
 
-        $angleStart = $direction*90;
-        $angleEnd = ($direction+1)*90-1;
-        $randomAngle = mt_rand($angleStart,$angleEnd);
-        if ($drawn === (int) (2 * M_PI * $radius)) {
-            ++$radius;
-            $drawn = 0;
-        }
-        ++$drawn;
+        $angleStart  = $direction * 90;
+        $angleEnd    = ($direction + 1) * 90 - 1;
+        $randomAngle = mt_rand($angleStart, $angleEnd);
 
-        $phi = deg2rad($randomAngle);
-        $radius = $this->countCities+1;
+
+        $radius = $this->calculateRadius();
+        $phi    = deg2rad($randomAngle);
+
         $x = $this->centerX + ~~($radius * cos($phi));
         $y = $this->centerY + ~~($radius * sin($phi));
-     
+
 
         $this->x = $x;
         $this->y = $y;
+    }
+
+    private function calculateRadius()
+    {
+        $radius = 0;
+        $drawn  = 0;
+        for ($city = 0; $city >= $this->countCities; $city++) {
+            if ($drawn === (int) (2 * M_PI * $radius)) {
+                ++$radius;
+                $drawn = 0;
+            }
+            ++$drawn;
+        }
+        return $radius;
     }
 
     public function getX()
@@ -69,5 +78,4 @@ class LocationCalculator implements LocationCalculatorInterface
     {
         return $this->y;
     }
-
 }
