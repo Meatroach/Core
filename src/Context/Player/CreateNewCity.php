@@ -62,8 +62,9 @@ class CreateNewCity
         $i                    = 0;
         do {
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
-            $x                 = $selectLocationResponse->x;
-            $y                 = $selectLocationResponse->y;
+            $x = $selectLocationResponse->x;
+            $y = $selectLocationResponse->y;
+
             $createCityRequest = new CreateCityRequest($y, $x, $username, $defaultCityName);
             $cityIsCreated     = $createCityInteractor->process($createCityRequest, $createCityResponse);
 

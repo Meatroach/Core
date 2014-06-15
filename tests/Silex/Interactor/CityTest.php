@@ -104,6 +104,17 @@ class CityTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($response->failed);
     }
 
+    public function testCreateTwoNewCities()
+    {
+        $response = $this->createCity('Test', Direction::ANY, 'TestCity1');
+        $this->assertFalse($response->failed);
+        $response = $this->createCity('Test', Direction::ANY, 'TestCity2');
+        $this->assertFalse($response->failed);
+    }
+
+    /**
+     * @ignore
+     */
     public function testCreateRandomUniqueCities()
     {
 
@@ -111,9 +122,9 @@ class CityTest extends \PHPUnit_Framework_TestCase
 
         $locations = array();
         for ($i = 0; $i < 20; $i++) {
-            $response        = $this->createCity('Test', Direction::ANY, 'TestCity');
+            $response = $this->createCity('Test', Direction::ANY, 'TestCity');
             $this->assertFalse($response->failed);
-              
+
             $this->assertNotNull($response->city, "City not exists");
             $y               = $response->city->y;
             $x               = $response->city->x;
@@ -126,6 +137,5 @@ class CityTest extends \PHPUnit_Framework_TestCase
                 'i' => $i
             );
         }
-   
     }
 }

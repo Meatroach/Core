@@ -61,7 +61,7 @@ class LocationCalculator implements LocationCalculatorInterface
         $radius = 1;
         $drawn  = 0;
        
-        for ($city = 0; $city <= $this->countCities; $city++) {
+        for ($city = 0; $city < $this->countCities; $city++) {
             if ($drawn === (int) (2 * M_PI * $radius)) {
                 ++$radius;
                 $drawn = 0;

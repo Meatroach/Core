@@ -15,6 +15,10 @@ class CityTest extends PHPUnit_Framework_TestCase
 {
 
     private $userRepository;
+    /**
+     *
+     * @var OpenTribes\Core\Repository\City 
+     */
     private $cityRepository;
 
     private function createDummyUser()
@@ -95,6 +99,9 @@ class CityTest extends PHPUnit_Framework_TestCase
     {
         $city = $this->cityRepository->findByLocation(1, 1);
         $this->assertInstanceOf('\OpenTribes\Core\Entity\City', $city);
+    }
+    public function testCountCities(){
+        $this->assertSame(25,$this->cityRepository->countAll());
     }
 
     public function tearDown()
