@@ -87,7 +87,7 @@ class City
         $response   = new CreateNewCityResponse;
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
-            $response->failed  = !$interactor->process($request, $response);
+            $interactor->process($request, $response);
         }
 
         $response->directions = $directions;

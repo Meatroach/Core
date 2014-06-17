@@ -55,6 +55,7 @@ class Game implements ControllerProviderInterface
             ->value(
                 RouteValue::SUCCESS_HANDLER,
                 function () use ($app) {
+                    var_dump("Succes");
                     $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                     return new RedirectResponse($baseUrl . 'game/city/list');
                 }

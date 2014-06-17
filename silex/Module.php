@@ -237,6 +237,7 @@ class Module implements ServiceProviderInterface
             if ($result) {
                 $response = $result;
             }
+
         }
         if (is_object($appResponse) &&
             $appResponse->proceed &&
