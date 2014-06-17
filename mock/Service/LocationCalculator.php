@@ -18,6 +18,7 @@ class LocationCalculator implements LocationCalculatorInterface
     private $centerX     = 0;
     private $centerY     = 0;
     private $countCities = 0;
+    private $radius = 1;
 
     public function setCenterPosition($y, $x)
     {
@@ -58,7 +59,7 @@ class LocationCalculator implements LocationCalculatorInterface
 
     private function calculateRadius()
     {
-        $radius = 1;
+        $radius = $this->radius;
         $drawn  = 0;
        
         for ($city = 0; $city < $this->countCities; $city++) {
@@ -82,4 +83,10 @@ class LocationCalculator implements LocationCalculatorInterface
     {
         return $this->y;
     }
+
+    public function increaseRadius()
+    {
+        $this->radius++;
+    }
+
 }

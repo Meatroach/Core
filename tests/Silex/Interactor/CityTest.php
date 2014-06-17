@@ -101,6 +101,7 @@ class CityTest extends \PHPUnit_Framework_TestCase
     public function testCreateNewCityInteractor()
     {
         $response = $this->createCity('Test', Direction::ANY, 'TestCity');
+
         $this->assertFalse($response->failed);
     }
 

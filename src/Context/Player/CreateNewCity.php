@@ -70,6 +70,9 @@ class CreateNewCity
 
             $i++;
             if ($i > 10) {
+                $this->locationCalculator->increaseRadius();
+            }
+            if ($i > 100) {
                 return false;
             }
         } while (!$cityIsCreated);
