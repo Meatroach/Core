@@ -18,7 +18,7 @@ class LocationCalculator implements LocationCalculatorInterface
     private $centerX = 0;
     private $centerY = 0;
     private $countCities = 0;
-    private $radius = 1;
+    private $radius = 2;
 
     public function setCenterPosition($y, $x)
     {
