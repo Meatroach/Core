@@ -22,7 +22,7 @@ interface City
      * Create new city entity
      * @param integer $id
      * @param string $name
-     * @param interger $y
+     * @param integer $y
      * @param integer $x
      * @return CityEntity
      */
@@ -38,7 +38,7 @@ interface City
     /**
      * check if city exists at location
      * @param integer $y
-     * @param interger $x
+     * @param integer $x
      * @return boolean
      */
     public function cityExistsAt($y, $x);

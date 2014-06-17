@@ -13,10 +13,10 @@ use OpenTribes\Core\Value\Direction;
 class LocationCalculator implements LocationCalculatorInterface
 {
 
-    private $x           = 0;
-    private $y           = 0;
-    private $centerX     = 0;
-    private $centerY     = 0;
+    private $x = 0;
+    private $y = 0;
+    private $centerX = 0;
+    private $centerY = 0;
     private $countCities = 0;
     private $radius = 1;
 
@@ -40,14 +40,14 @@ class LocationCalculator implements LocationCalculatorInterface
             $direction = $this->countCities % 4;
         }
 
-        $angleStart  = $direction * 90;
-        $angleEnd    = ($direction + 1) * 90 - 1;
+        $angleStart = $direction * 90;
+        $angleEnd = ($direction + 1) * 90 - 1;
         $randomAngle = mt_rand($angleStart, $angleEnd);
 
 
         $radius = $this->calculateRadius();
-  
-        $phi    = deg2rad($randomAngle);
+
+        $phi = deg2rad($randomAngle);
 
         $x = $this->centerX + ~~($radius * cos($phi));
         $y = $this->centerY + ~~($radius * sin($phi));
@@ -57,20 +57,23 @@ class LocationCalculator implements LocationCalculatorInterface
         $this->y = $y;
     }
 
+    /**
+     * @return double
+     */
     private function calculateRadius()
     {
         $radius = $this->radius;
-        $drawn  = 0;
-       
+        $drawn = 0;
+
         for ($city = 0; $city < $this->countCities; $city++) {
-            if ($drawn === (int) (2 * M_PI * $radius)) {
+            if ($drawn === (int)(2 * M_PI * $radius)) {
                 ++$radius;
                 $drawn = 0;
             }
             ++$drawn;
-          
+
         }
-        
+
         return $radius;
     }
 

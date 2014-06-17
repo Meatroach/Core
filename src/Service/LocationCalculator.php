@@ -40,5 +40,8 @@ interface LocationCalculator
      */
     public function setCountCities($countCities);
 
+    /**
+     * @return void
+     */
     public function increaseRadius();
 }

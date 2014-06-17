@@ -31,7 +31,7 @@ class Map
      */
     public function __construct($id, $name)
     {
-        $this->id   = $id;
+        $this->id = $id;
         $this->name = $name;
     }
 
@@ -42,8 +42,8 @@ class Map
      */
     public function addTile(Tile $tile, $y, $x)
     {
-        $y                   = (int)$y;
-        $x                   = (int)$x;
+        $y = (int)$y;
+        $x = (int)$x;
         $this->tiles[$y][$x] = $tile;
     }
 
@@ -106,6 +106,10 @@ class Map
         return ~~($this->getHeight() / 2);
     }
 
+    /**
+     * @param integer $y
+     * @param integer $x
+     */
     public function isValidLocation($y, $x)
     {
         return $x > 0 && $y > 0 && $x <= $this->getWidth() && $y <= $this->getHeight();
