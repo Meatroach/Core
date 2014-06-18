@@ -1,25 +1,76 @@
-// Avoid `console` errors in browsers that lack a console.
-(function () {
-    var method;
-    var noop = function () {
-    };
-    var methods = [
-        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-        'timeStamp', 'trace', 'warn'
-    ];
-    var length = methods.length;
-    var console = (window.console = window.console || {});
+/*jslint browser:true*/
+/*globals $, define*/
 
-    while (length--) {
-        method = methods[length];
+/**
+ *  Polyfill for console debugger
+ *  Since any jquery plugin will be placed here,
+ *  we call jQuery as a parameter
+ *
+ *  @module plugin
+ */
 
-        // Only stub undefined methods.
-        if (!console[method]) {
-            console[method] = noop;
-        }
-    }
-}());
+define(["jquery"], function ($) {
 
-// Place any jQuery/helper plugins in here.
+  /**
+   *  Strict mode
+   *  more infos at :
+   *  http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
+   *
+   *  @property strict mode
+   *  @type {String}
+   *  @default "use strict"
+   */
+  "use strict";
+
+  /**
+   *  For maintanibility, it's better to regroup the var at the top
+   *  of the file.
+   *  This does not affect performance.
+   */
+  var method, methods,
+    noop,
+    length, console;
+
+  /**
+   *  Empty block
+   *  @method noop
+   */
+  noop = function () {
+  };
+
+  /**
+   * Define the console methods
+   * @property methods
+   *
+   */
+  methods = [
+      'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+      'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+      'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+      'timeStamp', 'trace', 'warn'
+  ];
+
+  /**
+   *  Define a console variable or an empty object
+   *  @property console
+   */
+  console = window.console || {};
+
+  /**
+   * Instanciate the console methods with an empty block
+   *
+   */
+  length = methods.length;
+  while (length--) {
+      method = methods[length];
+
+      // Only stub undefined methods.
+      if (!console[method]) {
+          console[method] = noop;
+      }
+  }
+
+  // Place any jQuery/helper plugins in here.
+
+});
+
