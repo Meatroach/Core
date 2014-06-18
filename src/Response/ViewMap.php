@@ -9,8 +9,8 @@ namespace OpenTribes\Core\Response;
  */
 class ViewMap extends Response
 {
-    public $tiles;
-    public $cities;
+    public $tiles = array();
+    public $cities = array();
     public $width;
     public $height;
     public $left;

@@ -82,6 +82,7 @@ class ViewMap
             $cityView->z        = $y + $x * 2;
             $cityView->level    = 1;
             $response->cities[] = $cityView;
+
         }
 
         $map = $this->mapTilesRepository->findAllInArea($area);
