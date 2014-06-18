@@ -4,13 +4,21 @@ $(function () {
         'container': 'body'
     }
     $('.city-info').popover(options);
-    $('#map').bind('mousemove', function (event) {
-        var mapLeft = parseInt($(this).css('left')) * -1;
-        var mapTop = parseInt($(this).css('top')) * -1;
-        var position = {
-            top: mapTop + event.pageY,
-            left: mapLeft + event.pageX
-        }
-        console.log(position);
+    var iso = new Isometric(128, 74, 100, 100);
+
+    var spanX = $('span.x');
+    var spanY = $('span.y');
+    $('#viewport').bind('mousemove', function (event) {
+        console.log(event);
+        var map = $(this).find('#map');
+        var mapLeft = parseInt(map.css('left')) * -1;
+        var mapTop = parseInt(map.css('top')) * -1;
+        var left = mapLeft + event.clientX;
+        var top = mapTop + event.clientY;
+        var location = iso.px2pos(left, top);
+        // spanX.text(location.x);
+        // spanY.text(location.y);
+        spanX.text(event.screenX);
+        spanY.text(event.screenY);
     });
-})
+});

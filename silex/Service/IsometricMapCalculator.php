@@ -84,13 +84,6 @@ class IsometricMapCalculator implements MapCalculator
             'y' => $y
         );
     }
-
-    public function setViewport($height, $width)
-    {
-        $this->viewPortWidth  = $width;
-        $this->viewPortHeight = $height;
-    }
-
     public function positionToPixel($y, $x)
     {
 
@@ -101,6 +94,13 @@ class IsometricMapCalculator implements MapCalculator
             'left' => $left
         );
     }
+
+    public function setViewport($height, $width)
+    {
+        $this->viewPortWidth = $width;
+        $this->viewPortHeight = $height;
+    }
+
 
     public function getCenterPosition($y, $x)
     {
