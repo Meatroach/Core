@@ -10,29 +10,29 @@ namespace OpenTribes\Core\Request;
 class ViewMap
 {
 
-    private $y;
-    private $x;
+    private $posY;
+    private $posX;
     private $username;
     private $viewportWidth;
     private $viewportHeight;
 
-    public function __construct($y, $x, $username, $viewportHeight, $viewportWidth)
+    public function __construct($posY, $posX, $username, $viewportHeight, $viewportWidth)
     {
-        $this->y              = $y;
-        $this->x              = $x;
-        $this->username       = $username;
+        $this->posY = $posY;
+        $this->posX = $posX;
+        $this->username = $username;
         $this->viewportHeight = $viewportHeight;
-        $this->viewportWidth  = $viewportWidth;
+        $this->viewportWidth = $viewportWidth;
     }
 
-    public function getY()
+    public function getPosY()
     {
-        return $this->y;
+        return $this->posY;
     }
 
-    public function getX()
+    public function getPosX()
     {
-        return $this->x;
+        return $this->posX;
     }
 
     /**

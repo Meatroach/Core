@@ -44,7 +44,7 @@ class SilexCityHelper extends CityHelper
             $cityBuildingsRepository,
             $buildingRepository
         );
-        $this->mink        = $mink;
+        $this->mink = $mink;
         $this->sessionName = $this->mink->getDefaultSessionName();
     }
 
@@ -65,12 +65,12 @@ class SilexCityHelper extends CityHelper
     public function assertCityIsInArea($minX, $maxX, $minY, $maxY)
     {
         $this->loadPage();
-        $spanX = $this->page->find('css', 'span.x');
-        $spanY = $this->page->find('css', 'span.y');
+        $spanX = $this->page->find('css', 'span.posX');
+        $spanY = $this->page->find('css', 'span.posY');
 
         $this->mink->assertSession()->statusCodeEquals(200);
-        Test::assertNotNull($spanY, 'span class="y" not found');
-        Test::assertNotNull($spanX, 'span class="x" not found');
+        Test::assertNotNull($spanY, 'span class="posY" not found');
+        Test::assertNotNull($spanX, 'span class="posX" not found');
         $this->x = (int)$spanX->getText();
         $this->y = (int)$spanY->getText();
 
@@ -84,10 +84,10 @@ class SilexCityHelper extends CityHelper
     {
 
         foreach ($locations as $location) {
-            $x           = $location[1];
-            $y           = $location[0];
+            $x = $location[1];
+            $y = $location[0];
             $expectedKey = sprintf('Y%d/X%d', $y, $x);
-            $currentKey  = sprintf('Y%d/X%d', $this->y, $this->x);
+            $currentKey = sprintf('Y%d/X%d', $this->y, $this->x);
             Test::assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
         }
     }

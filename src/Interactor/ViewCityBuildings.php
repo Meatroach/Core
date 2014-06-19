@@ -22,12 +22,12 @@ class ViewCityBuildings
     public function __construct(CityBuildingsRepository $cityRepository, BuildingRepository $buildingRepository)
     {
         $this->cityBuildingsRepository = $cityRepository;
-        $this->buildingRepository      = $buildingRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function process(ViewCityBuildingsRequest $request, ViewCityBuildingsResponse $response)
     {
-        $city = $this->cityBuildingsRepository->findByLocation($request->getY(), $request->getX());
+        $city = $this->cityBuildingsRepository->findByLocation($request->getPosY(), $request->getPosX());
         if (!$city) {
             return false;
         }

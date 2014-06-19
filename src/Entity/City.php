@@ -13,7 +13,7 @@ class City
     /**
      * @var integer
      */
-    private $id;
+    private $cityId;
 
     /**
      * @var string
@@ -28,12 +28,12 @@ class City
     /**
      * @var integer
      */
-    private $x;
+    private $posX;
 
     /**
      * @var integer
      */
-    private $y;
+    private $posY;
 
     /**
      * @var boolean
@@ -46,17 +46,17 @@ class City
     private $buildings = array();
 
     /**
-     * @param integer $id
+     * @param integer $cityId
      * @param string $name
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      */
-    public function __construct($id, $name, $y, $x)
+    public function __construct($cityId, $name, $posY, $posX)
     {
-        $this->id   = (int)$id;
+        $this->cityId = (int)$cityId;
         $this->name = $name;
-        $this->x    = (int)$x;
-        $this->y    = (int)$y;
+        $this->posX = (int)$posX;
+        $this->posY = (int)$posY;
     }
 
     /**
@@ -70,9 +70,9 @@ class City
     /**
      * @return integer
      */
-    public function getId()
+    public function getCityId()
     {
-        return $this->id;
+        return $this->cityId;
     }
 
     /**
@@ -94,17 +94,17 @@ class City
     /**
      * @return integer
      */
-    public function getX()
+    public function getPosX()
     {
-        return $this->x;
+        return $this->posX;
     }
 
     /**
      * @return integer
      */
-    public function getY()
+    public function getPosY()
     {
-        return $this->y;
+        return $this->posY;
     }
 
     public function addBuilding(Building $building)

@@ -30,7 +30,7 @@ class OrthographicMapCalculator implements MapCalculator
         $this->viewPortWidth = $viewPortWidth;
     }
 
-    public function getArea($y, $x)
+    public function getArea($posY, $posX)
     {
         // TODO: Implement getArea() method.
     }
@@ -44,10 +44,10 @@ class OrthographicMapCalculator implements MapCalculator
         $this->viewPortHeight = $height;
     }
 
-    public function positionToPixel($y, $x)
+    public function positionToPixel($posY, $posX)
     {
-        $left = $x * $this->width * $this->tileWidth;
-        $top = $y * $this->height * $this->tileHeight;
+        $left = $posX * $this->width * $this->tileWidth;
+        $top = $posY * $this->height * $this->tileHeight;
         return array(
             'left' => $left,
             'top' => $top
@@ -59,12 +59,12 @@ class OrthographicMapCalculator implements MapCalculator
         $x = $left / $this->tileWidth;
         $y = $top / $this->tileHeight;
         return array(
-            'x' => $x,
-            'y' => $y
+            'posX' => $x,
+            'posY' => $y
         );
     }
 
-    public function getCenterPosition($y, $x)
+    public function getCenterPosition($posY, $posX)
     {
         // TODO: Implement getCenterPosition() method.
     }

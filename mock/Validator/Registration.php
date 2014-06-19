@@ -45,7 +45,7 @@ class Registration extends AbstractRegistration
 
     private function checkPassword()
     {
-        $password        = $this->userObject->password;
+        $password = $this->userObject->password;
         $passwordConfirm = $this->userObject->passwordConfirm;
         if (in_array($password, array(null, false, '', array()), true)) {
             $this->attachError("Password is empty");
@@ -60,7 +60,7 @@ class Registration extends AbstractRegistration
 
     private function checkEmail()
     {
-        $email        = $this->userObject->email;
+        $email = $this->userObject->email;
         $emailConfirm = $this->userObject->emailConfirm;
         if (in_array($email, array(null, false, '', array()), true)) {
             $this->attachError("Email is empty");
@@ -82,5 +82,4 @@ class Registration extends AbstractRegistration
             $this->attachError("Terms and Conditions are not accepted");
         }
     }
-
 }

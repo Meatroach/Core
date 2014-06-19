@@ -14,13 +14,13 @@ interface Building
 
     /**
      * Create new building entity
-     * @param integer $id
+     * @param integer $buildingId
      * @param string $name
      * @param integer $minimumLevel
      * @param integer $maximumLevel
      * @return BuildingEntity
      */
-    public function create($id, $name, $minimumLevel, $maximumLevel);
+    public function create($buildingId, $name, $minimumLevel, $maximumLevel);
 
     /**
      * Add building entity into repository

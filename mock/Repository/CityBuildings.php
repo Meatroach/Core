@@ -33,9 +33,9 @@ class CityBuildings implements CityBuildingsRepository
     /**
      * {@inheritDoc}
      */
-    public function findByLocation($y, $x)
+    public function findByLocation($posY, $posX)
     {
-        $this->city = $this->cityRepository->findByLocation($y, $x);
+        $this->city = $this->cityRepository->findByLocation($posY, $posX);
         return $this->city;
     }
 

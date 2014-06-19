@@ -23,7 +23,7 @@ class Tile implements TileRepository
      */
     public function add(TileEntity $tile)
     {
-        $this->tiles[$tile->getId()] = $tile;
+        $this->tiles[$tile->getTileId()] = $tile;
     }
 
     /**
@@ -60,7 +60,7 @@ class Tile implements TileRepository
     public function findById($id)
     {
         foreach ($this->tiles as $tile) {
-            if ($tile->getId() === $id) {
+            if ($tile->getTileId() === $id) {
                 return $tile;
             }
         }

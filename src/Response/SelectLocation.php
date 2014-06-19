@@ -9,6 +9,6 @@ namespace OpenTribes\Core\Response;
  */
 class SelectLocation extends Response
 {
-    public $x;
-    public $y;
+    public $posX;
+    public $posY;
 }

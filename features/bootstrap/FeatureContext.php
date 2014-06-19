@@ -55,33 +55,33 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
-        $this->userRepository          = new UserRepository;
-        $this->tileRepository          = new TileRepository;
-        $this->mapRepository           = new MapRepository;
-        $this->passwordHasher          = new PasswordHasher;
-        $this->locationCalculator      = new LocationCalculator;
-        $this->cityRepository          = new CityRepository;
+        $this->userRepository = new UserRepository;
+        $this->tileRepository = new TileRepository;
+        $this->mapRepository = new MapRepository;
+        $this->passwordHasher = new PasswordHasher;
+        $this->locationCalculator = new LocationCalculator;
+        $this->cityRepository = new CityRepository;
         $this->activationCodeGenerator = new ActivationCodeGenerator;
-        $this->buildingRepository      = new BuildingRepository;
-        $this->mapTilesRepository      = new MapTilesRepository;
+        $this->buildingRepository = new BuildingRepository;
+        $this->mapTilesRepository = new MapTilesRepository;
         $this->cityBuildingsRepository = new CityBuildingsRepository($this->cityRepository);
-        $this->registrationValidator   = new RegistrationValidator(new RegistrationValidatorDto);
-        $this->activateUserValidator   = new ActivateUserValidator(new ActivateUserValidatorDto);
-        $this->tileHelper              = new TileHelper($this->tileRepository);
-        $this->mapHelper               = new MapHelper($this->mapRepository, $this->tileRepository, $this->mapTilesRepository);
-        $this->userHelper              = new DomainUserHelper($this->userRepository,
+        $this->registrationValidator = new RegistrationValidator(new RegistrationValidatorDto);
+        $this->activateUserValidator = new ActivateUserValidator(new ActivateUserValidatorDto);
+        $this->tileHelper = new TileHelper($this->tileRepository);
+        $this->mapHelper = new MapHelper($this->mapRepository, $this->tileRepository, $this->mapTilesRepository);
+        $this->userHelper = new DomainUserHelper($this->userRepository,
             $this->registrationValidator,
             $this->passwordHasher,
             $this->activationCodeGenerator,
             $this->activateUserValidator);
-        $this->messageHelper           = new MessageHelper();
-        $this->cityHelper              = new CityHelper($this->cityRepository,
+        $this->messageHelper = new MessageHelper();
+        $this->cityHelper = new CityHelper($this->cityRepository,
             $this->mapTilesRepository,
             $this->userRepository,
             $this->locationCalculator,
             $this->cityBuildingsRepository,
             $this->buildingRepository);
-        $this->buildingHelper          = new BuildingHelper($this->buildingRepository);
+        $this->buildingHelper = new BuildingHelper($this->buildingRepository);
     }
 
     /**
@@ -91,9 +91,9 @@ class FeatureContext extends BehatContext
     {
 
         foreach ($table->getHash() as $row) {
-            $username       = $row['username'];
-            $password       = $row['password'];
-            $email          = $row['email'];
+            $username = $row['username'];
+            $password = $row['password'];
+            $email = $row['email'];
             $activationCode = null;
             if (isset($row['activationCode'])) {
                 $activationCode = $row['activationCode'];
@@ -116,11 +116,11 @@ class FeatureContext extends BehatContext
     public function iRegisterWithFollowingInformations(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $username           = $row['username'];
-            $password           = $row['password'];
-            $passwordConfirm    = $row['passwordConfirm'];
-            $email              = $row['email'];
-            $emailConfirm       = $row['emailConfirm'];
+            $username = $row['username'];
+            $password = $row['password'];
+            $passwordConfirm = $row['passwordConfirm'];
+            $email = $row['email'];
+            $emailConfirm = $row['emailConfirm'];
             $termsAndConditions = (bool)$row['termsAndConditions'];
             $this->userHelper->processRegistration(
                 $username,
@@ -172,7 +172,7 @@ class FeatureContext extends BehatContext
     public function iActivateAccountWithFollowingInformations(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $username       = $row['username'];
+            $username = $row['username'];
             $activationCode = $row['activationCode'];
             $this->userHelper->processActivateAccount($username, $activationCode);
         }
@@ -267,7 +267,7 @@ class FeatureContext extends BehatContext
     public function followingTiles(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $name       = $row['name'];
+            $name = $row['name'];
             $accessable = (bool)$row['accessable'];
             $this->tileHelper->createDummyTile($name, $accessable);
         }
@@ -310,10 +310,10 @@ class FeatureContext extends BehatContext
     public function followingCities(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $name  = $row['name'];
+            $name = $row['name'];
             $owner = $row['owner'];
-            $x     = $row['x'];
-            $y     = $row['y'];
+            $x = $row['posX'];
+            $y = $row['posY'];
             $this->cityHelper->createDummyCity($name, $owner, $y, $x);
         }
     }
@@ -327,7 +327,7 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @When /^I create a city at location y=(\d+) and x=(\d+)$/
+     * @When /^I create a city at location posY=(\d+) and posX=(\d+)$/
      */
     public function iCreateACityAtLocationYAndX($y, $x)
     {
@@ -379,8 +379,8 @@ class FeatureContext extends BehatContext
     {
         $locations = array();
         foreach ($table->getHash() as $row) {
-            $x           = (int)$row['x'];
-            $y           = (int)$row['y'];
+            $x = (int)$row['posX'];
+            $y = (int)$row['posY'];
             $locations[] = array($y, $x);
         }
         $this->cityHelper->assertCityIsNotAtLocations($locations);
@@ -403,7 +403,7 @@ class FeatureContext extends BehatContext
     public function followingBuildings(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $name         = $row['name'];
+            $name = $row['name'];
             $minimumLevel = (int)$row['minimumLevel'];
             $maximumLevel = (int)$row['maximumLevel'];
             $this->buildingHelper->createDummyBuilding($name, $minimumLevel, $maximumLevel);
@@ -416,14 +416,14 @@ class FeatureContext extends BehatContext
     public function iShouldSeeFollowingBuildings(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $name  = $row['name'];
+            $name = $row['name'];
             $level = $row['level'];
             $this->cityHelper->assertCityHasBuilding($name, $level);
         }
     }
 
     /**
-     * @Then /^I selected the city at y=(\d+) and x=(\d+)$/
+     * @Then /^I selected the city at posY=(\d+) and posX=(\d+)$/
      */
     public function iSelectedTheCityAtYAndX($y, $x)
     {
@@ -436,10 +436,10 @@ class FeatureContext extends BehatContext
     public function iShouldSeeFollowingCities(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $name  = $row['name'];
+            $name = $row['name'];
             $owner = $row['owner'];
-            $x     = (int)$row['x'];
-            $y     = (int)$row['y'];
+            $x = (int)$row['posX'];
+            $y = (int)$row['posY'];
             $this->cityHelper->assertCityExists($name, $owner, $y, $x);
         }
     }
@@ -458,10 +458,10 @@ class FeatureContext extends BehatContext
     public function iShouldSeeFollowingCityInformations(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
-            $city  = $row['city'];
+            $city = $row['city'];
             $owner = $row['owner'];
-            $y     = $row['y'];
-            $x     = $row['x'];
+            $y = $row['posY'];
+            $x = $row['posX'];
             $this->cityHelper->assertCity($city, $owner, $y, $x);
         }
     }

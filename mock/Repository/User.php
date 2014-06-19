@@ -26,16 +26,16 @@ class User implements UserRepository
      */
     public function add(UserEntity $user)
     {
-        $this->users[$user->getId()] = $user;
-        $this->added[$user->getId()] = $user->getId();
+        $this->users[$user->getUserId()] = $user;
+        $this->added[$user->getUserId()] = $user->getUserId();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $username, $password, $email)
+    public function create($userId, $username, $password, $email)
     {
-        return new UserEntity($id, $username, $password, $email);
+        return new UserEntity($userId, $username, $password, $email);
     }
 
     /**
@@ -43,8 +43,8 @@ class User implements UserRepository
      */
     public function delete(UserEntity $user)
     {
-        unset($this->users[$user->getId()]);
-        $this->deleted[$user->getId()] = $user->getId();
+        unset($this->users[$user->getUserId()]);
+        $this->deleted[$user->getUserId()] = $user->getUserId();
     }
 
     /**
@@ -61,8 +61,8 @@ class User implements UserRepository
      */
     public function replace(UserEntity $user)
     {
-        $this->users[$user->getId()]    = $user;
-        $this->modified[$user->getId()] = $user->getId();
+        $this->users[$user->getUserId()] = $user;
+        $this->modified[$user->getUserId()] = $user->getUserId();
     }
 
     /**

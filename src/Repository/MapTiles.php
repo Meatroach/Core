@@ -23,11 +23,12 @@ interface MapTiles
     public function add(MapEntity $map);
 
     /**
-     * @return TileEntity
+     * @return \OpenTribes\Core\Entity\Tile
      */
     public function getDefaultTile();
 
     /**
+     * @param array $area
      * @return MapEntity
      */
     public function findAllInArea(array $area);

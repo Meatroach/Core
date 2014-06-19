@@ -37,10 +37,13 @@ class CreateCity
      * @param MapTilesRepository $mapTilesRepository
      * @param UserRepository $userRepository
      */
-    public function __construct(CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository)
-    {
-        $this->cityRepository     = $cityRepository;
-        $this->userRepository     = $userRepository;
+    public function __construct(
+        CityRepository $cityRepository,
+        MapTilesRepository $mapTilesRepository,
+        UserRepository $userRepository
+    ) {
+        $this->cityRepository = $cityRepository;
+        $this->userRepository = $userRepository;
         $this->mapTilesRepository = $mapTilesRepository;
     }
 
@@ -51,11 +54,11 @@ class CreateCity
      */
     public function process(CreateCityRequest $request, CreateCityResponse $response)
     {
-        $owner     = $this->userRepository->findOneByUsername($request->getUsername());
-        $positionX = $request->getX();
-        $positionY = $request->getY();
-        $name      = $request->getDefaultCityName();
-        $map       = $this->mapTilesRepository->getMap();
+        $owner = $this->userRepository->findOneByUsername($request->getUsername());
+        $positionX = $request->getPosX();
+        $positionY = $request->getPosY();
+        $name = $request->getDefaultCityName();
+        $map = $this->mapTilesRepository->getMap();
         $response->failed = true;
         $response->proceed = true;
         if (!$owner || !$map) {
@@ -76,7 +79,7 @@ class CreateCity
         $response->failed = false;
         $cityId = $this->cityRepository->getUniqueId();
 
-        $city           = $this->cityRepository->create($cityId, $name, $positionY, $positionX);
+        $city = $this->cityRepository->create($cityId, $name, $positionY, $positionX);
         $city->setOwner($owner);
         $city->setSelected(true);
         $this->cityRepository->add($city);

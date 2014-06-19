@@ -24,7 +24,7 @@ class City implements CityRepository
      */
     public function add(CityEntity $city)
     {
-        $this->cities[$city->getId()] = $city;
+        $this->cities[$city->getCityId()] = $city;
     }
 
     /**
@@ -48,10 +48,10 @@ class City implements CityRepository
     /**
      * {@inheritDoc}
      */
-    public function cityExistsAt($y, $x)
+    public function cityExistsAt($posY, $posX)
     {
 
-        return (bool)$this->findByLocation($y, $x);
+        return (bool)$this->findByLocation($posY, $posX);
     }
 
     /**
@@ -71,13 +71,13 @@ class City implements CityRepository
     /**
      * {@inheritDoc}
      */
-    public function findByLocation($y, $x)
+    public function findByLocation($posY, $posX)
     {
-        $y = (int)$y;
-        $x = (int)$x;
+        $posY = (int)$posY;
+        $posX = (int)$posX;
         foreach ($this->cities as $city) {
 
-            if ($city->getX() === $x && $city->getY() === $y) {
+            if ($city->getPosX() === $posX && $city->getPosY() === $posY) {
 
                 return $city;
             }
@@ -90,7 +90,7 @@ class City implements CityRepository
      */
     public function replace(CityEntity $city)
     {
-        $this->cities[$city->getId()] = $city;
+        $this->cities[$city->getCityId()] = $city;
     }
 
     /**
@@ -114,7 +114,7 @@ class City implements CityRepository
      */
     public function delete(CityEntity $city)
     {
-        unset($this->cities[$city->getId()]);
+        unset($this->cities[$city->getCityId()]);
     }
 
     /**

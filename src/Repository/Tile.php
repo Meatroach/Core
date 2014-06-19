@@ -12,14 +12,15 @@ interface Tile
 {
 
     /**
-     * @param integer $id
+     * @param integer $tileId
      * @param string $name
      * @param boolean $isAccessible
      * @return TileEntity
      */
-    public function create($id, $name, $isAccessible);
+    public function create($tileId, $name, $isAccessible);
 
     /**
+     * @param TileEntity $tile
      * @return void
      */
     public function add(TileEntity $tile);
@@ -35,15 +36,15 @@ interface Tile
      */
     public function findByName($name);
 
+
     /**
+     * @param int $tileId
      * @return TileEntity|null
      */
-    public function findById($id);
+    public function findById($tileId);
 
     /**
      * @return void
      */
     public function sync();
-
-
 }

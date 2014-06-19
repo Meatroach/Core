@@ -14,19 +14,19 @@ use Symfony\Component\HttpFoundation\Request;
 class Assets
 {
 
-    const CSS  = 'text/css';
-    const PNG  = 'image/png';
-    const JPG  = 'image/jpg';
+    const CSS = 'text/css';
+    const PNG = 'image/png';
+    const JPG = 'image/jpg';
     const JPEG = 'image/jpg';
-    const JS   = 'application/javascript';
+    const JS = 'application/javascript';
     const JSON = 'application/json';
 
     private $contentTypes = array(
-        'css'  => self::CSS,
-        'png'  => self::PNG,
-        'jpg'  => self::JPG,
+        'css' => self::CSS,
+        'png' => self::PNG,
+        'jpg' => self::JPG,
         'jpeg' => self::JPEG,
-        'js'   => self::JS,
+        'js' => self::JS,
         'json' => self::JSON
     );
     private $paths = array();
@@ -63,5 +63,4 @@ class Assets
     {
         return isset($this->contentTypes[$extension]) ? $this->contentTypes[$extension] : '';
     }
-
 }

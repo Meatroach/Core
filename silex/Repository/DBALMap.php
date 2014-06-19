@@ -34,20 +34,20 @@ class DBALMap extends Repository implements MapRepository
      */
     public function add(MapEntity $map)
     {
-        $id              = $map->getId();
+        $id = $map->getMapId();
         $this->maps[$id] = $map;
         parent::markAdded($id);
     }
 
     public function delete(MapEntity $map)
     {
-        $id = $map->getId();
+        $id = $map->getMapId();
         parent::markDeleted($id);
     }
 
     public function replace(MapEntity $map)
     {
-        $id              = $map->getId();
+        $id = $map->getMapId();
         $this->maps[$id] = $map;
         parent::markModified($id);
     }
@@ -71,9 +71,9 @@ class DBALMap extends Repository implements MapRepository
     private function entityToRow(MapEntity $map)
     {
         return array(
-            'id'     => $map->getId(),
-            'name'   => $map->getName(),
-            'width'  => $map->getWidth(),
+            'cityId' => $map->getMapId(),
+            'name' => $map->getName(),
+            'width' => $map->getWidth(),
             'height' => $map->getHeight()
         );
     }
@@ -85,7 +85,7 @@ class DBALMap extends Repository implements MapRepository
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->maps[$id])) {
-                $this->db->delete('maps', array('id' => $id));
+                $this->db->delete('maps', array('cityId' => $id));
                 unset($this->maps[$id]);
                 parent::reassign($id);
             }
@@ -101,7 +101,7 @@ class DBALMap extends Repository implements MapRepository
         foreach (parent::getModified() as $id) {
             if (isset($this->maps[$id])) {
                 $map = $this->maps[$id];
-                $this->db->update('maps', $this->entityToRow($map), array('id' => $id));
+                $this->db->update('maps', $this->entityToRow($map), array('cityId' => $id));
                 parent::reassign($id);
             }
         }
@@ -112,7 +112,7 @@ class DBALMap extends Repository implements MapRepository
      */
     public function getUniqueId()
     {
-        $result = $this->db->prepare("SELECT MAX(id) FROM maps");
+        $result = $this->db->prepare("SELECT MAX(cityId) FROM maps");
         $result->execute();
         $row = $result->fetchColumn();
 
@@ -131,10 +131,10 @@ class DBALMap extends Repository implements MapRepository
             }
         }
         $queryBuilder = $this->db->createQueryBuilder();
-        $queryBuilder->select('id', 'name', 'width', 'height')->from('maps', 'm')->where('name = :name');
+        $queryBuilder->select('cityId', 'name', 'width', 'height')->from('maps', 'm')->where('name = :name');
         $queryBuilder->setParameter(':name', $name);
         $result = $queryBuilder->execute();
-        $row    = $result->fetch(\PDO::FETCH_OBJ);
+        $row = $result->fetch(\PDO::FETCH_OBJ);
         $entity = $this->rowToEntity($row);
         return $entity;
     }

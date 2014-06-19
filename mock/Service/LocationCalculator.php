@@ -20,10 +20,10 @@ class LocationCalculator implements LocationCalculatorInterface
     private $countCities = 0;
     private $radius = 2;
 
-    public function setCenterPosition($y, $x)
+    public function setCenterPosition($posY, $posX)
     {
-        $this->centerX = $x;
-        $this->centerY = $y;
+        $this->centerX = $posX;
+        $this->centerY = $posY;
     }
 
     public function setCountCities($countCities)
@@ -91,5 +91,4 @@ class LocationCalculator implements LocationCalculatorInterface
     {
         $this->radius++;
     }
-
 }

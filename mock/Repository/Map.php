@@ -23,7 +23,7 @@ class Map implements MapRepository
      */
     public function add(MapEntity $map)
     {
-        $this->maps[$map->getId()] = $map;
+        $this->maps[$map->getMapId()] = $map;
     }
 
     /**
@@ -68,14 +68,14 @@ class Map implements MapRepository
 
     public function delete(MapEntity $map)
     {
-        if (isset($this->maps[$map->getId()])) {
-            unset($this->maps[$map->getId()]);
+        if (isset($this->maps[$map->getMapId()])) {
+            unset($this->maps[$map->getMapId()]);
         }
     }
 
     public function replace(MapEntity $map)
     {
-        $this->maps[$map->getId()] = $map;
+        $this->maps[$map->getMapId()] = $map;
     }
 
 }

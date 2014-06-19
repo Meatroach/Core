@@ -154,7 +154,7 @@ ErrorDocument 404 /404.html
     AddType video/mp4                                   mp4 m4v f4v f4p
     AddType video/ogg                                   ogv
     AddType video/webm                                  webm
-    AddType video/x-flv                                 flv
+    AddType video/posX-flv                                 flv
 
   # Web fonts
     AddType application/font-woff                       woff
@@ -163,7 +163,7 @@ ErrorDocument 404 /404.html
     # Browsers usually ignore the font MIME types and sniff the content,
     # however, Chrome shows a warning if other MIME types are used for the
     # following fonts.
-    AddType application/x-font-ttf                      ttc ttf
+    AddType application/posX-font-ttf                      ttc ttf
     AddType font/opentype                               otf
 
     # Make SVGZ fonts work on iPad:
@@ -173,18 +173,18 @@ ErrorDocument 404 /404.html
 
   # Other
     AddType application/octet-stream                    safariextz
-    AddType application/x-chrome-extension              crx
-    AddType application/x-opera-extension               oex
-    AddType application/x-shockwave-flash               swf
-    AddType application/x-web-app-manifest+json         webapp
-    AddType application/x-xpinstall                     xpi
+    AddType application/posX-chrome-extension              crx
+    AddType application/posX-opera-extension               oex
+    AddType application/posX-shockwave-flash               swf
+    AddType application/posX-web-app-manifest+json         webapp
+    AddType application/posX-xpinstall                     xpi
     AddType application/xml                             atom rdf rss xml
     AddType image/webp                                  webp
-    AddType image/x-icon                                ico
+    AddType image/posX-icon                                ico
     AddType text/cache-manifest                         appcache manifest
     AddType text/vtt                                    vtt
-    AddType text/x-component                            htc
-    AddType text/x-vcard                                vcf
+    AddType text/posX-component                            htc
+    AddType text/posX-vcard                                vcf
 
 </IfModule>
 
@@ -407,17 +407,17 @@ AddDefaultCharset utf-8
                                       application/json \
                                       application/rss+xml \
                                       application/vnd.ms-fontobject \
-                                      application/x-font-ttf \
-                                      application/x-web-app-manifest+json \
+                                      application/posX-font-ttf \
+                                      application/posX-web-app-manifest+json \
                                       application/xhtml+xml \
                                       application/xml \
                                       font/opentype \
                                       image/svg+xml \
-                                      image/x-icon \
+                                      image/posX-icon \
                                       text/css \
                                       text/html \
                                       text/plain \
-                                      text/x-component \
+                                      text/posX-component \
                                       text/xml
     </IfModule>
 
@@ -470,10 +470,10 @@ FileETag None
     ExpiresByType text/xml                              "access plus 0 seconds"
 
   # Favicon (cannot be renamed!)
-    ExpiresByType image/x-icon                          "access plus 1 week"
+    ExpiresByType image/posX-icon                          "access plus 1 week"
 
   # HTML components (HTCs)
-    ExpiresByType text/x-component                      "access plus 1 month"
+    ExpiresByType text/posX-component                      "access plus 1 month"
 
   # HTML
     ExpiresByType text/html                             "access plus 0 seconds"
@@ -482,7 +482,7 @@ FileETag None
     ExpiresByType application/javascript                "access plus 1 year"
 
   # Manifest files
-    ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
+    ExpiresByType application/posX-web-app-manifest+json   "access plus 0 seconds"
     ExpiresByType text/cache-manifest                   "access plus 0 seconds"
 
   # Media
@@ -501,7 +501,7 @@ FileETag None
   # Web fonts
     ExpiresByType application/font-woff                 "access plus 1 month"
     ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
-    ExpiresByType application/x-font-ttf                "access plus 1 month"
+    ExpiresByType application/posX-font-ttf                "access plus 1 month"
     ExpiresByType font/opentype                         "access plus 1 month"
     ExpiresByType image/svg+xml                         "access plus 1 month"
 

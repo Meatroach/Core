@@ -16,8 +16,8 @@ $(function () {
         var left = mapLeft + event.clientX;
         var top = mapTop + event.clientY;
         var location = iso.px2pos(left, top);
-        // spanX.text(location.x);
-        // spanY.text(location.y);
+        // spanX.text(location.posX);
+        // spanY.text(location.posY);
         spanX.text(event.screenX);
         spanY.text(event.screenY);
     });

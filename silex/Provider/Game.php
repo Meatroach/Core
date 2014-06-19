@@ -19,9 +19,9 @@ class Game implements ControllerProviderInterface
             function (Request $request) use ($app) {
 
                 $cityController = $app[Controller::CITY];
-                $response       = $cityController->listAction($request);
-                $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
-                $startUrl       = $baseUrl . 'game/start';
+                $response = $cityController->listAction($request);
+                $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                $startUrl = $baseUrl . 'game/start';
                 if ($response->failed && $request->getRequestUri() !== $startUrl) {
                     if (!$app['session']->has('username')) {
                         return new RedirectResponse($app['mustache.options']['helpers']['baseUrl']);
@@ -30,9 +30,9 @@ class Game implements ControllerProviderInterface
                 }
             }
         );
-        $game->get('/map/{y}/{x}', Controller::MAP . ':viewAction')
-            ->value('y', null)
-            ->value('x', null)
+        $game->get('/map/{posY}/{posX}', Controller::MAP . ':viewAction')
+            ->value('posY', null)
+            ->value('posX', null)
             ->value('width', $app['map.options']['viewportWidth'])
             ->value('height', $app['map.options']['viewportHeight'])
             ->value(RouteValue::TEMPLATE, 'pages/game/map');
@@ -40,13 +40,13 @@ class Game implements ControllerProviderInterface
         $game->get(
             '/',
             function (Request $request) {
-                $response           = new stdClass();
-                $response->proceed  = false;
+                $response = new stdClass();
+                $response->proceed = false;
                 $response->username = $request->getSession()->get('username');
                 return $response;
             }
         )->value(RouteValue::TEMPLATE, 'pages/game/landing');
-        $game->get('game/city/{y}/{x}', Controller::CITY . ':locationAction');
+        $game->get('game/city/{posY}/{posX}', Controller::CITY . ':locationAction');
         $game->get('/city/list/{username}', Controller::CITY . ':listAction')
             ->value('username', null)
             ->value(RouteValue::TEMPLATE, 'pages/game/citylist');
@@ -63,9 +63,9 @@ class Game implements ControllerProviderInterface
             ->before(
                 function (Request $request) use ($app) {
                     $cityController = $app[Controller::CITY];
-                    $response       = $cityController->listAction($request);
-                    $baseUrl        = $app['mustache.options']['helpers']['baseUrl'];
-                    $cityListUrl    = $baseUrl . 'game/city/list';
+                    $response = $cityController->listAction($request);
+                    $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                    $cityListUrl = $baseUrl . 'game/city/list';
 
                     if (!$response->failed) {
                         return new RedirectResponse($cityListUrl);

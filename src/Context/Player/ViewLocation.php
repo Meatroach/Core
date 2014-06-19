@@ -42,18 +42,18 @@ class ViewLocation
 
     public function process(ViewLocationRequest $request, ViewLocationResponse $response)
     {
-        $city           = $this->cityBuildingsRepository->findByLocation($request->getY(), $request->getX());
+        $city = $this->cityBuildingsRepository->findByLocation($request->getPosY(), $request->getPosX());
         $this->response = $response;
         if (!$city) {
             return false;
         }
-        $x            = $request->getX();
-        $y            = $request->getY();
+        $posX = $request->getPosX();
+        $posY = $request->getPosY();
         $isCustomCity = $city->getOwner()->getUsername() === $request->getUsername();
         if ($isCustomCity) {
-            $this->viewBuildings($y, $x);
+            $this->viewBuildings($posY, $posX);
         } else {
-            $this->viewInformations($y, $x);
+            $this->viewInformations($posY, $posX);
         }
         $response->isCustomCity = $isCustomCity;
 
@@ -61,12 +61,12 @@ class ViewLocation
     }
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      */
-    private function viewBuildings($y, $x)
+    private function viewBuildings($posY, $posX)
     {
-        $request                   = new ViewCityBuildingsRequest($y, $x);
+        $request = new ViewCityBuildingsRequest($posY, $posX);
         $response                  = new ViewCityBuildingsReponse;
         $interactor                = new ViewCityBuildingsInteractor($this->cityBuildingsRepository, $this->buildingRepository);
         $response->failed          = $interactor->process($request, $response);
@@ -74,17 +74,16 @@ class ViewLocation
     }
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      */
-    private function viewInformations($y, $x)
+    private function viewInformations($posY, $posX)
     {
-        $request              = new ViewCityInformationRequest($y, $x);
+        $request = new ViewCityInformationRequest($posY, $posX);
         $response             = new ViewCityInformationResponse();
         $interactor           = new ViewCityInformationInteractor($this->cityRepository);
         $response->failed     = $interactor->process($request, $response);
         $this->response->city = $response->city;
 
     }
-
 }

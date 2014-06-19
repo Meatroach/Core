@@ -17,5 +17,4 @@ class ActivateUser extends AbstractActivateUserValidator
             $this->attachError("Activation code is invalid");
         }
     }
-
 }

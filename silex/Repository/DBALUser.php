@@ -38,7 +38,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
      */
     public function add(UserEntity $user)
     {
-        $id               = $user->getId();
+        $id = $user->getUserId();
         $this->users[$id] = $user;
         parent::markAdded($id);
     }
@@ -46,9 +46,9 @@ class DBALUser extends Repository implements UserRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create($id, $username, $password, $email)
+    public function create($userId, $username, $password, $email)
     {
-        return new UserEntity((int)$id, $username, $password, $email);
+        return new UserEntity((int)$userId, $username, $password, $email);
     }
 
     /**
@@ -56,7 +56,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
      */
     public function delete(UserEntity $user)
     {
-        $id = $user->getId();
+        $id = $user->getUserId();
         parent::markDeleted($id);
     }
 
@@ -74,7 +74,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
             ->where('u.email = :email')
             ->setParameter(':email', $email)
             ->execute();
-        $row    = $result->fetch(\PDO::FETCH_OBJ);
+        $row = $result->fetch(\PDO::FETCH_OBJ);
 
         if (!$row) {
             return null;
@@ -116,7 +116,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
      */
     public function getUniqueId()
     {
-        $result = $this->db->prepare("SELECT MAX(id) FROM users");
+        $result = $this->db->prepare("SELECT MAX(cityId) FROM users");
         $result->execute();
         $row = $result->fetchColumn();
         $row += count($this->users);
@@ -131,7 +131,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
     {
         $queryBuilder = $this->db->createQueryBuilder();
         return $queryBuilder->select(
-            'u.id',
+            'u.cityId',
             'u.username',
             'u.password',
             'u.email',
@@ -147,17 +147,17 @@ class DBALUser extends Repository implements UserRepositoryInterface
      */
     public function replace(UserEntity $user)
     {
-        $id               = $user->getId();
+        $id = $user->getUserId();
         $this->users[$id] = $user;
         parent::markModified($id);
     }
 
     private function rowToEntity($row)
     {
-        $lastLogin        = \DateTime::createFromFormat($this->dateFormat, $row->lastLogin);
+        $lastLogin = \DateTime::createFromFormat($this->dateFormat, $row->lastLogin);
         $registrationDate = \DateTime::createFromFormat($this->dateFormat, $row->registered);
-        $lastAction       = \DateTime::createFromFormat($this->dateFormat, $row->lastAction);
-        $user             = $this->create($row->id, $row->username, $row->password, $row->email);
+        $lastAction = \DateTime::createFromFormat($this->dateFormat, $row->lastAction);
+        $user = $this->create($row->id, $row->username, $row->password, $row->email);
         if ($lastAction) {
             $user->setLastAction($lastAction);
         }
@@ -177,10 +177,10 @@ class DBALUser extends Repository implements UserRepositoryInterface
 
 
         $data = array(
-            'id'             => $user->getId(),
-            'username'       => $user->getUsername(),
-            'email'          => $user->getEmail(),
-            'password'       => $user->getPassword(),
+            'cityId' => $user->getUserId(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
             'activationCode' => $user->getActivationCode()
         );
         if ($user->getRegistrationDate() instanceof \DateTime) {
@@ -203,7 +203,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->users[$id])) {
-                $this->db->delete('users', array('id' => $id));
+                $this->db->delete('users', array('cityId' => $id));
                 unset($this->users[$id]);
                 parent::reassign($id);
             }
@@ -219,7 +219,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
         foreach (parent::getModified() as $id) {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
-                $this->db->update('users', $this->entityToRow($user), array('id' => $id));
+                $this->db->update('users', $this->entityToRow($user), array('cityId' => $id));
                 parent::reassign($id);
             }
         }

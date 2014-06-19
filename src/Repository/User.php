@@ -12,13 +12,13 @@ interface User
 {
 
     /**
-     * @param integer $id UserId
+     * @param integer $userId UserId
      * @param string $username username
      * @param string $password password hash
      * @param string $email email adress
      * @return UserEntity
      */
-    public function create($id, $username, $password, $email);
+    public function create($userId, $username, $password, $email);
 
     /**
      * @return integer

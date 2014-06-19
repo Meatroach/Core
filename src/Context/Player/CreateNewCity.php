@@ -59,20 +59,20 @@ class CreateNewCity
 
         $createCityInteractor = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository);
         $createCityResponse   = new CreateCityResponse();
-        $i                    = 0;
+        $tryes = 0;
         do {
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
-            $x = $selectLocationResponse->x;
-            $y = $selectLocationResponse->y;
+            $posX = $selectLocationResponse->posX;
+            $posY = $selectLocationResponse->posY;
 
-            $createCityRequest = new CreateCityRequest($y, $x, $username, $defaultCityName);
+            $createCityRequest = new CreateCityRequest($posY, $posX, $username, $defaultCityName);
             $cityIsCreated     = $createCityInteractor->process($createCityRequest, $createCityResponse);
 
-            $i++;
-            if ($i > 10) {
+            $tryes++;
+            if ($tryes > 10) {
                 $this->locationCalculator->increaseRadius();
             }
-            if ($i > 100) {
+            if ($tryes > 100) {
                 return false;
             }
         } while (!$cityIsCreated);

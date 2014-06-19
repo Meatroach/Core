@@ -8,36 +8,35 @@ class ViewCityInformation
     /**
      * @var integer
      */
-    private $y;
+    private $posY;
     /**
      * @var integer
      */
-    private $x;
+    private $posX;
 
     /**
-     * @param integer $x integer
-     * @param integer $y interger
+     * @param integer $posX integer
+     * @param integer $posY interger
      */
-    public function __construct($y, $x)
+    public function __construct($posY, $posX)
     {
-        $this->x = (int)$x;
-        $this->y = (int)$y;
+        $this->posX = (int)$posX;
+        $this->posY = (int)$posY;
     }
 
     /**
      * @return int
      */
-    public function getX()
+    public function getPosX()
     {
-        return $this->x;
+        return $this->posX;
     }
 
     /**
      * @return integer
      */
-    public function getY()
+    public function getPosY()
     {
-        return $this->y;
+        return $this->posY;
     }
-
-} 
+}
