@@ -15,7 +15,7 @@ class Registration
     private $emailConfirm = '';
     private $password = '';
     private $passwordConfirm = '';
-    private $termsAndConditions = '';
+    private $termsAndConditions;
 
     /**
      * @param boolean $termsAndConditions
