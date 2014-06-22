@@ -100,7 +100,7 @@ class City
         $x          = $httpRequest->get('x');
         $y          = $httpRequest->get('y');
         $request    = new ViewLocationRequest($username, $y, $x);
-        $interactor = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingsRepository, $this->buildingsRepository);
+        $interactor = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingRepository, $this->buildingRepository);
         $response   = new ViewLocationResponse();
 
         $response->failed = !$interactor->process($request, $response);
