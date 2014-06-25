@@ -77,11 +77,11 @@ class IsometricMapCalculator implements MapCalculator
     public function pixelToPosition($top, $left)
     {
         $newLeft = ($left - $this->originX) / $this->tileRatio;
-        $x = ~~(($top + $newLeft) / $this->tileHeight);
-        $y = ~~(($top - $newLeft) / $this->tileHeight);
+        $posX = ~~(($top + $newLeft) / $this->tileHeight);
+        $posY = ~~(($top - $newLeft) / $this->tileHeight);
         return array(
-            'posX' => $x,
-            'posY' => $y
+            'posX' => $posX,
+            'posY' => $posY
         );
     }
 
@@ -115,5 +115,4 @@ class IsometricMapCalculator implements MapCalculator
             'left' => $posX
         );
     }
-
 }

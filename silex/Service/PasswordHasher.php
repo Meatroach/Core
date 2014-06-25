@@ -31,5 +31,4 @@ class PasswordHasher implements PasswordHasherInterface
         }
         return crypt($rawPassword, $hash) === $hash;
     }
-
 }

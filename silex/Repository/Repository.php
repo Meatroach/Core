@@ -15,46 +15,46 @@ abstract class Repository
     private $deleted = array();
 
     /**
-     * @param integer $id
+     * @param integer $key
      */
-    protected function reassign($id)
+    protected function reassign($key)
     {
-        if (isset($this->added[$id])) {
-            unset($this->added[$id]);
+        if (isset($this->added[$key])) {
+            unset($this->added[$key]);
         }
-        if (isset($this->modified[$id])) {
-            unset($this->modified[$id]);
+        if (isset($this->modified[$key])) {
+            unset($this->modified[$key]);
         }
-        if (isset($this->deleted[$id])) {
-            unset($this->deleted[$id]);
+        if (isset($this->deleted[$key])) {
+            unset($this->deleted[$key]);
         }
     }
 
     /**
-     * @param integer $id
+     * @param integer $key
      */
-    protected function markDeleted($id)
+    protected function markDeleted($key)
     {
-        $this->reassign($id);
-        $this->deleted[$id] = $id;
+        $this->reassign($key);
+        $this->deleted[$key] = $key;
     }
 
     /**
-     * @param integer $id
+     * @param integer $key
      */
-    protected function markModified($id)
+    protected function markModified($key)
     {
-        $this->reassign($id);
-        $this->modified[$id] = $id;
+        $this->reassign($key);
+        $this->modified[$key] = $key;
     }
 
     /**
-     * @param integer $id
+     * @param integer $key
      */
-    protected function markAdded($id)
+    protected function markAdded($key)
     {
-        $this->reassign($id);
-        $this->added[$id] = $id;
+        $this->reassign($key);
+        $this->added[$key] = $key;
     }
 
     /**
@@ -80,5 +80,4 @@ abstract class Repository
     {
         return $this->deleted;
     }
-
 }

@@ -62,7 +62,7 @@ class User
         $this->userId = (int)$userId;
         $this->username = $username;
         $this->password = $password;
-        $this->email    = $email;
+        $this->email = $email;
     }
 
     /**
@@ -142,5 +142,4 @@ class User
     {
         $this->lastLogin = $lastLogin;
     }
-
 }

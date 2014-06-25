@@ -35,7 +35,7 @@ class Tile
      */
     public function __construct($tileId, $name, $accessible)
     {
-        $this->name       = $name;
+        $this->name = $name;
         $this->accessible = (bool)$accessible;
         $this->tileId = (int)$tileId;
     }
@@ -93,6 +93,4 @@ class Tile
     {
         $this->height = (int)$height;
     }
-
-
 }

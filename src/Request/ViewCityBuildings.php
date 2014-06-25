@@ -40,5 +40,4 @@ class ViewCityBuildings
     {
         return $this->posX;
     }
-
 }

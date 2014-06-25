@@ -51,5 +51,4 @@ class ViewCityBuildings
             $city->addBuilding($building);
         }
     }
-
 }

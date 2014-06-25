@@ -29,9 +29,9 @@ class Tile implements TileRepository
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, $isAccessible)
+    public function create($tileId, $name, $isAccessible)
     {
-        return new TileEntity($id, $name, $isAccessible);
+        return new TileEntity($tileId, $name, $isAccessible);
     }
 
     /**

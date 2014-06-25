@@ -232,5 +232,4 @@ class DBALUser extends Repository implements UserRepositoryInterface
     {
         return $this->db->exec("DELETE FROM users");
     }
-
 }

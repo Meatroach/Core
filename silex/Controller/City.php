@@ -31,24 +31,24 @@ class City
     private $userRepository;
     private $mapTilesRepository;
     private $locationCalculator;
-    private $buildingRepository;
-    private $cityBuildingRepository;
+    private $buildingsRepository;
+    private $cityBuildingsRepository;
 
     public function __construct(
         UserRepository $userRepository,
         CityRepository $cityRepository,
         MapTilesRepository $mapTilesRepository,
         LocationCalculator $locationCalculator,
-        BuildingRepository $buildingRepository,
-        CityBuildingsRepository $cityBuildingRepository
+        BuildingRepository $buildings,
+        CityBuildingsRepository $cityBuildings
     ) {
         $this->cityRepository = $cityRepository;
         $this->userRepository = $userRepository;
         $this->mapTilesRepository = $mapTilesRepository;
         $this->locationCalculator = $locationCalculator;
-        $this->cityBuildingRepository = $cityBuildingRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->cityBuildingRepository = $cityBuildingRepository;
+        $this->cityBuildingRepository = $cityBuildings;
+        $this->buildingRepository = $buildings;
+        $this->cityBuildingRepository = $cityBuildings;
     }
 
     public function listAction(Request $httpRequest)
@@ -83,7 +83,12 @@ class City
         );
 
         $request = new CreateNewCityRequest($username, $direction, $defaultCityName);
-        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
+        $interactor = new CreateNewCityInteractor(
+            $this->cityRepository,
+            $this->mapTilesRepository,
+            $this->userRepository,
+            $this->locationCalculator
+        );
         $response = new CreateNewCityResponse;
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
@@ -97,10 +102,15 @@ class City
     public function locationAction(Request $httpRequest)
     {
         $username = $httpRequest->getSession()->get('username');
-        $x = $httpRequest->get('posX');
-        $y = $httpRequest->get('posY');
-        $request = new ViewLocationRequest($username, $y, $x);
-        $interactor = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingsRepository, $this->buildingsRepository);
+        $posX = $httpRequest->get('posX');
+        $posY = $httpRequest->get('posY');
+        $request = new ViewLocationRequest($username, $posY, $posX);
+        $interactor = new ViewLocationInteractor(
+            $this->cityRepository,
+
+            $this->cityBuildingsRepository,
+            $this->buildingsRepository
+        );
         $response = new ViewLocationResponse();
 
         $response->failed = !$interactor->process($request, $response);

@@ -41,5 +41,4 @@ class ViewLocation
     {
         return $this->posX;
     }
-
 }

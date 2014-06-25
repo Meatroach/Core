@@ -28,8 +28,8 @@ class ViewMap
         MapCalculator $mapCalculator
     ) {
         $this->mapTilesRepository = $mapTilesRepository;
-        $this->cityRepository     = $cityRepository;
-        $this->mapCalculator      = $mapCalculator;
+        $this->cityRepository = $cityRepository;
+        $this->mapCalculator = $mapCalculator;
     }
 
     public function process(ViewMapRequest $request, ViewMapResponse $response)
@@ -39,11 +39,11 @@ class ViewMap
         $username = $request->getUsername();
         $this->mapCalculator->setViewport($request->getViewportHeight(), $request->getViewportWidth());
 
-        $response->width  = $request->getViewportWidth();
+        $response->width = $request->getViewportWidth();
         $response->height = $request->getViewportHeight();
-        $defaultTile      = $this->mapTilesRepository->getDefaultTile();
-        $city             = $this->cityRepository->findSelectedByUsername($username);
-        $step             = 1;
+        $defaultTile = $this->mapTilesRepository->getDefaultTile();
+        $city = $this->cityRepository->findSelectedByUsername($username);
+        $step = 1;
         if (!$posY && !$posX) {
             $posX = $city->getPosX();
             $posY = $city->getPosY();
@@ -59,11 +59,11 @@ class ViewMap
         $response->leftY = $posY + $step;
         $center = $this->mapCalculator->positionToPixel($posY, $posX);
 
-        $top            = $center['top'] - $request->getViewportHeight() / 2;
-        $left           = $center['left'] - $request->getViewportWidth() / 2;
-        $response->top  = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight() / 2;
+        $top = $center['top'] - $request->getViewportHeight() / 2;
+        $left = $center['left'] - $request->getViewportWidth() / 2;
+        $response->top = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight() / 2;
         $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() / 2;
-        $area           = $this->mapCalculator->getArea($top, $left);
+        $area = $this->mapCalculator->getArea($top, $left);
 
 
         $cities = $this->cityRepository->findAllInArea($area);
@@ -72,15 +72,15 @@ class ViewMap
             $posY = $city->getPosY();
             $posX = $city->getPosX();
             $position = $this->mapCalculator->positionToPixel($posY, $posX);
-            $left               = $position['left'];
-            $top                = $position['top'];
-            $cityView           = new CityView($city);
-            $cityView->top      = $top;
-            $cityView->left     = $left;
-            $cityView->height   = $defaultTile->getHeight();
-            $cityView->width    = $defaultTile->getWidth();
+            $left = $position['left'];
+            $top = $position['top'];
+            $cityView = new CityView($city);
+            $cityView->top = $top;
+            $cityView->left = $left;
+            $cityView->height = $defaultTile->getHeight();
+            $cityView->width = $defaultTile->getWidth();
             $cityView->layerZ = $posY + $posX * 2;
-            $cityView->level    = 1;
+            $cityView->level = 1;
             $response->cities[] = $cityView;
 
         }
@@ -94,17 +94,16 @@ class ViewMap
                 $tile = $defaultTile;
             }
             $position = $this->mapCalculator->positionToPixel($posY, $posX);
-            $left              = $position['left'];
-            $top               = $position['top'];
-            $tileView          = new TileView($tile);
-            $tileView->top     = $top;
+            $left = $position['left'];
+            $top = $position['top'];
+            $tileView = new TileView($tile);
+            $tileView->top = $top;
             $tileView->posX = $posX;
             $tileView->posY = $posY;
             $tileView->layerZ = $posY + $posX;
-            $tileView->left    = $left;
+            $tileView->left = $left;
             $response->tiles[] = $tileView;
         }
         return true;
     }
-
 }

@@ -109,6 +109,7 @@ class Map
     /**
      * @param integer $posY
      * @param integer $posX
+     * @return bool
      */
     public function isValidLocation($posY, $posX)
     {
@@ -132,6 +133,4 @@ class Map
     {
         return $this->mapId;
     }
-
-
 }

@@ -26,16 +26,19 @@ interface User
     public function getUniqueId();
 
     /**
+     * @param UserEntity $user
      * @return void
      */
     public function add(UserEntity $user);
 
     /**
+     * @param UserEntity $user
      * @return void
      */
     public function replace(UserEntity $user);
 
     /**
+     * @param UserEntity $user
      * @return void
      */
     public function delete(UserEntity $user);

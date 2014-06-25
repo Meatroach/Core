@@ -44,7 +44,7 @@ class Building
     public function __construct($buildingId, $name, $minimumLevel, $maximumLevel)
     {
         $this->buildingId = (int)$buildingId;
-        $this->name         = $name;
+        $this->name = $name;
         $this->minimumLevel = (int)$minimumLevel;
         $this->maximumLevel = (int)$maximumLevel;
     }
@@ -102,5 +102,4 @@ class Building
     {
         return $this->maximumLevel;
     }
-
 }

@@ -18,7 +18,9 @@ interface MapCalculator
     public function getArea($posY, $posX);
 
     /**
-     * @return void
+     * @param $height
+     * @param $width
+     * @return mixed
      */
     public function setViewport($height, $width);
 

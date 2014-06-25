@@ -9,13 +9,15 @@ namespace OpenTribes\Core\Service;
 interface PasswordHasher
 {
     /**
-     * @return string Hassed Password
+     * @param $rawPassword
+     * @return string
      */
     public function hash($rawPassword);
 
     /**
-     * @param string $hash
-     * @return boolean verify password
+     * @param $hash
+     * @param $rawPassword
+     * @return bool
      */
     public function verify($hash, $rawPassword);
 }

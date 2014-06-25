@@ -16,7 +16,7 @@ use Silex\Application;
 class Validator
 {
 
-    const ACTIVATE     = 'validator.core.activate';
+    const ACTIVATE = 'validator.core.activate';
     const REGISTRATION = 'validator.core.registration';
     private $app;
 
@@ -27,18 +27,18 @@ class Validator
 
     public function create()
     {
-        $app                               = $this->app;
+        $app = $this->app;
         $app['validationDto.registration'] = $app->share(
             function () {
                 return new RegistrationValidatorDto;
             }
         );
-        $app['validationDto.activate']     = $app->share(
+        $app['validationDto.activate'] = $app->share(
             function () use ($app) {
                 return new ActivateUserValidatorDto;
             }
         );
-        $app[self::REGISTRATION]           = $app->share(
+        $app[self::REGISTRATION] = $app->share(
             function () use ($app) {
                 return new RegistrationValidator($app['validationDto.registration'], $app['validator']);
             }
@@ -50,5 +50,4 @@ class Validator
             }
         );
     }
-
 }

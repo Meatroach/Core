@@ -18,6 +18,7 @@ class CreateCity
 
     /**
      * @param string $defaultCityName
+     * @param string $username
      * @param integer $posY
      * @param integer $posX
      */
@@ -52,6 +53,4 @@ class CreateCity
     {
         return $this->posY;
     }
-
-
 }

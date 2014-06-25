@@ -34,13 +34,13 @@ class Map
 
     public function viewAction(Request $httpRequest)
     {
-        $y = $httpRequest->get('posY');
-        $x = $httpRequest->get('posX');
+        $posY = $httpRequest->get('posY');
+        $posX = $httpRequest->get('posX');
         $username = $httpRequest->getSession()->get('username');
 
         $width = $httpRequest->get('width');
         $height = $httpRequest->get('height');
-        $request = new ViewMapRequest($y, $x, $username, $height, $width);
+        $request = new ViewMapRequest($posY, $posX, $username, $height, $width);
         $response = new ViewMapResponse;
         $context = new ViewMapContext($this->mapTilesRepository, $this->cityRepository, $this->mapCalculator);
         $response->failed = $context->process($request, $response);

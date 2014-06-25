@@ -29,4 +29,4 @@ class ViewCityInformation
         $response->city = new CityView($city);
         return true;
     }
-} 
+}

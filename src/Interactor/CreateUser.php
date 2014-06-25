@@ -43,13 +43,12 @@ class CreateUser
      */
     public function proccess(CreateUserRequest $request, CreateUserResponse $response)
     {
-        $userId   = $this->userRepository->getUniqueId();
+        $userId = $this->userRepository->getUniqueId();
         $password = $this->passwordHasher->hash($request->getPassword());
-        $user     = $this->userRepository->create($userId, $request->getUsername(), $password, $request->getEmail());
+        $user = $this->userRepository->create($userId, $request->getUsername(), $password, $request->getEmail());
         $user->setRegistrationDate($request->getDatetime());
         $this->userRepository->add($user);
         $response->username = $user->getUsername();
         return true;
     }
-
 }

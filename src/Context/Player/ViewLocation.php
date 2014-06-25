@@ -36,8 +36,8 @@ class ViewLocation
         BuildingRepository $buildingRepository
     ) {
         $this->cityBuildingsRepository = $cityBuildingsRepository;
-        $this->cityRepository          = $cityRepository;
-        $this->buildingRepository      = $buildingRepository;
+        $this->cityRepository = $cityRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function process(ViewLocationRequest $request, ViewLocationResponse $response)
@@ -67,9 +67,12 @@ class ViewLocation
     private function viewBuildings($posY, $posX)
     {
         $request = new ViewCityBuildingsRequest($posY, $posX);
-        $response                  = new ViewCityBuildingsReponse;
-        $interactor                = new ViewCityBuildingsInteractor($this->cityBuildingsRepository, $this->buildingRepository);
-        $response->failed          = $interactor->process($request, $response);
+        $response = new ViewCityBuildingsReponse;
+        $interactor = new ViewCityBuildingsInteractor(
+            $this->cityBuildingsRepository,
+            $this->buildingRepository
+        );
+        $response->failed = $interactor->process($request, $response);
         $this->response->buildings = $response->buildings;
     }
 
@@ -80,9 +83,9 @@ class ViewLocation
     private function viewInformations($posY, $posX)
     {
         $request = new ViewCityInformationRequest($posY, $posX);
-        $response             = new ViewCityInformationResponse();
-        $interactor           = new ViewCityInformationInteractor($this->cityRepository);
-        $response->failed     = $interactor->process($request, $response);
+        $response = new ViewCityInformationResponse();
+        $interactor = new ViewCityInformationInteractor($this->cityRepository);
+        $response->failed = $interactor->process($request, $response);
         $this->response->city = $response->city;
 
     }

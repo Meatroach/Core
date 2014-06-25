@@ -43,6 +43,4 @@ class Login
     {
         $this->datetime = $datetime;
     }
-
-
 }

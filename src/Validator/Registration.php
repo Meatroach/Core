@@ -17,5 +17,4 @@ abstract class Registration extends Validator
     {
         $this->setObject($object);
     }
-
 }

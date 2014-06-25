@@ -17,5 +17,4 @@ class Registration
     public $termsAndConditions;
     public $isUniqueUsername;
     public $isUniqueEmail;
-
 }

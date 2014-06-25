@@ -12,11 +12,11 @@ interface Map
 {
 
     /**
-     * @param integer $mapId
+     * @param integer $mapMapId
      * @param string $name
      * @return MapEntity
      */
-    public function create($mapId, $name);
+    public function create($mapMapId, $name);
 
     /**
      * @return integer

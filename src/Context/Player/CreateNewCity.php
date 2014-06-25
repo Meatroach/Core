@@ -29,22 +29,24 @@ class CreateNewCity
     private $locationCalculator;
 
     public function __construct(
-    CityRepository $cityRepository, MapTilesRepository $mapTilesRepository, UserRepository $userRepository, LocationCalculator $locationCalculator
-    )
-    {
-        $this->cityRepository     = $cityRepository;
+        CityRepository $cityRepository,
+        MapTilesRepository $mapTilesRepository,
+        UserRepository $userRepository,
+        LocationCalculator $locationCalculator
+    ) {
+        $this->cityRepository = $cityRepository;
         $this->mapTilesRepository = $mapTilesRepository;
-        $this->userRepository     = $userRepository;
+        $this->userRepository = $userRepository;
         $this->locationCalculator = $locationCalculator;
     }
 
     public function process(CreateNewCityRequest $request, CreateNewCityResponse $response)
     {
-        $direction         = $request->getDirection();
-        $username          = $request->getUsername();
-        $defaultCityName   = $request->getDefaultCityName();
+        $direction = $request->getDirection();
+        $username = $request->getUsername();
+        $defaultCityName = $request->getDefaultCityName();
         $response->proceed = true;
-        $map               = $this->mapTilesRepository->getMap();
+        $map = $this->mapTilesRepository->getMap();
 
         if (!$map) {
             throw new \Exception("Please create a map");
@@ -54,11 +56,15 @@ class CreateNewCity
         $this->locationCalculator->setCenterPosition($map->getCenterY(), $map->getCenterX());
         $this->locationCalculator->setCountCities($this->cityRepository->countAll());
         $selectLocationInteractor = new SelectLocationInteractor($this->locationCalculator);
-        $selectLocationRequest    = new SelectLocationRequest($direction);
-        $selectLocationResponse   = new SelectLocationResponse();
+        $selectLocationRequest = new SelectLocationRequest($direction);
+        $selectLocationResponse = new SelectLocationResponse();
 
-        $createCityInteractor = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository);
-        $createCityResponse   = new CreateCityResponse();
+        $createCityInteractor = new CreateCityInteractor(
+            $this->cityRepository,
+            $this->mapTilesRepository,
+            $this->userRepository
+        );
+        $createCityResponse = new CreateCityResponse();
         $tryes = 0;
         do {
             $selectLocationInteractor->process($selectLocationRequest, $selectLocationResponse);
@@ -66,7 +72,7 @@ class CreateNewCity
             $posY = $selectLocationResponse->posY;
 
             $createCityRequest = new CreateCityRequest($posY, $posX, $username, $defaultCityName);
-            $cityIsCreated     = $createCityInteractor->process($createCityRequest, $createCityResponse);
+            $cityIsCreated = $createCityInteractor->process($createCityRequest, $createCityResponse);
 
             $tryes++;
             if ($tryes > 10) {
@@ -78,6 +84,7 @@ class CreateNewCity
         } while (!$cityIsCreated);
 
         $response->failed = $createCityResponse->failed;
-        $response->city   = $createCityResponse->city;
+        $response->city = $createCityResponse->city;
+        return true;
     }
 }

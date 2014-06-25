@@ -20,7 +20,7 @@ class DBALMapTiles implements MapTilesRepository
     /**
      * @var Connection
      */
-    private $db;
+    private $connection;
 
     /**
      * @var MapEntity
@@ -33,11 +33,11 @@ class DBALMapTiles implements MapTilesRepository
     private $defaultTile;
 
     /**
-     * @param Connection $db
+     * @param Connection $connection
      */
-    public function __construct(Connection $db)
+    public function __construct(Connection $connection)
     {
-        $this->db = $db;
+        $this->connection = $connection;
     }
 
     /**
@@ -65,7 +65,7 @@ class DBALMapTiles implements MapTilesRepository
      */
     private function getQueryBuilder()
     {
-        $queryBuilder = $this->db->createQueryBuilder();
+        $queryBuilder = $this->connection->createQueryBuilder();
         return $queryBuilder->select(
             'm.cityId AS mapId',
             'm.name AS mapName',
@@ -89,7 +89,7 @@ class DBALMapTiles implements MapTilesRepository
 
     private function loadDefaultTile()
     {
-        $queryBuilder = $this->db->createQueryBuilder();
+        $queryBuilder = $this->connection->createQueryBuilder();
         $result = $queryBuilder->select(
             't.cityId',
             't.name',
@@ -151,7 +151,7 @@ class DBALMapTiles implements MapTilesRepository
     public function findAllInArea(array $area)
     {
         $where = 'CONCAT(posY,"-",posX)';
-        $params = $this->db->getParams();
+        $params = $this->connection->getParams();
         $isSQLite = $params['driver'] === 'pdo_sqlite';
 
         if ($isSQLite) {
@@ -170,7 +170,7 @@ class DBALMapTiles implements MapTilesRepository
     {
         $mapTiles = $this->map->getTiles();
         $sql = "INSERT INTO map_tiles(map_id,tile_id,posX,posY) VALUES (:map_id,:tile_id,:posX,:posY)";
-        $statement = $this->db->prepare($sql);
+        $statement = $this->connection->prepare($sql);
         foreach ($mapTiles as $y => $rows) {
             foreach ($rows as $x => $tile) {
                 if ($tile->isDefault()) {
@@ -187,5 +187,4 @@ class DBALMapTiles implements MapTilesRepository
             }
         }
     }
-
 }

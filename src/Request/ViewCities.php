@@ -23,6 +23,4 @@ class ViewCities
     {
         return $this->username;
     }
-
-
 }

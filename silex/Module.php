@@ -151,7 +151,8 @@ class Module implements ServiceProviderInterface
                 $response->proceed = false;
                 return $response;
             }
-        )->before(
+        )
+            ->before(
                 function (Request $request) use ($app) {
                     $session = $request->getSession();
                     if (!$session) {
@@ -161,8 +162,10 @@ class Module implements ServiceProviderInterface
                         $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                         return new RedirectResponse($baseUrl . 'game');
                     }
+                    return '';
                 }
-            )->value(RouteValue::TEMPLATE, 'pages/landing');
+            )
+            ->value(RouteValue::TEMPLATE, 'pages/landing');
         $app->after(
             function (Request $request) use ($app) {
                 $session = $request->getSession();
@@ -225,9 +228,10 @@ class Module implements ServiceProviderInterface
             $response->setExpires(new DateTime());
         }
 
-        if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(
-                RouteValue::SUCCESS_HANDLER
-            )
+        if (is_object($appResponse) &&
+            $appResponse->proceed &&
+            !$appResponse->failed &&
+            $request->attributes->has(RouteValue::SUCCESS_HANDLER)
         ) {
             /**
              * @var string $handler
@@ -260,9 +264,12 @@ class Module implements ServiceProviderInterface
     }
 
     /**
+     * @param array $subRequests
+     * @param $appResponse
      * @param Application $app
+     * @return object
      */
-    public function handleSubRequests(array $subRequests, $appResponse, $app)
+    public function handleSubRequests(array $subRequests, $appResponse, Application $app)
     {
         $tmpResponse = $appResponse;
 

@@ -52,5 +52,4 @@ class ViewMap
     {
         return $this->viewportHeight;
     }
-
 }

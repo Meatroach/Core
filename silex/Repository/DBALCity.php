@@ -278,7 +278,7 @@ class DBALCity extends Repository implements CityInterface
                 return $city;
             }
         }
-
+        return null;
     }
 
     public function findAllInArea(array $area)
@@ -318,5 +318,4 @@ class DBALCity extends Repository implements CityInterface
         $this->replace($entity);
         return $entity;
     }
-
 }

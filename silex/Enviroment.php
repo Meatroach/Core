@@ -11,7 +11,7 @@ abstract class Enviroment
 {
 
     const TEST = 'test';
-    const DEV  = 'develop';
+    const DEV = 'develop';
     const PROD = 'production';
 
     public static function all()
@@ -22,5 +22,4 @@ abstract class Enviroment
             self::PROD
         );
     }
-
 }

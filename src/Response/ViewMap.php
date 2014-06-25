@@ -23,5 +23,4 @@ class ViewMap extends Response
     public $leftY;
     public $rightX;
     public $rightY;
-
 }

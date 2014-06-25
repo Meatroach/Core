@@ -31,20 +31,20 @@ class Registration
         PasswordHasher $passwordHasher,
         ActivationCodeGenerator $activationCodeGenerator
     ) {
-        $this->userRepository          = $userRepository;
-        $this->registrationValidator   = $registrationValidator;
-        $this->passwordHasher          = $passwordHasher;
+        $this->userRepository = $userRepository;
+        $this->registrationValidator = $registrationValidator;
+        $this->passwordHasher = $passwordHasher;
         $this->activationCodeGenerator = $activationCodeGenerator;
     }
 
     public function process(RegistrationRequest $request, RegistrationResponse $response)
     {
         $this->assignInputToValidator($request);
-        $response->username           = $request->getUsername();
-        $response->email              = $request->getEmail();
-        $response->emailConfirm       = $request->getEmailConfirm();
-        $response->password           = $request->getPassword();
-        $response->passwordConfirm    = $request->getPasswordConfirm();
+        $response->username = $request->getUsername();
+        $response->email = $request->getEmail();
+        $response->emailConfirm = $request->getEmailConfirm();
+        $response->password = $request->getPassword();
+        $response->passwordConfirm = $request->getPasswordConfirm();
         $response->termsAndConditions = $request->getTermsAndConditions();
 
         if (!$this->registrationValidator->isValid()) {
@@ -53,13 +53,13 @@ class Registration
 
             return false;
         }
-        $createUserRequest    = new CreateUserRequest($request->getUsername(), $request->getPassword(
-        ), $request->getEmail());
+        $createUserRequest = new CreateUserRequest($request->getUsername(), $request->getPassword(), $request->getEmail(
+        ));
         $createUserInteractor = new CreateUserInteractor($this->userRepository, $this->passwordHasher);
-        $createUserResponse   = new CreateUserResponse;
+        $createUserResponse = new CreateUserResponse;
         $createUserInteractor->proccess($createUserRequest, $createUserResponse);
         $activationCode = $this->activationCodeGenerator->create();
-        $user           = $this->userRepository->findOneByUsername($createUserResponse->username);
+        $user = $this->userRepository->findOneByUsername($createUserResponse->username);
         if (!$user) {
             return false;
         }
@@ -72,17 +72,16 @@ class Registration
 
     private function assignInputToValidator(RegistrationRequest $request)
     {
-        $validationObject                     = $this->registrationValidator->getObject();
-        $validationObject->email              = $request->getEmail();
-        $validationObject->emailConfirm       = $request->getEmailConfirm();
-        $validationObject->password           = $request->getPassword();
-        $validationObject->passwordConfirm    = $request->getPasswordConfirm();
-        $validationObject->username           = $request->getUsername();
+        $validationObject = $this->registrationValidator->getObject();
+        $validationObject->email = $request->getEmail();
+        $validationObject->emailConfirm = $request->getEmailConfirm();
+        $validationObject->password = $request->getPassword();
+        $validationObject->passwordConfirm = $request->getPasswordConfirm();
+        $validationObject->username = $request->getUsername();
         $validationObject->termsAndConditions = $request->getTermsAndConditions();
-        $validationObject->isUniqueEmail      = !(bool)$this->userRepository->findOneByEmail($request->getEmail());
-        $validationObject->isUniqueUsername   = !(bool)$this->userRepository->findOneByUsername(
+        $validationObject->isUniqueEmail = !(bool)$this->userRepository->findOneByEmail($request->getEmail());
+        $validationObject->isUniqueUsername = !(bool)$this->userRepository->findOneByUsername(
             $request->getUsername()
         );
     }
-
 }

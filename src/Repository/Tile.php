@@ -12,12 +12,12 @@ interface Tile
 {
 
     /**
-     * @param integer $tileId
+     * @param integer $tileTileId
      * @param string $name
      * @param boolean $isAccessible
      * @return TileEntity
      */
-    public function create($tileId, $name, $isAccessible);
+    public function create($tileTileId, $name, $isAccessible);
 
     /**
      * @param TileEntity $tile

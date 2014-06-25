@@ -54,8 +54,20 @@ class Account
         $termsAndConditions = (bool)$httpRequest->get('termsAndConditions');
 
         $response = new RegistrationResponse;
-        $request  = new RegistrationRequest($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions);
-        $context  = new RegistrationContext($this->userRepository, $this->registrationValidator, $this->passwordHasher, $this->activationCodeGenerator);
+        $request = new RegistrationRequest(
+            $username,
+            $email,
+            $emailConfirm,
+            $password,
+            $passwordConfirm,
+            $termsAndConditions
+        );
+        $context = new RegistrationContext(
+            $this->userRepository,
+            $this->registrationValidator,
+            $this->passwordHasher,
+            $this->activationCodeGenerator
+        );
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
             $response->failed  = !$context->process($request, $response);

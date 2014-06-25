@@ -15,12 +15,14 @@ class CreateNewCity
 
 
     /**
-     * @param string $defaultCityName
+     * @param $username
+     * @param $direction
+     * @param $defaultCityName
      */
     public function __construct($username, $direction, $defaultCityName)
     {
-        $this->username        = $username;
-        $this->direction       = $direction;
+        $this->username = $username;
+        $this->direction = $direction;
         $this->defaultCityName = $defaultCityName;
 
     }
@@ -39,6 +41,4 @@ class CreateNewCity
     {
         return $this->defaultCityName;
     }
-
-
 }

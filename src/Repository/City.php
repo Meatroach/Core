@@ -90,6 +90,10 @@ interface City
      */
     public function findSelectedByUsername($username);
 
+    /**
+     * @param array $area
+     * @return CityEntity[]
+     */
     public function findAllInArea(array $area);
 
     public function getLastCreatedCity();

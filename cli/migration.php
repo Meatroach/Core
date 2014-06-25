@@ -28,7 +28,7 @@ $console = new Application;
 
 
 $helperSet = new HelperSet(array(
-    new ConnectionHelper($app['db']),
+    new ConnectionHelper($app['connection']),
     new DialogHelper()
 ));
 

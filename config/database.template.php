@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'db.options' => array(
+    'connection.options' => array(
         /**
          * pdo_mysql | pdo_sqlite
          */
@@ -11,6 +11,6 @@ return array(
         //   'user'     => 'username',
         //  'password' => 'password',
         //  'charset'  => 'utf8',
-        'path'   => realpath(__DIR__ . '/../storage/ot.db')
+        'path' => realpath(__DIR__ . '/../storage/ot.connection')
     )
 );

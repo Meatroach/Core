@@ -10,19 +10,19 @@ namespace OpenTribes\Core\Value;
 class Direction
 {
 
-    const EAST  = 0;
-    const WEST  = 1;
+    const EAST = 0;
+    const WEST = 1;
     const NORTH = 2;
     const SOUTH = 3;
-    const ANY   = -1;
+    const ANY = -1;
 
     private $value = -1;
     private $directions = array(
         'south' => self::SOUTH,
         'north' => self::NORTH,
-        'west'  => self::WEST,
-        'east'  => self::EAST,
-        'any'   => self::ANY
+        'west' => self::WEST,
+        'east' => self::EAST,
+        'any' => self::ANY
     );
 
     public function __construct($value)
@@ -76,5 +76,4 @@ class Direction
     {
         return in_array($value, ($this->directions));
     }
-
 }

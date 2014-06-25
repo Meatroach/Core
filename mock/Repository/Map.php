@@ -29,9 +29,9 @@ class Map implements MapRepository
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name)
+    public function create($mapId, $name)
     {
-        return new MapEntity($id, $name);
+        return new MapEntity($mapId, $name);
     }
 
 

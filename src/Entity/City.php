@@ -131,5 +131,4 @@ class City
     {
         $this->isSelected = (bool)$selected;
     }
-
 }
