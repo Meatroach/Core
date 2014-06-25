@@ -11,6 +11,6 @@ return array(
         //   'user'     => 'username',
         //  'password' => 'password',
         //  'charset'  => 'utf8',
-        'path' => realpath(__DIR__ . '/../storage/ot.connection')
+        'path' => realpath(__DIR__ . '/../storage/ot.db')
     )
 );
