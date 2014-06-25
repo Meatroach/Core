@@ -44,10 +44,10 @@ class DBALTile extends Repository implements TileRepository
         return new TileEntity($tileId, $name, $isAccessible);
     }
 
-    public function findById($id)
+    public function findById($tileId)
     {
         foreach ($this->tiles as $tile) {
-            if ($tile->getTileId() === $id) {
+            if ($tile->getTileId() === $tileId) {
                 return $tile;
             }
         }

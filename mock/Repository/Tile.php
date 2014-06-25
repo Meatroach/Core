@@ -57,10 +57,10 @@ class Tile implements TileRepository
         return null;
     }
 
-    public function findById($id)
+    public function findById($tileId)
     {
         foreach ($this->tiles as $tile) {
-            if ($tile->getTileId() === $id) {
+            if ($tile->getTileId() === $tileId) {
                 return $tile;
             }
         }

@@ -58,6 +58,7 @@ class Assets
 
     /**
      * @param string $extension
+     * @return mixed
      */
     private function getContentTypByExtension($extension)
     {

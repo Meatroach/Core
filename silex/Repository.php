@@ -38,27 +38,27 @@ class Repository
         $app = $this->app;
         $app[self::USER] = $app->share(
             function () use ($app) {
-                return new UserRepository($app['connection']);
+                return new UserRepository($app['db']);
             }
         );
         $app[self::CITY] = $app->share(
             function () use ($app) {
-                return new CityRepository($app['connection']);
+                return new CityRepository($app['db']);
             }
         );
         $app[self::MAP] = $app->share(
             function () use ($app) {
-                return new MapRepository($app['connection']);
+                return new MapRepository($app['db']);
             }
         );
         $app[self::MAP_TILES] = $app->share(
             function () use ($app) {
-                return new MapTilesRepository($app['connection']);
+                return new MapTilesRepository($app['db']);
             }
         );
         $app[self::TILE] = $app->share(
             function () use ($app) {
-                return new TileRepository($app['connection']);
+                return new TileRepository($app['db']);
             }
         );
         $app[self::BUILDING] = $app->share(

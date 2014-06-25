@@ -38,10 +38,10 @@ interface Tile
 
 
     /**
-     * @param int $tileId
+     * @param int $tileTileId
      * @return TileEntity|null
      */
-    public function findById($tileId);
+    public function findById($tileTileId);
 
     /**
      * @return void

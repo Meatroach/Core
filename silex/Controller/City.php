@@ -107,7 +107,6 @@ class City
         $request = new ViewLocationRequest($username, $posY, $posX);
         $interactor = new ViewLocationInteractor(
             $this->cityRepository,
-
             $this->cityBuildingsRepository,
             $this->buildingsRepository
         );
