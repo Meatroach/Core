@@ -16,18 +16,18 @@ Feature: check cities
 
   Scenario: No redirects
     Given following cities:
-      | name  | owner      | x | y | isMain |
-      | City1 | BlackScorp | 0 | 0 | true   |
-      | City2 | BlackScorp | 0 | 0 | false  |
+      | name  | owner      | posX | posY | isMain |
+      | City1 | BlackScorp | 0    | 0    | true   |
+      | City2 | BlackScorp | 0    | 0    | false  |
     And I'm logged in as user "BlackScorp"
     When I visit "/"
     Then I should be redirected to "/game/"
 
   Scenario: Redirect from new city screen
     Given following cities:
-      | name  | owner      | x | y | isMain |
-      | City1 | BlackScorp | 0 | 0 | true   |
-      | City2 | BlackScorp | 0 | 0 | false  |
+      | name  | owner      | posX | posY | isMain |
+      | City1 | BlackScorp | 0    | 0    | true   |
+      | City2 | BlackScorp | 0    | 0    | false  |
     And I'm logged in as user "BlackScorp"
     When I visit "/game/start"
     Then I should be redirected to "/game/city/list"

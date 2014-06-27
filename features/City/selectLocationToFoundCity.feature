@@ -28,8 +28,8 @@ Feature: Select location for new city
       | Owner1     | 123456   | owner1@test.de |
       | Owner2     | 123456   | owner2@test.de |
     And following cities:
-      | name  | owner  | y | x |
-      | City1 | Owner1 | 3 | 3 |
+      | name  | owner  | posY | posX |
+      | City1 | Owner1 | 3    | 3    |
 
 
   Scenario Outline: Specify direction
@@ -41,10 +41,10 @@ Feature: Select location for new city
       | minX   | maxX   | minY   | maxY   |
       | <minX> | <maxX> | <minY> | <maxY> |
     But not at following locations:
-      | y | x |
-      | 3 | 3 |
-      | 1 | 1 |
-      | 3 | 1 |
+      | posY | posX |
+      | 3    | 3    |
+      | 1    | 1    |
+      | 3    | 1    |
 
 
   Examples:

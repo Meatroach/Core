@@ -74,7 +74,7 @@ class LocationCalculator implements LocationCalculatorInterface
 
         }
 
-        return $radius;
+        return max(0, mt_rand($radius - 1, $radius + 1));
     }
 
     public function getX()

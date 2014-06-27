@@ -175,8 +175,8 @@ class CityHelper
         Test::assertNotNull($found);
         Test::assertSame($found->name, $name);
         Test::assertSame($found->owner, $owner);
-        Test::assertSame($found->y, $y);
-        Test::assertSame($found->x, $x);
+        Test::assertSame($found->posY, $y);
+        Test::assertSame($found->posX, $x);
     }
 
     public function assertCity($name, $owner, $y, $x)
