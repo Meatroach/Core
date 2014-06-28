@@ -116,7 +116,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
      */
     public function getUniqueId()
     {
-        $result = $this->db->prepare("SELECT MAX(cityId) FROM users");
+        $result = $this->db->prepare("SELECT MAX(user_id) FROM users");
         $result->execute();
         $row = $result->fetchColumn();
         $row += count($this->users);
@@ -131,7 +131,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
     {
         $queryBuilder = $this->db->createQueryBuilder();
         return $queryBuilder->select(
-            'u.cityId',
+            'u.user_id',
             'u.username',
             'u.password',
             'u.email',
@@ -177,7 +177,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
 
 
         $data = array(
-            'cityId' => $user->getUserId(),
+            'user_id' => $user->getUserId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
@@ -203,7 +203,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->users[$id])) {
-                $this->db->delete('users', array('cityId' => $id));
+                $this->db->delete('users', array('user_id' => $id));
                 unset($this->users[$id]);
                 parent::reassign($id);
             }
@@ -219,7 +219,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
         foreach (parent::getModified() as $id) {
             if (isset($this->users[$id])) {
                 $user = $this->users[$id];
-                $this->db->update('users', $this->entityToRow($user), array('cityId' => $id));
+                $this->db->update('users', $this->entityToRow($user), array('user_id' => $id));
                 parent::reassign($id);
             }
         }

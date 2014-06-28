@@ -71,7 +71,7 @@ class DBALMap extends Repository implements MapRepository
     private function entityToRow(MapEntity $map)
     {
         return array(
-            'cityId' => $map->getMapId(),
+            'map_id' => $map->getMapId(),
             'name' => $map->getName(),
             'width' => $map->getWidth(),
             'height' => $map->getHeight()
@@ -85,7 +85,7 @@ class DBALMap extends Repository implements MapRepository
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->maps[$id])) {
-                $this->connection->delete('maps', array('cityId' => $id));
+                $this->connection->delete('maps', array('map_id' => $id));
                 unset($this->maps[$id]);
                 parent::reassign($id);
             }
@@ -101,7 +101,7 @@ class DBALMap extends Repository implements MapRepository
         foreach (parent::getModified() as $id) {
             if (isset($this->maps[$id])) {
                 $map = $this->maps[$id];
-                $this->connection->update('maps', $this->entityToRow($map), array('cityId' => $id));
+                $this->connection->update('maps', $this->entityToRow($map), array('map_id' => $id));
                 parent::reassign($id);
             }
         }
@@ -112,7 +112,7 @@ class DBALMap extends Repository implements MapRepository
      */
     public function getUniqueId()
     {
-        $result = $this->connection->prepare("SELECT MAX(cityId) FROM maps");
+        $result = $this->connection->prepare("SELECT MAX(map_id) FROM maps");
         $result->execute();
         $row = $result->fetchColumn();
 
@@ -131,7 +131,7 @@ class DBALMap extends Repository implements MapRepository
             }
         }
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('cityId', 'name', 'width', 'height')->from('maps', 'm')->where('name = :name');
+        $queryBuilder->select('map_id', 'name', 'width', 'height')->from('maps', 'm')->where('name = :name');
         $queryBuilder->setParameter(':name', $name);
         $result = $queryBuilder->execute();
         $row = $result->fetch(\PDO::FETCH_OBJ);

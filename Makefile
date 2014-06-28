@@ -33,3 +33,5 @@ install-production:
 	php cli/config.php create production
 	php cli/migration.php migrations:migrate --no-interaction production
 
+run:
+	php -S localhost:80 -t web web/index.php

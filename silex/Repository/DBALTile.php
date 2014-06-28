@@ -67,7 +67,7 @@ class DBALTile extends Repository implements TileRepository
 
     public function getUniqueId()
     {
-        $result = $this->connection->prepare("SELECT MAX(cityId) FROM tiles");
+        $result = $this->connection->prepare("SELECT MAX(tile_id) FROM tiles");
         $result->execute();
         $row = $result->fetchColumn();
         $row += count($this->tiles);
@@ -78,7 +78,7 @@ class DBALTile extends Repository implements TileRepository
     private function entityToRow(TileEntity $tile)
     {
         return array(
-            'cityId' => $tile->getTileId(),
+            'tile_id' => $tile->getTileId(),
             'name' => $tile->getName(),
             'width' => $tile->getWidth(),
             'height' => $tile->getHeight(),
@@ -91,7 +91,7 @@ class DBALTile extends Repository implements TileRepository
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->tiles[$id])) {
-                $this->connection->delete('tiles', array('cityId' => $id));
+                $this->connection->delete('tiles', array('tile_id' => $id));
                 unset($this->tiles[$id]);
                 parent::reassign($id);
             }
@@ -107,7 +107,7 @@ class DBALTile extends Repository implements TileRepository
         foreach (parent::getModified() as $id) {
             if (isset($this->tiles[$id])) {
                 $user = $this->tiles[$id];
-                $this->connection->update('tiles', $this->entityToRow($user), array('cityId' => $id));
+                $this->connection->update('tiles', $this->entityToRow($user), array('tile_id' => $id));
                 parent::reassign($id);
             }
         }

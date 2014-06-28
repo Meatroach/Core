@@ -110,17 +110,17 @@ class DBALCity extends Repository implements CityInterface
     {
         $queryBuilder = $this->db->createQueryBuilder();
         return $queryBuilder->select(
-            'u.cityId AS userId',
+            'u.user_id AS userId',
             'u.username',
             'u.password',
             'u.email',
-            'c.cityId AS cityId',
+            'c.city_id AS cityId',
             'c.name AS cityName',
             'c.posX',
             'c.posY',
             'c.is_selected AS isSelected'
         )
-            ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.cityId=c.user_id');
+            ->from('users', 'u')->innerJoin('u', 'cities', 'c', 'u.user_id=c.user_id');
     }
 
     /**
@@ -165,7 +165,7 @@ class DBALCity extends Repository implements CityInterface
      */
     public function getUniqueId()
     {
-        $result = $this->db->prepare("SELECT MAX(cityId) FROM cities");
+        $result = $this->db->prepare("SELECT MAX(city_id) FROM cities");
         $result->execute();
         $row = $result->fetchColumn();
         $row += count($this->cities);
@@ -188,7 +188,7 @@ class DBALCity extends Repository implements CityInterface
      */
     public function countAll()
     {
-        $result = $this->db->prepare("SELECT COUNT(cityId) FROM cities");
+        $result = $this->db->prepare("SELECT COUNT(city_id) FROM cities");
         $result->execute();
         $row = $result->fetchColumn();
         $row += count($this->cities);
@@ -208,7 +208,7 @@ class DBALCity extends Repository implements CityInterface
     private function entityToRow(CityEntity $city)
     {
         return array(
-            'cityId' => $city->getCityId(),
+            'city_id' => $city->getCityId(),
             'name' => $city->getName(),
             'posX' => $city->getPosX(),
             'posY' => $city->getPosY(),
@@ -242,7 +242,7 @@ class DBALCity extends Repository implements CityInterface
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->cities[$id])) {
-                $this->db->delete('cities', array('cityId' => $id));
+                $this->db->delete('cities', array('city_id' => $id));
                 unset($this->cities[$id]);
                 parent::reassign($id);
             }
@@ -254,7 +254,7 @@ class DBALCity extends Repository implements CityInterface
         foreach (parent::getModified() as $id) {
             if (isset($this->cities[$id])) {
                 $cities = $this->cities[$id];
-                $this->db->update('cities', $this->entityToRow($cities), array('cityId' => $id));
+                $this->db->update('cities', $this->entityToRow($cities), array('city_id' => $id));
                 parent::reassign($id);
             }
         }

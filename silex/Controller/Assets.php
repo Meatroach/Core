@@ -42,7 +42,7 @@ class Assets
         foreach ($this->paths as $baseDir) {
             $file = realpath(sprintf("%s/%s/%s", $baseDir, $type, $file));
         }
-        
+
         $expireDate = new DateTime();
         $expireDate->modify("+1 month");
 

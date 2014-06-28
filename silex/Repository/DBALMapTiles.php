@@ -67,11 +67,11 @@ class DBALMapTiles implements MapTilesRepository
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         return $queryBuilder->select(
-            'm.cityId AS mapId',
+            'm.map_id AS mapId',
             'm.name AS mapName',
             'm.width as mapWidth',
             'm.height AS mapHeight',
-            't.cityId AS tileId',
+            't.tile_id AS tileId',
             't.name AS tileName',
             't.is_accessible AS isAccessible',
             't.is_default AS isDefault',
@@ -79,11 +79,11 @@ class DBALMapTiles implements MapTilesRepository
             'mt.posY AS posY',
             't.width AS tileWidth',
             't.height as tileHeight'
-        )->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.cityId=mt.map_id')->leftJoin(
+        )->from('maps', 'm')->leftJoin('m', 'map_tiles', 'mt', 'm.map_id=mt.map_id')->leftJoin(
                 'mt',
                 'tiles',
                 't',
-                'mt.tile_id=t.cityId'
+                'mt.tile_id=t.tile_id'
             );
     }
 
@@ -91,7 +91,7 @@ class DBALMapTiles implements MapTilesRepository
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $result = $queryBuilder->select(
-            't.cityId',
+            't.tile_id',
             't.name',
             't.is_accessible AS isAccessible',
             't.width',
