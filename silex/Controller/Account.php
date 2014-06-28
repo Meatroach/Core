@@ -36,21 +36,22 @@ class Account
         RegistrationValidator $registrationValidator,
         ActivationCodeGenerator $activationCodeGenerator,
         ActivateUserValidator $activateUserValidator
-    ) {
-        $this->userRepository          = $userRepository;
-        $this->passwordHasher          = $passwordHasher;
-        $this->registrationValidator   = $registrationValidator;
+    )
+    {
+        $this->userRepository = $userRepository;
+        $this->passwordHasher = $passwordHasher;
+        $this->registrationValidator = $registrationValidator;
         $this->activationCodeGenerator = $activationCodeGenerator;
-        $this->activateUserValidator   = $activateUserValidator;
+        $this->activateUserValidator = $activateUserValidator;
     }
 
     public function createAction(Request $httpRequest)
     {
-        $username           = $httpRequest->get('username');
-        $email              = $httpRequest->get('email');
-        $emailConfirm       = $httpRequest->get('emailConfirm');
-        $password           = $httpRequest->get('password');
-        $passwordConfirm    = $httpRequest->get('passwordConfirm');
+        $username = $httpRequest->get('username');
+        $email = $httpRequest->get('email');
+        $emailConfirm = $httpRequest->get('emailConfirm');
+        $password = $httpRequest->get('password');
+        $passwordConfirm = $httpRequest->get('passwordConfirm');
         $termsAndConditions = (bool)$httpRequest->get('termsAndConditions');
 
         $response = new RegistrationResponse;
@@ -70,7 +71,7 @@ class Account
         );
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
-            $response->failed  = !$context->process($request, $response);
+            $response->failed = !$context->process($request, $response);
         }
 
         return $response;
@@ -81,12 +82,12 @@ class Account
         $username = $httpRequest->get('username');
         $password = $httpRequest->get('password');
 
-        $response   = new LoginResponse;
-        $request    = new LoginRequest($username, $password);
+        $response = new LoginResponse;
+        $request = new LoginRequest($username, $password);
         $interactor = new LoginInteractor($this->userRepository, $this->passwordHasher);
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
-            $response->failed  = !$interactor->process($request, $response);
+            $response->failed = !$interactor->process($request, $response);
         }
         return $response;
     }
@@ -94,22 +95,22 @@ class Account
     public function activateAction(Request $httpRequest)
     {
 
-        $username          = $httpRequest->get('username');
-        $activationCode    = $httpRequest->get('activationKey');
-        $request           = new ActivateUserRequest($username, $activationCode);
-        $response          = new ActivateUserResponse;
-        $interactor        = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
+        $username = $httpRequest->get('username');
+        $activationCode = $httpRequest->get('activationKey');
+        $request = new ActivateUserRequest($username, $activationCode);
+        $response = new ActivateUserResponse;
+        $interactor = new ActivateUserInteractor($this->userRepository, $this->activateUserValidator);
         $response->proceed = true;
-        $response->failed  = !$interactor->process($request, $response);
+        $response->failed = !$interactor->process($request, $response);
         return $response;
     }
 
     public function updateLastAction($username)
     {
 
-        $request           = new UpdateLastActionRequest($username);
-        $response          = new UpdateLastActionResponse();
-        $interactor        = new UpdateLastActionInteractor($this->userRepository);
+        $request = new UpdateLastActionRequest($username);
+        $response = new UpdateLastActionResponse();
+        $interactor = new UpdateLastActionInteractor($this->userRepository);
         $response->proceed = true;
         $response->failed != $interactor->process($request, $response);
         return $response;

@@ -89,7 +89,7 @@ class DBALCity extends Repository implements CityInterface
         }
 
         $result = $this->getQueryBuilder()
-            ->where('user_id = :user_id')
+            ->where('u.user_id = :user_id')
             ->setParameter(':user_id', $owner->getUserId())->execute();
         $rows = $result->fetchAll(PDO::FETCH_OBJ);
         if (count($rows) < 0) {
@@ -199,7 +199,7 @@ class DBALCity extends Repository implements CityInterface
     private function rowToEntity(stdClass $row)
     {
         $owner = new UserEntity($row->userId, $row->username, $row->password, $row->email);
-        $city = $this->create($row->cityId, $row->cityName, $row->y, $row->x);
+        $city = $this->create($row->cityId, $row->cityName, $row->posY, $row->posX);
         $city->setOwner($owner);
         $city->setSelected($row->isSelected);
         return $city;
