@@ -159,13 +159,13 @@ class Module implements ServiceProviderInterface
                 function (Request $request) use ($app) {
                     $session = $request->getSession();
                     if (!$session) {
-                        return '';
+                        return null;
                     }
                     if ($session->get('username')) {
                         $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                         return new RedirectResponse($baseUrl . 'game');
                     }
-                    return '';
+                    return null;
                 }
             )
             ->value(RouteValue::TEMPLATE, 'pages/landing');

@@ -28,7 +28,7 @@ class Game implements ControllerProviderInterface
                     }
                     return new RedirectResponse($startUrl);
                 }
-                return '';
+                return null;
             }
         );
         $game->get('/map/{posY}/{posX}', Controller::MAP . ':viewAction')
@@ -71,7 +71,7 @@ class Game implements ControllerProviderInterface
                     if (!$response->failed) {
                         return new RedirectResponse($cityListUrl);
                     }
-                    return '';
+                    return null;
                 }
             )
             ->method('POST|GET')
