@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'connection.options' => array(
+    'db.options' => array(
         /**
          * pdo_mysql | pdo_sqlite
          */

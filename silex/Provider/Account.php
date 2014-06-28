@@ -14,7 +14,7 @@ class Account implements ControllerProviderInterface
     public function connect(Application $app)
     {
         /**
-         * @var ControllerCollection $app ['controllers_factory']
+         * @var ControllerCollection $account
          */
         $account = $app['controllers_factory'];
 
@@ -101,6 +101,7 @@ class Account implements ControllerProviderInterface
         $account->get(
             '/login',
             function () use ($app) {
+
                 return $app->redirect($app['mustache.options']['helpers']['baseUrl']);
             }
         );
