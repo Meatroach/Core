@@ -2,7 +2,7 @@
 Feature: List cities
   In order to select a city,
   as registered user,
-  i have to list avaliable cities
+  i have to list available cities
 
   Background:
     Given following users:
