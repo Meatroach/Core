@@ -178,7 +178,7 @@ class DBALMapTiles implements MapTilesRepository
                 }
                 $data = array(
                     'map_id' => $this->map->getMapId(),
-                    'tile_id' => $tile->getId(),
+                    'tile_id' => $tile->getTileId(),
                     'posX' => $x,
                     'posY' => $y
                 );

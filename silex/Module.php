@@ -50,15 +50,13 @@ class Module implements ServiceProviderInterface
 
     public function register(Application $app)
     {
-
-        $this->loadConfigurations($app);
         $this->registerProviders($app);
+        $this->loadConfigurations($app);
         $this->createDependencies($app);
         $this->setupRoutes($app);
-
     }
 
-    private function createDependencies(Application &$app)
+    private function createDependencies(Application $app)
     {
         $repository = new Repository($app);
         $service = new Service($app);
@@ -81,7 +79,7 @@ class Module implements ServiceProviderInterface
     /**
      * @param Application $app
      */
-    private function registerProviders(Application &$app)
+    private function registerProviders(Application $app)
     {
 
         $app->register(new ValidatorServiceProvider);
@@ -96,7 +94,7 @@ class Module implements ServiceProviderInterface
     /**
      * @param Application $app
      */
-    private function loadConfigurations(Application &$app)
+    private function loadConfigurations(Application $app)
     {
         $files = array(
             'general.php',
@@ -115,7 +113,7 @@ class Module implements ServiceProviderInterface
     /**
      * @param Application $app
      */
-    protected function attachRoutesOnContainer(Application &$app)
+    protected function attachRoutesOnContainer(Application $app)
     {
         $app->mount('/assets', new AssetsProvider());
         $app->mount('/account', new AccountProvider());
@@ -126,11 +124,16 @@ class Module implements ServiceProviderInterface
      * @param Application $app
      * @return void
      */
-    protected function setupRoutes(Application &$app)
+    protected function setupRoutes(Application $app)
     {
+
         $app->on(
             KernelEvents::REQUEST,
             function ($event) use ($app) {
+
+                /**
+                 * @var  $event
+                 */
                 $request = $event->getRequest();
                 $session = $request->getSession();
                 $token = $request->get('csrfToken');
@@ -161,6 +164,7 @@ class Module implements ServiceProviderInterface
                     if (!$session) {
                         return null;
                     }
+
                     if ($session->get('username')) {
                         $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                         return new RedirectResponse($baseUrl . 'game');

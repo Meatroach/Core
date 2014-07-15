@@ -157,7 +157,7 @@ class DBALUser extends Repository implements UserRepositoryInterface
         $lastLogin = \DateTime::createFromFormat($this->dateFormat, $row->lastLogin);
         $registrationDate = \DateTime::createFromFormat($this->dateFormat, $row->registered);
         $lastAction = \DateTime::createFromFormat($this->dateFormat, $row->lastAction);
-        $user = $this->create($row->id, $row->username, $row->password, $row->email);
+        $user = $this->create($row->user_id, $row->username, $row->password, $row->email);
         if ($lastAction) {
             $user->setLastAction($lastAction);
         }
