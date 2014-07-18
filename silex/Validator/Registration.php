@@ -50,7 +50,7 @@ class Registration extends AbstractRegistrationValidator
             ),
             'password'           => array(
                 new Assert\NotBlank(array('message' => 'Password is empty')),
-                new Assert\Length(array('min' => 6, 'max' => 30, 'minMessage' => 'Password is too short')),
+                new Assert\Length(array('min' => 6, 'max' => 30, 'minMessage' => 'Password is too short', 'maxMessage' => 'Password is too long')),
             ),
             'passwordConfirm'    => array(
                 new Assert\EqualTo(array('value' => $object->password, 'message' => 'Password confirm not match'))
