@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 $app = new Application;
-$env = Env::get();
+//$env = Env::get();
 $app->before(
     function (Request $request) use ($env, $app) {
         if ($env === Env::TEST && $request->cookies->has('username')) {

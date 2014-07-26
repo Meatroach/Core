@@ -101,7 +101,7 @@ class DBALMapTiles implements MapTilesRepository
             ->from('tiles', 't')
             ->where('is_default = 1')->execute();
         $row = $result->fetch(PDO::FETCH_OBJ);
-        $this->defaultTile = new TileEntity($row->id, $row->name, $row->isAccessible);
+        $this->defaultTile = new TileEntity($row->tile_id, $row->name, $row->isAccessible);
         $this->defaultTile->setDefault($row->isDefault);
         $this->defaultTile->setHeight($row->height);
         $this->defaultTile->setWidth($row->width);
@@ -127,7 +127,7 @@ class DBALMapTiles implements MapTilesRepository
                 $tile->setWidth($row->tileWidth);
                 $tiles[$tile->getTileId()] = $tile;
             }
-            $map->addTile($tile, $row->y, $row->x);
+            $map->addTile($tile, $row->posY, $row->posX);
             $this->add($map);
         }
     }
