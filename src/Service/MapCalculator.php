@@ -29,4 +29,5 @@ interface MapCalculator
     public function pixelToPosition($top, $left);
 
     public function getCenterPosition($posY, $posX);
+    public function getNeighborLocations($posY,$posX,$range = 1);
 }

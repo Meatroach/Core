@@ -18,21 +18,28 @@
 }
 
 .gras {
-    background-position: -0px -0px
+    background-image: none;
+   /*background-position: -0px -0px*/ background: #449d44;
+
 }
 
 .sea {
-    background-position: -128px -0px
+    background-image: none;
+  /*  background-position: -128px -0px*/ background: #269abc;
+
 }
 
 .forrest {
-    background-position: -256px -0px
+    background-image: none;
+   /* background-position: -256px -0px*/background: #2b542c;
+
 }
 
 .hill {
-    background-position: -384px -0px
+  /*  background-position: -384px -0px*/ background: #66512c;
+    background-image: none;
 }
 
 .city1 {
-    background-position: 0px -128px;
+    background-position: -0px -180px;
 }

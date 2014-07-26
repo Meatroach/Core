@@ -47,26 +47,21 @@ class IsometricMapCalculator implements MapCalculator
 
     public function getArea($top, $left)
     {
-
-
-        $start = array(
-            'posX' => $left - $this->tileWidth / 2,
-            'posY' => $top + $this->tileHeight / 2
-        );
-        $end = array(
-            'posX' => $start['posX'] + $this->viewPortWidth + $this->tileWidth,
-            'posY' => $start['posY'] + $this->viewPortHeight + $this->tileHeight / 2
-        );
-        $width = $this->width * $this->tileWidth;
-        $height = $this->height * $this->tileHeight;
         $halfTileWidth = $this->tileWidth / 2;
         $halfTileHeight = $this->tileHeight / 2;
+
+        $halfViewportWidth = round($this->viewPortWidth/2);
+        $halfViewportHeight = round($this->viewPortHeight/2);
+        $topPosition = $top-$halfViewportHeight;
+        $bottomPosition = $top+$halfViewportHeight;
+        $leftPosition =$left-$halfViewportWidth;
+        $rightPosition = $left+$halfViewportWidth;
         $area = array();
-        for ($y = $start['posY']; $y <= $end['posY']; $y += $halfTileHeight) {
-            for ($x = $start['posX']; $x <= $end['posX']; $x += $halfTileWidth) {
+        for ($y = $topPosition; $y < $bottomPosition; $y +=$halfTileHeight) {
+            for ($x = $leftPosition; $x < $rightPosition; $x +=$halfTileWidth) {
                 $row = $this->pixelToPosition($y, $x);
-                $positionX = max(0, min($width, $row['posX']));
-                $positionY = max(0, min($height, $row['posY']));
+                $positionX = max(0, min($this->width, $row['posX']));
+                $positionY = max(0, min($this->height, $row['posY']));
                 $key = sprintf("%d-%d", $positionY, $positionX);
                 $area[$key] = array('posY' => $positionY, 'posX' => $positionX);
             }
@@ -77,8 +72,8 @@ class IsometricMapCalculator implements MapCalculator
     public function pixelToPosition($top, $left)
     {
         $newLeft = ($left - $this->originX) / $this->tileRatio;
-        $posX = ~~(($top + $newLeft) / $this->tileHeight);
-        $posY = ~~(($top - $newLeft) / $this->tileHeight);
+        $posX = round(($top + $newLeft) / $this->tileHeight);
+        $posY = round(($top - $newLeft) / $this->tileHeight);
         return array(
             'posX' => $posX,
             'posY' => $posY
@@ -88,8 +83,8 @@ class IsometricMapCalculator implements MapCalculator
     public function positionToPixel($posY, $posX)
     {
 
-        $left = ~~(($posX - $posY) * ($this->tileWidth / 2) + $this->originX);
-        $top = ~~(($posX + $posY) * ($this->tileHeight / 2));
+        $left = round(($posX - $posY) * ($this->tileWidth / 2) + $this->originX);
+        $top = round(($posX + $posY) * ($this->tileHeight / 2));
         return array(
             'top' => $top,
             'left' => $left
@@ -115,4 +110,10 @@ class IsometricMapCalculator implements MapCalculator
             'left' => $posX
         );
     }
+
+    public function getNeighborLocations($posY, $posX, $range = 1)
+    {
+
+    }
+
 }

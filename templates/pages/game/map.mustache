@@ -20,7 +20,7 @@
                 <div class="col-md-1" style="line-height:{{height}}px"><a href="game/map/{{leftY}}/{{leftX}}#map"
                                                                           class="map-arrow glyphicon glyphicon-chevron-left"></a>
                 </div>
-                <div id="viewport" class="col-md-10" style="height:100%">
+                <div id="viewport" class="col-md-10" style="height:100%;width:{{width}}px">
 
 
                     <div id="map"
@@ -28,7 +28,9 @@
 
                         {{#tiles}}
                             <div class="sprite {{name}}" data-x="{{posX}}" data-y="{{posY}}"
-                                 style="position: absolute;top:{{top}}px;left:{{left}}px;z-index: {{layerZ}}"></div>
+                                 style="position: absolute;top:{{top}}px;left:{{left}}px;z-index: {{layerZ}}">
+                                {{posX}}/{{posY}}
+                                 </div>
                         {{/tiles}}
 
                         {{#cities}}

@@ -30,9 +30,28 @@ class OrthographicMapCalculator implements MapCalculator
         $this->viewPortWidth = $viewPortWidth;
     }
 
-    public function getArea($posY, $posX)
+    public function getArea($top, $left)
     {
-        // TODO: Implement getArea() method.
+
+        $halfViewportWidth = round($this->viewPortWidth/2);
+        $halfViewportHeight = round($this->viewPortHeight/2);
+        $topPosition = $top-$halfViewportHeight;
+        $bottomPosition = $top+$halfViewportHeight;
+        $leftPosition =$left-$halfViewportWidth;
+        $rightPosition = $left+$halfViewportWidth;
+
+        $area = array();
+        for ($y = $topPosition; $y < $bottomPosition; $y +=$this->tileHeight) {
+            for ($x = $leftPosition; $x < $rightPosition; $x +=$this->tileWidth) {
+                $position = $this->pixelToPosition($y,$x);
+                $positionX = max(0, min($this->width, $position['posX']));
+                $positionY = max(0, min($this->height,$position['posY']));
+                $key = sprintf("%d-%d", $positionY, $positionX);
+                $area[$key] = array('posY' => $positionY, 'posX' => $positionX);
+            }
+        }
+
+        return $area;
     }
 
     /**
@@ -48,8 +67,8 @@ class OrthographicMapCalculator implements MapCalculator
 
     public function positionToPixel($posY, $posX)
     {
-        $left = $posX * $this->width * $this->tileWidth;
-        $top = $posY * $this->height * $this->tileHeight;
+        $left = $posX * $this->tileWidth;
+        $top = $posY * $this->tileHeight;
         return array(
             'left' => $left,
             'top' => $top
@@ -61,13 +80,31 @@ class OrthographicMapCalculator implements MapCalculator
         $posX = $left / $this->tileWidth;
         $posY = $top / $this->tileHeight;
         return array(
-            'posX' => $posX,
-            'posY' => $posY
+            'posX' => (int)round($posX),
+            'posY' => (int)round($posY)
         );
     }
 
     public function getCenterPosition($posY, $posX)
     {
-        // TODO: Implement getCenterPosition() method.
+        $position = $this->positionToPixel($posY, $posX);
+        $left = $position['left'];
+        $top = $position['top'];
+
+        $posX = -$left + $this->viewPortWidth / 2 ;
+        $posY = -$top + $this->viewPortHeight / 2;
+
+        $result = array(
+            'top' => $posY,
+            'left' => $posX
+        );
+
+        return $result;
     }
+
+    public function getNeighborLocations($posY, $posX, $range = 1)
+    {
+        // TODO: Implement getNeighborLocations() method.
+    }
+
 }

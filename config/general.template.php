@@ -12,8 +12,8 @@ return array(
         )
     ),
     'map.options' => array(
-        'viewportWidth' => 1024,
-        'viewportHeight' => 680,
+        'viewportWidth' => 896,
+        'viewportHeight' => 592,
         'width' => 100,
         'height' => 100,
         'tileHeight' => 74,

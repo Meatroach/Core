@@ -49,21 +49,20 @@ class ViewMap
             $posY = $city->getPosY();
         }
 
-        $response->downX = $posX + $step;
+        $response->downX = $posX ;
         $response->downY = $posY + $step;
-        $response->upX = $posX - $step;
+        $response->upX = $posX;
         $response->upY = $posY - $step;
-        $response->rightX = $posX + $step;
-        $response->rightY = $posY - $step;
-        $response->leftX = $posX - $step;
-        $response->leftY = $posY + $step;
-        $center = $this->mapCalculator->positionToPixel($posY, $posX);
+        $response->rightX = $posX - $step;
+        $response->rightY = $posY;
+        $response->leftX = $posX + $step;
+        $response->leftY = $posY;
 
-        $top = $center['top'] - $request->getViewportHeight() / 2;
-        $left = $center['left'] - $request->getViewportWidth() / 2;
-        $response->top = -$center['top'] + $request->getViewportHeight() / 2 - $defaultTile->getHeight() / 2;
-        $response->left = -$center['left'] + $request->getViewportWidth() / 2 - $defaultTile->getWidth() / 2;
-        $area = $this->mapCalculator->getArea($top, $left);
+        $center = $this->mapCalculator->positionToPixel($posY, $posX);
+        $response->top = -$center['top']+round($request->getViewportHeight()/2);
+        $response->left = -$center['left']+round($request->getViewportWidth() /2)-round($defaultTile->getWidth()/2);
+
+        $area = $this->mapCalculator->getArea($center['top'],  $center['left']);
 
 
         $cities = $this->cityRepository->findAllInArea($area);

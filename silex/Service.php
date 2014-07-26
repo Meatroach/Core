@@ -6,6 +6,7 @@ use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Silex\Provider\CSRFTokenHasher;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
 use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
+use OpenTribes\Core\Silex\Service\OrthographicMapCalculator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
 use Silex\Application;
 
@@ -51,7 +52,7 @@ class Service
         $app[self::MAP_CALCULATOR] = $app->share(
             function () use ($app) {
                 $options = $app['map.options'];
-                return new IsometricMapCalculator(
+                return new OrthographicMapCalculator(
                     $options['height'],
                     $options['width'],
                     $options['viewportHeight'],
