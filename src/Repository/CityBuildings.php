@@ -11,11 +11,11 @@ use OpenTribes\Core\Entity\City as CityEntity;
 interface CityBuildings
 {
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      * @return CityEntity|null
      */
-    public function findByLocation($y, $x);
+    public function findByLocation($posY, $posX);
 
     /**
      * @param CityEntity $city

@@ -28,23 +28,22 @@ class Map
         MapCalculator $mapCalculator
     ) {
         $this->mapTilesRepository = $mapTilesRepository;
-        $this->cityRepository     = $cityRepository;
-        $this->mapCalculator      = $mapCalculator;
+        $this->cityRepository = $cityRepository;
+        $this->mapCalculator = $mapCalculator;
     }
 
     public function viewAction(Request $httpRequest)
     {
-        $y        = $httpRequest->get('y');
-        $x        = $httpRequest->get('x');
+        $posY = $httpRequest->get('posY');
+        $posX = $httpRequest->get('posX');
         $username = $httpRequest->getSession()->get('username');
 
-        $width            = $httpRequest->get('width');
-        $height           = $httpRequest->get('height');
-        $request          = new ViewMapRequest($y, $x, $username, $height, $width);
-        $response         = new ViewMapResponse;
-        $context          = new ViewMapContext($this->mapTilesRepository, $this->cityRepository, $this->mapCalculator);
+        $width = $httpRequest->get('width');
+        $height = $httpRequest->get('height');
+        $request = new ViewMapRequest($posY, $posX, $username, $height, $width);
+        $response = new ViewMapResponse;
+        $context = new ViewMapContext($this->mapTilesRepository, $this->cityRepository, $this->mapCalculator);
         $response->failed = $context->process($request, $response);
         return $response;
     }
-
 }

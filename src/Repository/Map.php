@@ -12,11 +12,11 @@ interface Map
 {
 
     /**
-     * @param integer $id
+     * @param integer $mapMapId
      * @param string $name
      * @return MapEntity
      */
-    public function create($id, $name);
+    public function create($mapMapId, $name);
 
     /**
      * @return integer
@@ -24,16 +24,19 @@ interface Map
     public function getUniqueId();
 
     /**
+     * @param MapEntity $map
      * @return void
      */
     public function add(MapEntity $map);
 
     /**
+     * @param MapEntity $map
      * @return void
      */
     public function replace(MapEntity $map);
 
     /**
+     * @param MapEntity $map
      * @return void
      */
     public function delete(MapEntity $map);
@@ -49,5 +52,4 @@ interface Map
      * @return MapEntity
      */
     public function findOneByName($name);
-
 }

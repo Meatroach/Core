@@ -27,12 +27,12 @@ interface LocationCalculator
     public function getY();
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      *
      * @return void
      */
-    public function setCenterPosition($y, $x);
+    public function setCenterPosition($posY, $posX);
 
     /**
      * @param integer $countCities

@@ -17,7 +17,7 @@ class Map
     /**
      * @var integer
      */
-    private $id;
+    private $mapId;
     /**
      * @var Tile[][]
      */
@@ -26,37 +26,37 @@ class Map
     private $height = 0;
 
     /**
-     * @param integer $id
+     * @param integer $mapId
      * @param string $name
      */
-    public function __construct($id, $name)
+    public function __construct($mapId, $name)
     {
-        $this->id = $id;
+        $this->mapId = $mapId;
         $this->name = $name;
     }
 
     /**
      * @param Tile $tile
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      */
-    public function addTile(Tile $tile, $y, $x)
+    public function addTile(Tile $tile, $posY, $posX)
     {
-        $y = (int)$y;
-        $x = (int)$x;
-        $this->tiles[$y][$x] = $tile;
+        $posY = (int)$posY;
+        $posX = (int)$posX;
+        $this->tiles[$posY][$posX] = $tile;
     }
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      * @return Tile
      */
-    public function getTile($y, $x)
+    public function getTile($posY, $posX)
     {
-        $y = (int)$y;
-        $x = (int)$x;
-        return isset($this->tiles[$y][$x]) ? $this->tiles[$y][$x] : null;
+        $posY = (int)$posY;
+        $posX = (int)$posX;
+        return isset($this->tiles[$posY][$posX]) ? $this->tiles[$posY][$posX] : null;
     }
 
 
@@ -107,31 +107,30 @@ class Map
     }
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
+     * @return bool
      */
-    public function isValidLocation($y, $x)
+    public function isValidLocation($posY, $posX)
     {
-        return $x > 0 && $y > 0 && $x <= $this->getWidth() && $y <= $this->getHeight();
+        return $posX > 0 && $posY > 0 && $posX <= $this->getWidth() && $posY <= $this->getHeight();
     }
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      * @return boolean
      */
-    public function isAccessible($y, $x)
+    public function isAccessible($posY, $posX)
     {
-        if ($this->getTile($y, $x)) {
-            return $this->getTile($y, $x)->isAccessible();
+        if ($this->getTile($posY, $posX)) {
+            return $this->getTile($posY, $posX)->isAccessible();
         }
         return true;
     }
 
-    public function getId()
+    public function getMapId()
     {
-        return $this->id;
+        return $this->mapId;
     }
-
-
 }

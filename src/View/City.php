@@ -11,24 +11,24 @@ use OpenTribes\Core\Entity\City as CityEntity;
  */
 class City
 {
-    public $id;
+    public $cityId;
     public $name;
-    public $x;
-    public $y;
+    public $posX;
+    public $posY;
     public $width;
     public $height;
     public $top;
     public $left;
     public $level;
-    public $z;
+    public $layerZ;
     public $owner;
 
     public function __construct(CityEntity $city)
     {
-        $this->id    = $city->getId();
-        $this->name  = $city->getName();
-        $this->x     = $city->getX();
-        $this->y     = $city->getY();
+        $this->cityId = $city->getCityId();
+        $this->name = $city->getName();
+        $this->posX = $city->getPosX();
+        $this->posY = $city->getPosY();
         $this->owner = $city->getOwner()->getUsername();
     }
 }

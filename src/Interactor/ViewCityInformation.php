@@ -22,11 +22,11 @@ class ViewCityInformation
 
     public function process(ViewCityInformationRequest $request, ViewCityInformationResponse $response)
     {
-        $city = $this->cityRepository->findByLocation($request->getY(), $request->getX());
+        $city = $this->cityRepository->findByLocation($request->getPosY(), $request->getPosX());
         if (!$city) {
             return false;
         }
         $response->city = new CityView($city);
         return true;
     }
-} 
+}

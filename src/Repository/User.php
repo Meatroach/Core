@@ -12,13 +12,13 @@ interface User
 {
 
     /**
-     * @param integer $id UserId
+     * @param integer $userId UserId
      * @param string $username username
      * @param string $password password hash
      * @param string $email email adress
      * @return UserEntity
      */
-    public function create($id, $username, $password, $email);
+    public function create($userId, $username, $password, $email);
 
     /**
      * @return integer
@@ -26,16 +26,19 @@ interface User
     public function getUniqueId();
 
     /**
+     * @param UserEntity $user
      * @return void
      */
     public function add(UserEntity $user);
 
     /**
+     * @param UserEntity $user
      * @return void
      */
     public function replace(UserEntity $user);
 
     /**
+     * @param UserEntity $user
      * @return void
      */
     public function delete(UserEntity $user);

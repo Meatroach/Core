@@ -31,50 +31,50 @@ class City
     private $userRepository;
     private $mapTilesRepository;
     private $locationCalculator;
-    private $buildingRepository;
-    private $cityBuildingRepository;
+    private $buildingsRepository;
+    private $cityBuildingsRepository;
 
     public function __construct(
         UserRepository $userRepository,
         CityRepository $cityRepository,
         MapTilesRepository $mapTilesRepository,
         LocationCalculator $locationCalculator,
-        BuildingRepository $buildingRepository,
-        CityBuildingsRepository $cityBuildingRepository
+        BuildingRepository $buildings,
+        CityBuildingsRepository $cityBuildings
     ) {
-        $this->cityRepository         = $cityRepository;
-        $this->userRepository         = $userRepository;
-        $this->mapTilesRepository     = $mapTilesRepository;
-        $this->locationCalculator     = $locationCalculator;
-        $this->cityBuildingRepository = $cityBuildingRepository;
-        $this->buildingRepository     = $buildingRepository;
-        $this->cityBuildingRepository = $cityBuildingRepository;
+        $this->cityRepository = $cityRepository;
+        $this->userRepository = $userRepository;
+        $this->mapTilesRepository = $mapTilesRepository;
+        $this->locationCalculator = $locationCalculator;
+        $this->cityBuildingRepository = $cityBuildings;
+        $this->buildingRepository = $buildings;
+        $this->cityBuildingRepository = $cityBuildings;
     }
 
     public function listAction(Request $httpRequest)
     {
         $defaultUsername = $httpRequest->getSession()->get('username');
-        $username        = $httpRequest->get('username');
+        $username = $httpRequest->get('username');
         if (!$username) {
             $username = $defaultUsername;
         }
 
-        $request    = new ViewCitiesRequest($username);
+        $request = new ViewCitiesRequest($username);
         $interactor = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
-        $response   = new ViewCitiesResponse;
+        $response = new ViewCitiesResponse;
 
         $response->proceed = true;
-        $response->failed  = !$interactor->process($request, $response);
+        $response->failed = !$interactor->process($request, $response);
         return $response;
     }
 
     public function newAction(Request $httpRequest)
     {
-        $username  = $httpRequest->getSession()->get('username');
+        $username = $httpRequest->getSession()->get('username');
         $direction = $httpRequest->get('direction', 'any');
         //Has to be in config
         $defaultCityName = sprintf('%s\'s City', $username);
-        $directions      = array(
+        $directions = array(
             array('name' => 'any', 'selected' => $direction === 'any'),
             array('name' => 'north', 'selected' => $direction === 'north'),
             array('name' => 'east', 'selected' => $direction === 'east'),
@@ -82,9 +82,14 @@ class City
             array('name' => 'west', 'selected' => $direction === 'west'),
         );
 
-        $request    = new CreateNewCityRequest($username, $direction, $defaultCityName);
-        $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
-        $response   = new CreateNewCityResponse;
+        $request = new CreateNewCityRequest($username, $direction, $defaultCityName);
+        $interactor = new CreateNewCityInteractor(
+            $this->cityRepository,
+            $this->mapTilesRepository,
+            $this->userRepository,
+            $this->locationCalculator
+        );
+        $response = new CreateNewCityResponse;
         if ($httpRequest->getMethod() === 'POST') {
             $response->proceed = true;
             $interactor->process($request, $response);
@@ -96,12 +101,16 @@ class City
 
     public function locationAction(Request $httpRequest)
     {
-        $username   = $httpRequest->getSession()->get('username');
-        $x          = $httpRequest->get('x');
-        $y          = $httpRequest->get('y');
-        $request    = new ViewLocationRequest($username, $y, $x);
-        $interactor = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingRepository, $this->buildingRepository);
-        $response   = new ViewLocationResponse();
+        $username = $httpRequest->getSession()->get('username');
+        $posX = $httpRequest->get('posX');
+        $posY = $httpRequest->get('posY');
+        $request = new ViewLocationRequest($username, $posY, $posX);
+        $interactor = new ViewLocationInteractor(
+            $this->cityRepository,
+            $this->cityBuildingsRepository,
+            $this->buildingsRepository
+        );
+        $response = new ViewLocationResponse();
 
         $response->failed = !$interactor->process($request, $response);
         return $response;
@@ -111,5 +120,4 @@ class City
     {
         $this->cityRepository->sync();
     }
-
 }

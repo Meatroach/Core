@@ -14,8 +14,8 @@
             </div>
             {{/failed}}
             {{/proceed}}
-            <form role="form" action="account/create" method="POST">
-                <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
+            <form role="form" action="/account/create" method="POST">
+            <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
 
                 <div class="form-group">
                     <label for="username">Username</label>

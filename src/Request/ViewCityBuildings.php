@@ -10,35 +10,34 @@ namespace OpenTribes\Core\Request;
 class ViewCityBuildings
 {
 
-    private $y;
-    private $x;
+    private $posY;
+    private $posX;
 
     /**
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      */
-    public function __construct($y, $x)
+    public function __construct($posY, $posX)
     {
 
-        $this->y = $y;
-        $this->x = $x;
+        $this->posY = $posY;
+        $this->posX = $posX;
     }
 
 
     /**
      * @return integer
      */
-    public function getY()
+    public function getPosY()
     {
-        return $this->y;
+        return $this->posY;
     }
 
     /**
      * @return integer
      */
-    public function getX()
+    public function getPosX()
     {
-        return $this->x;
+        return $this->posX;
     }
-
 }

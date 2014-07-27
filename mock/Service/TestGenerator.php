@@ -16,5 +16,4 @@ class TestGenerator implements ActivationCodeGenerator
     {
         return 'test';
     }
-
 }

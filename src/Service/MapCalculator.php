@@ -15,16 +15,19 @@ namespace OpenTribes\Core\Service;
 interface MapCalculator
 {
 
-    public function getArea($y, $x);
+    public function getArea($posY, $posX);
 
     /**
-     * @return void
+     * @param $height
+     * @param $width
+     * @return mixed
      */
     public function setViewport($height, $width);
 
-    public function positionToPixel($y, $x);
+    public function positionToPixel($posY, $posX);
 
     public function pixelToPosition($top, $left);
 
-    public function getCenterPosition($y, $x);
+    public function getCenterPosition($posY, $posX);
+    public function getNeighborLocations($posY,$posX,$range = 1);
 }

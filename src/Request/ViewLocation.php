@@ -11,14 +11,14 @@ class ViewLocation
 {
 
     private $username;
-    private $y;
-    private $x;
+    private $posY;
+    private $posX;
 
-    public function __construct($username, $y, $x)
+    public function __construct($username, $posY, $posX)
     {
         $this->username = $username;
-        $this->y        = $y;
-        $this->x        = $x;
+        $this->posY = $posY;
+        $this->posX = $posX;
     }
 
     public function getUsername()
@@ -29,17 +29,16 @@ class ViewLocation
     /**
      * @return integer
      */
-    public function getY()
+    public function getPosY()
     {
-        return $this->y;
+        return $this->posY;
     }
 
     /**
      * @return integer
      */
-    public function getX()
+    public function getPosX()
     {
-        return $this->x;
+        return $this->posX;
     }
-
 }

@@ -49,18 +49,18 @@ class CityHelper
         CityBuildingsRepository $cityBuildingsRepository,
         BuildingRepository $buildingRepository
     ) {
-        $this->userRepository          = $userRepository;
-        $this->cityRepository          = $cityRepository;
-        $this->mapTilesRepository      = $mapTilesRepository;
-        $this->locationCalculator      = $locationCalculator;
+        $this->userRepository = $userRepository;
+        $this->cityRepository = $cityRepository;
+        $this->mapTilesRepository = $mapTilesRepository;
+        $this->locationCalculator = $locationCalculator;
         $this->cityBuildingsRepository = $cityBuildingsRepository;
-        $this->buildingRepository      = $buildingRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function createDummyCity($name, $owner, $y, $x)
     {
         $cityId = $this->cityRepository->getUniqueId();
-        $user   = $this->userRepository->findOneByUsername($owner);
+        $user = $this->userRepository->findOneByUsername($owner);
         if (!$user) {
             throw new Exception("Dummy city could not be created, user not found");
         }
@@ -71,8 +71,8 @@ class CityHelper
 
     public function createCityAsUser($y, $x, $username)
     {
-        $request    = new CreateCityRequest($y, $x, $username, $username . '\'s Village');
-        $response   = new CreateCityResponse;
+        $request = new CreateCityRequest($y, $x, $username, $username . '\'s Village');
+        $response = new CreateCityResponse;
         $interactor = new CreateCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository);
 
         $this->interactorResult = $interactor->process($request, $response);
@@ -100,10 +100,10 @@ class CityHelper
     public function assertCityIsNotAtLocations(array $locations)
     {
         foreach ($locations as $location) {
-            $x           = $location[1];
-            $y           = $location[0];
+            $x = $location[1];
+            $y = $location[0];
             $expectedKey = sprintf('Y%d/X%d', $y, $x);
-            $currentKey  = sprintf('Y%d/X%d', $this->y, $this->x);
+            $currentKey = sprintf('Y%d/X%d', $this->y, $this->x);
             Test::assertNotSame($currentKey, $expectedKey, sprintf("%s is not %s", $expectedKey, $currentKey));
         }
     }
@@ -115,28 +115,28 @@ class CityHelper
 
     public function selectLocation($direction, $username)
     {
-        $request    = new CreateNewCityRequest($username, $direction, $this->getDefaultCityName($username));
+        $request = new CreateNewCityRequest($username, $direction, $this->getDefaultCityName($username));
         $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
-        $response   = new CreateNewCityResponse;
+        $response = new CreateNewCityResponse;
         $interactor->process($request, $response);
         Test::assertNotNull($response->city);
-        $this->x = $response->city->x;
-        $this->y = $response->city->y;
+        $this->x = $response->city->posX;
+        $this->y = $response->city->posY;
     }
 
     public function selectPosition($y, $x, $username)
     {
 
-        $request                    = new ViewLocationRequest($username, $y, $x);
-        $interactor                 = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingsRepository, $this->buildingRepository);
+        $request = new ViewLocationRequest($username, $y, $x);
+        $interactor = new ViewLocationInteractor($this->cityRepository, $this->cityBuildingsRepository, $this->buildingRepository);
         $this->viewLocationResponse = new ViewLocationResponse;
-        $this->interactorResult     = $interactor->process($request, $this->viewLocationResponse);
+        $this->interactorResult = $interactor->process($request, $this->viewLocationResponse);
     }
 
     public function assertCityHasBuilding($name, $level)
     {
         $buildings = $this->viewLocationResponse->buildings;
-        $found     = null;
+        $found = null;
         foreach ($buildings as $building) {
             if ($building->name === $name) {
                 $found = $building;
@@ -150,10 +150,10 @@ class CityHelper
 
     public function listUsersCities($username)
     {
-        $request                  = new ViewCitiesRequest($username);
-        $interactor               = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
+        $request = new ViewCitiesRequest($username);
+        $interactor = new ViewCitiesInteractor($this->userRepository, $this->cityRepository);
         $this->viewCitiesResponse = new ViewCitiesResponse();
-        $this->interactorResult   = $interactor->process($request, $this->viewCitiesResponse);
+        $this->interactorResult = $interactor->process($request, $this->viewCitiesResponse);
     }
 
     /**
@@ -162,7 +162,7 @@ class CityHelper
      */
     public function assertCityExists($name, $owner, $y, $x)
     {
-        $found  = null;
+        $found = null;
         $cities = $this->viewCitiesResponse->cities;
 
         foreach ($cities as $city) {
@@ -175,8 +175,8 @@ class CityHelper
         Test::assertNotNull($found);
         Test::assertSame($found->name, $name);
         Test::assertSame($found->owner, $owner);
-        Test::assertSame($found->y, $y);
-        Test::assertSame($found->x, $x);
+        Test::assertSame($found->posY, $y);
+        Test::assertSame($found->posX, $x);
     }
 
     public function assertCity($name, $owner, $y, $x)
@@ -185,7 +185,7 @@ class CityHelper
         Test::assertNotNull($city);
         Test::assertAttributeSame($name, 'name', $city);
         Test::assertAttributeSame($owner, 'owner', $city);
-        Test::assertAttributeSame((int)$y, 'y', $city);
-        Test::assertAttributeSame((int)$x, 'x', $city);
+        Test::assertAttributeSame((int)$y, 'posY', $city);
+        Test::assertAttributeSame((int)$x, 'posX', $city);
     }
 }

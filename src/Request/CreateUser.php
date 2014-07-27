@@ -19,7 +19,7 @@ class CreateUser
     {
         $this->username = $username;
         $this->password = $password;
-        $this->email    = $email;
+        $this->email = $email;
         $this->datetime = new \DateTime;
     }
 
@@ -53,6 +53,4 @@ class CreateUser
     {
         $this->datetime = $datetime;
     }
-
-
 }

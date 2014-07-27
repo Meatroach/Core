@@ -22,11 +22,11 @@ class DBALMap extends Repository implements MapRepository
     /**
      * @var Connection
      */
-    private $db;
+    private $connection;
 
-    public function __construct(Connection $db)
+    public function __construct(Connection $connection)
     {
-        $this->db = $db;
+        $this->connection = $connection;
     }
 
     /**
@@ -34,30 +34,30 @@ class DBALMap extends Repository implements MapRepository
      */
     public function add(MapEntity $map)
     {
-        $id              = $map->getId();
-        $this->maps[$id] = $map;
-        parent::markAdded($id);
+        $mapId = $map->getMapId();
+        $this->maps[$mapId] = $map;
+        parent::markAdded($mapId);
     }
 
     public function delete(MapEntity $map)
     {
-        $id = $map->getId();
-        parent::markDeleted($id);
+        $mapId = $map->getMapId();
+        parent::markDeleted($mapId);
     }
 
     public function replace(MapEntity $map)
     {
-        $id              = $map->getId();
-        $this->maps[$id] = $map;
-        parent::markModified($id);
+        $mapId = $map->getMapId();
+        $this->maps[$mapId] = $map;
+        parent::markModified($mapId);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name)
+    public function create($mapId, $name)
     {
-        return new MapEntity($id, $name);
+        return new MapEntity($mapId, $name);
     }
 
     private function rowToEntity(\stdClass $row)
@@ -71,9 +71,9 @@ class DBALMap extends Repository implements MapRepository
     private function entityToRow(MapEntity $map)
     {
         return array(
-            'id'     => $map->getId(),
-            'name'   => $map->getName(),
-            'width'  => $map->getWidth(),
+            'map_id' => $map->getMapId(),
+            'name' => $map->getName(),
+            'width' => $map->getWidth(),
             'height' => $map->getHeight()
         );
     }
@@ -85,7 +85,7 @@ class DBALMap extends Repository implements MapRepository
     {
         foreach (parent::getDeleted() as $id) {
             if (isset($this->maps[$id])) {
-                $this->db->delete('maps', array('id' => $id));
+                $this->connection->delete('maps', array('map_id' => $id));
                 unset($this->maps[$id]);
                 parent::reassign($id);
             }
@@ -94,14 +94,14 @@ class DBALMap extends Repository implements MapRepository
         foreach (parent::getAdded() as $id) {
             if (isset($this->maps[$id])) {
                 $map = $this->maps[$id];
-                $this->db->insert('maps', $this->entityToRow($map));
+                $this->connection->insert('maps', $this->entityToRow($map));
                 parent::reassign($id);
             }
         }
         foreach (parent::getModified() as $id) {
             if (isset($this->maps[$id])) {
                 $map = $this->maps[$id];
-                $this->db->update('maps', $this->entityToRow($map), array('id' => $id));
+                $this->connection->update('maps', $this->entityToRow($map), array('map_id' => $id));
                 parent::reassign($id);
             }
         }
@@ -112,7 +112,7 @@ class DBALMap extends Repository implements MapRepository
      */
     public function getUniqueId()
     {
-        $result = $this->db->prepare("SELECT MAX(id) FROM maps");
+        $result = $this->connection->prepare("SELECT MAX(map_id) FROM maps");
         $result->execute();
         $row = $result->fetchColumn();
 
@@ -130,13 +130,12 @@ class DBALMap extends Repository implements MapRepository
                 return $map;
             }
         }
-        $queryBuilder = $this->db->createQueryBuilder();
-        $queryBuilder->select('id', 'name', 'width', 'height')->from('maps', 'm')->where('name = :name');
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->select('map_id', 'name', 'width', 'height')->from('maps', 'm')->where('name = :name');
         $queryBuilder->setParameter(':name', $name);
         $result = $queryBuilder->execute();
-        $row    = $result->fetch(\PDO::FETCH_OBJ);
+        $row = $result->fetch(\PDO::FETCH_OBJ);
         $entity = $this->rowToEntity($row);
         return $entity;
     }
-
 }

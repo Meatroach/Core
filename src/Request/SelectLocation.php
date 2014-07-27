@@ -20,6 +20,4 @@ class SelectLocation
     {
         return $this->direction;
     }
-
-
 }

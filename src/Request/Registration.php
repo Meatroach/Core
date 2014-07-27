@@ -18,15 +18,20 @@ class Registration
     private $termsAndConditions;
 
     /**
-     * @param boolean $termsAndConditions
+     * @param $username
+     * @param $email
+     * @param $emailConfirm
+     * @param $password
+     * @param $passwordConfirm
+     * @param $termsAndConditions
      */
     public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions)
     {
-        $this->username           = $username;
-        $this->email              = $email;
-        $this->emailConfirm       = $emailConfirm;
-        $this->password           = $password;
-        $this->passwordConfirm    = $passwordConfirm;
+        $this->username = $username;
+        $this->email = $email;
+        $this->emailConfirm = $emailConfirm;
+        $this->password = $password;
+        $this->passwordConfirm = $passwordConfirm;
         $this->termsAndConditions = $termsAndConditions;
     }
 
@@ -59,5 +64,4 @@ class Registration
     {
         return $this->termsAndConditions;
     }
-
 }

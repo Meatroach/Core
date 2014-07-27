@@ -16,5 +16,4 @@ class Registration extends Response
     public $passwordConfirm;
     public $activationCode;
     public $termsAndConditions;
-
 }

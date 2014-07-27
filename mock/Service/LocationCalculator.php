@@ -20,10 +20,10 @@ class LocationCalculator implements LocationCalculatorInterface
     private $countCities = 0;
     private $radius = 2;
 
-    public function setCenterPosition($y, $x)
+    public function setCenterPosition($posY, $posX)
     {
-        $this->centerX = $x;
-        $this->centerY = $y;
+        $this->centerX = $posX;
+        $this->centerY = $posY;
     }
 
     public function setCountCities($countCities)
@@ -49,8 +49,8 @@ class LocationCalculator implements LocationCalculatorInterface
 
         $phi = deg2rad($randomAngle);
 
-        $x = $this->centerX + ~~($radius * cos($phi));
-        $y = $this->centerY + ~~($radius * sin($phi));
+        $x =  $this->centerX + (int)round($radius * cos($phi));
+        $y =  $this->centerY + (int)round($radius * sin($phi));
 
 
         $this->x = $x;
@@ -74,7 +74,7 @@ class LocationCalculator implements LocationCalculatorInterface
 
         }
 
-        return $radius;
+        return max(0, mt_rand($radius - 1, $radius + 1));
     }
 
     public function getX()
@@ -91,5 +91,4 @@ class LocationCalculator implements LocationCalculatorInterface
     {
         $this->radius++;
     }
-
 }

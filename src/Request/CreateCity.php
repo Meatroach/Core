@@ -10,22 +10,23 @@ namespace OpenTribes\Core\Request;
 class CreateCity
 {
 
-    private $x;
-    private $y;
+    private $posX;
+    private $posY;
     private $username;
     private $defaultCityName;
 
 
     /**
      * @param string $defaultCityName
-     * @param integer $y
-     * @param integer $x
+     * @param string $username
+     * @param integer $posY
+     * @param integer $posX
      */
-    public function __construct($y, $x, $username, $defaultCityName)
+    public function __construct($posY, $posX, $username, $defaultCityName)
     {
-        $this->x               = $x;
-        $this->y               = $y;
-        $this->username        = $username;
+        $this->posX = $posX;
+        $this->posY = $posY;
+        $this->username = $username;
         $this->defaultCityName = $defaultCityName;
 
     }
@@ -43,15 +44,13 @@ class CreateCity
         return $this->username;
     }
 
-    public function getX()
+    public function getPosX()
     {
-        return $this->x;
+        return $this->posX;
     }
 
-    public function getY()
+    public function getPosY()
     {
-        return $this->y;
+        return $this->posY;
     }
-
-
 }

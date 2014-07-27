@@ -34,8 +34,8 @@ class SelectLocation
         $direction = new Direction($request->getDirection());
 
         $this->locationCalculator->calculate($direction);
-        $response->x = $this->locationCalculator->getX();
-        $response->y = $this->locationCalculator->getY();
+        $response->posX = $this->locationCalculator->getX();
+        $response->posY = $this->locationCalculator->getY();
         $response->proceed = true;
         $response->failed = false;
     }

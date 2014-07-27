@@ -20,13 +20,13 @@ interface City
 
     /**
      * Create new city entity
-     * @param integer $id
+     * @param integer $cityId
      * @param string $name
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      * @return CityEntity
      */
-    public function create($id, $name, $y, $x);
+    public function create($cityId, $name, $posY, $posX);
 
     /**
      * Add city entity into repository
@@ -37,19 +37,19 @@ interface City
 
     /**
      * check if city exists at location
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      * @return boolean
      */
-    public function cityExistsAt($y, $x);
+    public function cityExistsAt($posY, $posX);
 
     /**
      * find city entity by given location
-     * @param integer $y
-     * @param integer $x
+     * @param integer $posY
+     * @param integer $posX
      * @return CityEntity|null
      */
-    public function findByLocation($y, $x);
+    public function findByLocation($posY, $posX);
 
     /**
      * @param CityEntity $city
@@ -74,6 +74,7 @@ interface City
     public function sync();
 
     /**
+     * @param CityEntity $city
      * @return void
      */
     public function delete(CityEntity $city);
@@ -89,6 +90,10 @@ interface City
      */
     public function findSelectedByUsername($username);
 
+    /**
+     * @param array $area
+     * @return CityEntity[]
+     */
     public function findAllInArea(array $area);
 
     public function getLastCreatedCity();

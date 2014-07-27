@@ -33,5 +33,4 @@ class CodeGenerator implements ActivationCodeGenerator
             $this->code .= $this->pool[mt_rand(0, $chars)];
         }
     }
-
 }

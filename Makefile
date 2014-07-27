@@ -14,7 +14,6 @@ install-test:
 	mkdir storage
 	mkdir cache
 	touch storage/ot.db
-	chmod a=rwx -R cli/ config/
 	php cli/config.php create
 	php cli/migration.php migrations:migrate --no-interaction
 
@@ -34,3 +33,5 @@ install-production:
 	php cli/config.php create production
 	php cli/migration.php migrations:migrate --no-interaction production
 
+run:
+	php -S localhost:80 -t web web/index.php

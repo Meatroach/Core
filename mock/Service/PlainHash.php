@@ -20,5 +20,4 @@ class PlainHash implements PasswordHasher
     {
         return $hash === $rawPassword;
     }
-
 }

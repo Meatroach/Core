@@ -1,6 +1,7 @@
 before_commands:
     - 'composer install --no-progress'
-    - 'mkdir storage/'
+    - 'mkdir cache'
+    - 'mkdir storage'
     - 'touch storage/ot.db'
     - 'php cli/config.php create'
     - 'php cli/migration.php migrations:migrate --no-interaction'

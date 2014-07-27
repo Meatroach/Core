@@ -50,18 +50,17 @@ class Module implements ServiceProviderInterface
 
     public function register(Application $app)
     {
-
         $this->registerProviders($app);
         $this->loadConfigurations($app);
         $this->createDependencies($app);
         $this->setupRoutes($app);
     }
 
-    private function createDependencies(Application &$app)
+    private function createDependencies(Application $app)
     {
         $repository = new Repository($app);
-        $service    = new Service($app);
-        $validator  = new Validator($app);
+        $service = new Service($app);
+        $validator = new Validator($app);
         $controller = new Controller($app);
         $repository->create();
         $service->create();
@@ -80,7 +79,7 @@ class Module implements ServiceProviderInterface
     /**
      * @param Application $app
      */
-    private function registerProviders(Application &$app)
+    private function registerProviders(Application $app)
     {
 
         $app->register(new ValidatorServiceProvider);
@@ -95,24 +94,26 @@ class Module implements ServiceProviderInterface
     /**
      * @param Application $app
      */
-    private function loadConfigurations(Application &$app)
+    private function loadConfigurations(Application $app)
     {
         $files = array(
             'general.php',
             'database.php',
             'email.php'
         );
+
         foreach ($files as $file) {
             $path = realpath(__DIR__ . '/../config/' . $this->env . '/' . $file);
 
             $app->register(new ConfigServiceProvider($path));
         }
+
     }
 
     /**
      * @param Application $app
      */
-    protected function attachRoutesOnContainer(Application &$app)
+    protected function attachRoutesOnContainer(Application $app)
     {
         $app->mount('/assets', new AssetsProvider());
         $app->mount('/account', new AccountProvider());
@@ -123,18 +124,23 @@ class Module implements ServiceProviderInterface
      * @param Application $app
      * @return void
      */
-    protected function setupRoutes(Application &$app)
+    protected function setupRoutes(Application $app)
     {
+
         $app->on(
             KernelEvents::REQUEST,
             function ($event) use ($app) {
-                $request         = $event->getRequest();
-                $session         = $request->getSession();
-                $token           = $request->get('csrfToken');
-                $defaultToken    = $app[Service::PASSWORD_HASHER]->hash($session->getId());
-                $realToken       = $session->get('csrfToken', $defaultToken);
+
+                /**
+                 * @var  $event
+                 */
+                $request = $event->getRequest();
+                $session = $request->getSession();
+                $token = $request->get('csrfToken');
+                $defaultToken = $app[Service::PASSWORD_HASHER]->hash($session->getId());
+                $realToken = $session->get('csrfToken', $defaultToken);
                 $isNotGETRequest = $request->getMethod() !== 'GET';
-                $isValidToken    = $realToken === $token;
+                $isValidToken = $realToken === $token;
 
                 if ($isNotGETRequest && !$isValidToken) {
                     $event->setResponse(new Response('Access denied, invalid token', 500));
@@ -146,23 +152,27 @@ class Module implements ServiceProviderInterface
         $app->get(
             '/',
             function () use ($app) {
-                $response          = new stdClass();
-                $response->failed  = false;
+                $response = new stdClass();
+                $response->failed = false;
                 $response->proceed = false;
                 return $response;
             }
-        )->before(
+        )
+            ->before(
                 function (Request $request) use ($app) {
                     $session = $request->getSession();
                     if (!$session) {
-                        return '';
+                        return null;
                     }
+
                     if ($session->get('username')) {
                         $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
                         return new RedirectResponse($baseUrl . 'game');
                     }
+                    return null;
                 }
-            )->value(RouteValue::TEMPLATE, 'pages/landing');
+            )
+            ->value(RouteValue::TEMPLATE, 'pages/landing');
         $app->after(
             function (Request $request) use ($app) {
                 $session = $request->getSession();
@@ -186,9 +196,9 @@ class Module implements ServiceProviderInterface
             KernelEvents::VIEW,
             function ($event) use ($app, $module) {
                 $appResponse = $event->getControllerResult();
-                $request     = $event->getRequest();
+                $request = $event->getRequest();
                 $requestType = $event->getRequestType();
-                $response    = $appResponse;
+                $response = $appResponse;
 
                 if ($requestType === HttpKernelInterface::SUB_REQUEST) {
                     $response = new JsonResponse($appResponse);
@@ -199,7 +209,7 @@ class Module implements ServiceProviderInterface
                 }
                 if ($requestType === HttpKernelInterface::MASTER_REQUEST) {
                     $appResponse->csrfToken = $request->getSession()->get('csrfToken');
-                    $response               = $module->createResponse($request, $appResponse, $app);
+                    $response = $module->createResponse($request, $appResponse, $app);
                 }
 
                 $event->setResponse($response);
@@ -225,15 +235,16 @@ class Module implements ServiceProviderInterface
             $response->setExpires(new DateTime());
         }
 
-        if (is_object($appResponse) && $appResponse->proceed && !$appResponse->failed && $request->attributes->has(
-                RouteValue::SUCCESS_HANDLER
-            )
+        if (is_object($appResponse) &&
+            $appResponse->proceed &&
+            !$appResponse->failed &&
+            $request->attributes->has(RouteValue::SUCCESS_HANDLER)
         ) {
             /**
              * @var string $handler
              */
             $handler = $request->attributes->get(RouteValue::SUCCESS_HANDLER);
-            $result  = $handler($appResponse);
+            $result = $handler($appResponse);
             if ($result) {
                 $response = $result;
             }
@@ -250,7 +261,7 @@ class Module implements ServiceProviderInterface
              * @var string $handler
              */
             $handler = $request->attributes->get(RouteValue::ERROR_HANDLER);
-            $result  = $handler($appResponse);
+            $result = $handler($appResponse);
             if ($result) {
                 $response = $result;
             }
@@ -260,19 +271,22 @@ class Module implements ServiceProviderInterface
     }
 
     /**
+     * @param array $subRequests
+     * @param $appResponse
      * @param Application $app
+     * @return object
      */
-    public function handleSubRequests(array $subRequests, $appResponse, $app)
+    public function handleSubRequests(array $subRequests, $appResponse, Application $app)
     {
         $tmpResponse = $appResponse;
 
         foreach ($subRequests as $values) {
-            $uri         = $values['url'];
-            $method      = $values['method'];
-            $param       = $values['param'];
-            $subRequest  = Request::create($uri, $method, $param);
+            $uri = $values['url'];
+            $method = $values['method'];
+            $param = $values['param'];
+            $subRequest = Request::create($uri, $method, $param);
             $subResponse = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-            $content     = json_decode($subResponse->getContent());
+            $content = json_decode($subResponse->getContent());
             $appResponse = (object)array_merge((array)$appResponse, (array)$content);
         }
         $appResponse = (object)array_merge((array)$appResponse, (array)$tmpResponse);

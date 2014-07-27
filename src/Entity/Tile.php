@@ -23,21 +23,21 @@ class Tile
     /**
      * @var integer
      */
-    private $id;
+    private $tileId;
     private $default = false;
     private $width;
     private $height;
 
     /**
-     * @param integer $id
+     * @param integer $tileId
      * @param string $name
      * @param boolean $accessible
      */
-    public function __construct($id, $name, $accessible)
+    public function __construct($tileId, $name, $accessible)
     {
-        $this->name       = $name;
+        $this->name = $name;
         $this->accessible = (bool)$accessible;
-        $this->id         = (int)$id;
+        $this->tileId = (int)$tileId;
     }
 
     /**
@@ -59,9 +59,9 @@ class Tile
     /**
      * @return integer
      */
-    public function getId()
+    public function getTileId()
     {
-        return $this->id;
+        return $this->tileId;
     }
 
     public function isDefault()
@@ -93,6 +93,4 @@ class Tile
     {
         $this->height = (int)$height;
     }
-
-
 }

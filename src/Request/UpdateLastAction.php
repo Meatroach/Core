@@ -33,6 +33,4 @@ class UpdateLastAction
     {
         $this->datetime = $datetime;
     }
-
-
 }

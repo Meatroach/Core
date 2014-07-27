@@ -20,15 +20,15 @@ class Building implements BuildingRepository
      */
     public function add(BuildingEntity $building)
     {
-        $this->buildings[$building->getId()] = $building;
+        $this->buildings[$building->getBuildingId()] = $building;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, $minimumLevel, $maximumLevel)
+    public function create($buildingId, $name, $minimumLevel, $maximumLevel)
     {
-        return new BuildingEntity($id, $name, $minimumLevel, $maximumLevel);
+        return new BuildingEntity($buildingId, $name, $minimumLevel, $maximumLevel);
     }
 
     /**

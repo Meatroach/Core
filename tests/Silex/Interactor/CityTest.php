@@ -25,13 +25,13 @@ class CityTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $env                      = 'test';
-        $app                      = require __DIR__ . '/../../../bootstrap.php';
-        $this->mapRepository      = $app[Repository::MAP];
-        $this->tileRepository     = $app[Repository::TILE];
-        $this->cityRepository     = $app[Repository::CITY];
+        $env = 'test';
+        $app = require __DIR__ . '/../../../bootstrap.php';
+        $this->mapRepository = $app[Repository::MAP];
+        $this->tileRepository = $app[Repository::TILE];
+        $this->cityRepository = $app[Repository::CITY];
         $this->mapTilesRepository = $app[Repository::MAP_TILES];
-        $this->userRepository     = $app[Repository::USER];
+        $this->userRepository = $app[Repository::USER];
         $this->locationCalculator = $app[Service::LOCATION_CALCULATOR];
         $this->createDummyUser();
         $this->createDummyMap($app['map.options']);
@@ -40,33 +40,33 @@ class CityTest extends \PHPUnit_Framework_TestCase
     private function createDummyUser()
     {
         $userId = $this->userRepository->getUniqueId();
-        $user   = $this->userRepository->create($userId, 'Test', '123456', 'test@test.de');
+        $user = $this->userRepository->create($userId, 'Test', '123456', 'test@test.de');
         $this->userRepository->add($user);
     }
 
     private function createDummyMap($mapOptions)
     {
-        $mapRepository     = $this->mapRepository;
-        $tileRepository    = $this->tileRepository;
+        $mapRepository = $this->mapRepository;
+        $tileRepository = $this->tileRepository;
         $mapTileRepository = $this->mapTilesRepository;
-        $mapId             = $mapRepository->getUniqueId();
-        $map               = $mapRepository->create($mapId, 'Dummy');
+        $mapId = $mapRepository->getUniqueId();
+        $map = $mapRepository->create($mapId, 'Dummy');
         $map->setWidth($mapOptions['width']);
         $map->setHeight($mapOptions['height']);
         $mapRepository->add($map);
 
 
-        $tileId  = $tileRepository->getUniqueId();
-        $tile    = $tileRepository->create($tileId, 'gras', true);
+        $tileId = $tileRepository->getUniqueId();
+        $tile = $tileRepository->create($tileId, 'gras', true);
         $tile->setWidth($mapOptions['tileWidth']);
         $tile->setHeight($mapOptions['tileHeight']);
         $tile->setDefault(true);
         $tileRepository->add($tile);
-        $tiles   = array('forrest', 'hill', 'sea');
+        $tiles = array('forrest', 'hill', 'sea');
         $tileIds = array();
         foreach ($tiles as $tileName) {
-            $tileId           = $tileRepository->getUniqueId();
-            $tile             = $tileRepository->create($tileId, $tileName, false);
+            $tileId = $tileRepository->getUniqueId();
+            $tile = $tileRepository->create($tileId, $tileName, false);
             $tile->setWidth($mapOptions['tileWidth']);
             $tile->setHeight($mapOptions['tileHeight']);
             $tileRepository->add($tile);
@@ -81,7 +81,7 @@ class CityTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $randomTileId = $tileIds[array_rand($tileIds)];
-                $tile         = $tileRepository->findById($randomTileId);
+                $tile = $tileRepository->findById($randomTileId);
                 $map->addTile($tile, $y, $x);
             }
         }
@@ -92,8 +92,8 @@ class CityTest extends \PHPUnit_Framework_TestCase
     private function createCity($name, $direction, $cityName)
     {
         $interactor = new CreateNewCityInteractor($this->cityRepository, $this->mapTilesRepository, $this->userRepository, $this->locationCalculator);
-        $response   = new CreateNewCityResponse;
-        $request    = new CreateNewCityRequest($name, $direction, $cityName);
+        $response = new CreateNewCityResponse;
+        $request = new CreateNewCityRequest($name, $direction, $cityName);
         $interactor->process($request, $response);
         return $response;
     }
@@ -120,21 +120,20 @@ class CityTest extends \PHPUnit_Framework_TestCase
     {
 
 
-
         $locations = array();
         for ($i = 0; $i < 20; $i++) {
             $response = $this->createCity('Test', Direction::ANY, 'TestCity');
             $this->assertFalse($response->failed);
 
             $this->assertNotNull($response->city, "City not exists");
-            $y               = $response->city->y;
-            $x               = $response->city->x;
-            $key             = sprintf('%d-%d', $y, $x);
-            $cityExists      = isset($locations[$key]);
+            $y = $response->city->posY;
+            $x = $response->city->posX;
+            $key = sprintf('%d-%d', $y, $x);
+            $cityExists = isset($locations[$key]);
             $this->assertFalse($cityExists, sprintf('City at location Y:%d X:%d already exists', $y, $x));
             $locations[$key] = array(
-                'x' => $x,
-                'y' => $y,
+                'posX' => $x,
+                'posY' => $y,
                 'i' => $i
             );
         }

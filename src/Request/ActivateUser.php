@@ -14,7 +14,7 @@ class ActivateUser
 
     public function __construct($username, $activationCode)
     {
-        $this->username       = $username;
+        $this->username = $username;
         $this->activationCode = $activationCode;
     }
 
@@ -33,5 +33,4 @@ class ActivateUser
     {
         return $this->activationCode;
     }
-
 }

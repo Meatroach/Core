@@ -13,7 +13,7 @@ class Building
     /**
      * @var integer
      */
-    private $id;
+    private $buildingId;
 
     /**
      * @var string
@@ -36,15 +36,15 @@ class Building
     private $maximumLevel;
 
     /**
-     * @param integer $id
+     * @param integer $buildingId
      * @param string $name
      * @param integer $minimumLevel
      * @param integer $maximumLevel
      */
-    public function __construct($id, $name, $minimumLevel, $maximumLevel)
+    public function __construct($buildingId, $name, $minimumLevel, $maximumLevel)
     {
-        $this->id           = (int)$id;
-        $this->name         = $name;
+        $this->buildingId = (int)$buildingId;
+        $this->name = $name;
         $this->minimumLevel = (int)$minimumLevel;
         $this->maximumLevel = (int)$maximumLevel;
     }
@@ -63,9 +63,9 @@ class Building
     /**
      * @return integer
      */
-    public function getId()
+    public function getBuildingId()
     {
-        return $this->id;
+        return $this->buildingId;
     }
 
     /**
@@ -102,5 +102,4 @@ class Building
     {
         return $this->maximumLevel;
     }
-
 }

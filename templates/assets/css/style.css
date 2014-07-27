@@ -6,11 +6,21 @@
     color: white;
 
     width: 128px;
-    height: 128px;
-    margin-top: -54px;
+    height: 74px;
     background-repeat: no-repeat;
 }
-
+.sprite.gras{
+    background-image: none;
+}
+.sprite.sea{
+    background-image: none;
+}
+.sprite.forrest{
+    background-image: none;
+}
+.sprite.hill{
+    background-image: none;
+}
 #viewport {
     overflow: hidden;
     position: relative;

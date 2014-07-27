@@ -23,15 +23,15 @@ class Tile implements TileRepository
      */
     public function add(TileEntity $tile)
     {
-        $this->tiles[$tile->getId()] = $tile;
+        $this->tiles[$tile->getTileId()] = $tile;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create($id, $name, $isAccessible)
+    public function create($tileId, $name, $isAccessible)
     {
-        return new TileEntity($id, $name, $isAccessible);
+        return new TileEntity($tileId, $name, $isAccessible);
     }
 
     /**
@@ -57,10 +57,10 @@ class Tile implements TileRepository
         return null;
     }
 
-    public function findById($id)
+    public function findById($tileId)
     {
         foreach ($this->tiles as $tile) {
-            if ($tile->getId() === $id) {
+            if ($tile->getTileId() === $tileId) {
                 return $tile;
             }
         }

@@ -7,16 +7,24 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Silex\ControllerCollection;
 
 class Account implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        /**
+         * @var ControllerCollection $account
+         */
         $account = $app['controllers_factory'];
+
         $account->get(
             '/logout',
             function () use ($app) {
                 $baseUrl = $app['mustache.options']['helpers']['baseUrl'];
+                /**
+                 * @var $app ['session'] Session
+                 */
                 $app['session']->remove('username');
 
                 return new RedirectResponse($baseUrl);
@@ -93,6 +101,7 @@ class Account implements ControllerProviderInterface
         $account->get(
             '/login',
             function () use ($app) {
+
                 return $app->redirect($app['mustache.options']['helpers']['baseUrl']);
             }
         );

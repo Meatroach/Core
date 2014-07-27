@@ -16,15 +16,15 @@ class Tile
     public $name;
     public $top;
     public $left;
-    public $x;
-    public $y;
-    public $z;
+    public $posX;
+    public $posY;
+    public $layerZ;
 
     public function __construct(TileEntity $tileEntity)
     {
-        $this->width  = $tileEntity->getWidth();
+        $this->width = $tileEntity->getWidth();
         $this->height = $tileEntity->getHeight();
-        $this->name   = $tileEntity->getName();
+        $this->name = $tileEntity->getName();
 
     }
 }
