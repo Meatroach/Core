@@ -49,8 +49,8 @@ class LocationCalculator implements LocationCalculatorInterface
 
         $phi = deg2rad($randomAngle);
 
-        $x = $this->centerX + ~~($radius * cos($phi));
-        $y = $this->centerY + ~~($radius * sin($phi));
+        $x =  $this->centerX + (int)round($radius * cos($phi));
+        $y =  $this->centerY + (int)round($radius * sin($phi));
 
 
         $this->x = $x;

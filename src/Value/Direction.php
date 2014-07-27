@@ -10,10 +10,10 @@ namespace OpenTribes\Core\Value;
 class Direction
 {
 
-    const EAST = 0;
+    const EAST = 3;
     const WEST = 1;
     const NORTH = 2;
-    const SOUTH = 3;
+    const SOUTH = 0;
     const ANY = -1;
 
     private $value = -1;
