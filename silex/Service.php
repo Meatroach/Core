@@ -5,7 +5,6 @@ namespace OpenTribes\Core\Silex;
 use OpenTribes\Core\Mock\Service\LocationCalculator;
 use OpenTribes\Core\Silex\Provider\CSRFTokenHasher;
 use OpenTribes\Core\Silex\Service\CodeGenerator;
-use OpenTribes\Core\Silex\Service\IsometricMapCalculator;
 use OpenTribes\Core\Silex\Service\OrthographicMapCalculator;
 use OpenTribes\Core\Silex\Service\PasswordHasher;
 use Silex\Application;

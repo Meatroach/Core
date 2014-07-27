@@ -104,7 +104,7 @@ class OrthographicMapCalculator implements MapCalculator
 
     public function getNeighborLocations($posY, $posX, $range = 1)
     {
-        // TODO: Implement getNeighborLocations() method.
+
     }
 
 }
