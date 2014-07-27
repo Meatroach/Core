@@ -45,5 +45,11 @@ class Enviroment {
         }
         return self::$env === Enviroment::PRODUCTION;
     }
-
+    public function all(){
+        return array(
+            self::TEST,
+            self::DEVELOP,
+            self::PRODUCTION
+        );
+    }
 }
