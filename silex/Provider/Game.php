@@ -24,7 +24,7 @@ class Game implements ControllerProviderInterface
                 $startUrl = $baseUrl . 'game/start';
                 if ($response->failed && $request->getRequestUri() !== $startUrl) {
                     if (!$app['session']->has('username')) {
-                        return new RedirectResponse($app['mustache.options']['helpers']['baseUrl']);
+                        return new RedirectResponse($baseUrl);
                     }
                     return new RedirectResponse($startUrl);
                 }
