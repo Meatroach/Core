@@ -26,7 +26,7 @@ class MockRegistrationRequest implements RegistrationRequest
      * @param $password
      * @param $passwordConfirm
      */
-    public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm)
+    public function __construct($username, $password, $passwordConfirm, $email, $emailConfirm)
     {
         $this->username = $username;
         $this->email = $email;

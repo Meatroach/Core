@@ -20,13 +20,6 @@ class UserEntity
         $this->email = $email;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getRegistrationDate()
-    {
-        return $this->registrationDate;
-    }
 
     /**
      * @param DateTime $registrationDate
@@ -59,5 +52,14 @@ class UserEntity
     {
         return $this->userId;
     }
+
+    /**
+     * @return string
+     */
+    public function getPasswordHash()
+    {
+        return $this->passwordHash;
+    }
+
 
 } 

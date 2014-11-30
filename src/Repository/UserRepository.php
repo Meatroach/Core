@@ -6,7 +6,16 @@ namespace OpenTribes\Core\Repository;
 use OpenTribes\Core\Entity\UserEntity;
 
 interface UserRepository {
+    /**
+     * @param $username
+     * @return UserEntity | null
+     */
     public function findByUsername($username);
+
+    /**
+     * @param $email
+     * @return UserEntity | null
+     */
     public function findByEmail($email);
     public function getUniqueId();
 

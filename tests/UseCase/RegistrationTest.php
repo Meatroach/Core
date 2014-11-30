@@ -51,10 +51,10 @@ class RegistrationTest extends \PHPUnit_Framework_TestCase {
     ) {
         $registrationRequest = new MockRegistrationRequest(
             $username,
-            $email,
-            $emailConfirm,
             $password,
-            $passwordConfirm
+            $passwordConfirm,
+            $email,
+            $emailConfirm
         );
         if ($acceptedTerms) {
             $registrationRequest->acceptTerms();
