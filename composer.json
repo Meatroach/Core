@@ -17,16 +17,15 @@
         "source": "https://github.com/Opentribes/Core"
     },
     "require": {
-        "php": ">=5.3",
-        "silex/silex": "~1.1",
-        "igorw/config-service-provider": "~1.1",
-        "doctrine/dbal": "~2.4",
+        "php": ">=5.4",
+        "silex/silex": "~1.2",
+        "igorw/config-service-provider": "~1.2",
         "doctrine/migrations": "~1@dev",
-        "mustache/silex-provider": "~1.0",
-        "swiftmailer/swiftmailer": "~5.1",
-        "symfony/validator": "~2.4",
-        "symfony/console": "~2.4",
-        "monolog/monolog": "~1.10"
+        "mustache/silex-provider": "~1.1",
+        "swiftmailer/swiftmailer": "~5.3",
+        "symfony/validator": "~2.5",
+        "symfony/console": "~2.5",
+        "monolog/monolog": "~1.11"
     },
     "config": {
         "bin-dir": "bin/"
