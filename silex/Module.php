@@ -5,6 +5,7 @@ namespace OpenTribes\Core\Silex;
 
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
+use OpenTribes\Core\Silex\EventListener\MustacheListener;
 use OpenTribes\Core\Silex\Provider\ControllerServiceProvider;
 use OpenTribes\Core\Silex\Provider\RouteProvider;
 use OpenTribes\Core\Silex\Provider\RouteServiceProvider;
@@ -15,6 +16,8 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 use RecursiveDirectoryIterator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 class Module implements ServiceProviderInterface{
     private $env;
 
@@ -48,6 +51,7 @@ class Module implements ServiceProviderInterface{
     {
         $this->loadConfigurations($app);
         $this->registerServices($app);
+        $this->registerEventListener($app);
     }
 
 
@@ -59,10 +63,9 @@ class Module implements ServiceProviderInterface{
         $app->register(new ValidatorServiceProvider());
         $app->register(new MustacheServiceProvider());
         $app->register(new ControllerServiceProvider());
-        $app->mount('/',new RouteServiceProvider());
+        $app->mount('/', new RouteServiceProvider());
 
     }
-
     private function loadConfigurations(Application $app)
     {
 
@@ -78,5 +81,11 @@ class Module implements ServiceProviderInterface{
             }
         }
     }
-
+    private function registerEventListener(Application $app){
+        /**
+         * @var EventDispatcherInterface $dispatcher
+         */
+        $dispatcher = $app['dispatcher'];
+        $dispatcher->addSubscriber(new MustacheListener($app['mustache']));
+    }
 } 

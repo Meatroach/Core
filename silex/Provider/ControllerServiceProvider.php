@@ -3,7 +3,14 @@
 namespace OpenTribes\Core\Silex\Provider;
 
 
+use OpenTribes\Core\Mock\Repository\MockUserRepository;
+use OpenTribes\Core\Mock\Service\PlainHasher;
+use OpenTribes\Core\Mock\Validator\MockLoginValidator;
 use OpenTribes\Core\Silex\Controller;
+use OpenTribes\Core\Silex\Repository;
+use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Silex\Validator;
+use OpenTribes\Core\UseCase\LoginUseCase;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -18,11 +25,33 @@ class ControllerServiceProvider implements ServiceProviderInterface{
      */
     public function register(Application $app)
     {
-       $app[Controller::INDEX] = $app->share(function() use($app) {
-            return new Controller\IndexController();
-       });
+        $this->registerRepositories($app);
+        $this->registerServices($app);
+        $this->registerValidators($app);
+        $this->registerController($app);
     }
+    private function registerValidators(Application $app){
+        $app[Validator::LOGIN] = $app->share(function() use($app){
+           return new MockLoginValidator();
+        });
+    }
+    private function registerServices(Application $app){
+        $app[Service::PASSWORD_HASHER] = $app->share(function() use($app){
+            return new PlainHasher();
+        });
+    }
+    private function registerRepositories(Application $app){
+        $app[Repository::USER] = $app->share(function()  use($app){
+           return new MockUserRepository();
+        });
+    }
+    private function registerController(Application $app){
 
+        $app[Controller::INDEX] = $app->share(function() use($app) {
+            $loginUseCase = new LoginUseCase($app[Repository::USER],$app[Validator::LOGIN],$app[Service::PASSWORD_HASHER]);
+            return new Controller\IndexController($loginUseCase);
+        });
+    }
     /**
      * Bootstraps the application.
      *

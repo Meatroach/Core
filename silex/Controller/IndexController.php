@@ -1,9 +1,19 @@
 <?php
 namespace OpenTribes\Core\Silex\Controller;
-use Symfony\Component\HttpFoundation\Request;
+
+use OpenTribes\Core\Silex\Response\IndexResponse;
+use OpenTribes\Core\UseCase\LoginUseCase;
+
 
 class IndexController {
-    public function indexAction(Request $request){
-        return '';
+    private $loginUseCase;
+    public function __construct(LoginUseCase $loginUseCase){
+        $this->loginUseCase = $loginUseCase;
+    }
+    public function indexAction(){
+
+        $response = new IndexResponse();
+
+        return $response;
     }
 } 

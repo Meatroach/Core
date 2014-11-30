@@ -23,10 +23,13 @@ class RouteServiceProvider implements ControllerProviderInterface{
          */
         $collection = $app['controllers_factory'];
         $collection
-            ->match('/', Controller::INDEX.':indexAction')
+            ->match('/', Controller::INDEX . ':indexAction')
             ->method('GET')
+            ->value('template', 'pages/landing');
+        $collection
+            ->match('/login', Controller::INDEX . ':loginAction')
+            ->method('POST')
             ->value('template', 'index');
-
         return $collection;
     }
 
