@@ -17,7 +17,7 @@ class MockRegistrationRequest implements RegistrationRequest
     private $emailConfirm = '';
     private $password = '';
     private $passwordConfirm = '';
-    private $termsAndConditions;
+    private $termsAndConditions =false;
 
     /**
      * @param $username
@@ -25,16 +25,15 @@ class MockRegistrationRequest implements RegistrationRequest
      * @param $emailConfirm
      * @param $password
      * @param $passwordConfirm
-     * @param $termsAndConditions
      */
-    public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm, $termsAndConditions)
+    public function __construct($username, $email, $emailConfirm, $password, $passwordConfirm)
     {
         $this->username = $username;
         $this->email = $email;
         $this->emailConfirm = $emailConfirm;
         $this->password = $password;
         $this->passwordConfirm = $passwordConfirm;
-        $this->termsAndConditions = $termsAndConditions;
+
     }
 
     public function getUsername()
@@ -62,9 +61,9 @@ class MockRegistrationRequest implements RegistrationRequest
         return $this->passwordConfirm;
     }
 
-    public function getTermsAndConditions()
+    public function acceptTerms()
     {
-        return $this->termsAndConditions;
+        return $this->termsAndConditions = true;
     }
 
     public function hasAcceptedTerms()

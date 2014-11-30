@@ -50,6 +50,7 @@ class MockRegistrationValidator extends RegistrationValidator
         if (in_array($password, array(null, false, '', array()), true)) {
             $this->addError("Password is empty");
         }
+
         if (strlen($password) < 6) {
             $this->addError("Password is too short");
         }
