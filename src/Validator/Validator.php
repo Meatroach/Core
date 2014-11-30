@@ -2,6 +2,8 @@
 
 namespace OpenTribes\Core\Validator;
 
+use OpenTribes\Core\Traits\ErrorTrait;
+
 /**
  * Description of Validator
  *
@@ -9,43 +11,13 @@ namespace OpenTribes\Core\Validator;
  */
 abstract class Validator
 {
+    use ErrorTrait;
 
-    private $errors = array();
-    private $object = null;
 
     public function isValid()
     {
         $this->validate();
-        return $this->hasNoErrors();
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    protected function attachError($error, $key = null)
-    {
-        if ($key) {
-            $this->errors[$key] = $error;
-        } else {
-            $this->errors[] = $error;
-        }
-    }
-
-    protected function setObject($object)
-    {
-        $this->object = $object;
-    }
-
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    public function hasNoErrors()
-    {
-        return count($this->errors) === 0;
+        return false === $this->hasErrors();
     }
 
     abstract protected function validate();

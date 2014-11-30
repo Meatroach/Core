@@ -19,5 +19,5 @@ interface PasswordHasher
      * @param $rawPassword
      * @return bool
      */
-    public function verify($hash, $rawPassword);
+    public function verify($rawPassword,$hash);
 }

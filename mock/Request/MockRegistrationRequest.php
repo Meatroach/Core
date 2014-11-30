@@ -1,13 +1,15 @@
 <?php
 
-namespace OpenTribes\Core\Request;
+namespace OpenTribes\Core\Mock\Request;
+
+use OpenTribes\Core\Request\RegistrationRequest;
 
 /**
  * Description of Registration
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class Registration
+class MockRegistrationRequest implements RegistrationRequest
 {
 
     private $username = '';
@@ -64,4 +66,10 @@ class Registration
     {
         return $this->termsAndConditions;
     }
+
+    public function hasAcceptedTerms()
+    {
+        return $this->termsAndConditions === true;
+    }
+
 }

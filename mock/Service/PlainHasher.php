@@ -9,14 +9,14 @@ use OpenTribes\Core\Service\PasswordHasher;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class PlainHash implements PasswordHasher
+class PlainHasher implements PasswordHasher
 {
     public function hash($rawPassword)
     {
         return $rawPassword;
     }
 
-    public function verify($hash, $rawPassword)
+    public function verify($rawPassword,$hash)
     {
         return $hash === $rawPassword;
     }
