@@ -32,36 +32,4 @@ class Environment
         return self::$env;
     }
 
-    public static function isTest()
-    {
-        if (!self::$env) {
-            self::loadFromGlobals();
-        }
-        return self::$env === self::TEST;
-    }
-
-    public static function isDevelop()
-    {
-        if (!self::$env) {
-            self::loadFromGlobals();
-        }
-        return self::$env === self::DEVELOP;
-    }
-
-    public static function isProduction()
-    {
-        if (!self::$env) {
-            self::loadFromGlobals();
-        }
-        return self::$env === self::PRODUCTION;
-    }
-
-    public function all()
-    {
-        return array(
-            self::TEST,
-            self::DEVELOP,
-            self::PRODUCTION
-        );
-    }
 }

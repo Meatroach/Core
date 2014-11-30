@@ -29,7 +29,8 @@ class MustacheListener implements EventSubscriberInterface{
         if($controllerResult instanceof SFBaseResponse){
             $response = new MustacheResponse();
             $templateName = $request->get('template');
-            $response->setContent($this->mustache->render($templateName,$controllerResult));
+            $htmlContent = $this->mustache->render($templateName,$controllerResult);
+            $response->setContent($htmlContent);
             $response->setResponse($controllerResult);
             $event->setResponse($response);
         }
