@@ -55,7 +55,7 @@ bin
 
 
 index.html
-!templates/assets/js/vendor
+!web/assets/js/vendor
 config/*
 !config/*.template.php
 storage
