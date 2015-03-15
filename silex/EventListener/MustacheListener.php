@@ -30,6 +30,7 @@ class MustacheListener implements EventSubscriberInterface{
             $response = new MustacheResponse();
             $templateName = $request->get('template');
             $htmlContent = $this->mustache->render($templateName,$controllerResult);
+            $controllerResult->setRequest($request);
             $response->setContent($htmlContent);
             $response->setResponse($controllerResult);
             $event->setResponse($response);

@@ -8,7 +8,6 @@ use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Silex\EventListener\MustacheListener;
 use OpenTribes\Core\Silex\Provider\ControllerServiceProvider;
 use OpenTribes\Core\Silex\Provider\RouteServiceProvider;
-use SebastianBergmann\Exporter\Exception;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -66,7 +65,7 @@ class Module implements ServiceProviderInterface{
         $env = new Environment();
         $configDir = realpath(__DIR__.'/../config/'.$env->get());
         if(!$configDir){
-            throw new Exception('Config folder for environment '.$env->get().' not exists');
+            throw new \Exception('Config folder for environment '.$env->get().' not exists');
         }
         $iterator = new RecursiveDirectoryIterator($configDir, RecursiveDirectoryIterator::SKIP_DOTS);
         /**
