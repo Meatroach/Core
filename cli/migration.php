@@ -8,18 +8,15 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use OpenTribes\Core\Silex\Enviroment as Env;
+
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputArgument;
 
-$env = Env::TEST;
+$env =  'test';
 
 $argument = end($argv);
-if (in_array($argument, Env::all())) {
-    $env = $argument;
-}
 
 $app = require __DIR__ . '/../bootstrap.php';
 
