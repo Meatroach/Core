@@ -7,8 +7,9 @@ php:
   - hhvm
 
 before_script:
-- php cli/config.php create
 - composer update
+- php cli/config.php create
+
 
 script:
   - phpunit --coverage-text --coverage-clover=coverage.clover
