@@ -29,7 +29,8 @@
     "swiftmailer/swiftmailer": "~5.3",
     "symfony/validator": "~2.5",
     "symfony/console": "~2.5",
-    "monolog/monolog": "~1.11"
+    "monolog/monolog": "~1.11",
+    "symfony/yaml": "~2.5"
   },
   "autoload": {
     "psr-4": {
@@ -45,4 +46,3 @@
     }
   }
 }
-
