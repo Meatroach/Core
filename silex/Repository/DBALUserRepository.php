@@ -7,7 +7,7 @@ use OpenTribes\Core\Entity\UserEntity;
 use OpenTribes\Core\Repository\UserRepository;
 use PDO;
 
-class DBALUserRepository extends DBALRepository implements UserRepository
+class DBALUserRepository extends DBALRepository implements UserRepository,WritableRepository
 {
     /**
      * @var UserEntity[]
@@ -70,4 +70,11 @@ class DBALUserRepository extends DBALRepository implements UserRepository
 
     }
 
+    public function sync()
+    {
+        // TODO: Implement sync() method.
+    }
+    private function getQueryBuilder(){
+
+    }
 }

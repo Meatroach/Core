@@ -4,6 +4,7 @@ namespace OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Request\IndexRequest;
 use OpenTribes\Core\Silex\Response\IndexResponse;
 use OpenTribes\Core\UseCase\LoginUseCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -18,6 +19,9 @@ class IndexController {
         $request = new IndexRequest($httpRequest);
         if($httpRequest->isMethod('POST')){
             $this->loginUseCase->process($request,$response);
+            if(!$response->hasErrors()){
+                return new RedirectResponse('/game');
+            }
         }
         return $response;
     }

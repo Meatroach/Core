@@ -36,12 +36,8 @@ class LandingPageTest extends SilexApplicationTest{
          * @var MustacheResponse $response
          */
         $response = $app->handle($request);
-        $this->assertSame(200, $response->getStatusCode(), "Registration Page have another status code than 200");
-        /**
-         * @var IndexResponse $rawResponse;
-         */
-        $rawResponse = $response->getRawResponse();
-        $this->assertFalse($rawResponse->hasErrors(),"Login failed");
+        $this->assertSame(302, $response->getStatusCode(), "Registration Page have another status code than 200");
+
     }
     /**
      * @dataProvider OpenTribes\Core\Test\DataProvider\LoginDataProvider::failingData
