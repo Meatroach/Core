@@ -7,8 +7,8 @@ use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Silex\EventListener\MustacheListener;
 use OpenTribes\Core\Silex\Provider\ControllerServiceProvider;
-use OpenTribes\Core\Silex\Provider\RouteProvider;
 use OpenTribes\Core\Silex\Provider\RouteServiceProvider;
+use SebastianBergmann\Exporter\Exception;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -19,12 +19,6 @@ use RecursiveDirectoryIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Module implements ServiceProviderInterface{
-    private $env;
-
-    public function __construct($env)
-    {
-        $this->env = $env;
-    }
 
     /**
      * Bootstraps the application.
@@ -69,8 +63,11 @@ class Module implements ServiceProviderInterface{
     private function loadConfigurations(Application $app)
     {
 
-
-        $configDir = realpath(__DIR__.'/../config/'.$this->env);
+        $env = new Environment();
+        $configDir = realpath(__DIR__.'/../config/'.$env->get());
+        if(!$configDir){
+            throw new Exception('Config folder for environment '.$env->get().' not exists');
+        }
         $iterator = new RecursiveDirectoryIterator($configDir, RecursiveDirectoryIterator::SKIP_DOTS);
         /**
          * @var \SplFileInfo $object

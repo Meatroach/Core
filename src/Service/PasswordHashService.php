@@ -6,7 +6,7 @@ namespace OpenTribes\Core\Service;
  *
  * @author BlackScorp<witalimik@web.de>
  */
-interface PasswordHasher
+interface PasswordHashService
 {
     /**
      * @param $rawPassword

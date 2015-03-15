@@ -8,7 +8,7 @@ use OpenTribes\Core\Request\LoginRequest;
 use OpenTribes\Core\Request\Request;
 use OpenTribes\Core\Response\LoginResponse;
 use OpenTribes\Core\Response\Response;
-use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Validator\LoginValidator;
 
 class LoginUseCase implements UseCase{
@@ -18,7 +18,7 @@ class LoginUseCase implements UseCase{
     public function __construct(
         UserRepository $userRepository,
         LoginValidator $loginValidator,
-        PasswordHasher $passwordHasher
+        PasswordHashService $passwordHasher
     ) {
         $this->passwordHasher = $passwordHasher;
         $this->userRepository = $userRepository;

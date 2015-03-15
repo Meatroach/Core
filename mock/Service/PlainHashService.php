@@ -2,14 +2,14 @@
 
 namespace OpenTribes\Core\Mock\Service;
 
-use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Service\PasswordHashService;
 
 /**
  * Description of PlainHash
  *
  * @author BlackScorp<witalimik@web.de>
  */
-class PlainHasher implements PasswordHasher
+class PlainHashService implements PasswordHashService
 {
     public function hash($rawPassword)
     {

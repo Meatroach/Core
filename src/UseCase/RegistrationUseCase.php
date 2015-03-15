@@ -6,7 +6,7 @@ use OpenTribes\Core\Request\RegistrationRequest;
 use OpenTribes\Core\Request\Request;
 use OpenTribes\Core\Response\RegistrationResponse;
 use OpenTribes\Core\Response\Response;
-use OpenTribes\Core\Service\PasswordHasher;
+use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Validator\RegistrationValidator;
 
 class RegistrationUseCase implements UseCase{
@@ -20,19 +20,19 @@ class RegistrationUseCase implements UseCase{
      */
     private $validator;
     /**
-     * @var PasswordHasher
+     * @var PasswordHashService
      */
     private $passwordHasher;
 
     /**
      * @param UserRepository $userRepository
      * @param RegistrationValidator $validator
-     * @param PasswordHasher $passwordHasher
+     * @param PasswordHashService $passwordHasher
      */
     public function __construct(
         UserRepository $userRepository,
         RegistrationValidator $validator,
-        PasswordHasher $passwordHasher
+        PasswordHashService $passwordHasher
     ) {
         $this->userRepository = $userRepository;
         $this->validator = $validator;

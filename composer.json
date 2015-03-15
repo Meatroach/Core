@@ -1,44 +1,48 @@
 {
-    "description": "A Tribal Wars Core Module",
-    "keywords": ["Tribal Wars", "Open Source", "Browsergame"],
-    "homepage": "http://ot.blackscorp.de",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Witali Mik",
-            "email": "witalimik@web.de"
-        }
-    ],
-    "name": "opentribes/core",
-    "support": {
-        "issues": "https://github.com/Opentribes/Core/issues",
-        "forum": "http://webgamers.de",
-        "wiki": "https://github.com/Opentribes/Core/wiki",
-        "source": "https://github.com/Opentribes/Core"
-    },
-    "require": {
-        "php": ">=5.4",
-        "silex/silex": "~1.2",
-        "igorw/config-service-provider": "~1.2",
-        "doctrine/migrations": "~1@dev",
-        "mustache/silex-provider": "~1.1",
-        "swiftmailer/swiftmailer": "~5.3",
-        "symfony/validator": "~2.5",
-        "symfony/console": "~2.5",
-        "monolog/monolog": "~1.11"
-    },
-    "config": {
-        "bin-dir": "bin/"
-    },
-    "autoload": {
-        "psr-4": {
-            "OpenTribes\\Core\\": "src/",
-            "OpenTribes\\Core\\Migrations\\": "migrations/",
-            "OpenTribes\\Core\\Mock\\": "mock/",
-            "OpenTribes\\Core\\Test\\": "tests/",
-            "OpenTribes\\Core\\Silex\\": "silex/"
-        }
+  "description": "A Tribal Wars Core Module",
+  "keywords": [
+    "Tribal Wars",
+    "Open Source",
+    "Browsergame"
+  ],
+  "homepage": "http://ot.blackscorp.de",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Witali Mik",
+      "email": "witalimik@web.de"
     }
-
+  ],
+  "name": "opentribes/core",
+  "support": {
+    "issues": "https://github.com/Opentribes/Core/issues",
+    "forum": "http://webgamers.de",
+    "wiki": "https://github.com/Opentribes/Core/wiki",
+    "source": "https://github.com/Opentribes/Core"
+  },
+  "require": {
+    "php": ">=5.4",
+    "silex/silex": "~1.2",
+    "igorw/config-service-provider": "~1.2",
+    "doctrine/migrations": "~1@dev",
+    "mustache/silex-provider": "~1.1",
+    "swiftmailer/swiftmailer": "~5.3",
+    "symfony/validator": "~2.5",
+    "symfony/console": "~2.5",
+    "monolog/monolog": "~1.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "OpenTribes\\Core\\": "src/",
+      "OpenTribes\\Core\\Migrations\\": "migrations/",
+      "OpenTribes\\Core\\Silex\\": "silex/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "OpenTribes\\Core\\Mock\\": "mock/",
+      "OpenTribes\\Core\\Test\\": "tests/"
+    }
+  }
 }
 

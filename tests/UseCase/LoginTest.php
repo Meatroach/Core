@@ -8,7 +8,7 @@ use OpenTribes\Core\Mock\Request\MockLoginRequest;
 use OpenTribes\Core\Mock\Request\MockRegistrationRequest;
 use OpenTribes\Core\Mock\Response\MockLoginResponse;
 use OpenTribes\Core\Mock\Response\MockRegistrationResponse;
-use OpenTribes\Core\Mock\Service\PlainHasher;
+use OpenTribes\Core\Mock\Service\PlainHashService;
 use OpenTribes\Core\Mock\Validator\MockLoginValidator;
 use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\UseCase\LoginUseCase;
@@ -38,7 +38,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
     {
         $this->userRepository = new MockUserRepository();
         $this->loginValidator = new MockLoginValidator();
-        $this->passwordHasher = new PlainHasher();
+        $this->passwordHasher = new PlainHashService();
         $this->createDummyUser();
     }
 

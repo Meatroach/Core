@@ -4,7 +4,7 @@ namespace OpenTribes\Core\Test\UseCase;
 use OpenTribes\Core\Mock\Repository\MockUserRepository;
 use OpenTribes\Core\Mock\Request\MockRegistrationRequest;
 use OpenTribes\Core\Mock\Response\MockRegistrationResponse;
-use OpenTribes\Core\Mock\Service\PlainHasher;
+use OpenTribes\Core\Mock\Service\PlainHashService;
 use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\Response\RegistrationResponse;
 use OpenTribes\Core\UseCase\RegistrationUseCase;
@@ -21,7 +21,7 @@ class RegistrationTest extends \PHPUnit_Framework_TestCase {
     public function setUp()
     {
         $this->userRepository = new MockUserRepository();
-        $this->passwordHasher = new PlainHasher();
+        $this->passwordHasher = new PlainHashService();
         $this->registrationValidator = new MockRegistrationValidator();
         $this->createDummyUser();
     }
