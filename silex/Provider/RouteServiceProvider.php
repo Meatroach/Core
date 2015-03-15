@@ -34,6 +34,10 @@ class RouteServiceProvider implements ControllerProviderInterface{
             ->match('/account/create', Controller::ACCOUNT . ':indexAction')
             ->method('POST|GET')
             ->value('template', 'pages/registration');
+        $collection
+            ->match('/game', Controller::INDEX . ':indexAction')
+            ->method('GET')
+            ->value('template', 'pages/landing');
         return $collection;
     }
 
