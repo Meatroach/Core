@@ -4,6 +4,7 @@ namespace OpenTribes\Core\Test\Controller;
 
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegistrationPageTest extends SilexApplicationTest
 {
@@ -11,6 +12,9 @@ class RegistrationPageTest extends SilexApplicationTest
     {
         $app = $this->getApplication();
         $request = Request::create('/account/create');
+        /**
+         * @var Response $response
+         */
         $response = $app->handle($request);
         $this->assertSame(200, $response->getStatusCode(), "Registration Page have another status code than 200");
     }
@@ -27,7 +31,9 @@ class RegistrationPageTest extends SilexApplicationTest
             'termsAndConditions' => 'On'
         ];
         $request = Request::create('/account/create', 'POST', $parameters);
-
+        /**
+         * @var Response $response
+         */
         $response = $app->handle($request);
         $this->assertSame(200, $response->getStatusCode(), "Registration Page have another status code than 200");
     }
@@ -46,7 +52,9 @@ class RegistrationPageTest extends SilexApplicationTest
             'termsAndConditions' => $acceptedTerms?'On':''
         ];
         $request = Request::create('/account/create', 'POST', $parameters);
-
+        /**
+         * @var Response $response;
+         */
         $response = $app->handle($request);
         $this->assertSame(200, $response->getStatusCode(), "Registration Page have another status code than 200");
         $this->assertContains($expectedMessage,$response->getContent());
