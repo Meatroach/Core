@@ -3,12 +3,12 @@
 namespace OpenTribes\Core\Silex\Provider;
 
 
-use OpenTribes\Core\Mock\Repository\MockUserRepository;
 use OpenTribes\Core\Mock\Service\PlainHashService;
 use OpenTribes\Core\Mock\Validator\MockLoginValidator;
 use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Repository;
+use OpenTribes\Core\Silex\Repository\DBALUserRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\UseCase\LoginUseCase;
@@ -47,7 +47,7 @@ class ControllerServiceProvider implements ServiceProviderInterface{
     }
     private function registerRepositories(Application $app){
         $app[Repository::USER] = $app->share(function()  use($app){
-           return new MockUserRepository();
+           return new DBALUserRepository($app['db']);
         });
     }
     private function registerController(Application $app){
