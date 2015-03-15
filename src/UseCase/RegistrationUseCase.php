@@ -6,9 +6,12 @@ use OpenTribes\Core\Request\RegistrationRequest;
 use OpenTribes\Core\Response\RegistrationResponse;
 use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Validator\RegistrationValidator;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-class RegistrationUseCase{
-
+class RegistrationUseCase implements LoggerAwareInterface{
+    use LoggerAwareTrait;
     /**
      * @var UserRepository
      */
@@ -35,6 +38,7 @@ class RegistrationUseCase{
         $this->userRepository = $userRepository;
         $this->validator = $validator;
         $this->passwordHashService = $passwordHashService;
+        $this->logger = new NullLogger();
     }
 
     /**

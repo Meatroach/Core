@@ -5,7 +5,7 @@ namespace OpenTribes\Core\Repository;
 
 use OpenTribes\Core\Entity\UserEntity;
 
-interface UserRepository {
+interface UserRepository{
     /**
      * @param $username
      * @return UserEntity | null

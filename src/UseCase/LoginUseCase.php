@@ -8,8 +8,12 @@ use OpenTribes\Core\Request\LoginRequest;
 use OpenTribes\Core\Response\LoginResponse;
 use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Validator\LoginValidator;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-class LoginUseCase{
+class LoginUseCase implements LoggerAwareInterface{
+    use LoggerAwareTrait;
     private $userRepository = null;
     private $passwordHashService = null;
     private $loginValidator = null;
@@ -21,6 +25,7 @@ class LoginUseCase{
         $this->passwordHashService = $passwordHashService;
         $this->userRepository = $userRepository;
         $this->loginValidator = $loginValidator;
+        $this->logger = new NullLogger();
     }
 
     private function setValidatorValues(LoginRequest $request)
