@@ -43,5 +43,24 @@ class LandingPageTest extends SilexApplicationTest{
         $rawResponse = $response->getRawResponse();
         $this->assertFalse($rawResponse->hasErrors(),"Login failed");
     }
+    /**
+     * @dataProvider OpenTribes\Core\Test\DataProvider\LoginDataProvider::failingData
+     * @param $username
+     * @param $password
+     * @param $expectedMessage
+     */
+    public function testLoginFailed($username,$password,$expectedMessage){
+        $app = $this->getApplication();
+        $parameters = [
+            'username' => $username,
+            'password' => $password
+        ];
+        $request = Request::create('/account/login', 'POST', $parameters);
+        /**
+         * @var MustacheResponse $response
+         */
+        $response = $app->handle($request);
+        $this->assertContains($expectedMessage,$response->getContent());
+    }
 }
  
