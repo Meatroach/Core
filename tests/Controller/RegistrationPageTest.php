@@ -10,21 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RegistrationPageTest extends SilexApplicationTest
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    public function setUp(){
-        $app = $this->getApplication();
-        $this->userRepository = $app[Repository::USER];
-        $this->createDummyUser();
 
-    }
-    protected function createDummyUser()
+
+    protected function createDummyUser(UserRepository $userRepository)
     {
-        $userId = $this->userRepository->getUniqueId();
-        $user = $this->userRepository->create($userId, 'Dummy', '123456', 'dummy@test.com');
-        $this->userRepository->add($user);
+        $userId = $userRepository->getUniqueId();
+        $user = $userRepository->create($userId, 'Dummy', '123456', 'dummy@test.com');
+        $userRepository->add($user);
     }
     public function testCanSeeRegistrationPage()
     {
@@ -62,6 +54,7 @@ class RegistrationPageTest extends SilexApplicationTest
     public function testRegistrationFailed($username, $password, $passwordConfirm, $email, $emailConfirm, $acceptedTerms, $expectedMessage){
         $app = $this->getApplication();
 
+        $this->createDummyUser($app[Repository::USER]);
         $parameters = [
             'username' => $username,
             'password' => $password,
