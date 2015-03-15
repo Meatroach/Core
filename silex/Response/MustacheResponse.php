@@ -11,4 +11,12 @@ class MustacheResponse extends Response{
         $this->rawResponse = $response;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRawResponse()
+    {
+        return $this->rawResponse;
+    }
+
 } 

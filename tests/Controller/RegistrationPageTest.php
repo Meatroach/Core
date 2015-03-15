@@ -5,6 +5,8 @@ namespace OpenTribes\Core\Test\Controller;
 
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Silex\Repository;
+use OpenTribes\Core\Silex\Response\AccountResponse;
+use OpenTribes\Core\Silex\Response\MustacheResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,7 +31,7 @@ class RegistrationPageTest extends SilexApplicationTest
         $this->assertSame(200, $response->getStatusCode(), "Registration Page have another status code than 200");
     }
 
-    public function testRegistrationIsSuccessfull()
+    public function testRegistrationIsSuccessful()
     {
         $app = $this->getApplication();
         $parameters = [
@@ -42,10 +44,15 @@ class RegistrationPageTest extends SilexApplicationTest
         ];
         $request = Request::create('/account/create', 'POST', $parameters);
         /**
-         * @var Response $response
+         * @var MustacheResponse $response
          */
         $response = $app->handle($request);
         $this->assertSame(200, $response->getStatusCode(), "Registration Page have another status code than 200");
+        /**
+         * @var AccountResponse $rawResponse;
+         */
+        $rawResponse = $response->getRawResponse();
+        $this->assertFalse($rawResponse->hasErrors());
     }
 
     /**
