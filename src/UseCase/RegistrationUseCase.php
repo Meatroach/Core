@@ -3,13 +3,11 @@ namespace OpenTribes\Core\UseCase;
 
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Request\RegistrationRequest;
-use OpenTribes\Core\Request\Request;
 use OpenTribes\Core\Response\RegistrationResponse;
-use OpenTribes\Core\Response\Response;
 use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Validator\RegistrationValidator;
 
-class RegistrationUseCase implements UseCase{
+class RegistrationUseCase{
 
     /**
      * @var UserRepository
@@ -22,21 +20,21 @@ class RegistrationUseCase implements UseCase{
     /**
      * @var PasswordHashService
      */
-    private $passwordHasher;
+    private $passwordHashService;
 
     /**
      * @param UserRepository $userRepository
      * @param RegistrationValidator $validator
-     * @param PasswordHashService $passwordHasher
+     * @param PasswordHashService $passwordHashService
      */
     public function __construct(
         UserRepository $userRepository,
         RegistrationValidator $validator,
-        PasswordHashService $passwordHasher
+        PasswordHashService $passwordHashService
     ) {
         $this->userRepository = $userRepository;
         $this->validator = $validator;
-        $this->passwordHasher = $passwordHasher;
+        $this->passwordHashService = $passwordHashService;
     }
 
     /**
@@ -54,17 +52,11 @@ class RegistrationUseCase implements UseCase{
         $this->validator->emailExists = (bool)$this->userRepository->findByEmail($request->getEmail());
     }
 
-    public function process(Request $request, Response $response)
-    {
-        $this->doProcess($request, $response);
-    }
-
     /**
-     * @param  RegistrationResponse $response
-     * @param  RegistrationRequest $request
-     * @return void
+     * @param RegistrationRequest $request
+     * @param RegistrationResponse $response
      */
-    private function doProcess(RegistrationRequest $request, RegistrationResponse $response)
+    public function process(RegistrationRequest $request, RegistrationResponse $response)
     {
         $response->setRegistrationRequest($request);
         $this->setValidatorValues($request);
@@ -82,7 +74,7 @@ class RegistrationUseCase implements UseCase{
     private function createUser(RegistrationRequest $request)
     {
         $userId = $this->userRepository->getUniqueId();
-        $passwordHash = $this->passwordHasher->hash($request->getPassword());
+        $passwordHash = $this->passwordHashService->hash($request->getPassword());
         $user = $this->userRepository->create($userId, $request->getUsername(), $passwordHash, $request->getEmail());
         $user->setRegistrationDate(new \DateTime());
         $this->userRepository->add($user);

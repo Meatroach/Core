@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\Request;
 
 
-interface LoginRequest extends Request{
+interface LoginRequest{
     public function getUsername();
     public function getPassword();
 } 

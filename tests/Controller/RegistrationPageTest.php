@@ -3,11 +3,29 @@
 namespace OpenTribes\Core\Test\Controller;
 
 
+use OpenTribes\Core\Repository\UserRepository;
+use OpenTribes\Core\Silex\Repository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegistrationPageTest extends SilexApplicationTest
 {
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    public function setUp(){
+        $app = $this->getApplication();
+        $this->userRepository = $app[Repository::USER];
+        $this->createDummyUser();
+
+    }
+    protected function createDummyUser()
+    {
+        $userId = $this->userRepository->getUniqueId();
+        $user = $this->userRepository->create($userId, 'Dummy', '123456', 'dummy@test.com');
+        $this->userRepository->add($user);
+    }
     public function testCanSeeRegistrationPage()
     {
         $app = $this->getApplication();
@@ -43,6 +61,7 @@ class RegistrationPageTest extends SilexApplicationTest
      */
     public function testRegistrationFailed($username, $password, $passwordConfirm, $email, $emailConfirm, $acceptedTerms, $expectedMessage){
         $app = $this->getApplication();
+
         $parameters = [
             'username' => $username,
             'password' => $password,

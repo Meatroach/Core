@@ -1,3 +1,0 @@
-silex:
-    context:
-        class:      SilexContext

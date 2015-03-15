@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\Response;
 
 
-interface ErrorResponse extends Response{
+interface ErrorResponse{
     public function setErrors(array $errors);
     public function hasErrors();
     public function addError($error);

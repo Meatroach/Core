@@ -5,22 +5,20 @@ namespace OpenTribes\Core\UseCase;
 
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Request\LoginRequest;
-use OpenTribes\Core\Request\Request;
 use OpenTribes\Core\Response\LoginResponse;
-use OpenTribes\Core\Response\Response;
 use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Validator\LoginValidator;
 
-class LoginUseCase implements UseCase{
+class LoginUseCase{
     private $userRepository = null;
-    private $passwordHasher = null;
+    private $passwordHashService = null;
     private $loginValidator = null;
     public function __construct(
         UserRepository $userRepository,
         LoginValidator $loginValidator,
-        PasswordHashService $passwordHasher
+        PasswordHashService $passwordHashService
     ) {
-        $this->passwordHasher = $passwordHasher;
+        $this->passwordHashService = $passwordHashService;
         $this->userRepository = $userRepository;
         $this->loginValidator = $loginValidator;
     }
@@ -32,25 +30,18 @@ class LoginUseCase implements UseCase{
         $user = $this->userRepository->findByUsername($request->getUsername());
 
         if ($user) {
-
-            $this->loginValidator->verified = $this->passwordHasher->verify(
+            $this->loginValidator->verified = $this->passwordHashService->verify(
                 $request->getPassword(),
                 $user->getPasswordHash()
             );
         }
     }
 
-    public function process(Request $request, Response $response)
-    {
-        $this->doProcess($request, $response);
-    }
-
     /**
+     * @param LoginRequest $request
      * @param LoginResponse $response
-     * @param LoginRequest  $request
-     * @return void
      */
-    private function doProcess(LoginRequest $request, LoginResponse $response)
+    public function process(LoginRequest $request, LoginResponse $response)
     {
         $response->setLoginRequest($request);
 
