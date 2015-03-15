@@ -51,18 +51,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         return $loginResponse;
     }
 
-    public function failingData()
-    {
-        return array(
-            'empty username' => array('', '123456', 'Invalid login'),
-            'short username' => array('tes', '123456', 'Invalid login'),
-            'long username' => array(str_repeat('s', 25), '123456', 'Invalid login'),
-            'invalid username' => array('BläckScörp', '123456', 'Invalid login'),
-            'empty password' => array('Test', '', 'Invalid login'),
-            'short password' => array('Test', '12345', 'Invalid login'),
-            'invalid login' => array('Test', 'testtest', 'Invalid login')
-        );
-    }
+
 
     public function testLoginSuccessful()
     {
@@ -74,7 +63,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider failingData
+     * @dataProvider OpenTribes\Core\Test\DataProvider\LoginDataProvider::failingData
      * @param $username
      * @param $password
      * @param $expectedMessage

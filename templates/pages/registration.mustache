@@ -4,16 +4,14 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            {{#proceed}}
-            {{#failed}}
+            {{#hasErrors}}
             <div class="alert alert-danger ">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{#errors}}
+                {{#getErrors}}
                 <p>{{.}}</p>
-                {{/errors}}
+                {{/getErrors}}
             </div>
-            {{/failed}}
-            {{/proceed}}
+            {{/hasErrors}}
             <form role="form" action="/account/create" method="POST">
             <input type="hidden" name="csrfToken" value="{{{csrfToken}}}">
 
