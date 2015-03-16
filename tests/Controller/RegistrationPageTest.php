@@ -13,7 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 class RegistrationPageTest extends SilexApplicationTest
 {
 
-
+    private function deleteTestUser(){
+        $app = $this->getApplication();
+        /**
+         * @var Repository\DBALUserRepository $repository
+         */
+        $repository = $app[Repository::USER];
+        $user = $repository->findByUsername('test');
+        $repository->delete($user);
+        $repository->sync();
+    }
     protected function createDummyUser(UserRepository $userRepository)
     {
         $userId = $userRepository->getUniqueId();
@@ -48,6 +57,7 @@ class RegistrationPageTest extends SilexApplicationTest
          */
         $response = $app->handle($request);
         $this->assertSame(302, $response->getStatusCode(), "Registration Page have another status code than 200");
+        $this->deleteTestUser();
     }
 
     /**
