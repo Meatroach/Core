@@ -5,8 +5,8 @@ namespace OpenTribes\Core\Test\Controller;
 
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Silex\Repository;
-use OpenTribes\Core\Silex\Response\AccountResponse;
 use OpenTribes\Core\Silex\Response\MustacheResponse;
+use OpenTribes\Core\Test\SilexApplicationTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
