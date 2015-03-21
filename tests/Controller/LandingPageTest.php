@@ -6,9 +6,9 @@ namespace OpenTribes\Core\Test\Controller;
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Service\PasswordHashService;
 use OpenTribes\Core\Silex\Repository;
-use OpenTribes\Core\Silex\Response\IndexResponse;
 use OpenTribes\Core\Silex\Response\MustacheResponse;
 use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Test\SilexApplicationTest;
 use Symfony\Component\HttpFoundation\Request;
 
 class LandingPageTest extends SilexApplicationTest{
