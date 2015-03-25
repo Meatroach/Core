@@ -28,4 +28,6 @@ interface UserRepository{
      */
     public function create($userId, $username, $passwordHash, $email);
     public function add(UserEntity $user);
+    public function modify(UserEntity $user);
+    public function delete(UserEntity $user);
 } 

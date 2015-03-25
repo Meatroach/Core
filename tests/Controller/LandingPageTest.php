@@ -5,6 +5,7 @@ namespace OpenTribes\Core\Test\Controller;
 
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Service\PasswordHashService;
+use OpenTribes\Core\Silex\Module;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Response\MustacheResponse;
 use OpenTribes\Core\Silex\Service;
@@ -57,6 +58,16 @@ class LandingPageTest extends SilexApplicationTest{
          */
         $response = $app->handle($request);
         $this->assertContains($expectedMessage,$response->getContent());
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testConfigurationFolderNotExists(){
+        $app = $this->getApplication();
+        $app['env'] = 'invalid';
+        $app->register(new Module());
+
     }
 }
  

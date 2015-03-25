@@ -10,13 +10,4 @@ class MustacheResponse extends Response{
     public function setResponse(SFBaseResponse $response){
         $this->rawResponse = $response;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getRawResponse()
-    {
-        return $this->rawResponse;
-    }
-
 } 

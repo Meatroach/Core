@@ -1,8 +1,6 @@
 <?php
 namespace OpenTribes\Core\Test\Repository;
 
-
-use OpenTribes\Core\Entity\UserEntity;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Test\SilexApplicationTest;
 
@@ -21,6 +19,10 @@ class UserRepositoryTest extends SilexApplicationTest {
 
         $this->repository = $repository;
     }
+    public function tearDown(){
+        $this->repository->truncate();
+
+    }
 
     private function createDummyUser(){
         $userId = $this->repository->getUniqueId();
@@ -29,17 +31,29 @@ class UserRepositoryTest extends SilexApplicationTest {
         $this->repository->sync();
         return $user;
     }
-    private function deleteUser(UserEntity $user){
-        $this->repository->delete($user);
-        $this->repository->sync();
-    }
-    public function testCanCreateNewUser(){
 
+    public function testCanCreateNewUser(){
+        $user = $this->createDummyUser();
+        $newUser = $this->repository->findByUsername($user->getUsername());
+        $this->assertEquals($user,$newUser);
+    }
+    public function testCanModifyUser(){
         $user = $this->createDummyUser();
 
+        $user->setEmail('test2@test.com');
+        $user->setPasswordHash('asd');
 
-        $newUser = $this->repository->findByUsername('UserRepositoryTestUser');
-        $this->assertEquals($user,$newUser);
-        $this->deleteUser($user);
+        $this->repository->modify($user);
+        $this->repository->sync();
+
+        $modifiedUser = $this->repository->findByUsername($user->getUsername());
+        $this->assertEquals($user,$modifiedUser);
+    }
+    public function testCanDeleteUser(){
+        $user = $this->createDummyUser();
+        $this->repository->delete($user);
+        $this->repository->sync();
+        $deletedUser = $this->repository->findByUsername($user->getUsername());
+        $this->assertNull($deletedUser);
     }
 }

@@ -11,7 +11,14 @@ class UserEntity
     private $username = '';
     private $passwordHash = '';
     private $email = '';
+    /**
+     * @var DateTime
+     */
     private $registrationDate = null;
+    /**
+     * @var DateTime
+     */
+    private $lastAction = null;
     public function __construct($userId, $username, $passwordHash, $email)
     {
         $this->userId = $userId;
@@ -61,5 +68,44 @@ class UserEntity
         return $this->passwordHash;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getLastAction()
+    {
+        return $this->lastAction;
+    }
+
+    /**
+     * @param DateTime $lastAction
+     */
+    public function setLastAction(DateTime $lastAction)
+    {
+        $this->lastAction = $lastAction;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @param string $passwordHash
+     */
+    public function setPasswordHash($passwordHash)
+    {
+        $this->passwordHash = $passwordHash;
+    }
 
 } 
