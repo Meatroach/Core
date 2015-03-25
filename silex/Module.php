@@ -61,11 +61,10 @@ class Module implements ServiceProviderInterface{
     }
     private function loadConfigurations(Application $app)
     {
-
-        $env = new Environment();
-        $configDir = realpath(__DIR__.'/../config/'.$env->get());
+        $environment = $app['env'];
+        $configDir = realpath(__DIR__.'/../config/'.$environment);
         if(!$configDir){
-            throw new \Exception('Config folder for environment '.$env->get().' not exists');
+            throw new \Exception('Config folder for environment '.$environment.' not exists');
         }
         $iterator = new RecursiveDirectoryIterator($configDir, RecursiveDirectoryIterator::SKIP_DOTS);
         /**
