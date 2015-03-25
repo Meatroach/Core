@@ -12,16 +12,10 @@ class UserRepositoryTest extends SilexApplicationTest {
 
     public function setUp(){
         $app = $this->getApplication();
-        /**
-         * @var Repository\DBALUserRepository $repository
-         */
-        $repository = $app[Repository::USER];
-
-        $this->repository = $repository;
+        $this->repository = $app[Repository::USER];
     }
     public function tearDown(){
         $this->repository->truncate();
-
     }
 
     private function createDummyUser(){
@@ -55,5 +49,10 @@ class UserRepositoryTest extends SilexApplicationTest {
         $this->repository->sync();
         $deletedUser = $this->repository->findByUsername($user->getUsername());
         $this->assertNull($deletedUser);
+    }
+    public function testCanFindUserByEmail(){
+        $currentUser = $this->createDummyUser();
+        $expectedUser = $this->repository->findByEmail('test@test.com');
+        $this->assertEquals($currentUser,$expectedUser);
     }
 }

@@ -29,15 +29,8 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
         $sql = $this->getSql();
         $sql.= ' WHERE username = :username';
 
-        $statement = $this->connection->prepare($sql);
-        $statement->execute([':username'=>$username]);
-        $result = $statement->fetch(PDO::FETCH_OBJ);
-        if(!$result){
-            return null;
-        }
-        $user = $this->rowToEntity($result);
-        $this->modify($user);
-        return $user;
+        $parameters = [':username'=>$username];
+        return $this->loadOne($sql, $parameters);
     }
 
     /**
@@ -51,7 +44,10 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
                 return $user;
             }
         }
-        return null;
+        $sql = $this->getSql();
+        $sql .= ' WHERE email = :email';
+        $parameters = [':email' => $email];
+        return $this->loadOne($sql, $parameters);
     }
 
     public function getUniqueId()
@@ -150,5 +146,25 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
     private function getSql(){
         $sql = "SELECT userId,username,password,email,registered,lastAction,lastLogin FROM users";
         return $sql;
+    }
+
+    /**
+     * @param $sql
+     * @param $parameters
+     * @return null|UserEntity
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function loadOne($sql, $parameters)
+    {
+        $statement = $this->connection->prepare($sql);
+        $statement->execute($parameters);
+        $this->logger->info("Executing SQL query", ['query' => $sql, 'parameters' => $parameters]);
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+        if (!$result) {
+            return null;
+        }
+        $user = $this->rowToEntity($result);
+        $this->modify($user);
+        return $user;
     }
 }
