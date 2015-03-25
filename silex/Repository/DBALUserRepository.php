@@ -36,10 +36,7 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
             return null;
         }
         $user = $this->rowToEntity($result);
-        if($user){
-            $this->modify($user);
-        }
-
+        $this->modify($user);
         return $user;
     }
 
@@ -122,6 +119,12 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
 
         $this->users = [];
     }
+
+    public function truncate()
+    {
+        $this->connection->query('TRUNCATE TABLE users');
+    }
+
     private function entityToRow(UserEntity $entity){
         $row = [
             'userId' => $entity->getUserId(),

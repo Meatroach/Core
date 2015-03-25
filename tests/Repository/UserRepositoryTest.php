@@ -1,8 +1,6 @@
 <?php
 namespace OpenTribes\Core\Test\Repository;
 
-
-use OpenTribes\Core\Entity\UserEntity;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Test\SilexApplicationTest;
 
@@ -11,7 +9,7 @@ class UserRepositoryTest extends SilexApplicationTest {
      * @var Repository\DBALUserRepository
      */
     private $repository;
-    private $user;
+
     public function setUp(){
         $app = $this->getApplication();
         /**
@@ -22,9 +20,7 @@ class UserRepositoryTest extends SilexApplicationTest {
         $this->repository = $repository;
     }
     public function tearDown(){
-        if($this->user){
-            $this->deleteUser($this->user);
-        }
+        $this->repository->truncate();
 
     }
 
@@ -35,23 +31,21 @@ class UserRepositoryTest extends SilexApplicationTest {
         $this->repository->sync();
         return $user;
     }
-    private function deleteUser(UserEntity $user){
-        $this->repository->delete($user);
-        $this->repository->sync();
-    }
+
     public function testCanCreateNewUser(){
         $user = $this->createDummyUser();
-        $this->user = $user;
         $newUser = $this->repository->findByUsername($user->getUsername());
         $this->assertEquals($user,$newUser);
     }
     public function testCanModifyUser(){
         $user = $this->createDummyUser();
+
         $user->setEmail('test2@test.com');
         $user->setPasswordHash('asd');
-        $this->user = $user;
+
         $this->repository->modify($user);
         $this->repository->sync();
+
         $modifiedUser = $this->repository->findByUsername($user->getUsername());
         $this->assertEquals($user,$modifiedUser);
     }
