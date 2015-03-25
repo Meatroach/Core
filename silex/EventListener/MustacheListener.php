@@ -4,7 +4,7 @@ namespace OpenTribes\Core\Silex\EventListener;
 
 
 use OpenTribes\Core\Silex\Response\MustacheResponse;
-use OpenTribes\Core\Silex\Response\SFBaseResponse;
+use OpenTribes\Core\Silex\Response\SymfonyBaseResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -17,12 +17,12 @@ class MustacheListener implements EventSubscriberInterface{
     }
     public function onView(GetResponseForControllerResultEvent $event){
         /**
-         * @var SFBaseResponse | Response $controllerResult;
+         * @var SymfonyBaseResponse | Response $controllerResult;
          */
         $controllerResult = $event->getControllerResult();
         $request = $event->getRequest();
 
-        if($controllerResult instanceof SFBaseResponse){
+        if($controllerResult instanceof SymfonyBaseResponse){
             $response = new MustacheResponse();
             $templateName = $request->get('template');
             $htmlContent = $this->mustache->render($templateName,$controllerResult);

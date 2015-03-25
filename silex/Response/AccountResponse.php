@@ -7,7 +7,7 @@ use OpenTribes\Core\Request\RegistrationRequest;
 use OpenTribes\Core\Response\RegistrationResponse;
 use OpenTribes\Core\Traits\ErrorTrait;
 
-class AccountResponse extends SFBaseResponse implements RegistrationResponse{
+class AccountResponse extends SymfonyBaseResponse implements RegistrationResponse{
     use ErrorTrait;
     public $username = '';
     public $password = '';

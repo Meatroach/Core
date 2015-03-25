@@ -4,7 +4,7 @@ namespace OpenTribes\Core\Silex\Response;
 
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class SFBaseResponse
+abstract class SymfonyBaseResponse
 {
     public $baseUrl = '/';
     public $isAjaxRequest = false;
