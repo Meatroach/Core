@@ -100,6 +100,7 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
     {
         foreach($this->getDeleted() as $deletedId){
             $this->connection->delete('users',['userId' => $deletedId]);
+            $this->reset($deletedId);
         }
 
         foreach($this->getAdded() as $addedId){
@@ -108,12 +109,14 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
             $userEntity->setRegistrationDate(new DateTime());
             $userEntity->setLastAction(new DateTime());
             $this->connection->insert('users',$this->entityToRow($userEntity));
+            $this->reset($addedId);
         }
         foreach($this->getModified() as $modifiedId){
             if(!isset($this->users[$modifiedId])){continue;}
             $userEntity = $this->users[$modifiedId];
             $userEntity->setLastAction(new DateTime());
             $this->connection->update('users',$this->entityToRow($userEntity),['userId'=>$modifiedId]);
+            $this->reset($modifiedId);
         }
 
 
