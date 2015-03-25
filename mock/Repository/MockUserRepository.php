@@ -79,5 +79,15 @@ class MockUserRepository implements UserRepository
         return null;
     }
 
+    public function modify(UserEntity $user)
+    {
+        $this->users[$user->getUserId()] = $user;
+    }
+
+    public function delete(UserEntity $user)
+    {
+        unset($this->users[$user->getUserId()]);
+    }
+
 
 }
