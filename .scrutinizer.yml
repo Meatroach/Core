@@ -1,20 +1,14 @@
 before_commands:
-    - 'composer install --no-progress'
-    - 'mkdir cache'
-    - 'mkdir storage'
-    - 'touch storage/ot.db'
-    - 'php cli/config.php create'
-    - 'php cli/migration.php migrations:migrate --no-interaction'
+
     
 filter:
     excluded_paths:
         - vendor/
-        - bin/
         - config/
         - templates/
         - cli/
         - tests/
-        - features/
+        - silex_old/
 checks:
     php:
         code_rating: true
@@ -38,13 +32,13 @@ tools:
         config:
             standard: PSR2
         filter:
-            paths: ['src']
+            paths: [src,app]
     php_loc:
         enabled: true
-        excluded_dirs: [vendor, test]
+        excluded_dirs: [vendor, tests]
     php_cpd:
         enabled: true
-        excluded_dirs: [vendor, test]
+        excluded_dirs: [vendor, tests]
     php_mess_detector: true
     php_analyzer: true
     php_pdepend: true
