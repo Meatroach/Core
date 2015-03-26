@@ -21,7 +21,7 @@
     "source": "https://github.com/Opentribes/Core"
   },
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.5",
     "silex/silex": "~1.2",
     "igorw/config-service-provider": "~1.2",
     "doctrine/migrations": "~1@dev",

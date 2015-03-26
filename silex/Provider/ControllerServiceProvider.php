@@ -3,7 +3,6 @@
 namespace OpenTribes\Core\Silex\Provider;
 
 
-use OpenTribes\Core\Mock\Service\PlainHashService;
 use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Repository;
@@ -41,7 +40,7 @@ class ControllerServiceProvider implements ServiceProviderInterface{
     }
     private function registerServices(Application $app){
         $app[Service::PASSWORD_HASH] = $app->share(function() use($app){
-            return new PlainHashService();
+            return new Service\DefaultPasswordHashService();
         });
     }
     private function registerRepositories(Application $app){
