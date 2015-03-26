@@ -41,7 +41,11 @@ class UserRepositoryTest extends SilexApplicationTest {
         $this->repository->sync();
 
         $modifiedUser = $this->repository->findByUsername($user->getUsername());
-        $this->assertEquals($user,$modifiedUser);
+
+        $this->assertSame($user->getUserId(),$modifiedUser->getUserId());
+        $this->assertSame($user->getUsername(),$modifiedUser->getUsername());
+        $this->assertSame($user->getEmail(),$modifiedUser->getEmail());
+        $this->assertSame($user->getPasswordHash(),$modifiedUser->getPasswordHash());
     }
     public function testCanDeleteUser(){
         $user = $this->createDummyUser();

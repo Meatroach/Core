@@ -22,7 +22,7 @@ class LandingPageTest extends SilexApplicationTest{
     }
     private function createDummyUser(UserRepository $userRepository,PasswordHashService $passwordHashService){
         $userId = $userRepository->getUniqueId();
-        $user = $userRepository->create($userId,'Test',$passwordHashService->hash('test'),'test@test.com');
+        $user = $userRepository->create($userId,'Test',$passwordHashService->hash('123456'),'test@test.com');
         $userRepository->add($user);
     }
     public function testLoginSuccessful(){
@@ -30,7 +30,7 @@ class LandingPageTest extends SilexApplicationTest{
         $this->createDummyUser($app[Repository::USER],$app[Service::PASSWORD_HASH]);
         $parameters = [
             'username' => 'Test',
-            'password' => 'test'
+            'password' => '123456'
         ];
         $request = Request::create('/account/login', 'POST', $parameters);
         /**

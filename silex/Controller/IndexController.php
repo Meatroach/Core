@@ -19,6 +19,7 @@ class IndexController {
         $request = new IndexRequest($httpRequest);
         if($httpRequest->isMethod('POST')){
             $this->loginUseCase->process($request,$response);
+
             if(!$response->hasErrors()){
                 return new RedirectResponse('/game');
             }
