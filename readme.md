@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.org/Opentribes/Core.png?branch=develop)](https://travis-ci.org/Opentribes/Core)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca/mini.png)](https://insight.sensiolabs.com/projects/00a44706-0e89-488a-98c8-aaad7e12eeca)
 [![Gitter chat](https://badges.gitter.im/Opentribes/Core.png)](https://gitter.im/Opentribes/Core)
-[![Codacy Badge](https://www.codacy.com/project/badge/eceeb1fe77f7427f9eaa41c244d22388)](https://www.codacy.com/public/Opentribes/Core.git)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Opentribes/Core/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Opentribes/Core/?branch=develop)
+[![Code Coverage](https://scrutinizer-ci.com/g/Opentribes/Core/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/Opentribes/Core/?branch=develop)
 
 An OpenSource browser based Game, written in PHP
 
