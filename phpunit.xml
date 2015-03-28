@@ -17,6 +17,7 @@
     <filter>
         <blacklist>
             <directory>vendor</directory>
+            <directory>mock</directory>
         </blacklist>
     </filter>
     <php>
