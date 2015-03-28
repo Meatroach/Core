@@ -5,7 +5,7 @@ php:
   - 5.6
   - hhvm
 env:
-  - env="test"
+  env: test
 
 before_script:
 - mysql -e 'create database ot_test;'
