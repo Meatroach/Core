@@ -9,6 +9,7 @@ filter:
         - cli/
         - tests/
         - silex_old/
+        - mock/
 checks:
     php:
         code_rating: true
