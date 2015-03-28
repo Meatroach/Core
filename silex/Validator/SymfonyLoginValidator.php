@@ -15,7 +15,7 @@ class SymfonyLoginValidator extends LoginValidator
      */
     private $validator;
 
-    function __construct(Validator $validator)
+    public function __construct(Validator $validator)
     {
         $this->validator = $validator;
     }
