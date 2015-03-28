@@ -104,9 +104,6 @@ class DBALUserRepository extends DBALRepository implements UserRepository, Writa
     private function addUsers()
     {
         foreach ($this->getAdded() as $addedId) {
-            if (!isset($this->users[$addedId])) {
-                continue;
-            }
             $userEntity = $this->users[$addedId];
             $userEntity->setRegistrationDate(new DateTime());
             $userEntity->setLastAction(new DateTime());
@@ -118,9 +115,6 @@ class DBALUserRepository extends DBALRepository implements UserRepository, Writa
     private function modifyUsers()
     {
         foreach ($this->getModified() as $modifiedId) {
-            if (!isset($this->users[$modifiedId])) {
-                continue;
-            }
             $userEntity = $this->users[$modifiedId];
             $userEntity->setLastAction(new DateTime());
             $this->connection->update('users', $this->entityToRow($userEntity), ['userId' => $modifiedId]);
@@ -134,6 +128,7 @@ class DBALUserRepository extends DBALRepository implements UserRepository, Writa
         $this->addUsers();
         $this->modifyUsers();
         $this->users = [];
+        return true;
     }
 
     public function truncate()

@@ -59,4 +59,5 @@ class UserRepositoryTest extends SilexApplicationTest {
         $expectedUser = $this->repository->findByEmail('test@test.com');
         $this->assertEquals($currentUser,$expectedUser);
     }
+
 }
