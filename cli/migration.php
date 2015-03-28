@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
@@ -14,12 +12,9 @@ use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputArgument;
 
-$env =  'test';
-
-$argument = end($argv);
 
 $app = require __DIR__ . '/../bootstrap.php';
-
+$app['env'] = 'test';
 $console = new Application;
 
 
