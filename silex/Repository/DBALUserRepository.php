@@ -9,27 +9,28 @@ use PDO;
 use stdClass;
 use DateTime;
 
-class DBALUserRepository extends DBALRepository implements UserRepository,WritableRepository
+class DBALUserRepository extends DBALRepository implements UserRepository, WritableRepository
 {
     /**
      * @var UserEntity[]
      */
     private $users = [];
+
     /**
      * @param $username
      * @return UserEntity | null
      */
     public function findByUsername($username)
     {
-        foreach($this->users as $user){
-            if($user->getUsername() === $username){
+        foreach ($this->users as $user) {
+            if ($user->getUsername() === $username) {
                 return $user;
             }
         }
         $sql = $this->getSql();
-        $sql.= ' WHERE username = :username';
+        $sql .= ' WHERE username = :username';
 
-        $parameters = [':username'=>$username];
+        $parameters = [':username' => $username];
         return $this->loadOne($sql, $parameters);
     }
 
@@ -39,8 +40,8 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
      */
     public function findByEmail($email)
     {
-        foreach($this->users as $user){
-            if($user->getEmail() === $email){
+        foreach ($this->users as $user) {
+            if ($user->getEmail() === $email) {
                 return $user;
             }
         }
@@ -68,13 +69,16 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
      */
     public function create($userId, $username, $passwordHash, $email)
     {
-       $userEntity = new UserEntity($userId,$username,$passwordHash,$email);
+        $userEntity = new UserEntity($userId, $username, $passwordHash, $email);
         return $userEntity;
     }
-    public function delete(UserEntity $user){
+
+    public function delete(UserEntity $user)
+    {
         $id = $user->getUserId();
         $this->markAsDeleted($id);
     }
+
     public function add(UserEntity $user)
     {
         $id = $user->getUserId();
@@ -89,30 +93,46 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
         $this->markAsModified($id);
     }
 
-    public function sync()
+    private function deleteUsers()
     {
-        foreach($this->getDeleted() as $deletedId){
-            $this->connection->delete('users',['userId' => $deletedId]);
+        foreach ($this->getDeleted() as $deletedId) {
+            $this->connection->delete('users', ['userId' => $deletedId]);
             $this->reset($deletedId);
         }
+    }
 
-        foreach($this->getAdded() as $addedId){
-            if(!isset($this->users[$addedId])){continue;}
+    private function addUsers()
+    {
+        foreach ($this->getAdded() as $addedId) {
+            if (!isset($this->users[$addedId])) {
+                continue;
+            }
             $userEntity = $this->users[$addedId];
             $userEntity->setRegistrationDate(new DateTime());
             $userEntity->setLastAction(new DateTime());
-            $this->connection->insert('users',$this->entityToRow($userEntity));
+            $this->connection->insert('users', $this->entityToRow($userEntity));
             $this->reset($addedId);
         }
-        foreach($this->getModified() as $modifiedId){
-            if(!isset($this->users[$modifiedId])){continue;}
+    }
+
+    private function modifyUsers()
+    {
+        foreach ($this->getModified() as $modifiedId) {
+            if (!isset($this->users[$modifiedId])) {
+                continue;
+            }
             $userEntity = $this->users[$modifiedId];
             $userEntity->setLastAction(new DateTime());
-            $this->connection->update('users',$this->entityToRow($userEntity),['userId'=>$modifiedId]);
+            $this->connection->update('users', $this->entityToRow($userEntity), ['userId' => $modifiedId]);
             $this->reset($modifiedId);
         }
+    }
 
-
+    public function sync()
+    {
+        $this->deleteUsers();
+        $this->addUsers();
+        $this->modifyUsers();
         $this->users = [];
     }
 
@@ -121,29 +141,34 @@ class DBALUserRepository extends DBALRepository implements UserRepository,Writab
         $this->connection->query('TRUNCATE TABLE users');
     }
 
-    private function entityToRow(UserEntity $entity){
+    private function entityToRow(UserEntity $entity)
+    {
         $row = [
             'userId' => $entity->getUserId(),
             'username' => $entity->getUsername(),
             'password' => $entity->getPasswordHash(),
             'email' => $entity->getEmail(),
-            'registered'=>$entity->getRegistrationDate()->format('Y-m-d H:i:s')
+            'registered' => $entity->getRegistrationDate()->format('Y-m-d H:i:s')
         ];
-        if($entity->getLastAction()){
+        if ($entity->getLastAction()) {
             $row['lastAction'] = $entity->getLastAction()->format('Y-m-d H:i:s');
         }
         return $row;
     }
-    private function rowToEntity(stdClass $row){
-        $userEntity = new UserEntity((int)$row->userId,$row->username,$row->password,$row->email);
-        $registrationDate = DateTime::createFromFormat('Y-m-d H:i:s',$row->registered);
-        if($registrationDate){
+
+    private function rowToEntity(stdClass $row)
+    {
+        $userEntity = new UserEntity((int)$row->userId, $row->username, $row->password, $row->email);
+        $registrationDate = DateTime::createFromFormat('Y-m-d H:i:s', $row->registered);
+        if ($registrationDate) {
             $userEntity->setRegistrationDate($registrationDate);
         }
         $userEntity->setLastAction(new DateTime());
         return $userEntity;
     }
-    private function getSql(){
+
+    private function getSql()
+    {
         $sql = "SELECT userId,username,password,email,registered,lastAction,lastLogin FROM users";
         return $sql;
     }
