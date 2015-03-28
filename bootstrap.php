@@ -2,7 +2,9 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$environment = new \OpenTribes\Core\Silex\Environment($_SERVER['REMOTE_ADDR'],isset($_ENV['env'])?$_ENV['env']:'');
+$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR']:'127.0.0.1';
+$env = isset($_ENV['env'])?$_ENV['env']:'';
+$environment = new \OpenTribes\Core\Silex\Environment($ip,$env);
 error_reporting(-1);
 ini_set('display_errors',1);
 $app = new \Silex\Application();
