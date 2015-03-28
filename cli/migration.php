@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 
 $app = require __DIR__ . '/../bootstrap.php';
-$app['env'] = 'test';
+
 $console = new Application;
 
 
