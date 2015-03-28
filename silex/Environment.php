@@ -6,30 +6,25 @@ class Environment
     const TEST = 'test';
     const DEVELOP = 'develop';
     const PRODUCTION = 'production';
-    private static $env = null;
+    private $env = null;
 
-    private static function loadFromGlobals()
+    public function __construct($ip,$environment = '')
     {
-        if (isset($_SERVER['REMOTE_ADDR'])) {
-            self::$env = (!filter_var(
-                $_SERVER['REMOTE_ADDR'],
-                FILTER_VALIDATE_IP,
-                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
-            ) ? self::DEVELOP : self::PRODUCTION);
-        }
 
+        $this->env = (!filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        ) ? self::DEVELOP : self::PRODUCTION);
 
-        if (isset($_ENV['env']) && $_ENV['env'] === self::TEST) {
-            self::$env = self::TEST;
+        if($environment === self::TEST){
+            $this->env = self::TEST;
         }
     }
 
     public function get()
     {
-        if (!self::$env) {
-            self::loadFromGlobals();
-        }
-        return self::$env;
+        return $this->env;
     }
 
 }
