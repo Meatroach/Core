@@ -1,6 +1,7 @@
 <?php
 namespace OpenTribes\Core\Test\Repository;
 
+use OpenTribes\Core\Entity\UserEntity;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Test\SilexApplicationTest;
 
@@ -25,11 +26,17 @@ class UserRepositoryTest extends SilexApplicationTest {
         $this->repository->sync();
         return $user;
     }
-
+    private function assertSameUser(UserEntity $expectedUser,UserEntity $actualUser){
+        $this->assertSame($expectedUser->getUserId(),$actualUser->getUserId());
+        $this->assertSame($expectedUser->getUsername(),$actualUser->getUsername());
+        $this->assertSame($expectedUser->getEmail(),$actualUser->getEmail());
+        $this->assertSame($expectedUser->getPasswordHash(),$actualUser->getPasswordHash());
+    }
     public function testCanCreateNewUser(){
         $user = $this->createDummyUser();
         $newUser = $this->repository->findByUsername($user->getUsername());
-        $this->assertEquals($user,$newUser);
+        $this->assertSameUser($user,$newUser);
+
     }
     public function testCanModifyUser(){
         $user = $this->createDummyUser();
@@ -42,10 +49,7 @@ class UserRepositoryTest extends SilexApplicationTest {
 
         $modifiedUser = $this->repository->findByUsername($user->getUsername());
 
-        $this->assertSame($user->getUserId(),$modifiedUser->getUserId());
-        $this->assertSame($user->getUsername(),$modifiedUser->getUsername());
-        $this->assertSame($user->getEmail(),$modifiedUser->getEmail());
-        $this->assertSame($user->getPasswordHash(),$modifiedUser->getPasswordHash());
+        $this->assertSameUser($user,$modifiedUser);
     }
     public function testCanDeleteUser(){
         $user = $this->createDummyUser();
@@ -57,7 +61,7 @@ class UserRepositoryTest extends SilexApplicationTest {
     public function testCanFindUserByEmail(){
         $currentUser = $this->createDummyUser();
         $expectedUser = $this->repository->findByEmail('test@test.com');
-        $this->assertEquals($currentUser,$expectedUser);
+        $this->assertSameUser($currentUser,$expectedUser);
     }
 
 }

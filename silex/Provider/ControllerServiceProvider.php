@@ -2,8 +2,6 @@
 
 namespace OpenTribes\Core\Silex\Provider;
 
-
-use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALUserRepository;
@@ -35,7 +33,7 @@ class ControllerServiceProvider implements ServiceProviderInterface{
            return new Validator\SymfonyLoginValidator($app['validator']);
         });
         $app[Validator::REGISTRATION] = $app->share(function() use($app){
-            return new MockRegistrationValidator();
+            return new Validator\SymfonyRegistrationValidator($app['validator']);
         });
     }
     private function registerServices(Application $app){
