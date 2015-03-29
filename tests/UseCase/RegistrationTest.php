@@ -7,15 +7,12 @@ use OpenTribes\Core\Mock\Response\MockRegistrationResponse;
 use OpenTribes\Core\Mock\Service\PlainHashService;
 use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\Response\RegistrationResponse;
+use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\RegistrationUseCase;
 
-class RegistrationTest extends \PHPUnit_Framework_TestCase {
+class RegistrationTest extends BaseUseCaseTest {
 
 
-    /**
-     * @var MockUserRepository
-     */
-    protected $userRepository;
     protected $registrationValidator;
     protected $passwordHasher;
     public function setUp()
@@ -26,12 +23,6 @@ class RegistrationTest extends \PHPUnit_Framework_TestCase {
         $this->createDummyUser();
     }
 
-    protected function createDummyUser()
-    {
-        $userId = $this->userRepository->getUniqueId();
-        $user = $this->userRepository->create($userId, 'Dummy', '123456', 'dummy@test.com');
-        $this->userRepository->add($user);
-    }
     /**
      * @param $username
      * @param $password

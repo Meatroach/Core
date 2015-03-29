@@ -11,16 +11,16 @@ use OpenTribes\Core\Mock\Response\MockRegistrationResponse;
 use OpenTribes\Core\Mock\Service\PlainHashService;
 use OpenTribes\Core\Mock\Validator\MockLoginValidator;
 use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
+use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\LoginUseCase;
 use OpenTribes\Core\UseCase\RegistrationUseCase;
 
-class LoginTest extends \PHPUnit_Framework_TestCase
+class LoginTest extends BaseUseCaseTest
 {
-    private $userRepository;
     private $loginValidator;
     private $passwordHasher;
 
-    private function createDummyUser()
+    protected function createDummyUser()
     {
         $response = new MockRegistrationResponse();
         $request = new MockRegistrationRequest('Test', '123456', '123456', 'test@dummy.com','test@dummy.com');
