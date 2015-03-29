@@ -13,13 +13,22 @@ class MockUserCityRepository implements UserCityRepository{
     private $cities = [];
     /**
      * @param $username
-     * @return CityEntity[]| null
+     * @return CityEntity[]| array
      */
     public function findAllByUsername($username)
     {
+        $found = [];
         foreach($this->cities as $city){
-
+            if($city->getOwner()->getUsername() === $username){
+                $found []= $city;
+            }
         }
+        return $found;
+    }
+
+    public function add(CityEntity $city)
+    {
+        $this->cities[]=$city;
     }
 
 }

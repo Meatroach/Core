@@ -11,4 +11,5 @@ interface UserCityRepository {
      * @return CityEntity[]| null
      */
     public function findAllByUsername($username);
+    public function add(CityEntity $city);
 }
