@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\UseCase;
 
 
-use OpenTribes\Core\Repository\UserCityRepository;
+use OpenTribes\Core\Repository\CityRepository;
 use OpenTribes\Core\Request\ListCitiesRequest;
 use OpenTribes\Core\Response\ListCitiesResponse;
 use OpenTribes\Core\View\CityListView;
@@ -11,18 +11,18 @@ use OpenTribes\Core\View\CityListView;
 class ListCitiesUseCase
 {
     /**
-     * @var UserCityRepository
+     * @var CityRepository
      */
     private $userCityRepository;
 
-    public function __construct(UserCityRepository $userCityRepository)
+    public function __construct(CityRepository $userCityRepository)
     {
         $this->userCityRepository = $userCityRepository;
     }
 
     public function process(ListCitiesRequest $request,ListCitiesResponse $response){
         $cities = $this->userCityRepository->findAllByUsername($request->getUsername());
-        if(!$cities){
+        if(count($cities) < 1){
             return;
         }
         foreach($cities as $city){

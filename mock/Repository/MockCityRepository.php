@@ -4,9 +4,9 @@ namespace OpenTribes\Core\Mock\Repository;
 
 
 use OpenTribes\Core\Entity\CityEntity;
-use OpenTribes\Core\Repository\UserCityRepository;
+use OpenTribes\Core\Repository\CityRepository;
 
-class MockUserCityRepository implements UserCityRepository{
+class MockCityRepository implements CityRepository{
     /**
      * @var CityEntity[]
      */

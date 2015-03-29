@@ -5,10 +5,10 @@ namespace OpenTribes\Core\Repository;
 
 use OpenTribes\Core\Entity\CityEntity;
 
-interface UserCityRepository {
+interface CityRepository {
     /**
      * @param $username
-     * @return CityEntity[]| null
+     * @return CityEntity[]| array
      */
     public function findAllByUsername($username);
     public function add(CityEntity $city);

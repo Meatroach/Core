@@ -5,11 +5,11 @@ namespace OpenTribes\Core\Test\UseCase;
 
 use OpenTribes\Core\Entity\CityEntity;
 use OpenTribes\Core\Entity\UserEntity;
-use OpenTribes\Core\Mock\Repository\MockUserCityRepository;
+use OpenTribes\Core\Mock\Repository\MockCityRepository;
 use OpenTribes\Core\Mock\Repository\MockUserRepository;
 use OpenTribes\Core\Mock\Request\MockListCitiesRequest;
 use OpenTribes\Core\Mock\Response\MockListCitiesResponse;
-use OpenTribes\Core\Repository\UserCityRepository;
+use OpenTribes\Core\Repository\CityRepository;
 use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\ListCitiesUseCase;
 use OpenTribes\Core\View\CityListView;
@@ -17,12 +17,12 @@ use OpenTribes\Core\View\CityListView;
 class ListCitiesTest extends BaseUseCaseTest
 {
     /**
-     * @var UserCityRepository
+     * @var CityRepository
      */
     private $userCityRepository;
     public function setUp()
     {
-        $this->userCityRepository = new MockUserCityRepository();
+        $this->userCityRepository = new MockCityRepository();
         $this->userRepository = new MockUserRepository();
     }
     private function createDummyCityForUser(UserEntity $user){
