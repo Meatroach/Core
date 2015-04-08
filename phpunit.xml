@@ -13,6 +13,9 @@
         <testsuite name="OpenTribes Test Suite">
             <directory>tests</directory>
         </testsuite>
+        <testsuite name="usecase">
+            <directory>tests/UseCase</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <blacklist>
