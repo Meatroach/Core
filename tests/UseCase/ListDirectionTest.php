@@ -10,7 +10,7 @@ use OpenTribes\Core\Mock\Response\MockListDirectionsResponse;
 use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\ListDirectionsUseCase;
 
-class ListDirectionsUseCaseTest extends BaseUseCaseTest{
+class ListDirectionsTest extends BaseUseCaseTest{
 
     public function testCanSeeDirections(){
         $directions = [];
