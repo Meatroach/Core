@@ -2,3 +2,4 @@ vendor
 !web/assets/js/vendor
 config/*
 !config/*.template.php
+silex_old
