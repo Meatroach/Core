@@ -56,6 +56,9 @@ class ControllerServiceProvider implements ServiceProviderInterface{
             $registrationUseCase = new RegistrationUseCase($app[Repository::USER],$app[Validator::REGISTRATION],$app[Service::PASSWORD_HASH]);
             return new Controller\AccountController($registrationUseCase,$app[Repository::USER]);
         });
+        $app[Controller::CITY] = $app->share(function() use($app){
+           return new Controller\CityController();
+        });
     }
     /**
      * Bootstraps the application.
