@@ -8,6 +8,8 @@ os:
   - linux
   - osx
 
+cache: vendor
+
 before_script:
 - mysql -e 'create database ot_test;'
 - composer self-update
