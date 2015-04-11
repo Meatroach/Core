@@ -24,7 +24,7 @@ cache:
 before_script:
 - mysql -e 'create database ot_test;'
 - composer self-update
-- composer update
+- composer update --prefer-dist
 - php cli/config.php create
 - php cli/migration.php migrations:migrate -n
 
