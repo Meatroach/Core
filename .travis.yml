@@ -22,8 +22,7 @@ cache:
 
 before_script:
 - mysql -e 'create database ot_test;'
-- curl -sS https://getcomposer.org/installer | php
-- php composer.phar install --prefer-dist
+- composer install --prefer-dist
 - php cli/config.php create
 - php cli/migration.php migrations:migrate -n
 
