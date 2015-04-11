@@ -19,6 +19,7 @@ os:
 cache:
   directories:
     - vendor
+    - $HOME/.composer/cache
 
 before_script:
 - mysql -e 'create database ot_test;'
