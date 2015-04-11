@@ -6,6 +6,7 @@ use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALUserRepository;
 use OpenTribes\Core\Silex\Service;
+use OpenTribes\Core\Silex\UseCase;
 use OpenTribes\Core\Silex\Validator;
 use OpenTribes\Core\UseCase\LoginUseCase;
 use OpenTribes\Core\UseCase\RegistrationUseCase;
@@ -57,10 +58,10 @@ class ControllerServiceProvider implements ServiceProviderInterface
 
     private function registerUseCases(Application $app)
     {
-        $app['usecase.login'] = $app->share(function () use ($app) {
+        $app[UseCase::LOGIN] = $app->share(function () use ($app) {
             return new LoginUseCase($app[Repository::USER], $app[Validator::LOGIN], $app[Service::PASSWORD_HASH]);
         });
-        $app['usecase.registration'] = $app->share(function () use ($app) {
+        $app[UseCase::REGISTRATION] = $app->share(function () use ($app) {
             return new RegistrationUseCase($app[Repository::USER], $app[Validator::REGISTRATION],
                 $app[Service::PASSWORD_HASH]);
         });
@@ -70,10 +71,10 @@ class ControllerServiceProvider implements ServiceProviderInterface
     {
 
         $app[Controller::INDEX] = $app->share(function () use ($app) {
-            return new Controller\IndexController($app['usecase.login']);
+            return new Controller\IndexController($app[UseCase::LOGIN]);
         });
         $app[Controller::ACCOUNT] = $app->share(function () use ($app) {
-            return new Controller\AccountController($app['usecase.registration'], $app[Repository::USER]);
+            return new Controller\AccountController($app[UseCase::REGISTRATION], $app[Repository::USER]);
         });
         $app[Controller::CITY] = $app->share(function () use ($app) {
             return new Controller\CityController();
