@@ -6,7 +6,8 @@ use OpenTribes\Core\Validator\RegistrationValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Constraints\True as AssertTrue;
+class_alias('\Symfony\Component\Validator\Constraints\True','\AssertTrue');
+use \AssertTrue;
 
 class SymfonyRegistrationValidator extends RegistrationValidator
 {
