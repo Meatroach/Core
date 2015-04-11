@@ -22,7 +22,7 @@ cache:
 
 before_script:
 - mysql -e 'create database ot_test;'
-- composer install --prefer-dist
+- composer install -o --prefer-dist
 - php cli/config.php create
 - php cli/migration.php migrations:migrate -n
 
@@ -32,7 +32,7 @@ script:
     if [ $TRAVIS_PHP_VERSION = '7' ]; then
       php tools/phpunit.phar
     else
-      php tools/phpunit.phar --coverage-text --coverage-clover=coverage.clover
+      php tools/phpunit.phar --coverage-clover=coverage.clover
     fi
 
 after_script:
