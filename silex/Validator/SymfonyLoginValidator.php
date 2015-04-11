@@ -7,6 +7,7 @@ use OpenTribes\Core\Validator\LoginValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\True as AssertTrue;
 
 class SymfonyLoginValidator extends LoginValidator
 {
@@ -45,7 +46,7 @@ class SymfonyLoginValidator extends LoginValidator
 
                 ],
                 'verified' => [
-                    new Constraints\True(['message' => 'Invalid login'])
+                    new AssertTrue(['message' => 'Invalid login'])
                 ]
             ]);
 
