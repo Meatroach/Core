@@ -6,8 +6,6 @@ use OpenTribes\Core\Validator\RegistrationValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints;
-class_alias('\Symfony\Component\Validator\Constraints\True','\AssertTrue');
-use \AssertTrue;
 
 class SymfonyRegistrationValidator extends RegistrationValidator
 {
@@ -26,9 +24,9 @@ class SymfonyRegistrationValidator extends RegistrationValidator
         $constraint = new Constraints\Collection(
             [
 
-                'isUniqueEmail' => new AssertTrue(['message' => 'Email exists']),
-                'isUniqueUsername' => new AssertTrue(['message' => 'Username exists']),
-                'termsAndConditions' => new AssertTrue(['message' => 'Terms and Conditions are not accepted']),
+                'isUniqueEmail' => new Constraints\True(['message' => 'Email exists']),
+                'isUniqueUsername' => new Constraints\True(['message' => 'Username exists']),
+                'termsAndConditions' => new Constraints\True(['message' => 'Terms and Conditions are not accepted']),
                 'username' => [
                     new Constraints\NotBlank(['message' => 'Username is empty']),
                     new Constraints\Length([

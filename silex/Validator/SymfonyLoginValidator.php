@@ -8,8 +8,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraints;
 
-class_alias('\Symfony\Component\Validator\Constraints\True','\AssertTrue');
-use \AssertTrue;
 
 class SymfonyLoginValidator extends LoginValidator
 {
@@ -48,7 +46,7 @@ class SymfonyLoginValidator extends LoginValidator
 
                 ],
                 'verified' => [
-                    new AssertTrue(['message' => 'Invalid login'])
+                    new Constraints\True(['message' => 'Invalid login'])
                 ]
             ]);
 
