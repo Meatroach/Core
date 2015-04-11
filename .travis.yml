@@ -18,7 +18,7 @@ before_script:
 
 
 script:
-  - phpunit --coverage-text --coverage-clover=coverage.clover
+  - php tools/phpunit.phar --coverage-text --coverage-clover=coverage.clover
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
@@ -32,6 +32,3 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
     on_start: false     # default: false
 
-matrix:
-  allow_failures:
-    - php: hhvm
