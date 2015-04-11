@@ -12,7 +12,8 @@ use OpenTribes\Core\UseCase\RegistrationUseCase;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class ControllerServiceProvider implements ServiceProviderInterface{
+class ControllerServiceProvider implements ServiceProviderInterface
+{
     /**
      * Registers services on the given app.
      *
@@ -26,40 +27,59 @@ class ControllerServiceProvider implements ServiceProviderInterface{
         $this->registerRepositories($app);
         $this->registerServices($app);
         $this->registerValidators($app);
+        $this->registerUseCases($app);
         $this->registerController($app);
     }
-    private function registerValidators(Application $app){
-        $app[Validator::LOGIN] = $app->share(function() use($app){
-           return new Validator\SymfonyLoginValidator($app['validator']);
+
+    private function registerValidators(Application $app)
+    {
+        $app[Validator::LOGIN] = $app->share(function () use ($app) {
+            return new Validator\SymfonyLoginValidator($app['validator']);
         });
-        $app[Validator::REGISTRATION] = $app->share(function() use($app){
+        $app[Validator::REGISTRATION] = $app->share(function () use ($app) {
             return new Validator\SymfonyRegistrationValidator($app['validator']);
         });
     }
-    private function registerServices(Application $app){
-        $app[Service::PASSWORD_HASH] = $app->share(function() use($app){
+
+    private function registerServices(Application $app)
+    {
+        $app[Service::PASSWORD_HASH] = $app->share(function () use ($app) {
             return new Service\DefaultPasswordHashService();
         });
     }
-    private function registerRepositories(Application $app){
-        $app[Repository::USER] = $app->share(function()  use($app){
-           return new DBALUserRepository($app['db']);
-        });
-    }
-    private function registerController(Application $app){
 
-        $app[Controller::INDEX] = $app->share(function() use($app) {
-            $loginUseCase = new LoginUseCase($app[Repository::USER],$app[Validator::LOGIN],$app[Service::PASSWORD_HASH]);
-            return new Controller\IndexController($loginUseCase);
-        });
-        $app[Controller::ACCOUNT] = $app->share(function() use($app){
-            $registrationUseCase = new RegistrationUseCase($app[Repository::USER],$app[Validator::REGISTRATION],$app[Service::PASSWORD_HASH]);
-            return new Controller\AccountController($registrationUseCase,$app[Repository::USER]);
-        });
-        $app[Controller::CITY] = $app->share(function() use($app){
-           return new Controller\CityController();
+    private function registerRepositories(Application $app)
+    {
+        $app[Repository::USER] = $app->share(function () use ($app) {
+            return new DBALUserRepository($app['db']);
         });
     }
+
+    private function registerUseCases(Application $app)
+    {
+        $app['usecase.login'] = $app->share(function () use ($app) {
+            return new LoginUseCase($app[Repository::USER], $app[Validator::LOGIN], $app[Service::PASSWORD_HASH]);
+        });
+        $app['usecase.registration'] = $app->share(function () use ($app) {
+            return new RegistrationUseCase($app[Repository::USER], $app[Validator::REGISTRATION],
+                $app[Service::PASSWORD_HASH]);
+        });
+    }
+
+    private function registerController(Application $app)
+    {
+
+        $app[Controller::INDEX] = $app->share(function () use ($app) {
+            return new Controller\IndexController($app['usecase.login']);
+        });
+        $app[Controller::ACCOUNT] = $app->share(function () use ($app) {
+            return new Controller\AccountController($app['usecase.registration'], $app[Repository::USER]);
+        });
+        $app[Controller::CITY] = $app->share(function () use ($app) {
+            return new Controller\CityController();
+        });
+    }
+
     /**
      * Bootstraps the application.
      *
