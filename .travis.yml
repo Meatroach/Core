@@ -30,7 +30,7 @@ before_script:
 
 script:
   - |
-    if [ $TRAVIS_PHP_VERSION = '7']; then
+    if [ $TRAVIS_PHP_VERSION = '7' ]; then
       php tools/phpunit.phar
     else
       php tools/phpunit.phar --coverage-text --coverage-clover=coverage.clover
