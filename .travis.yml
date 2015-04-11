@@ -22,15 +22,18 @@ cache:
 
 before_script:
 - mysql -e 'create database ot_test;'
-- composer self-update
-- composer update --prefer-dist
+- curl -sS https://getcomposer.org/installer | php
+- php composer.phar install --prefer-dist
 - php cli/config.php create
 - php cli/migration.php migrations:migrate -n
 
 
 script:
-  - php tools/phpunit.phar --coverage-text --coverage-clover=coverage.clover
-
+  - | if [ $TRAVIS_PHP_VERSION = '7']; then
+      php tools/phpunit.phar
+      else
+      php tools/phpunit.phar --coverage-text --coverage-clover=coverage.clover
+     fi
 after_script:
   - |
       if [ $TRAVIS_PHP_VERSION = '5.6' ]; then
