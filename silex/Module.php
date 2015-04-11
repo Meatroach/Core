@@ -5,6 +5,7 @@ namespace OpenTribes\Core\Silex;
 
 use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
+use OpenTribes\Core\Silex\EventListener\BeforeAfterListener;
 use OpenTribes\Core\Silex\EventListener\MustacheListener;
 use OpenTribes\Core\Silex\Provider\ControllerServiceProvider;
 use OpenTribes\Core\Silex\Provider\RouteServiceProvider;
@@ -82,5 +83,6 @@ class Module implements ServiceProviderInterface{
          */
         $dispatcher = $app['dispatcher'];
         $dispatcher->addSubscriber(new MustacheListener($app['mustache']));
+        $dispatcher->addSubscriber(new BeforeAfterListener($app,$app['callback_resolver']));
     }
 } 
