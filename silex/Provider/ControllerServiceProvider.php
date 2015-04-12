@@ -2,6 +2,7 @@
 
 namespace OpenTribes\Core\Silex\Provider;
 
+use OpenTribes\Core\Mock\Repository\MockCityRepository;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALUserRepository;
@@ -54,15 +55,23 @@ class ControllerServiceProvider implements ServiceProviderInterface
         $app[Repository::USER] = $app->share(function () use ($app) {
             return new DBALUserRepository($app['db']);
         });
+        $app[Repository::CITY] = $app->share(function()use($app){
+           return new MockCityRepository();
+        });
     }
 
     private function registerUseCases(Application $app)
     {
         $app[UseCase::LOGIN] = $app->share(function () use ($app) {
-            return new LoginUseCase($app[Repository::USER], $app[Validator::LOGIN], $app[Service::PASSWORD_HASH]);
+            return new LoginUseCase(
+                $app[Repository::USER],
+                $app[Validator::LOGIN],
+                $app[Service::PASSWORD_HASH]);
         });
         $app[UseCase::REGISTRATION] = $app->share(function () use ($app) {
-            return new RegistrationUseCase($app[Repository::USER], $app[Validator::REGISTRATION],
+            return new RegistrationUseCase(
+                $app[Repository::USER],
+                $app[Validator::REGISTRATION],
                 $app[Service::PASSWORD_HASH]);
         });
     }
@@ -77,7 +86,9 @@ class ControllerServiceProvider implements ServiceProviderInterface
             return new Controller\AccountController($app[UseCase::REGISTRATION], $app[Repository::USER]);
         });
         $app[Controller::CITY] = $app->share(function () use ($app) {
-            return new Controller\CityController();
+            return new Controller\CityController(
+                $app[Repository::USER],
+                $app[Repository::CITY]);
         });
     }
 

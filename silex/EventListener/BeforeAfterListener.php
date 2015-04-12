@@ -88,8 +88,8 @@ class BeforeAfterListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => [
-                ['onBefore', 1],
-                ['onBeforeWithAction', 2]
+                ['onBefore', 2],
+                ['onBeforeWithAction', 1]
             ],
             KernelEvents::RESPONSE => [
                 ['onAfter', 1],

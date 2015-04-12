@@ -12,4 +12,5 @@ interface CityRepository {
      */
     public function findAllByUsername($username);
     public function add(CityEntity $city);
+    public function countUserCities($username);
 }

@@ -31,4 +31,15 @@ class MockCityRepository implements CityRepository{
         $this->cities[]=$city;
     }
 
+    public function countUserCities($username)
+    {
+       $counter = 0;
+        foreach($this->cities as $city){
+            if($city->getOwner()->getUsername() === $username){
+                $counter ++;
+            }
+        }
+        return $counter;
+    }
+
 }
