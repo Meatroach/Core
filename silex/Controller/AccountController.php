@@ -24,7 +24,7 @@ class AccountController {
             $this->registrationUseCase->process($request,$response);
             if(!$response->hasErrors()){
                 $this->userRepository->sync();
-                return new RedirectResponse('/game');
+                return new RedirectResponse('/cities');
             }
         }
 

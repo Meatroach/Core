@@ -3,12 +3,14 @@
 namespace OpenTribes\Core\Silex\Provider;
 
 use OpenTribes\Core\Mock\Repository\MockCityRepository;
+use OpenTribes\Core\Mock\Repository\MockDirectionRepository;
 use OpenTribes\Core\Silex\Controller;
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Repository\DBALUserRepository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\UseCase;
 use OpenTribes\Core\Silex\Validator;
+use OpenTribes\Core\UseCase\ListDirectionsUseCase;
 use OpenTribes\Core\UseCase\LoginUseCase;
 use OpenTribes\Core\UseCase\RegistrationUseCase;
 use Silex\Application;
@@ -58,6 +60,9 @@ class ControllerServiceProvider implements ServiceProviderInterface
         $app[Repository::CITY] = $app->share(function()use($app){
            return new MockCityRepository();
         });
+        $app[Repository::DIRECTION] = $app->share(function()use($app){
+           return new MockDirectionRepository();
+        });
     }
 
     private function registerUseCases(Application $app)
@@ -74,6 +79,9 @@ class ControllerServiceProvider implements ServiceProviderInterface
                 $app[Validator::REGISTRATION],
                 $app[Service::PASSWORD_HASH]);
         });
+        $app[UseCase::LIST_DIRECTIONS] = $app->share(function() use($app){
+           return new ListDirectionsUseCase($app[Repository::DIRECTION]);
+        });
     }
 
     private function registerController(Application $app)
@@ -87,6 +95,7 @@ class ControllerServiceProvider implements ServiceProviderInterface
         });
         $app[Controller::CITY] = $app->share(function () use ($app) {
             return new Controller\CityController(
+                $app[UseCase::LIST_DIRECTIONS],
                 $app[Repository::USER],
                 $app[Repository::CITY]);
         });

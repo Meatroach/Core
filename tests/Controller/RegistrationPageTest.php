@@ -56,6 +56,7 @@ class RegistrationPageTest extends SilexApplicationTest
          * @var MustacheResponse $response
          */
         $response = $app->handle($request);
+
         $this->assertSame(302, $response->getStatusCode(), "Registration Page have another status code than 200");
         $this->deleteTestUser();
     }

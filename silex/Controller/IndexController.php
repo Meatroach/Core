@@ -22,7 +22,7 @@ class IndexController {
 
             if(!$response->hasErrors()){
                 $httpRequest->getSession()->set('username',$response->username);
-                return new RedirectResponse('/game');
+                return new RedirectResponse('/cities');
             }
         }
         return $response;
