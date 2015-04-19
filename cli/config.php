@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenTribes\Core\Silex\Repository;
+use OpenTribes\Core\Silex\Service;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +33,28 @@ $console->register('create')
             }
         }
     );
+$console->register('create-dummy-user')
+    ->addArgument('username',InputArgument::OPTIONAL,'username','testtest')
+    ->addArgument('password',InputArgument::OPTIONAL,'password','testtest')
+    ->addArgument('env',InputArgument::OPTIONAL,'environment','develop')
+    ->setCode(function(InputInterface $input){
+        $_ENV['env'] = $input->getArgument('env');
+        $app = require __DIR__ . '/../bootstrap.php';
+        /**
+         * @var Repository\DBALUserRepository $userRepository
+         */
+        $userRepository = $app[Repository::USER];
+        /**
+         * @var Service\DefaultPasswordHashService $passwordHashService
+         */
+        $passwordHashService = $app[Service::PASSWORD_HASH];
 
+        $passwordHash = $passwordHashService->hash($input->getArgument('password'));
+        $user = $userRepository->create(1,$input->getArgument('username'),$passwordHash,'dummy@test.com');
+        $userRepository->add($user);
+        $userRepository->sync();
+
+    });
 $console->register('create-dummy-map')
     ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
     ->setCode(
