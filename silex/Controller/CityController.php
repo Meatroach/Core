@@ -10,24 +10,33 @@ use OpenTribes\Core\Silex\Response\CityResponse;
 use OpenTribes\Core\UseCase\ListDirectionsUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class CityController extends BaseGameController{
+class CityController extends BaseGameController
+{
 
     private $listDirectionsUseCase;
-    function __construct(ListDirectionsUseCase $listDirectionsUseCase,WritableRepository $userRepository,CityRepository $cityRepository)
-    {
-        parent::__construct($userRepository,$cityRepository);
+
+    public function __construct(
+        ListDirectionsUseCase $listDirectionsUseCase,
+        WritableRepository $userRepository,
+        CityRepository $cityRepository
+    ) {
+        parent::__construct($userRepository, $cityRepository);
         $this->listDirectionsUseCase = $listDirectionsUseCase;
     }
 
-    public function listAction(){
+    public function listAction()
+    {
 
         return '';
     }
 
-    public function createAction(Request $httpRequest){
+    public function createAction(Request $httpRequest)
+    {
         $request = new CityRequest($httpRequest);
         $response = new CityResponse();
-        $this->listDirectionsUseCase->process($request,$response);
+        $this->listDirectionsUseCase->process($request, $response);
+
+
         return $response;
     }
 }

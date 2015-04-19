@@ -2,37 +2,40 @@
 
 namespace OpenTribes\Core\Silex\Provider;
 
-use OpenTribes\Core\Silex\Controller;
+
 use OpenTribes\Core\Silex\Repository;
 use OpenTribes\Core\Silex\Service;
 use OpenTribes\Core\Silex\UseCase;
 use OpenTribes\Core\Silex\Validator;
+use OpenTribes\Core\UseCase\ListDirectionsUseCase;
+use OpenTribes\Core\UseCase\LoginUseCase;
+use OpenTribes\Core\UseCase\RegistrationUseCase;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class ControllerServiceProvider implements ServiceProviderInterface
-{
+class UseCaseServiceProvide implements ServiceProviderInterface{
     /**
      * Registers services on the given app.
      *
      * This method should only be used to configure services and parameters.
      * It should not get services.
-     *
-     * @param Application $app An Application instance
      */
     public function register(Application $app)
     {
-        $app[Controller::INDEX] = $app->share(function () use ($app) {
-            return new Controller\IndexController($app[UseCase::LOGIN]);
-        });
-        $app[Controller::ACCOUNT] = $app->share(function () use ($app) {
-            return new Controller\AccountController($app[UseCase::REGISTRATION], $app[Repository::USER]);
-        });
-        $app[Controller::CITY] = $app->share(function () use ($app) {
-            return new Controller\CityController(
-                $app[UseCase::LIST_DIRECTIONS],
+        $app[UseCase::LOGIN] = $app->share(function () use ($app) {
+            return new LoginUseCase(
                 $app[Repository::USER],
-                $app[Repository::CITY]);
+                $app[Validator::LOGIN],
+                $app[Service::PASSWORD_HASH]);
+        });
+        $app[UseCase::REGISTRATION] = $app->share(function () use ($app) {
+            return new RegistrationUseCase(
+                $app[Repository::USER],
+                $app[Validator::REGISTRATION],
+                $app[Service::PASSWORD_HASH]);
+        });
+        $app[UseCase::LIST_DIRECTIONS] = $app->share(function() use($app){
+            return new ListDirectionsUseCase($app[Repository::DIRECTION]);
         });
     }
 
@@ -45,7 +48,6 @@ class ControllerServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-        // TODO: Implement boot() method.
     }
 
-} 
+}
