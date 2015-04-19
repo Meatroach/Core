@@ -30,7 +30,7 @@ class BaseGameController extends AuthenticateController{
         }
         $session = $httpRequest->getSession();
         $userHasCities = $this->cityRepository->countUserCities($session->get('username')) > 0;
-        if(!$userHasCities){
+        if(!$userHasCities && $httpRequest->getRequestUri() !== '/city/create'){
             return new RedirectResponse('/city/create');
         }
         return '';

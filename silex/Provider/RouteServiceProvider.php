@@ -42,6 +42,11 @@ class RouteServiceProvider implements ControllerProviderInterface{
             ->match('/cities',Controller::CITY.':listAction')
             ->method('GET')
             ->value('template','pages/game/cityList');
+        $collection
+            ->match('/city/create',Controller::CITY.':createAction')
+            ->method('GET')
+            ->value('template','pages/game/newcity');
+
 
         return $collection;
     }

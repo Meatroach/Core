@@ -10,6 +10,6 @@ class CityController extends BaseGameController{
     }
 
     public function createAction(){
-
+        return '';
     }
 }
