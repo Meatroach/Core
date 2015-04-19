@@ -25,6 +25,14 @@ class LandingPageTest extends SilexApplicationTest{
         $user = $userRepository->create($userId,'Test',$passwordHashService->hash('123456'),'test@test.com');
         $userRepository->add($user);
     }
+    public function testRedirectIfLoggedIn(){
+        $app = $this->getApplication();
+        $app['session']->set('username','test');
+        $request = Request::create('/');
+        $response = $app->handle($request);
+        $this->assertSame(302,$response->getStatusCode());
+        $this->assertTrue($response->isRedirect('/cities'));
+    }
     public function testLoginSuccessful(){
         $app = $this->getApplication();
         $this->createDummyUser($app[Repository::USER],$app[Service::PASSWORD_HASH]);

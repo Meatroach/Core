@@ -10,6 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class IndexController {
     private $loginUseCase;
+    public function before(Request $httpRequest){
+        $session = $httpRequest->getSession();
+        if($session->get('username')){
+            return new RedirectResponse('/cities');
+        }
+        return '';
+    }
     public function __construct(LoginUseCase $loginUseCase){
         $this->loginUseCase = $loginUseCase;
     }
