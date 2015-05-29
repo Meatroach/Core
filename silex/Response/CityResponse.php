@@ -2,7 +2,6 @@
 
 namespace OpenTribes\Core\Silex\Response;
 
-
 use OpenTribes\Core\Response\ListDirectionsResponse;
 use OpenTribes\Core\View\DirectionView;
 

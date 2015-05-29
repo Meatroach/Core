@@ -15,6 +15,7 @@ class UserRepositoryTest extends SilexApplicationTest {
         $app = $this->getApplication();
         $this->repository = $app[Repository::USER];
     }
+    
     public function tearDown(){
         $this->repository->truncate();
     }

@@ -1,8 +1,7 @@
 <?php
-
 namespace OpenTribes\Core\Silex\Response;
 
-
+use OpenTribes\Core\Silex\Response\SymfonyBaseResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class MustacheResponse extends Response{

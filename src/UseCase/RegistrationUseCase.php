@@ -1,6 +1,8 @@
 <?php
+
 namespace OpenTribes\Core\UseCase;
 
+use DateTime;
 use OpenTribes\Core\Repository\UserRepository;
 use OpenTribes\Core\Request\RegistrationRequest;
 use OpenTribes\Core\Response\RegistrationResponse;
@@ -40,7 +42,7 @@ class RegistrationUseCase implements LoggerAwareInterface{
         $this->passwordHashService = $passwordHashService;
         $this->logger = new NullLogger();
     }
-
+    
     /**
      * @param RegistrationRequest $request
      */
@@ -80,7 +82,7 @@ class RegistrationUseCase implements LoggerAwareInterface{
         $userId = $this->userRepository->getUniqueId();
         $passwordHash = $this->passwordHashService->hash($request->getPassword());
         $user = $this->userRepository->create($userId, $request->getUsername(), $passwordHash, $request->getEmail());
-        $user->setRegistrationDate(new \DateTime());
+        $user->setRegistrationDate(new DateTime());
         $this->userRepository->add($user);
     }
 } 

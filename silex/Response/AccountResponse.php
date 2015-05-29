@@ -2,7 +2,6 @@
 
 namespace OpenTribes\Core\Silex\Response;
 
-
 use OpenTribes\Core\Request\RegistrationRequest;
 use OpenTribes\Core\Response\RegistrationResponse;
 use OpenTribes\Core\Traits\ErrorTrait;

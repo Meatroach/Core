@@ -2,8 +2,6 @@
 
 namespace OpenTribes\Core\Silex\Response;
 
-
-
 use OpenTribes\Core\Request\LoginRequest;
 use OpenTribes\Core\Response\LoginResponse;
 use OpenTribes\Core\Traits\ErrorTrait;
