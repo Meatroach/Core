@@ -14,7 +14,7 @@ class SymfonyRegistrationValidator extends RegistrationValidator
      */
     private $validator;
 
-    public function __construct(Validator $validator)
+    public function __construct(Validator\RecursiveValidator $validator)
     {
         $this->validator = $validator;
     }
@@ -24,9 +24,9 @@ class SymfonyRegistrationValidator extends RegistrationValidator
         $constraint = new Constraints\Collection(
             [
 
-                'isUniqueEmail' => new Constraints\True(['message' => 'Email exists']),
-                'isUniqueUsername' => new Constraints\True(['message' => 'Username exists']),
-                'termsAndConditions' => new Constraints\True(['message' => 'Terms and Conditions are not accepted']),
+                'isUniqueEmail' => new Constraints\IsTrue(['message' => 'Email exists']),
+                'isUniqueUsername' => new Constraints\IsTrue(['message' => 'Username exists']),
+                'termsAndConditions' => new Constraints\IsTrue(['message' => 'Terms and Conditions are not accepted']),
                 'username' => [
                     new Constraints\NotBlank(['message' => 'Username is empty']),
                     new Constraints\Length([
@@ -66,7 +66,7 @@ class SymfonyRegistrationValidator extends RegistrationValidator
             'passwordConfirm' => $this->passwordConfirm,
             'emailConfirm' => $this->emailConfirm
         ];
-        $result = $this->validator->validateValue($value, $constraint);
+        $result = $this->validator->validate($value, $constraint);
         if ($result instanceof ConstraintViolationList) {
             foreach ($result->getIterator() as $constraintViolation) {
                 $this->addError($constraintViolation->getMessage());

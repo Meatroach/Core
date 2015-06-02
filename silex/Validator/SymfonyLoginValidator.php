@@ -16,7 +16,7 @@ class SymfonyLoginValidator extends LoginValidator
      */
     private $validator;
 
-    public function __construct(Validator $validator)
+    public function __construct(Validator\RecursiveValidator $validator)
     {
         $this->validator = $validator;
     }
@@ -46,7 +46,7 @@ class SymfonyLoginValidator extends LoginValidator
 
                 ],
                 'verified' => [
-                    new Constraints\True(['message' => 'Invalid login'])
+                    new Constraints\IsTrue(['message' => 'Invalid login'])
                 ]
             ]);
 
@@ -55,7 +55,7 @@ class SymfonyLoginValidator extends LoginValidator
             'password' => $this->password,
             'verified' => $this->verified
         ];
-        $result = $this->validator->validateValue($value, $constraint);
+        $result = $this->validator->validate($value, $constraint);
         if ($result instanceof ConstraintViolationList) {
             foreach ($result->getIterator() as $constraintViolation) {
                 $this->addError($constraintViolation->getMessage());

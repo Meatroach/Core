@@ -7,6 +7,7 @@ use Igorw\Silex\ConfigServiceProvider;
 use Mustache\Silex\Provider\MustacheServiceProvider;
 use OpenTribes\Core\Silex\EventListener\BeforeAfterListener;
 use OpenTribes\Core\Silex\EventListener\MustacheListener;
+use OpenTribes\Core\Silex\Provider\CommonServiceProvider;
 use OpenTribes\Core\Silex\Provider\ControllerServiceProvider;
 use OpenTribes\Core\Silex\Provider\RepositoryServiceProvider;
 use OpenTribes\Core\Silex\Provider\RouteServiceProvider;
@@ -17,7 +18,6 @@ use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\ValidatorServiceProvider as SilexValidatorServiceProvider;
 use Silex\ServiceProviderInterface;
 use RecursiveDirectoryIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -58,13 +58,13 @@ class Module implements ServiceProviderInterface{
         $app->register(new ServiceControllerServiceProvider());
         $app->register(new DoctrineServiceProvider());
         $app->register(new SessionServiceProvider());
-        $app->register(new SilexValidatorServiceProvider());
+        $app->register(new ValidatorServiceProvider());
         $app->register(new MustacheServiceProvider());
         $app->register(new ServiceProvider());
-        $app->register(new ValidatorServiceProvider());
         $app->register(new RepositoryServiceProvider());
         $app->register(new UseCaseServiceProvide());
         $app->register(new ControllerServiceProvider());
+        $app->register(new CommonServiceProvider());
         $app->mount('/', new RouteServiceProvider());
 
     }
