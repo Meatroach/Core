@@ -7,12 +7,20 @@ use OpenTribes\Core\Silex\Service;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 $console = new Application;
 $console->register('create')
     ->addArgument('env', InputArgument::OPTIONAL, 'enviroment', 'test')
+    ->addOption('db_name', null, InputOption::VALUE_OPTIONAL, 'Db name of the current environment', 'ot_test')
+    ->addOption('db_user', null, InputOption::VALUE_OPTIONAL, 'Db user of the current environment', 'travis')
+    ->addOption('db_pass', null, InputOption::VALUE_OPTIONAL, 'Db password of the current environment', '')
     ->setCode(
         function (InputInterface $input) {
+            $dbName     = $input->getOption('db_name');
+            $dbUser     = $input->getOption('db_user');
+            $dbPassword = $input->getOption('db_pass');
+
             $env = $input->getArgument('env');
             $path = realpath(__DIR__ . '/../config/');
             $baseDir = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR;
@@ -28,6 +36,14 @@ $console->register('create')
                     $realFileContent = require $realFile;
                     $content = array_replace_recursive($content, $realFileContent);
                 }
+
+                if (preg_match('/database/', $file)) {
+                    $content = array_replace_recursive(
+                        $content,
+                        ['db.options' => ['dbname' => $dbName, 'user' => $dbUser, 'password' => $dbPassword]]
+                    );
+                }
+
                 $newContent = "<?php \n return " . var_export($content, true) . ";";
                 file_put_contents($realFile, $newContent);
             }

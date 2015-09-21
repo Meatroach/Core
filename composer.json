@@ -30,7 +30,8 @@
     "symfony/validator": "~2",
     "symfony/console": "~2",
     "monolog/monolog": "~1",
-    "symfony/yaml": "~2"
+    "symfony/yaml": "~2",
+    "symfony/process": "~2"
   },
   "autoload": {
     "psr-4": {
@@ -44,5 +45,10 @@
       "OpenTribes\\Core\\Mock\\": "mock/",
       "OpenTribes\\Core\\Test\\": "tests/"
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "OpenTribes\\Core\\Silex\\Composer\\ScriptHandler::createDevAndTestEnvironment"
+    ]
   }
 }

@@ -20,11 +20,12 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
+- echo "CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';" | mysql -u root
+- echo "GRANT ALL PRIVILEGES ON * . * TO 'test'@'localhost';" | mysql -u root
+- echo "FLUSH PRIVILEGES;" | mysql -u root
 - mysql -e 'create database ot_test;'
+- mysql -e 'create database ot_dev;'
 - composer install -o --prefer-dist
-- php cli/config.php create
-- php cli/migration.php migrations:migrate -n
-
 
 script:
   - |

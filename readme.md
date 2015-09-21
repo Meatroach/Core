@@ -16,6 +16,22 @@ The src folder will be moved after development to its own repository while this 
 The Game is licenced under MIT 
 
 
-##installation
+##Installation
 
 - comming soon
+
+##Vagrant
+
+There's a simple vagrant environment made for this project.
+You simply have to run __vagrant up__ in the root directory and the machine is ready and all composer dependencies were installed.
+
+You access via __vagrant ssh__ the VM. The project is mounted to __/var/www/opentribes__.
+In this directory you can run all console commands.
+
+This commands auto-configures the test and dev environment, so you don't have to adjust new database configuration parameters.
+
+The web interface has the ip __192.156.68.112__ and must be opened using the host __opentribes.dev__, so you should add the following entry to your __/etc/hosts__ file:
+
+    192.168.57.333 opentribes.dev
+
+This file can be found on windows at: __C:\Windows\System32\drivers\etc__.
