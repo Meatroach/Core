@@ -5,10 +5,10 @@ namespace OpenTribes\Core\Test\UseCase;
 
 use OpenTribes\Core\Entity\CityEntity;
 use OpenTribes\Core\Entity\UserEntity;
-use OpenTribes\Core\Mock\Repository\MockCityRepository;
-use OpenTribes\Core\Mock\Repository\MockUserRepository;
-use OpenTribes\Core\Mock\Request\MockListCitiesRequest;
-use OpenTribes\Core\Mock\Response\MockListCitiesResponse;
+use OpenTribes\Core\Test\Mock\Repository\MockCityRepository;
+use OpenTribes\Core\Test\Mock\Repository\MockUserRepository;
+use OpenTribes\Core\Test\Mock\Request\MockListCitiesRequest;
+use OpenTribes\Core\Test\Mock\Response\MockListCitiesResponse;
 use OpenTribes\Core\Repository\CityRepository;
 use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\ListCitiesUseCase;

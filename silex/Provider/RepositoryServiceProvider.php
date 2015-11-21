@@ -3,7 +3,7 @@
 namespace OpenTribes\Core\Silex\Provider;
 
 
-use OpenTribes\Core\Mock\Repository\MockCityRepository;
+use OpenTribes\Core\Test\Mock\Repository\MockCityRepository;
 use OpenTribes\Core\Silex\Repository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

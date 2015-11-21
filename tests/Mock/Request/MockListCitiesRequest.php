@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Mock\Request;
+namespace OpenTribes\Core\Test\Mock\Request;
 
 
 use OpenTribes\Core\Request\ListCitiesRequest;

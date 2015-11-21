@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Mock\Repository;
+namespace OpenTribes\Core\Test\Mock\Repository;
 
 use OpenTribes\Core\Entity\UserEntity;
 use OpenTribes\Core\Repository\UserRepository;

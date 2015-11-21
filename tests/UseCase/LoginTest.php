@@ -3,14 +3,14 @@
 namespace OpenTribes\Core\Test\UseCase;
 
 
-use OpenTribes\Core\Mock\Repository\MockUserRepository;
-use OpenTribes\Core\Mock\Request\MockLoginRequest;
-use OpenTribes\Core\Mock\Request\MockRegistrationRequest;
-use OpenTribes\Core\Mock\Response\MockLoginResponse;
-use OpenTribes\Core\Mock\Response\MockRegistrationResponse;
-use OpenTribes\Core\Mock\Service\PlainHashService;
-use OpenTribes\Core\Mock\Validator\MockLoginValidator;
-use OpenTribes\Core\Mock\Validator\MockRegistrationValidator;
+use OpenTribes\Core\Test\Mock\Repository\MockUserRepository;
+use OpenTribes\Core\Test\Mock\Request\MockLoginRequest;
+use OpenTribes\Core\Test\Mock\Request\MockRegistrationRequest;
+use OpenTribes\Core\Test\Mock\Response\MockLoginResponse;
+use OpenTribes\Core\Test\Mock\Response\MockRegistrationResponse;
+use OpenTribes\Core\Test\Mock\Service\PlainHashService;
+use OpenTribes\Core\Test\Mock\Validator\MockLoginValidator;
+use OpenTribes\Core\Test\Mock\Validator\MockRegistrationValidator;
 use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\LoginUseCase;
 use OpenTribes\Core\UseCase\RegistrationUseCase;

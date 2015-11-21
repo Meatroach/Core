@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Mock\Service;
+namespace OpenTribes\Core\Test\Mock\Service;
 
 use OpenTribes\Core\Service\PasswordHashService;
 

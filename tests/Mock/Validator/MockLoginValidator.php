@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Mock\Validator;
+namespace OpenTribes\Core\Test\Mock\Validator;
 
 use OpenTribes\Core\Validator\LoginValidator;
 

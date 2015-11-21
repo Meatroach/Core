@@ -4,9 +4,9 @@ namespace OpenTribes\Core\Test\UseCase;
 
 
 use OpenTribes\Core\Entity\DirectionEntity;
-use OpenTribes\Core\Mock\Repository\MockDirectionRepository;
-use OpenTribes\Core\Mock\Request\MockListDirectionsRequest;
-use OpenTribes\Core\Mock\Response\MockListDirectionsResponse;
+use OpenTribes\Core\Test\Mock\Repository\MockDirectionRepository;
+use OpenTribes\Core\Test\Mock\Request\MockListDirectionsRequest;
+use OpenTribes\Core\Test\Mock\Response\MockListDirectionsResponse;
 use OpenTribes\Core\Test\BaseUseCaseTest;
 use OpenTribes\Core\UseCase\ListDirectionsUseCase;
 

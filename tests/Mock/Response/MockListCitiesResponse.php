@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenTribes\Core\Mock\Response;
+namespace OpenTribes\Core\Test\Mock\Response;
 
 
 use OpenTribes\Core\Response\ListCitiesResponse;
